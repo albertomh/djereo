@@ -9,19 +9,17 @@ will need the following to develop `djereo`:
 
 - [pre-commit](https://pre-commit.com/)
 
-### Recursive djereo
+### Upgrading the pycliche version
 
-The `djereo` repo has been retrofit to use `djereo` itself as its template following
-[release v2.6.0](https://github.com/albertomh/djereo/releases/tag/v2.6.0).
-
-To update `djereo` to a newer version of itself:
+`djereo` is built on top of the [pycliche](https://github.com/albertomh/pycliche) Python
+project template. To update `djereo` to a newer version of `pycliche`:
 
 ```sh
 cd ~/Projects/djereo/
 uvx copier update --skip-answered --trust [--vcs-ref=<TAG>]
 ```
 
-If the `--vcs-ref` flag is not specified, `copier` will use the latest `djereo` tag.
+If the `--vcs-ref` flag is not specified, `copier` will use the latest `pycliche` tag.
 
 ### Git principles
 
