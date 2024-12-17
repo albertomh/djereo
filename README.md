@@ -22,7 +22,7 @@ Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
 Projects created using `djereo` include:
 
 - A basic Python package and entrypoint, configured via a `pyproject.toml`.
-- Dependencies managed via `uv`, using a `uv.lock` file for consistent and reproducible builds.
+- Dependencies managed via `uv`, using a `uv.lock` file for reproducible builds.
 - IPython as the default shell.
 - Simple configuration to enhance your logs with `structlog`.
 - Scaffolding for unit tests run via `pytest`.
@@ -82,7 +82,7 @@ The developer README ([docs/README-dev.md](docs/README-dev.md)) covers how to wo
 
 - [Develop](docs/README-dev.md#develop)
   - [Development prerequisites](docs/README-dev.md#development-prerequisites)
-  - [Recursive djereo](docs/README-dev.md#recursive-djereo)
+  - [Upgrading the pycliche version](docs/README-dev.md#upgrading-the-pycliche-version)
   - [Git principles](docs/README-dev.md#git-principles)
   - [Dependency management](docs/README-dev.md#dependency-management)
     - [Updating dependencies in the template](docs/README-dev.md#updating-dependencies-in-the-template)

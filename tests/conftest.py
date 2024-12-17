@@ -45,9 +45,7 @@ def copier_input_data() -> dict:
 
 
 @pytest.fixture
-def copier_copy(
-    djereo_root_dir: Path, test_project_dir: Path
-) -> Callable[[dict], None]:
+def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict], None]:
     """
     Fixture to run `copier copy`, cleaning up destination directory beforehand.
     Uses the `djereo_root_dir` & `test_project_dir` fixtures as source and
