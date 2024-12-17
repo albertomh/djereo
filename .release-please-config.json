@@ -1,0 +1,10 @@
+{
+    "changelog-type": "default",
+    "packages": {
+        ".": {}
+    },
+    "plugins": [
+        "sentence-case"
+    ],
+    "release-type": "python"
+}

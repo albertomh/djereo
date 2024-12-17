@@ -1,0 +1,67 @@
+[project]
+name = "pycliche"
+version = "2.10.0"
+description = ""
+authors = [
+    {name = "Alberto Morón Hernández", email = "<alberto.moronh@gmail.com>"}
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ipython>=8.30.0,<9.0.0",
+    "structlog>=24.4.0,<25.0.0",
+]
+
+[dependency-groups]
+test = [
+    "copier>=9.4.1",
+    "pip>=24.3.1",
+    "pytest>=8.3.3",
+    "pyyaml>=6.0.2",
+]
+
+[tool.pytest.ini_options]
+addopts = "--pdbcls=IPython.terminal.debugger:Pdb"
+markers = [
+    "integration",
+    "slow",
+    "smoke",
+    "unit",
+]
+
+[tool.ruff]
+exclude = [".pdbrc"]
+extend-exclude = ["*project_name*"]
+force-exclude = true
+indent-width = 4
+line-length = 90
+target-version = "py312"
+
+[tool.ruff.lint]
+ignore = []
+select = [
+    # flake8-bugbear
+    "B",
+    # pydocstyle
+    "E",
+    # isort
+    "I",
+    # flake8-no-pep420
+    "INT",
+    # Pyflakes
+    "F",
+    # flake8-logging
+    "LOG",
+    # flake8-bandit
+    "S",
+    # flake8-tidy-imports
+    "T",
+    # flake8-print
+    "T20",
+    # pycodestyle warnings
+    "W",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**.py" = ["S"]

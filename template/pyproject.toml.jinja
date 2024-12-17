@@ -1,0 +1,84 @@
+# https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
+[project]
+name = "{{project_name}}"
+version = "{{initial_version}}"
+description = ""
+authors = [
+  {name = "{{author_name}}", email = "{{author_email}}"}
+]
+readme = "README.md"
+requires-python = ">={{python_version}}"
+dependencies = [
+    "ipython>=8.30.0,<9.0.0",
+    "structlog>=24.4.0,<25.0.0",
+]
+
+[dependency-groups]
+test = [
+    "coverage>=7.6.7",
+    "pytest>=8.3.3",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--pdbcls=IPython.terminal.debugger:TerminalPdb",
+]
+markers = [
+    "integration",
+    "slow",
+    "smoke",
+    "unit",
+]
+
+[tool.coverage.report]
+omit = [
+  "*/tests/*"
+]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "def __str__",
+    "if settings.debug",
+]
+
+[tool.ruff]
+exclude = [".pdbrc"]
+indent-width = 4
+line-length = 90
+target-version = "py{{python_version.replace('.', '')}}"
+
+[tool.ruff.lint]
+ignore = []
+select = [
+    # flake8-bugbear
+    "B",
+    # pydocstyle
+    "E",
+    # isort
+    "I",
+    # flake8-no-pep420
+    "INT",
+    # Pyflakes
+    "F",
+    # flake8-logging
+    "LOG",
+    # flake8-bandit
+    "S",
+    # flake8-tidy-imports
+    "T",
+    # flake8-print
+    "T20",
+    # pycodestyle warnings
+    "W",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**.py" = ["S"]
+
+[tool.coverage.run]
+source = [
+  "./{{project_name}}/",
+]
+omit = [
+  "*/tests/*"
+]

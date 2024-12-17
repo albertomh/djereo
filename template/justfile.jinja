@@ -1,0 +1,12 @@
+# {{project_name}} - local development tooling
+
+set positional-arguments
+
+default:
+  @just --list
+
+test +args='':
+  @uv sync --group test
+  @uv run coverage run -m pytest tests/ -s -vvv -W always --pdb "$@"
+  @uv run coverage report
+  @uv run coverage html

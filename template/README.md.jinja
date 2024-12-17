@@ -1,0 +1,148 @@
+# {{project_name}}
+
+## Prerequisites
+
+To use `{{project_name}}` the following must be available locally:
+
+- [Python {{python_version}}](https://docs.python.org/{{python_version}}/) or above
+- [uv](https://docs.astral.sh/uv/)
+- [just](https://github.com/casey/just)
+
+## Quickstart: run locally
+
+A `justfile` defines common development tasks. Run `just` to show all available recipes.
+
+## Develop
+
+Install the package in editable mode and run the entrypoint:
+
+```sh
+# run from the repository's root directory
+uv pip install -e .
+uv run python -m {{project_name}}.main
+```
+
+IPython is available as the default shell. Start an interactive session with:
+
+```sh
+uv run ipython
+```
+
+### pycliche
+
+`{{project_name}}` has been generated using the [pycliche](https://github.com/albertomh/pycliche)
+project template.
+
+To update `{{project_name}}` to a newer version of `pycliche`:
+
+```sh
+cd ~/Projects/{{project_name}}/
+uvx copier update --skip-answered --trust [--vcs-ref=<TAG>]
+```
+
+If the `--vcs-ref` flag is not specified, `copier` will use the latest `pycliche` tag.
+
+### Git principles
+
+This repo follows trunk-based development. This means:
+
+- the `main` branch should always be in a releasable state
+- use short-lived feature branches
+
+### Development prerequisites
+
+In addition to the [Prerequisites](#prerequisites) above, you will need the following to
+develop `{{project_name}}`:
+
+- [pre-commit](https://pre-commit.com/)
+
+### Dependency management
+
+Dependencies are defined in the `pyproject.toml` file, with exact versions captured by a
+`uv.lock` lockfile. `uv` is used to manage dependencies:
+
+```sh
+# add a dependency to the project
+uv add some-package
+```
+{%if is_github_project%}
+Dependabot is configured to run weekly and update Python packages (minor & patch) and
+GitHub Actions. See [.github/dependabot.yaml](.github/dependabot.yaml).
+{%endif%}
+### Logging
+
+`{{project_name}}` uses [structlog](https://www.structlog.org/en/stable/) for structured logging.
+The logging configuration is defined in `logging.py`. Use the `configure_logging` function
+to set up logging when the application starts:
+
+```python
+from logging import configure_logging
+configure_logging()
+
+logger = structlog.get_logger()
+logger.info("{{project_name}} running", key="value")
+
+### Style
+
+Code style is enforced by pre-commit hooks. Linter rules are configured in the `ruff`
+tables in `pyproject.toml`.
+
+```sh
+# before you start developing, install pre-commit hooks
+pre-commit install
+```
+
+Docstrings should follow the conventions set out in the [Google styleguide](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings).
+
+Please follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+guidelines when writing commit messages. `commitlint` is enabled as a pre-commit hook.
+Valid commit types are defined in `.commitlintrc.ts`.
+
+## Test
+
+`pytest` and `coverage` are defined as test dependencies.
+
+Run all tests and report on code coverage:
+
+```sh
+just test <marker>
+```
+
+Tests can have marks, allowing you to run only a subset:
+
+```sh
+just test -m unit
+# or
+just test -m "not smoke"
+```
+
+See the `tool.pytest.ini_options` table in `pyproject.toml` for a list of all marks.
+{%if is_github_project%}
+## Release
+
+[Release Please](https://github.com/googleapis/release-please) is used to automate:
+
+- Updating the [changelog](CHANGELOG.md).
+- Calculating the new SemVer tag based on conventional commit types.
+- Creating a new GitHub release.
+
+Release Please is configured as a GitHub action ([release-please.yaml](.github/workflows/release-please.yaml)).
+It keeps a release pull request open that is refreshed as changes are merged into `main`.
+To cut a release, simply merge the release pull request.
+
+### GitHub Personal Access Token
+
+In order for Release Please to automate the above process, a GitHub Actions secret called
+`RELEASE_PLEASE_TOKEN` must exist in GitHub (under {{project_name}}/settings/secrets/actions).
+The contents of this secret must be a Personal Access Token (PAT) with the following permissions:
+
+```text
+contents: write
+pull-requests: write
+```
+
+For more information, consult the [release-please-action project](https://github.com/googleapis/release-please-action).
+{%endif%}
+---
+
+&copy; {{author_name}}

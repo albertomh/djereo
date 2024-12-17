@@ -1,0 +1,34 @@
+import json
+
+import pytest
+import structlog
+
+from {{project_name}} import main as entrypoint
+from {{project_name}}.logging import configure_logging
+
+
+def test_main_runs_without_error():
+    """Test that the entrypoint executes without raising any exceptions."""
+    try:
+        entrypoint.main()
+    except Exception as e:
+        pytest.fail(f"main() raised an exception: {e}")
+
+
+def test_logging_configuration():
+    configure_logging()
+
+    capturing_logger = structlog.testing.CapturingLogger()
+    structlog.configure(logger_factory=lambda: capturing_logger)
+
+    logger = structlog.get_logger()
+    logger.info("test_event", key="value")
+
+    assert len(capturing_logger.calls) == 1
+    call = capturing_logger.calls[0]
+    method_name, event_tuple, _ = call
+    event_data = json.loads(event_tuple[0])
+
+    assert method_name == "info"
+    assert event_data["event"] == "test_event"
+    assert event_data["key"] == "value"

@@ -1,0 +1,17 @@
+config:
+  default: true
+
+  ignores:
+    # on account of this being generated automatically by 'Release Please'
+    - "CHANGELOG.md"
+  # per-rule settings in alphabetical order
+  # https://github.com/DavidAnson/markdownlint/tree/main/doc
+  line-length:                      # MD013
+    code_blocks: false
+    line_length: 100
+    tables: false
+  no-duplicate-heading:             # MD024
+    # allow duplicate headings in eg. CHANGELOG.md
+    siblings_only: true
+
+fix: true

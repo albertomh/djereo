@@ -1,0 +1,7 @@
+alias i interact
+
+alias ppl pp locals()
+
+alias ppd pp %1.__dict__
+
+alias pps ppd self

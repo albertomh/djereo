@@ -1,0 +1,9 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v2.9.0
+_src_path: gh:albertomh/pycliche
+author_email: alberto.moronh@gmail.com
+author_name: Alberto Morón Hernández
+initial_version: 0.1.0
+is_github_project: true
+project_name: pycliche
+python_version: '3.12'

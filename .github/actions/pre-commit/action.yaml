@@ -1,0 +1,21 @@
+# Re-usable GitHub Action that runs all pre-commit hooks.
+#
+# Usage:
+#   ```
+#   steps:
+#     - uses: ./.github/actions/pre-commit
+#   ```
+
+name: 'pre-commit'
+description: 'Run all pre-commit hooks against the codebase'
+
+runs:
+  using: 'composite'
+  steps:
+    # global shared state: modifies `env` inside this action AND outside in the caller.
+    - run: |
+        # Skip hook since it causes issues when merging PRs, and already enforced by GitHub config.
+        echo "SKIP=no-commit-to-branch" >> $GITHUB_ENV
+      shell: bash
+    - uses: actions/setup-python@v5
+    - uses: pre-commit/action@v3.0.1

@@ -1,0 +1,26 @@
+# pycliche Pull Request pipeline
+# Runs when a commit on a feature branch is pushed up to GitHub.
+name: PR
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches-ignore:
+      - main
+
+jobs:
+  pre_commit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/pre-commit
+
+  test:
+    needs:
+      - pre_commit
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/test

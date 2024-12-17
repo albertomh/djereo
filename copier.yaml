@@ -1,0 +1,58 @@
+_subdirectory: template
+
+project_name:
+    help: |
+        What is the project called?
+           (all-lowercase, may contain underscores)
+    type: str
+    validator: >-
+        {% if not (project_name | regex_search('^[a-z][a-z0-9\_]+$')) %}
+        project_name must start with a letter, be lowercase and may contain underscores
+        {% endif %}
+
+python_version:
+    help: "What version of Python do you wish to use?"
+    type: str
+    choices:
+        - "3.10"
+        - "3.11"
+        - "3.12"
+        - "3.13"
+    default: "3.12"
+
+author_name:
+    help: "Who is the project's author?"
+    type: str
+    default: "Alberto Morón Hernández"
+    validator: "{% if author_name == '' %}author_name cannot be empty{% endif %}"
+
+author_email:
+    help: "What is the project author's email?"
+    type: str
+    default: "alberto.moronh@gmail.com"
+    validator: >-
+        {% if not (author_email | regex_search('^[^@]+@[^@]+\.[^@]+$')) %}
+        author_email must be an email address
+        {% endif %}
+
+initial_version:
+    help: "What Semantic Version tag should the project start on?"
+    type: str
+    choices:
+        - "1.0.0"
+        - "0.1.0"
+        - "0.0.1"
+        - "0.0.0"
+    default: "0.1.0"
+    validator: "{% if initial_version == '' %}Must have value{% endif %}"
+
+is_github_project:
+    help: |
+        Will this project be hosted on GitHub?
+           (if 'yes', generates GitHub Actions for 'Release Please', 'pre-commit', 'dependabot')
+    type: bool
+    default: yes
+
+_tasks:
+    - "git init"
+    - "uv lock"

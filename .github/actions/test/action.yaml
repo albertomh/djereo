@@ -1,0 +1,22 @@
+# Re-usable GitHub Action that runs the pytest suite.
+#
+# Usage:
+#   ```
+#   steps:
+#     - uses: ./.github/actions/test
+#   ```
+
+name: 'test'
+description: 'Run unit tests'
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: astral-sh/setup-uv@v3
+      with:
+        version: "0.5.4"
+    - run: |
+        uv sync --group test
+        uv pip install pre-commit
+        uv run -m pytest tests/ -s -vvv -W always
+      shell: bash
