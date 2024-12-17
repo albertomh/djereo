@@ -61,6 +61,37 @@ wheels = [
 ]
 
 [[package]]
+name = "djereo"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "ipython" },
+    { name = "structlog" },
+]
+
+[package.dev-dependencies]
+test = [
+    { name = "copier" },
+    { name = "pip" },
+    { name = "pytest" },
+    { name = "pyyaml" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "ipython", specifier = ">=8.30.0,<9.0.0" },
+    { name = "structlog", specifier = ">=24.4.0,<25.0.0" },
+]
+
+[package.metadata.requires-dev]
+test = [
+    { name = "copier", specifier = ">=9.4.1" },
+    { name = "pip", specifier = ">=24.3.1" },
+    { name = "pytest", specifier = ">=8.3.3" },
+    { name = "pyyaml", specifier = ">=6.0.2" },
+]
+
+[[package]]
 name = "dunamai"
 version = "1.23.0"
 source = { registry = "https://pypi.org/simple" }
@@ -303,37 +334,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/cd/05/0a34433a064256a578f1783a10da6df098ceaa4a57bbeaa96a6c0352786b/pure_eval-0.2.3.tar.gz", hash = "sha256:5f4e983f40564c576c7c8635ae88db5956bb2229d7e9237d03b3c0b0190eaf42", size = 19752 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8e/37/efad0257dc6e593a18957422533ff0f87ede7c9c6ea010a2177d738fb82f/pure_eval-0.2.3-py3-none-any.whl", hash = "sha256:1db8e35b67b3d218d818ae653e27f06c3aa420901fa7b081ca98cbedc874e0d0", size = 11842 },
-]
-
-[[package]]
-name = "pycliche"
-version = "2.9.1"
-source = { virtual = "." }
-dependencies = [
-    { name = "ipython" },
-    { name = "structlog" },
-]
-
-[package.dev-dependencies]
-test = [
-    { name = "copier" },
-    { name = "pip" },
-    { name = "pytest" },
-    { name = "pyyaml" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "ipython", specifier = ">=8.30.0,<9.0.0" },
-    { name = "structlog", specifier = ">=24.4.0,<25.0.0" },
-]
-
-[package.metadata.requires-dev]
-test = [
-    { name = "copier", specifier = ">=9.4.1" },
-    { name = "pip", specifier = ">=24.3.1" },
-    { name = "pytest", specifier = ">=8.3.3" },
-    { name = "pyyaml", specifier = ">=6.0.2" },
 ]
 
 [[package]]

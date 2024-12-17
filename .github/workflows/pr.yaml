@@ -1,4 +1,4 @@
-# pycliche Pull Request pipeline
+# djereo Pull Request pipeline
 # Runs when a commit on a feature branch is pushed up to GitHub.
 name: PR
 

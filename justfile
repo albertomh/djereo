@@ -1,4 +1,4 @@
-# pycliche - local development tooling
+# djereo - local development tooling
 
 set positional-arguments
 

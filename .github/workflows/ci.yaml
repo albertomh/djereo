@@ -1,4 +1,4 @@
-# pycliche Continuous Integration pipeline
+# djereo Continuous Integration pipeline
 # Runs when a Pull Request is merged into the 'main' branch.
 name: CI
 

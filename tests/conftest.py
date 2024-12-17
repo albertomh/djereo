@@ -7,21 +7,21 @@ from typing import Callable
 import pytest
 from copier.cli import CopierApp
 
-PYCLICHE_TEST_TEMP_DIR = Path("/", "tmp", "pycliche_test")
+DJEREO_TEST_TEMP_DIR = Path("/", "tmp", "djereo_test")
 
 
 @pytest.fixture
-def pycliche_root_dir() -> Path:
-    """Provides the path to the pycliche project root."""
+def djereo_root_dir() -> Path:
+    """Provides the path to the djereo project root."""
     project_root = Path(__file__).resolve().parent.parent
     if not project_root.exists():
-        pytest.fail(f"pycliche project root does not exist at {project_root}")
+        pytest.fail(f"djereo project root does not exist at {project_root}")
     return project_root
 
 
 @pytest.fixture
-def pycliche_test_temp_dir() -> Path:
-    return PYCLICHE_TEST_TEMP_DIR
+def djereo_test_temp_dir() -> Path:
+    return DJEREO_TEST_TEMP_DIR
 
 
 @pytest.fixture
@@ -30,13 +30,13 @@ def test_project_name() -> str:
 
 
 @pytest.fixture
-def test_project_dir(pycliche_test_temp_dir: Path, test_project_name: str) -> Path:
-    return pycliche_test_temp_dir / test_project_name
+def test_project_dir(djereo_test_temp_dir: Path, test_project_name: str) -> Path:
+    return djereo_test_temp_dir / test_project_name
 
 
 @pytest.fixture
 def copier_input_data() -> dict:
-    """Answers to core pycliche template questions."""
+    """Answers to core djereo template questions."""
     return {
         "project_name": "test_project",
         "author_name": "Miguel de Cervantes",
@@ -46,11 +46,11 @@ def copier_input_data() -> dict:
 
 @pytest.fixture
 def copier_copy(
-    pycliche_root_dir: Path, test_project_dir: Path
+    djereo_root_dir: Path, test_project_dir: Path
 ) -> Callable[[dict], None]:
     """
     Fixture to run `copier copy`, cleaning up destination directory beforehand.
-    Uses the `pycliche_root_dir` & `test_project_dir` fixtures as source and
+    Uses the `djereo_root_dir` & `test_project_dir` fixtures as source and
     destination directories respectively, so tests should use these fixtures
     """
 
@@ -75,7 +75,7 @@ def copier_copy(
                 "copier",
                 "copy",
                 *copier_args,
-                str(pycliche_root_dir),
+                str(djereo_root_dir),
                 str(test_project_dir),
             ],
             exit=False,
@@ -86,8 +86,8 @@ def copier_copy(
 
 def pytest_sessionstart(session):
     """Hook to perform initial setup before all tests."""
-    if not PYCLICHE_TEST_TEMP_DIR.exists():
-        PYCLICHE_TEST_TEMP_DIR.mkdir()
+    if not DJEREO_TEST_TEMP_DIR.exists():
+        DJEREO_TEST_TEMP_DIR.mkdir()
 
 
 @pytest.fixture

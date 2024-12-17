@@ -11,18 +11,18 @@ from tests._utils import count_dirs_and_files
 
 @pytest.mark.integration
 @pytest.mark.smoke
-def test_pycliche_jinja_templates_converted(
+def test_djereo_jinja_templates_converted(
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
-    pycliche_root_dir: Path,
+    djereo_root_dir: Path,
     test_project_dir: Path,
 ):
     """Validate that generating a project converts Jinja templates to files."""
     copier_copy(copier_input_data)
 
     template_files: list[Path] = [
-        f.relative_to(pycliche_root_dir / "template")
-        for f in pycliche_root_dir.rglob("*.jinja")
+        f.relative_to(djereo_root_dir / "template")
+        for f in djereo_root_dir.rglob("*.jinja")
         if not f.name.startswith("{")
     ]
 

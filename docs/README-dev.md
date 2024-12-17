@@ -5,23 +5,23 @@
 ### Development prerequisites
 
 In addition to the [Prerequisites](../README.md#prerequisites) listed in the README you
-will need the following to develop `pycliche`:
+will need the following to develop `djereo`:
 
 - [pre-commit](https://pre-commit.com/)
 
-### Recursive pycliche
+### Recursive djereo
 
-The `pycliche` repo has been retrofit to use `pycliche` itself as its template following
-[release v2.6.0](https://github.com/albertomh/pycliche/releases/tag/v2.6.0).
+The `djereo` repo has been retrofit to use `djereo` itself as its template following
+[release v2.6.0](https://github.com/albertomh/djereo/releases/tag/v2.6.0).
 
-To update `pycliche` to a newer version of itself:
+To update `djereo` to a newer version of itself:
 
 ```sh
-cd ~/Projects/pycliche/
+cd ~/Projects/djereo/
 uvx copier update --skip-answered --trust [--vcs-ref=<TAG>]
 ```
 
-If the `--vcs-ref` flag is not specified, `copier` will use the latest `pycliche` tag.
+If the `--vcs-ref` flag is not specified, `copier` will use the latest `djereo` tag.
 
 ### Git principles
 
@@ -58,14 +58,14 @@ commands like `uv lock --upgrade-package` not taking kindly to Jinja templates.
 
 ### Generate project using development version
 
-When developing `pycliche` it is useful to observe the outcome of generating new projects
+When developing `djereo` it is useful to observe the outcome of generating new projects
 that use in-progress features. To do so:
 
 ```sh
-# navigate to the parent directory of your local copy of pycliche
+# navigate to the parent directory of your local copy of djereo
 cd ~/Projects/
-# vcs-ref flag to use the latest local version of pycliche instead of a tagged version
-uvx copier copy --vcs-ref=HEAD pycliche $TEST_PROJECT_NAME
+# vcs-ref flag to use the latest local version of djereo instead of a tagged version
+uvx copier copy --vcs-ref=HEAD djereo $TEST_PROJECT_NAME
 ```
 
 ### Style
@@ -120,7 +120,7 @@ To cut a release, simply merge the release pull request.
 ### GitHub Personal Access Token
 
 In order for Release Please to automate the above process, a GitHub Actions secret called
-`PYCLICHE_RELEASE_PLEASE_TOKEN` must exist in GitHub ([albertomh/pycliche/settings/secrets/actions](albertomh/pycliche/settings/secrets/actions)).
+`DJEREO_RELEASE_PLEASE_TOKEN` must exist in GitHub ([albertomh/djereo/settings/secrets/actions](albertomh/djereo/settings/secrets/actions)).
 The contents of this secret must be a Personal Access Token (PAT) with the following permissions:
 
 ```yaml
@@ -133,13 +133,13 @@ For more information, consult the [release-please-action project](https://github
 ## Record demo
 
 The main [README](../README.md) includes a GIF showcasing generating a project using
-`pycliche`. To record a new demo, record the output of running `docs/media/auto_pycliche_demo.sh`.
+`djereo`. To record a new demo, record the output of running `docs/media/auto_djereo_demo.sh`.
 
 Convert to a gif with:
 
 ```sh
 # speed up video by 2x (PTS/2)
-ffmpeg -i pycliche-M.m.p-demo.mov -filter:v "setpts=PTS/2,fps=60" -an pycliche-M.m.p-demo_fast.mov
+ffmpeg -i djereo-M.m.p-demo.mov -filter:v "setpts=PTS/2,fps=60" -an djereo-M.m.p-demo_fast.mov
 # convert to GIF
-ffmpeg -i pycliche-M.m.p-demo_fast.mov -vf "fps=15,scale=iw:-1:flags=lanczos" -loop 0 pycliche-M.m.p-demo.gif
+ffmpeg -i djereo-M.m.p-demo_fast.mov -vf "fps=15,scale=iw:-1:flags=lanczos" -loop 0 djereo-M.m.p-demo.gif
 ```
