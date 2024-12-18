@@ -1,5 +1,8 @@
 <!-- markdownlint-disable MD041 first-line-heading/first-line-h1 -->
 
+> ![Work In Progress](https://img.shields.io/badge/🚧-WIP-e0ca23)  
+> `djereo` is a work in progress. It will not be ready to use until v1.0.0.
+
 `djereo` - a Django project template with opinionated tooling.
 
 Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
@@ -8,7 +11,7 @@ Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/albertomh/djereo/main/docs/media/copier-badge.json)](https://github.com/copier-org/copier)
 [![justfile](https://img.shields.io/badge/🤖_justfile-EFF1F3)](https://github.com/casey/just)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json&labelColor=261230&color=de60e9)](https://github.com/astral-sh/uv)
-[![Django](https://img.shields.io/badge/django-092E20?logo=django&logoColor=ffffff)](https://docs.djangoproject.com/en/stable/)
+[![Django](https://img.shields.io/badge/Django-092E20?logo=django&logoColor=ffffff)](https://docs.djangoproject.com/en/stable/)
 [![IPython](https://img.shields.io/badge/IP[y]:-3465a4)](https://ipython.readthedocs.io/en/stable/)
 [![structlog](https://img.shields.io/badge/🪵_structlog-000)](https://github.com/hynek/structlog)
 [![pre-commit](https://img.shields.io/badge/pre--commit-FAB040?logo=pre-commit&logoColor=1f2d23)](https://github.com/pre-commit/pre-commit)
@@ -36,6 +39,10 @@ Optionally, for projects intended to be hosted on GitHub, also include:
   - Automate cutting releases via `Release Please`.
   - Run `pre-commit` hooks and `pytest` as part of a Continuous Integration pipeline.
 - A `dependabot` configuration to keep Python packages & GitHub Actions up to date.
+
+> [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://docs.djangoproject.com/en/stable/)  
+> Starting a Python project? Try [pycliche](https://github.com/albertomh/pycliche), the base
+> djereo is built on, as your Python project template.
 
 ## Prerequisites
 
@@ -101,3 +108,7 @@ The developer README ([docs/README-dev.md](docs/README-dev.md)) covers how to wo
 ## Acknowledgements
 
 Several tooling choices have been guided by the work of [Adam Johnson](https://adamj.eu/tech/).
+
+## What's in a name?
+
+"Stereotype" or "stereo" refers to the metal plates used to quickly mass-produce printed media.
