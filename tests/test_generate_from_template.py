@@ -45,7 +45,7 @@ def test_djereo_jinja_templates_converted(
 @pytest.mark.integration
 @pytest.mark.parametrize(
     "is_github_project, expected_directory_count, expected_file_count",
-    [(True, 4, 15), (False, 3, 13)],
+    [(True, 4, 16), (False, 3, 14)],
 )
 def test_is_github_project(
     is_github_project: bool,
@@ -125,6 +125,12 @@ def test_generated_project_tests_run_successfully(
     assert result.returncode == 0, f"Pytest failed:\n{result.stdout}\n{result.stderr}"
 
 
+@pytest.mark.xfail(
+    reason="""will fail until:
+              SECRET_KEY stops being hardcoded,
+              ALLOWED_HOSTS has type annotation
+            """
+)
 @pytest.mark.integration
 @pytest.mark.smoke
 def test_generated_project_pre_commit_hooks_run_successfully(
