@@ -130,7 +130,6 @@ def test_generated_project_tests_run_successfully(
 @pytest.mark.xfail(
     reason="""will fail until:
               SECRET_KEY stops being hardcoded,
-              ALLOWED_HOSTS has type annotation
             """
 )
 @pytest.mark.integration
