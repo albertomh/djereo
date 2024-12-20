@@ -3,6 +3,13 @@
 > ![Work In Progress](https://img.shields.io/badge/🚧-WIP-e0ca23)  
 > `djereo` is a work in progress. It will not be ready to use until v1.0.0.
 
+<!-- markdownlint-disable MD033 no-inline-html -->
+<p align="center">
+  <!-- markdownlint-disable MD013 line-length -->
+  <img src="docs/media/djereo_wordmark-logo.webp" alt="djereo logo - a printing plate embossed with a pony (the Django mascot) and the word 'djereo'"/>
+  <!-- markdownlint-enable MD013 line-length -->
+</p>
+
 `djereo` - a Django project template with opinionated tooling.
 
 Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
@@ -108,6 +115,8 @@ The developer README ([docs/README-dev.md](docs/README-dev.md)) covers how to wo
 ## Acknowledgements
 
 Several tooling choices have been guided by the work of [Adam Johnson](https://adamj.eu/tech/).
+
+The `djereo` logo is typeset in [Black Ops One](https://fonts.google.com/specimen/Black+Ops+One).
 
 ## What's in a name?
 
