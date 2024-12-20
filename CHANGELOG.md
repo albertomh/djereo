@@ -1,4 +1,12 @@
-# Changelog
+<!-- markdownlint-disable MD013 -->
+## Changelog
+
+Notable changes to this project are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+This file is automatically updated by Release Please.
 
 ## [0.2.0](https://github.com/albertomh/djereo/compare/v0.1.0...v0.2.0) (2024-12-19)
 
@@ -16,14 +24,14 @@
 * Upgrade to pycliche v2.10.1 ([#1](https://github.com/albertomh/djereo/issues/1)) ([16fb20e](https://github.com/albertomh/djereo/commit/16fb20ec32a80ff83c8b59cc93962e38f6680315))
 
 
+## [0.1.0](https://github.com/albertomh/djereo/releases/tag/v0.1.0) (2024-12-18)
+
+
+### Features
+
+* Initial commit using pycliche v2.10.0 as a base.
+
+
 ### Documentation
 
 * Flag project is a work in progress in README ([#4](https://github.com/albertomh/djereo/issues/4)) ([aae194f](https://github.com/albertomh/djereo/commit/aae194f60b553625728357b2615c7bbbeb777d5c))
-
-<!-- markdownlint-disable MD013 -->
-## Changelog
-
-Notable changes to this project are documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
