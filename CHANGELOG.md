@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.3.0](https://github.com/albertomh/djereo/compare/v0.2.0...v0.3.0) (2025-01-09)
+
+
+### Features
+
+* Add type annotation for ALLOWED_HOSTS in template settings.py ([fd9e424](https://github.com/albertomh/djereo/commit/fd9e42405225dd30bba6d150a7bb76f289618a2a))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.11.0 ([#10](https://github.com/albertomh/djereo/issues/10)) ([45b75df](https://github.com/albertomh/djereo/commit/45b75dfc97680752accac102bb0816c8f6b5ab86))
+
 ## [0.2.0](https://github.com/albertomh/djereo/compare/v0.1.0...v0.2.0) (2024-12-19)
 
 
