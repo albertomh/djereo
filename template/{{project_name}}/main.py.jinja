@@ -1,5 +1,16 @@
+from importlib.metadata import version
+
+import structlog
+
+from {{project_name}}.logging import configure_logging
+
+configure_logging()
+
+
 def main():
     """Entrypoint for {{project_name}}."""
+    logger = structlog.get_logger()
+    logger.info(f"{{project_name}} v{version('{{project_name}}')}")
     return
 
 
