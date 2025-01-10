@@ -8,6 +8,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.4.0](https://github.com/albertomh/djereo/compare/v0.3.0...v0.4.0) (2025-01-10)
+
+
+### Features
+
+* Accommodate long lines in generated settings.py ([dd188cc](https://github.com/albertomh/djereo/commit/dd188cc9e1896c74e286dacd0303a89ccf6f09b8))
+* Add Django 5.1 as a dependency in the template's pyproject.toml ([3233c06](https://github.com/albertomh/djereo/commit/3233c0691f3fa485ef163283f237b5c1eeedbab9))
+* Add type annotation for ALLOWED_HOSTS in template settings.py ([fd9e424](https://github.com/albertomh/djereo/commit/fd9e42405225dd30bba6d150a7bb76f289618a2a))
+* Document how to run the generated Django project ([1c8894d](https://github.com/albertomh/djereo/commit/1c8894da6836976e1dd9a172e0be5b3dfcff7b84))
+* New Django 5.1 project in template directory ([dc51da3](https://github.com/albertomh/djereo/commit/dc51da3578d909f07971beb842ba5b43b6216d0d))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.10.1 ([#1](https://github.com/albertomh/djereo/issues/1)) ([16fb20e](https://github.com/albertomh/djereo/commit/16fb20ec32a80ff83c8b59cc93962e38f6680315))
+* Upgrade to pycliche v2.11.0 ([#10](https://github.com/albertomh/djereo/issues/10)) ([45b75df](https://github.com/albertomh/djereo/commit/45b75dfc97680752accac102bb0816c8f6b5ab86))
+* Upgrade to pycliche v2.12.0 ([#12](https://github.com/albertomh/djereo/issues/12)) ([2ae2d4f](https://github.com/albertomh/djereo/commit/2ae2d4f5d0d298e0dcde8b31f7a6d31288626c9b))
+
+
+### Documentation
+
+* Flag project is a work in progress in README ([#4](https://github.com/albertomh/djereo/issues/4)) ([aae194f](https://github.com/albertomh/djereo/commit/aae194f60b553625728357b2615c7bbbeb777d5c))
+
 ## [0.3.0](https://github.com/albertomh/djereo/compare/v0.2.0...v0.3.0) (2025-01-09)
 
 
