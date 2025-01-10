@@ -21,6 +21,36 @@ uvx copier update --skip-answered --trust [--vcs-ref=<TAG>]
 
 If the `--vcs-ref` flag is not specified, `copier` will use the latest `pycliche` tag.
 
+#### Using the pycliche repo as a git remote
+
+Alternatively, since `djereo` was started by cloning `pycliche` v2.10.0, the latest
+changes to `pycliche` may be brought in as follows:
+
+```sh
+# ensure pycliche exists as an upstream remote repo
+
+git remote -v
+# expected output:
+#     origin  git@github.com:albertomh/djereo.git (fetch)
+#     origin  git@github.com:albertomh/djereo.git (push)
+#     upstream        git@github.com:albertomh/pycliche.git (fetch)
+#     upstream        git@github.com:albertomh/pycliche.git (push)
+
+# if not present, add pycliche as a remote
+git remote add upstream https://github.com:albertomh/pycliche.git
+
+# fetch the latest changes from pycliche
+git fetch upstream
+
+# merge pycliche changes into djereo
+# flag necessary since the repos' histories diverged
+git merge --allow-unrelated-histories upstream/<branch-or-tag>
+
+# resolve conflicts manually, if any
+# stage resolved changes and finish the merge with
+git commit
+```
+
 ### Git principles
 
 This repo follows trunk-based development. This means:
