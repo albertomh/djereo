@@ -15,6 +15,7 @@ runs:
     - uses: astral-sh/setup-uv@v3
       with:
         version: "0.5.4"
+    - uses: extractions/setup-just@v2
     - run: |
         uv sync --group test
         uv pip install pre-commit

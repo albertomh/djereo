@@ -5,6 +5,11 @@ set positional-arguments
 default:
   @just --list
 
+runserver:
+  @uv venv
+  @uv pip install -e .
+  @PYTHONDEVMODE=1 uv run manage.py runserver
+
 test +args='':
   @uv sync --group test
   @uv run coverage run -m pytest tests/ -s -vvv -W always --pdb "$@"
