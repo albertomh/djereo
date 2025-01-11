@@ -14,13 +14,12 @@ A `justfile` defines common development tasks. Run `just` to show all available 
 
 ## Develop
 
-Install the package in editable mode and run the entrypoint:
+Invoke the `runserver` recipe to install dependencies in a virtual environment, install
+the package in editable mode and run the Django development server:
 
 ```sh
 # run from the repository's root directory
-uv venv
-uv pip install -e .
-uv run manage.py runserver
+just runserver
 ```
 
 IPython is available as the default shell. Start an interactive session with:
