@@ -59,7 +59,7 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
 
     def _run(copier_input_data: dict):
         if test_project_dir.exists():
-            shutil.rmtree(test_project_dir)
+            shutil.rmtree(test_project_dir, ignore_errors=True)
 
         copier_args = ["--vcs-ref=HEAD", "--defaults", "--trust"]
         copier_args.extend(
