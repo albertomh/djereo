@@ -5,10 +5,10 @@ set positional-arguments
 default:
   @just --list
 
-runserver:
+runserver $PYTHONDEVMODE="1":
   @uv venv
   @uv pip install -e .
-  @PYTHONDEVMODE=1 uv run manage.py runserver
+  @uv run manage.py runserver
 
 test +args='':
   @uv sync --group test
