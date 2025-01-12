@@ -1,0 +1,11 @@
+from django.apps import AppConfig
+from django.core import checks
+
+
+class {{project_name|title}}Config(AppConfig):
+    name = "{{project_name}}"
+
+    def ready(self) -> None:
+        from {{project_name}}.checks import check_dev_mode
+
+        checks.register(check_dev_mode)
