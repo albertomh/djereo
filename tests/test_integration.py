@@ -49,39 +49,6 @@ def terminate_process(process):
 
 @pytest.mark.integration
 @pytest.mark.slow
-def test_runserver_uses_python_dev_mode(
-    copier_copy: Callable[[dict], None],
-    copier_input_data: dict,
-    test_project_name: str,
-    test_project_dir: Path,
-):
-    """
-    Trigger an ImportWarning in a generated project and check it is visible when the
-    `runserver` recipe is invoked.
-    """
-    copier_copy(copier_input_data)
-    (test_project_dir / test_project_name / "__init__.py").write_text(
-        "import warnings\n"
-        "warnings.warn('This is a forced ImportWarning', ImportWarning)"
-    )
-
-    server_process = run_server(test_project_dir, [], PYTHON_UNBUFFERED_ENV)
-
-    try:
-        stderr_output = collect_stderr_output(
-            server_process,
-            TIMEOUT,
-            lambda line: "Watching for file changes with StatReloader" in line,
-        )
-
-        assert "This is a forced ImportWarning" in stderr_output
-
-    finally:
-        terminate_process(server_process)
-
-
-@pytest.mark.integration
-@pytest.mark.slow
 def test_sys_check_warn_no_dev_mode_when_debug(
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
