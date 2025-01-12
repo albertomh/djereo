@@ -1,0 +1,27 @@
+"""Warn when DEBUG is true yet Python is not being run in Development Mode.
+
+Credit to Adam Johnson's 'Boost Your Django DX' book.
+"""
+
+import sys
+
+from django.conf import settings
+from django.core.checks import Warning as CheckWarning
+
+
+def check_dev_mode(**kwargs):
+    errors = []
+
+    if settings.DEBUG and not sys.flags.dev_mode:
+        errors.append(
+            CheckWarning(
+                "Python Development Mode is not enabled yet DEBUG is true.",
+                hint=(
+                    "Set the environment variable PYTHONDEVMODE=1, or run "
+                    + "with 'python -X dev'."
+                ),
+                id="{{project_name}}.W001",
+            )
+        )
+
+    return errors
