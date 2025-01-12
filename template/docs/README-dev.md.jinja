@@ -8,3 +8,18 @@ The `runserver` just recipe is the main command to call when developing {{projec
 It installs dependencies and the application (in editable mode) in a virtual environment,
 then invokes Django's `runserver` using Python in [Development Mode](https://docs.python.org/3/library/devmode.html).
 Python's Dev Mode will show warnings (Deprecation, Import, Resource) that are otherwise hidden.
+
+### Use project metadata in the running application
+
+`{{project_name}}/__init__.py` exposes project metadata such as version and author information.
+To use it in a view:
+```python
+
+from django.http import HttpResponse
+
+from {{project_name}} import __version__
+
+
+def view(request):
+    return HttpResponse(f"{{project_name}} v{__version__}")
+```
