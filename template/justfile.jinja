@@ -7,8 +7,15 @@ default:
 
 runserver $PYTHONDEVMODE="1":
   @uv venv
+  @uv sync --dev
   @uv pip install -e .
   @uv run manage.py runserver
+
+shell:
+  @uv venv
+  @uv sync --dev
+  @uv pip install -e .
+  @uv run manage.py shell
 
 test:
   @uv venv
