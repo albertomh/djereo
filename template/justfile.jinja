@@ -22,6 +22,6 @@ test:
   @uv sync --group test
   @uv pip install -e .
   @uv run coverage erase
-  @uv run python -m coverage run --source="." manage.py test --verbosity=3 --failfast
+  @uv run python -m coverage run --source="." manage.py test --verbosity=3 --failfast --pdb
   @uv run coverage report
   @uv run coverage html

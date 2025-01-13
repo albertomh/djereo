@@ -30,6 +30,10 @@ def view(request):
 it up by default and uses it instead of the default Python shell.
 To use `IPython` run `manage.py shell` or the `just shell` recipe.
 
+By default IPython's debugger (`ipdb`) will launch when a `breakpoint()` is reached while
+running the application.
+`ipdb` is also used to debug tests and will launch when a test fails.
+
 ---
 
 &copy; {{author_name}}
