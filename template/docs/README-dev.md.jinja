@@ -23,3 +23,13 @@ from {{project_name}} import __version__
 def view(request):
     return HttpResponse(f"{{project_name}} v{__version__}")
 ```
+
+### Use IPython as your shell
+
+`IPython`, an improved Python shell, is installed as a development dependency. Django picks
+it up by default and uses it instead of the default Python shell.
+To use `IPython` run `manage.py shell` or the `just shell` recipe.
+
+---
+
+&copy; {{author_name}}
