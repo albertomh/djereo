@@ -10,7 +10,6 @@ readme = "README.md"
 requires-python = ">={{python_version}}"
 dependencies = [
     "django>=5.1.4,<5.2.0",
-    "ipython>=8.30.0,<9.0.0",
     "structlog>=24.4.0,<25.0.0",
 ]
 
@@ -18,6 +17,9 @@ dependencies = [
 test = [
     "coverage>=7.6.7",
     "pytest>=8.3.3",
+]
+dev = [
+    "ipython>=8.31.0",
 ]
 
 [tool.pytest.ini_options]
