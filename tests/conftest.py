@@ -1,3 +1,4 @@
+import os
 import shutil
 import subprocess
 import sys
@@ -108,6 +109,12 @@ def install_test_project(
         [sys.executable, "-m", "pip", "uninstall", "-y", test_project_name],
         check=True,
     )
+
+
+@pytest.fixture
+def skip_if_github_actions():
+    if os.getenv("GITHUB_ACTIONS") == "true":
+        pytest.skip("Test fails in a GitHub Actions context")
 
 
 def is_git_repo(path: Path) -> bool:

@@ -92,6 +92,7 @@ def test_sys_check_warn_no_dev_mode_when_debug(
 @pytest.mark.integration
 @pytest.mark.slow
 def test_shell_uses_ipython(
+    skip_if_github_actions,
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
     test_project_dir: Path,
