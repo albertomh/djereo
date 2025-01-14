@@ -3,7 +3,7 @@ import signal
 import subprocess
 import time
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Literal
 
 import pytest
 
@@ -26,19 +26,27 @@ def run_server(test_project_dir: Path, command_args: list, env: dict):
     )
 
 
-def collect_stderr_output(process, timeout: int, break_condition: Callable[[str], bool]):
-    """Collect stderr output until a break condition or timeout is met."""
-    stderr_output = []
+def collect_stream_output(
+    stream: Literal["stdout", "stderr"],
+    process,
+    timeout: int,
+    break_condition: Callable[[str], bool],
+):
+    """Collect stdout or stderr output until a break condition or timeout is met."""
+    output = []
     start_time = time.time()
 
     while time.time() - start_time < timeout:
-        line = process.stderr.readline()
+        if stream == "stdout":
+            line = process.stdout.readline()
+        elif stream == "stderr":
+            line = process.stderr.readline()
         if line:
-            stderr_output.append(line)
+            output.append(line)
             if break_condition(line):
                 break
 
-    return "".join(stderr_output)
+    return "".join(output)
 
 
 def terminate_process(process):
@@ -64,7 +72,8 @@ def test_sys_check_warn_no_dev_mode_when_debug(
     server_process = run_server(test_project_dir, [""], PYTHON_UNBUFFERED_ENV)
 
     try:
-        stderr_output = collect_stderr_output(
+        stderr_output = collect_stream_output(
+            "stderr",
             server_process,
             TIMEOUT,
             lambda line: "System check identified 1 issue" in line,
@@ -78,3 +87,35 @@ def test_sys_check_warn_no_dev_mode_when_debug(
 
     finally:
         terminate_process(server_process)
+
+
+@pytest.mark.integration
+@pytest.mark.slow
+def test_shell_uses_ipython(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    test_project_dir: Path,
+):
+    copier_copy(copier_input_data)
+
+    shell_process = subprocess.Popen(
+        ["just", "shell"],
+        cwd=test_project_dir,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+
+    ipython_sentinel = "An enhanced Interactive Python"
+    try:
+        stdout_output = collect_stream_output(
+            "stdout",
+            shell_process,
+            TIMEOUT,
+            lambda line: ipython_sentinel in line,
+        )
+
+        assert ipython_sentinel in stdout_output
+
+    finally:
+        terminate_process(shell_process)
