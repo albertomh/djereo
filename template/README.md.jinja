@@ -12,7 +12,7 @@ To use `{{project_name}}` the following must be available locally:
 
 A `justfile` defines common development tasks. Run `just` to show all available recipes.
 
-## Develop
+## Runserver and the shell
 
 Invoke the `runserver` recipe to install dependencies in a virtual environment, install
 the package in editable mode and run the Django development server:
@@ -25,7 +25,7 @@ just runserver
 IPython is available as the default shell. Start an interactive session with:
 
 ```sh
-uv run manage.py shell
+just shell
 ```
 
 ### djereo
