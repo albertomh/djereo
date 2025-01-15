@@ -2,13 +2,11 @@
 Credit to Adam Johnson's 'Boost Your Django DX' book.
 """
 
-
 import sys
 from types import SimpleNamespace
 from unittest import mock
 
-from django.test import SimpleTestCase
-from django.test import override_settings
+from django.test import SimpleTestCase, override_settings
 
 from {{project_name}}.checks import check_dev_mode
 

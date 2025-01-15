@@ -108,18 +108,11 @@ def test_generated_project_tests_run_successfully(
 ):
     copier_copy(copier_input_data)
 
-    install_res = subprocess.run(
-        ["uv", "pip", "install", "-e", "."],
+    result = subprocess.run(
+        ["just", "test"],
         cwd=test_project_dir,
         capture_output=True,
         text=True,
-    )
-    assert (
-        install_res.returncode == 0
-    ), f"Dependency installation failed:\n{install_res.stdout}\n{install_res.stderr}"
-
-    result = subprocess.run(
-        ["pytest"], cwd=test_project_dir, capture_output=True, text=True
     )
 
     assert result.returncode == 0, f"Pytest failed:\n{result.stdout}\n{result.stderr}"
