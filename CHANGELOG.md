@@ -14,16 +14,11 @@ This file is automatically updated by Release Please.
 ### Features
 
 * 'test' recipe in generated project uses Django's testrunner ([a43d8cc](https://github.com/albertomh/djereo/commit/a43d8cc601dd1348fe174cab5051c1409ed3ad7f))
-* Accommodate long lines in generated settings.py ([dd188cc](https://github.com/albertomh/djereo/commit/dd188cc9e1896c74e286dacd0303a89ccf6f09b8))
-* Add Django 5.1 as a dependency in the template's pyproject.toml ([3233c06](https://github.com/albertomh/djereo/commit/3233c0691f3fa485ef163283f237b5c1eeedbab9))
-* Add type annotation for ALLOWED_HOSTS in template settings.py ([fd9e424](https://github.com/albertomh/djereo/commit/fd9e42405225dd30bba6d150a7bb76f289618a2a))
 * AppConfig for core Django app in generated project ([db43257](https://github.com/albertomh/djereo/commit/db43257674dbac05db1c395c50fc8d15a3668283))
 * Dev documentation on using project metadata in an app ([0e5155f](https://github.com/albertomh/djereo/commit/0e5155f203baee85922626993a6cb2e6a91f9600))
-* Document how to run the generated Django project ([1c8894d](https://github.com/albertomh/djereo/commit/1c8894da6836976e1dd9a172e0be5b3dfcff7b84))
 * Document using the IPython shell in the project template dev README ([#18](https://github.com/albertomh/djereo/issues/18)) ([ae800d2](https://github.com/albertomh/djereo/commit/ae800d208a2ce5a1a869f55401efd0efbbf07cc0))
 * Include the core app in INSTALLED_APPS by default ([14a7a58](https://github.com/albertomh/djereo/commit/14a7a58310ccd765ee7a2c928938578b3543b9f5))
 * Just recipe to invoke runserver with Python's Dev Mode ([#15](https://github.com/albertomh/djereo/issues/15)) ([2c057b5](https://github.com/albertomh/djereo/commit/2c057b5755fa651734b6656dc44de81333b81dbf))
-* New Django 5.1 project in template directory ([dc51da3](https://github.com/albertomh/djereo/commit/dc51da3578d909f07971beb842ba5b43b6216d0d))
 * Runserver recipe enables PYTHONDEVMODE by default ([24a27b4](https://github.com/albertomh/djereo/commit/24a27b45264bfd3660d9d5e2d81268fffebf8be6))
 * Set DJANGO_SETTINGS_MODULE when running tests for generated project ([6549d22](https://github.com/albertomh/djereo/commit/6549d22f2e2d73d2714fd772079373e02e3b20b9))
 * System check to warn of PYTHONDEVMODE being disabled in generated project ([1916c34](https://github.com/albertomh/djereo/commit/1916c3470973eb1500f7fd390a2792b37f045d35))
@@ -33,8 +28,6 @@ This file is automatically updated by Release Please.
 
 ### Dependencies
 
-* Upgrade to pycliche v2.10.1 ([#1](https://github.com/albertomh/djereo/issues/1)) ([16fb20e](https://github.com/albertomh/djereo/commit/16fb20ec32a80ff83c8b59cc93962e38f6680315))
-* Upgrade to pycliche v2.11.0 ([#10](https://github.com/albertomh/djereo/issues/10)) ([45b75df](https://github.com/albertomh/djereo/commit/45b75dfc97680752accac102bb0816c8f6b5ab86))
 * Upgrade to pycliche v2.12.0 ([#12](https://github.com/albertomh/djereo/issues/12)) ([2ae2d4f](https://github.com/albertomh/djereo/commit/2ae2d4f5d0d298e0dcde8b31f7a6d31288626c9b))
 
 
