@@ -1,58 +1,47 @@
 import os
+import re
 import signal
 import subprocess
-import time
+import tempfile
 from pathlib import Path
-from typing import Callable, Literal
+from typing import Callable
 
 import pytest
 
-TIMEOUT = 15  # in seconds, timeout for server process checks
-PYTHON_UNBUFFERED_ENV = {"PYTHONUNBUFFERED": "1"}
 
-
-def run_server(test_project_dir: Path, command_args: list, env: dict):
-    """Run the server process with the given arguments and environment."""
+def run_process_capture_streams(
+    command_args: list, test_project_dir: Path, env: dict | None = None
+) -> tuple[list[str], list[str]]:
+    """
+    Run the `just runserver` recipe with the given arguments and environment,
+    while capturing stdout and stderr. Wait for 10 seconds and terminate.
+    """
     full_env = os.environ.copy()
-    full_env.update(env)
+    full_env.update({"PYTHONUNBUFFERED": "1"})
+    if env:
+        full_env.update(env)
+    stdout_capture = tempfile.TemporaryFile(mode="w+")
+    stderr_capture = tempfile.TemporaryFile(mode="w+")
 
-    return subprocess.Popen(
-        ["just", "runserver", *command_args],
+    process = subprocess.Popen(
+        command_args,
         cwd=test_project_dir,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        stdout=stdout_capture,
+        stderr=stderr_capture,
         text=True,
         env=full_env,
     )
+    try:
+        process.wait(timeout=10)
+    except subprocess.TimeoutExpired:
+        if process.poll() is None:
+            process.send_signal(signal.SIGINT)
 
-
-def collect_stream_output(
-    stream: Literal["stdout", "stderr"],
-    process,
-    timeout: int,
-    break_condition: Callable[[str], bool],
-):
-    """Collect stdout or stderr output until a break condition or timeout is met."""
-    output = []
-    start_time = time.time()
-
-    while time.time() - start_time < timeout:
-        if stream == "stdout":
-            line = process.stdout.readline()
-        elif stream == "stderr":
-            line = process.stderr.readline()
-        if line:
-            output.append(line)
-            if break_condition(line):
-                break
-
-    return "".join(output)
-
-
-def terminate_process(process):
-    """Terminate the process safely."""
-    if process.poll() is None:
-        process.send_signal(signal.SIGINT)
+    stdout_capture.seek(0)
+    stderr_capture.seek(0)
+    stdout_lines = stdout_capture.readlines()
+    stderr_lines = stderr_capture.readlines()
+    return stdout_lines, stderr_lines
 
 
 @pytest.mark.integration
@@ -69,24 +58,39 @@ def test_sys_check_warn_no_dev_mode_when_debug(
     """
     copier_copy(copier_input_data)
 
-    server_process = run_server(test_project_dir, [""], PYTHON_UNBUFFERED_ENV)
+    _, stderr = run_process_capture_streams(
+        # PYTHONDEVMODE can only be disabled by setting it to an empty string
+        ["just", "runserver", ""],
+        test_project_dir,
+    )
 
-    try:
-        stderr_output = collect_stream_output(
-            "stderr",
-            server_process,
-            TIMEOUT,
-            lambda line: "System check identified 1 issue" in line,
-        )
+    expected_warning = (
+        f"WARNINGS:\n?: ({test_project_name}.W001) Python Development Mode is not enabled"
+        " yet DEBUG is true."
+    )
+    assert expected_warning in "".join(stderr)
 
-        expected_warning = (
-            f"?: ({test_project_name}.W001) Python Development Mode is not enabled yet "
-            "DEBUG is true."
-        )
-        assert expected_warning in stderr_output
 
-    finally:
-        terminate_process(server_process)
+@pytest.mark.integration
+@pytest.mark.smoke
+def test_runserver(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    test_project_dir: Path,
+):
+    """
+    Test that the development server starts successfully.
+    """
+    copier_copy(copier_input_data)
+
+    stdout, _ = run_process_capture_streams(
+        ["just", "runserver"],
+        test_project_dir,
+    )
+
+    assert re.search(
+        r"Starting development server at http://127.0.0.1:8000/", "".join(stdout)
+    ), "Server did not start as expected."
 
 
 @pytest.mark.integration
@@ -99,24 +103,6 @@ def test_shell_uses_ipython(
 ):
     copier_copy(copier_input_data)
 
-    shell_process = subprocess.Popen(
-        ["just", "shell"],
-        cwd=test_project_dir,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-    )
+    stdout, _ = run_process_capture_streams(["just", "shell"], test_project_dir)
 
-    ipython_sentinel = "An enhanced Interactive Python"
-    try:
-        stdout_output = collect_stream_output(
-            "stdout",
-            shell_process,
-            TIMEOUT,
-            lambda line: ipython_sentinel in line,
-        )
-
-        assert ipython_sentinel in stdout_output
-
-    finally:
-        terminate_process(shell_process)
+    assert "An enhanced Interactive Python" in "".join(stdout)
