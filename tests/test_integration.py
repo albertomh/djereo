@@ -4,8 +4,11 @@ import subprocess
 import tempfile
 from pathlib import Path
 from typing import Callable
+from urllib.request import urlopen
 
 import pytest
+from bs4 import BeautifulSoup
+from bs4.element import Tag
 
 
 def run_process_capture_streams(
@@ -85,6 +88,28 @@ def test_runserver(
     )
 
     assert "Starting development server at http://127.0.0.1:8000/" in "".join(stdout)
+
+
+@pytest.mark.integration
+@pytest.mark.smoke
+def test_django_debug_toolbar_is_enabled(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    test_project_dir: Path,
+):
+    copier_copy(copier_input_data)
+    run_process_capture_streams(
+        ["just", "runserver"],
+        test_project_dir,
+    )
+
+    with urlopen("http://127.0.0.1:8000/") as response:
+        res_bytes = response.read()
+    res_html = res_bytes.decode("utf8")
+    html = BeautifulSoup(res_html)
+    dj_debug_toolbar = html.find("div", {"id": "djDebug"})
+
+    assert type(dj_debug_toolbar) is Tag
 
 
 @pytest.mark.integration
