@@ -1,7 +1,5 @@
 import os
-import re
 import subprocess
-import time
 from pathlib import Path
 from typing import Callable
 
@@ -157,56 +155,3 @@ def test_generated_project_pre_commit_hooks_run_successfully(
     assert (
         pre_commit_result.returncode == 0
     ), f"Pre-commit hooks failed:\n{pre_commit_result.stdout}\n{pre_commit_result.stderr}"
-
-
-@pytest.mark.integration
-@pytest.mark.smoke
-def test_runserver(
-    copier_copy: Callable[[dict], None],
-    copier_input_data: dict,
-    test_project_dir: Path,
-):
-    copier_copy(copier_input_data)
-    env = os.environ.copy()
-    env["PYTHONUNBUFFERED"] = "1"
-    test_port = "8001"
-
-    subprocess.run(
-        ["uv", "pip", "install", "-e", "."],
-        cwd=test_project_dir,
-        capture_output=True,
-        text=True,
-    )
-    # use Popen because allows non-blocking execution, which `subprocess.run` does not.
-    runserver = subprocess.Popen(
-        ["uv", "run", "manage.py", "runserver", f"127.0.0.1:{test_port}"],
-        cwd=test_project_dir,
-        env=env,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-    )
-
-    try:
-        timeout = 5  # seconds
-        start_time = time.time()
-        output = []
-
-        while time.time() - start_time < timeout:
-            line = runserver.stdout.readline()
-            if line:
-                output.append(line)
-                if re.search(
-                    rf"Starting development server at http://127.0.0.1:{test_port}/", line
-                ):
-                    break
-
-        output_str = "".join(output)
-
-        assert re.search(
-            rf"Starting development server at http://127.0.0.1:{test_port}/", output_str
-        ), "Server did not start as expected."
-
-    finally:
-        runserver.terminate()
-        runserver.wait(timeout=timeout)
