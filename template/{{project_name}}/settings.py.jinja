@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,6 +25,8 @@ SECRET_KEY = "django-insecure-8)-rnyn_n53h&^q94tcsmd6r6i!z+am+beuh(+-nd^vkl3j$ft
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+INTERNAL_IPS = ["127.0.0.1", "::1"]
 
 ALLOWED_HOSTS: list[str] = []
 
@@ -122,3 +125,16 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Only enable the toolbar when we're in debug mode and we're
+# not running tests. Django will change DEBUG to be False for
+# tests, so we can't rely on DEBUG alone.
+IS_TESTING = "test" in sys.argv
+ENABLE_DEBUG_TOOLBAR = DEBUG and not IS_TESTING
+if ENABLE_DEBUG_TOOLBAR:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+    ]
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
