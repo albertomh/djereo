@@ -1,5 +1,4 @@
 import os
-import re
 import signal
 import subprocess
 import tempfile
@@ -13,8 +12,8 @@ def run_process_capture_streams(
     command_args: list, test_project_dir: Path, env: dict | None = None
 ) -> tuple[list[str], list[str]]:
     """
-    Run the `just runserver` recipe with the given arguments and environment,
-    while capturing stdout and stderr. Wait for 10 seconds and terminate.
+    Run a given shell command with the given environment variables, while capturing
+    stdout and stderr. Wait for 10 seconds and terminate.
     """
     full_env = os.environ.copy()
     full_env.update({"PYTHONUNBUFFERED": "1"})
@@ -38,8 +37,8 @@ def run_process_capture_streams(
             process.send_signal(signal.SIGINT)
 
     stdout_capture.seek(0)
-    stderr_capture.seek(0)
     stdout_lines = stdout_capture.readlines()
+    stderr_capture.seek(0)
     stderr_lines = stderr_capture.readlines()
     return stdout_lines, stderr_lines
 
@@ -78,9 +77,6 @@ def test_runserver(
     copier_input_data: dict,
     test_project_dir: Path,
 ):
-    """
-    Test that the development server starts successfully.
-    """
     copier_copy(copier_input_data)
 
     stdout, _ = run_process_capture_streams(
@@ -88,9 +84,7 @@ def test_runserver(
         test_project_dir,
     )
 
-    assert re.search(
-        r"Starting development server at http://127.0.0.1:8000/", "".join(stdout)
-    ), "Server did not start as expected."
+    assert "Starting development server at http://127.0.0.1:8000/" in "".join(stdout)
 
 
 @pytest.mark.integration
