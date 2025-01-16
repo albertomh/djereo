@@ -1,6 +1,6 @@
 # {{project_name}} developer README
 
-## Develop
+## Justfile recipes
 
 ### The runserver recipe
 
@@ -34,6 +34,17 @@ To use `IPython` run `manage.py shell` or the `just shell` recipe.
 By default IPython's debugger (`ipdb`) will launch when a `breakpoint()` is reached while
 running the application.
 `ipdb` is also used to debug tests and will launch when a test fails.
+
+## Developer tools
+
+The project comes with some ready-to-use developer tools installed as dev dependencies and
+configured for use locally:
+
+- [django-browser-reload](https://pypi.org/project/django-browser-reload/): reload the browser
+  when project files change.
+- [django-debug-toolbar](https://pypi.org/project/django-debug-toolbar/): display information
+  about the request/response cycle on each page.
+
 
 ---
 
