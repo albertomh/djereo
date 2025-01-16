@@ -1,4 +1,5 @@
 import os
+import re
 import signal
 import subprocess
 import tempfile
@@ -91,7 +92,7 @@ def test_runserver(
 
 
 @pytest.mark.integration
-@pytest.mark.smoke
+@pytest.mark.slow
 def test_django_debug_toolbar_is_enabled(
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
@@ -110,6 +111,28 @@ def test_django_debug_toolbar_is_enabled(
     dj_debug_toolbar = html.find("div", {"id": "djDebug"})
 
     assert type(dj_debug_toolbar) is Tag
+
+
+@pytest.mark.integration
+@pytest.mark.slow
+def test_runserver_dev_logs_use_rich(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    test_project_dir: Path,
+):
+    copier_copy(copier_input_data)
+    stdout, _ = run_process_capture_streams(
+        ["just", "runserver"],
+        test_project_dir,
+    )
+
+    with urlopen("http://127.0.0.1:8000/"):
+        pass
+
+    assert re.search(
+        r'\[\d{2}:\d{2}:\d{2}\] INFO\s+"GET \/ HTTP\/1\.1" 200 \d+\s+basehttp\.py',
+        "".join(stdout),
+    )
 
 
 @pytest.mark.integration
