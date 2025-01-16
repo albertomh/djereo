@@ -126,15 +126,16 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Only enable the toolbar when we're in debug mode and we're
-# not running tests. Django will change DEBUG to be False for
-# tests, so we can't rely on DEBUG alone.
+# Only enable dev tools when we're in debug mode and we're not running tests.
+# Django changes DEBUG to False for tests, so we can't rely on DEBUG alone.
 IS_TESTING = "test" in sys.argv
-ENABLE_DEBUG_TOOLBAR = DEBUG and not IS_TESTING
-if ENABLE_DEBUG_TOOLBAR:
+ENABLE_DEBUG_TOOLS = DEBUG and not IS_TESTING
+if ENABLE_DEBUG_TOOLS:
     INSTALLED_APPS += [
+        "django_browser_reload",
         "debug_toolbar",
     ]
     MIDDLEWARE += [
+        "django_browser_reload.middleware.BrowserReloadMiddleware",
         "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
