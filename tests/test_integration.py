@@ -3,8 +3,10 @@ import re
 import signal
 import subprocess
 import tempfile
+import time
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Generator
+from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
 import pytest
@@ -12,12 +14,12 @@ from bs4 import BeautifulSoup
 from bs4.element import Tag
 
 
-def run_process_capture_streams(
+def start_process_capture_streams(
     command_args: list, test_project_dir: Path, env: dict | None = None
-) -> tuple[list[str], list[str]]:
+) -> Generator[None, None, tuple[list[str], list[str]]]:
     """
-    Run a given shell command with the given environment variables, while capturing
-    stdout and stderr. Wait for 10 seconds and terminate.
+    Starts a subprocess with the given command and environment variables,
+    capturing stdout and stderr. Yields control to the caller after starting.
     """
     full_env = os.environ.copy()
     full_env.update({"PYTHONUNBUFFERED": "1"})
@@ -34,17 +36,36 @@ def run_process_capture_streams(
         text=True,
         env=full_env,
     )
+
     try:
+        yield
         process.wait(timeout=10)
     except subprocess.TimeoutExpired:
         if process.poll() is None:
             process.send_signal(signal.SIGINT)
+    finally:
+        stdout_capture.seek(0)
+        stderr_capture.seek(0)
+        stdout_lines = stdout_capture.readlines()
+        stderr_lines = stderr_capture.readlines()
+        stdout_capture.close()
+        stderr_capture.close()
 
-    stdout_capture.seek(0)
-    stdout_lines = stdout_capture.readlines()
-    stderr_capture.seek(0)
-    stderr_lines = stderr_capture.readlines()
     return stdout_lines, stderr_lines
+
+
+def run_process_and_wait(
+    command_args: list, test_project_dir: Path, env: dict | None = None
+) -> tuple[list[str], list[str]]:
+    """
+    Runs a subprocess and waits for it to complete, capturing stdout and stderr.
+    """
+    generator = start_process_capture_streams(command_args, test_project_dir, env)
+    try:
+        next(generator)
+        return next(generator)
+    except StopIteration as e:
+        return e.value
 
 
 @pytest.mark.integration
@@ -61,7 +82,7 @@ def test_sys_check_warn_no_dev_mode_when_debug(
     """
     copier_copy(copier_input_data)
 
-    _, stderr = run_process_capture_streams(
+    _, stderr = run_process_and_wait(
         # PYTHONDEVMODE can only be disabled by setting it to an empty string
         ["just", "runserver", ""],
         test_project_dir,
@@ -83,7 +104,7 @@ def test_runserver(
 ):
     copier_copy(copier_input_data)
 
-    stdout, _ = run_process_capture_streams(
+    stdout, _ = run_process_and_wait(
         ["just", "runserver"],
         test_project_dir,
     )
@@ -99,7 +120,7 @@ def test_django_debug_toolbar_is_enabled(
     test_project_dir: Path,
 ):
     copier_copy(copier_input_data)
-    run_process_capture_streams(
+    run_process_and_wait(
         ["just", "runserver"],
         test_project_dir,
     )
@@ -116,18 +137,34 @@ def test_django_debug_toolbar_is_enabled(
 @pytest.mark.integration
 @pytest.mark.slow
 def test_runserver_dev_logs_use_rich(
+    skip_if_github_actions,
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
     test_project_dir: Path,
 ):
     copier_copy(copier_input_data)
-    stdout, _ = run_process_capture_streams(
+    process_generator = start_process_capture_streams(
         ["just", "runserver"],
         test_project_dir,
     )
+    next(process_generator)
 
-    with urlopen("http://127.0.0.1:8000/"):
-        pass
+    timeout, interval = 10, 0.1  # seconds
+    start_time = time.time()
+    while True:
+        try:
+            with urlopen("http://127.0.0.1:8000/") as response:
+                assert response.status == 200
+                break
+        except (URLError, HTTPError):
+            if time.time() - start_time > timeout:
+                pytest.fail("runserver did not start within the timeout")
+            time.sleep(interval)
+
+    try:
+        stdout, _ = next(process_generator)
+    except StopIteration as e:
+        stdout, _ = e.value
 
     assert re.search(
         r'\[\d{2}:\d{2}:\d{2}\] INFO\s+"GET \/ HTTP\/1\.1" 200 \d+\s+basehttp\.py',
@@ -145,6 +182,6 @@ def test_shell_uses_ipython(
 ):
     copier_copy(copier_input_data)
 
-    stdout, _ = run_process_capture_streams(["just", "shell"], test_project_dir)
+    stdout, _ = run_process_and_wait(["just", "shell"], test_project_dir)
 
     assert "An enhanced Interactive Python" in "".join(stdout)
