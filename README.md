@@ -35,7 +35,8 @@ Projects created using `djereo` include:
 - Dependencies managed via `uv`, using a `uv.lock` file for reproducible builds.
 - IPython as the default shell.
 - Simple configuration to enhance your logs with `structlog`.
-- Ready-to-use dev tools such as the debug toolbar and `django-browser-reload`.
+- Ready-to-use dev tools: Django Debug Toolbar, `django-browser-reload`, runserver logs
+  formatted using `rich`.
 - Out-of-the-box code coverage reporting with `coverage.py`.
 - Batteries-included `pre-commit` hook configuration to lint & format code, and run SAST.
 - A `justfile` to enable using `just` as a task runner.
