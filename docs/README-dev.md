@@ -115,6 +115,11 @@ Please follow the [Conventional Commits](https://www.conventionalcommits.org/en/
 guidelines when writing commit messages. `commitlint` is enabled as
 pre-commit hook. Valid commit types are defined in `.commitlintrc.ts`.
 
+### Upgrade checklist
+
+- [ ] Check [Django releases](https://docs.djangoproject.com/en/5.1/releases/) and update
+      the `django_version` question in `copier.yaml`.
+
 ## Test
 
 Run all tests using `pytest` with:
