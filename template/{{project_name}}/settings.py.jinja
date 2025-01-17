@@ -13,10 +13,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import sys
 from pathlib import Path
 
+from environs import env
+
 # 0. Setup -------------------------------------------------------------------------------
 
 IS_TESTING = "test" in sys.argv
 
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
