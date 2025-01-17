@@ -8,6 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.5.0](https://github.com/albertomh/djereo/compare/v0.4.0...v0.5.0) (2025-01-17)
+
+
+### Features
+
+* Add Django Debug Toolbar to generated projects ([#25](https://github.com/albertomh/djereo/issues/25)) ([0f5511f](https://github.com/albertomh/djereo/commit/0f5511f014f57ea2ff965c6b74ca52c7e7f8807b))
+* Add django-browser-reload for local use in generated projects ([#26](https://github.com/albertomh/djereo/issues/26)) ([3aee383](https://github.com/albertomh/djereo/commit/3aee3831a16516403dc938535198bd69413bd96a))
+* Add simple index page to generated project's core app ([#24](https://github.com/albertomh/djereo/issues/24)) ([890b68d](https://github.com/albertomh/djereo/commit/890b68d857b97e401fb0c79f563d84058e27095b))
+* Use 'rich' for dev logs when DEBUG is true in generated projects ([#28](https://github.com/albertomh/djereo/issues/28)) ([f5966ba](https://github.com/albertomh/djereo/commit/f5966ba3e5e7b986fbee361ea8922ce4dfb048cd))
+
+
+### Documentation
+
+* Fix CHANGELOG for v0.4.0 ([#22](https://github.com/albertomh/djereo/issues/22)) ([a4482f2](https://github.com/albertomh/djereo/commit/a4482f235bfaf65cdeadff7050184b2d33b4f93e))
+* Mention developer tools included in generated projects ([#27](https://github.com/albertomh/djereo/issues/27)) ([cd09ab3](https://github.com/albertomh/djereo/commit/cd09ab355e399cebfb80e1f0926acd254871474b))
+
 ## [0.4.0](https://github.com/albertomh/djereo/compare/v0.3.0...v0.4.0) (2025-01-15)
 
 
