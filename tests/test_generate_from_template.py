@@ -1,10 +1,13 @@
 import os
 import subprocess
+import tomllib
 from pathlib import Path
 from typing import Callable
 
 import pytest
 import yaml
+from packaging.specifiers import SpecifierSet
+from packaging.version import Version
 
 from tests._utils import count_dirs_and_files
 
@@ -76,6 +79,34 @@ def test_version_is_importable(
     from importlib.metadata import version
 
     assert version(test_project_name) == "0.1.0"
+
+
+@pytest.mark.integration
+@pytest.mark.smoke
+def test_generated_project_django_version_range(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    test_project_dir: Path,
+):
+    django_version = "5.1"
+    copier_copy(
+        {
+            **copier_input_data,
+            "django_version": django_version,
+        }
+    )
+    with open(test_project_dir / "pyproject.toml", "rb") as f:
+        toml_data = tomllib.load(f)
+
+    dependencies = toml_data["project"]["dependencies"]
+    django_dependency = next(dep for dep in dependencies if dep.startswith("django"))
+    constraint = django_dependency.split("django", 1)[1]
+
+    specifier_set = SpecifierSet(constraint)
+
+    assert (
+        Version(django_version) in specifier_set
+    ), f"Django version {django_version} does not satisfy the constraint {constraint}"
 
 
 @pytest.mark.integration
