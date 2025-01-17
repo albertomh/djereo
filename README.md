@@ -103,6 +103,7 @@ The developer README ([docs/README-dev.md](docs/README-dev.md)) covers how to wo
     - [Updating dependencies in the template](docs/README-dev.md#updating-dependencies-in-the-template)
   - [Generate project using development version](docs/README-dev.md#generate-project-using-development-version)
   - [Style](docs/README-dev.md#style)
+  - [Upgrade checklist](docs/README-dev.md#upgrade-checklist)
 
 - [Test](docs/README-dev.md#test)
 

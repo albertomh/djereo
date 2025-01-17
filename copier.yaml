@@ -20,6 +20,14 @@ python_version:
         - "3.13"
     default: "3.12"
 
+django_version:
+    help: "What version of Django do you wish to use?"
+    type: str
+    choices:
+        - "4.2"
+        - "5.1"
+    default: "5.1"
+
 author_name:
     help: "Who is the project's author?"
     type: str

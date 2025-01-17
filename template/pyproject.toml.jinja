@@ -8,8 +8,10 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">={{python_version}}"
+{% set django_ver_parts = django_version.split('.') %}
+{% set django_ver_major = django_ver_parts[0] | int + 1 %}
 dependencies = [
-    "django>=5.1.4,<5.2.0",
+    "django>={{django_version}},<{{django_ver_major}}.0",
     "structlog>=24.4.0,<25.0.0",
 ]
 
