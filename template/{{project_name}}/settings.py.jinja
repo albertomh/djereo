@@ -13,9 +13,16 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import sys
 from pathlib import Path
 
+# 0. Setup -------------------------------------------------------------------------------
+
+IS_TESTING = "test" in sys.argv
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+# 1. Django Core Settings ----------------------------------------------------------------
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -34,7 +41,10 @@ ALLOWED_HOSTS: list[str] = []
 # Application definition
 
 INSTALLED_APPS = [
+    # First Party
     "{{project_name}}.apps.{{project_name|title}}Config",
+    # Third Party
+    # Contrib
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -159,9 +169,12 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# 2. Django Contrib Settings -------------------------------------------------------------
+
+# 3. Third Party Settings ----------------------------------------------------------------
+
 # Only enable dev tools when we're in debug mode and we're not running tests.
 # Django changes DEBUG to False for tests, so we can't rely on DEBUG alone.
-IS_TESTING = "test" in sys.argv
 ENABLE_DEBUG_TOOLS = DEBUG and not IS_TESTING
 if ENABLE_DEBUG_TOOLS:
     INSTALLED_APPS += [
@@ -172,3 +185,5 @@ if ENABLE_DEBUG_TOOLS:
         "django_browser_reload.middleware.BrowserReloadMiddleware",
         "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
+
+# 4. Project Settings --------------------------------------------------------------------
