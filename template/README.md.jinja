@@ -26,6 +26,8 @@ IPython is available as the default shell. Start an interactive session with:
 just shell
 ```
 
+## Develop
+
 ### djereo
 
 `{{project_name}}` has been generated using the [djereo](https://github.com/albertomh/djereo)
@@ -39,13 +41,6 @@ uvx copier update --skip-answered --trust [--vcs-ref=<TAG>]
 ```
 
 If the `--vcs-ref` flag is not specified, `copier` will use the latest `djereo` tag.
-
-### Git principles
-
-This repo follows trunk-based development. This means:
-
-- the `main` branch should always be in a releasable state
-- use short-lived feature branches
 
 ### Development prerequisites
 
@@ -147,11 +142,12 @@ For more information, consult the [release-please-action project](https://github
 {%endif%}
 ---
 
-## Develop
+## Developer docs
 
 The developer README ([docs/README-dev.md](docs/README-dev.md)) covers how to work on
-`{{project_name}}` itself. It covers:
+`{{project_name}}` in more detail. It covers:
 
+- [Git principles](docs/README-dev.md#git-principles)
 - [Justfile recipes](docs/README-dev.md#justfile-recipes)
   - [The runserver recipe](docs/README.dev.md#the-runserver-recipe)
   - [Use IPython as your shell](docs/README.dev.md#use-ipython-as-your-shell)

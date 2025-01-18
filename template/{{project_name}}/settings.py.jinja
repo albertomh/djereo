@@ -46,6 +46,10 @@ ALLOWED_HOSTS: list[str] = []
 
 # Application definition
 
+# When several applications provide different versions of the same resource (template,
+# static file, management command, translation), the application listed first in
+# INSTALLED_APPS has precedence.
+# https://docs.djangoproject.com/en/5.1/ref/settings/#installed-apps
 INSTALLED_APPS = [
     # First Party
     "{{project_name}}.apps.{{project_name|title}}Config",
