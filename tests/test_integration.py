@@ -117,6 +117,26 @@ def test_runserver(
 
 
 @pytest.mark.integration
+@pytest.mark.smoke
+def test_error_log_if_variable_missing_from_dotenv(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    test_project_dir: Path,
+):
+    copier_copy(copier_input_data, generate_dotenv=False)
+
+    _, stderr = run_process_and_wait(
+        ["just", "runserver"],
+        test_project_dir,
+    )
+
+    assert (
+        'environs.exceptions.EnvError: Environment variable "SECRET_KEY" not set'
+        in "".join(stderr)
+    )
+
+
+@pytest.mark.integration
 @pytest.mark.slow
 def test_django_debug_toolbar_is_enabled(
     copier_copy: Callable[[dict], None],
