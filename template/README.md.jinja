@@ -49,6 +49,13 @@ develop `{{project_name}}`:
 
 - [pre-commit](https://pre-commit.com/)
 
+### Managing settings
+
+`environs` is used to load values from a `.env` file for use as settings. For safety this
+behaviour is disabled during testing, with settings falling back to sensible defaults.
+A `.env.in` template file should be used to generate the local `.env` used during development.
+`.env` is listed in `.gitignore` as it should never be tracked in verion control.
+
 ### Dependency management
 
 Dependencies are defined in the `pyproject.toml` file, with exact versions captured by a
