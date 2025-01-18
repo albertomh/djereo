@@ -6,7 +6,6 @@ import tempfile
 import time
 from pathlib import Path
 from typing import Callable, Generator
-from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
 import pytest
@@ -14,7 +13,7 @@ from bs4 import BeautifulSoup
 from bs4.element import Tag
 
 
-def start_process_capture_streams(
+def start_process_and_capture_streams(
     command_args: list, test_project_dir: Path, env: dict | None = None
 ) -> Generator[None, None, tuple[list[str], list[str]]]:
     """
@@ -25,31 +24,36 @@ def start_process_capture_streams(
     full_env.update({"PYTHONUNBUFFERED": "1"})
     if env:
         full_env.update(env)
-    stdout_capture = tempfile.TemporaryFile(mode="w+")
-    stderr_capture = tempfile.TemporaryFile(mode="w+")
-
-    process = subprocess.Popen(
-        command_args,
-        cwd=test_project_dir,
-        stdout=stdout_capture,
-        stderr=stderr_capture,
-        text=True,
-        env=full_env,
-    )
+    stdout_file = tempfile.NamedTemporaryFile(mode="w+", delete=False)
+    stderr_file = tempfile.NamedTemporaryFile(mode="w+", delete=False)
 
     try:
-        yield
+        stdout_file.close()
+        stderr_file.close()
+
+        process = subprocess.Popen(
+            command_args,
+            cwd=test_project_dir,
+            stdout=open(stdout_file.name, "w"),
+            stderr=open(stderr_file.name, "w"),
+            text=True,
+            env=full_env,
+        )
+        yield stdout_file.name, stderr_file.name
         process.wait(timeout=10)
     except subprocess.TimeoutExpired:
         if process.poll() is None:
             process.send_signal(signal.SIGINT)
     finally:
-        stdout_capture.seek(0)
-        stderr_capture.seek(0)
-        stdout_lines = stdout_capture.readlines()
-        stderr_lines = stderr_capture.readlines()
-        stdout_capture.close()
-        stderr_capture.close()
+        stdout_lines, stderr_lines = [], []
+        if os.path.exists(stdout_file.name):
+            with open(stdout_file.name, "r") as f:
+                stdout_lines = f.readlines()
+            os.unlink(stdout_file.name)
+        if os.path.exists(stderr_file.name):
+            with open(stderr_file.name, "r") as f:
+                stderr_lines = f.readlines()
+            os.unlink(stderr_file.name)
 
     return stdout_lines, stderr_lines
 
@@ -60,7 +64,7 @@ def run_process_and_wait(
     """
     Runs a subprocess and waits for it to complete, capturing stdout and stderr.
     """
-    generator = start_process_capture_streams(command_args, test_project_dir, env)
+    generator = start_process_and_capture_streams(command_args, test_project_dir, env)
     try:
         next(generator)
         return next(generator)
@@ -137,39 +141,49 @@ def test_django_debug_toolbar_is_enabled(
 @pytest.mark.integration
 @pytest.mark.slow
 def test_runserver_dev_logs_use_rich(
-    skip_if_github_actions,
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
     test_project_dir: Path,
 ):
+    # arrange
     copier_copy(copier_input_data)
-    process_generator = start_process_capture_streams(
+    process_generator = start_process_and_capture_streams(
         ["just", "runserver"],
         test_project_dir,
     )
-    next(process_generator)
+    stdout_path, _ = next(process_generator)
 
+    # act
+    sentinel = "Quit the server with CONTROL-C."
     timeout, interval = 10, 0.1  # seconds
     start_time = time.time()
+
     while True:
-        try:
-            with urlopen("http://127.0.0.1:8000/") as response:
-                assert response.status == 200
+        with open(stdout_path, "r") as stdout_file:
+            stdout_lines = stdout_file.readlines()
+
+        for line in stdout_lines:
+            if sentinel in line:
                 break
-        except (URLError, HTTPError):
+        else:
             if time.time() - start_time > timeout:
-                pytest.fail("runserver did not start within the timeout")
+                pytest.fail(f"'{sentinel}' not found within timeout")
             time.sleep(interval)
+            continue
+        break
+
+    with urlopen("http://127.0.0.1:8000/") as response:
+        assert response.status == 200
 
     try:
         stdout, _ = next(process_generator)
     except StopIteration as e:
         stdout, _ = e.value
 
-    assert re.search(
-        r'\[\d{2}:\d{2}:\d{2}\] INFO\s+"GET \/ HTTP\/1\.1" 200 \d+\s+basehttp\.py',
-        "".join(stdout),
-    )
+    # assert
+    pattern = r'\[\d{2}:\d{2}:\d{2}\] INFO\s+"GET \/ HTTP\/1\.1" 200 \d+\s+basehttp\.py'
+    match = re.search(pattern, "".join(stdout))
+    assert match is not None
 
 
 @pytest.mark.integration
