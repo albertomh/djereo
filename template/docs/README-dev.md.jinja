@@ -1,5 +1,12 @@
 # {{project_name}} developer README
 
+## Git principles
+
+This repo follows trunk-based development. This means:
+
+- the `main` branch should always be in a releasable state
+- use short-lived feature branches
+
 ## Justfile recipes
 
 ### The runserver recipe
@@ -15,7 +22,6 @@ Python's Dev Mode will show warnings (Deprecation, Import, Resource) that are ot
 To use it in a view:
 
 ```python
-
 from django.http import HttpResponse
 
 from {{project_name}} import __version__
