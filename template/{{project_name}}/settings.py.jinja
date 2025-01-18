@@ -13,18 +13,28 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import sys
 from pathlib import Path
 
+from environs import env
+
+# 0. Setup -------------------------------------------------------------------------------
+
+IS_TESTING = "test" in sys.argv
+
+env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+# 1. Django Core Settings ----------------------------------------------------------------
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-8)-rnyn_n53h&^q94tcsmd6r6i!z+am+beuh(+-nd^vkl3j$ft"
+SECRET_KEY = env.str("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)
 
 INTERNAL_IPS = ["127.0.0.1", "::1"]
 
@@ -34,7 +44,10 @@ ALLOWED_HOSTS: list[str] = []
 # Application definition
 
 INSTALLED_APPS = [
+    # First Party
     "{{project_name}}.apps.{{project_name|title}}Config",
+    # Third Party
+    # Contrib
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -159,9 +172,12 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# 2. Django Contrib Settings -------------------------------------------------------------
+
+# 3. Third Party Settings ----------------------------------------------------------------
+
 # Only enable dev tools when we're in debug mode and we're not running tests.
 # Django changes DEBUG to False for tests, so we can't rely on DEBUG alone.
-IS_TESTING = "test" in sys.argv
 ENABLE_DEBUG_TOOLS = DEBUG and not IS_TESTING
 if ENABLE_DEBUG_TOOLS:
     INSTALLED_APPS += [
@@ -172,3 +188,5 @@ if ENABLE_DEBUG_TOOLS:
         "django_browser_reload.middleware.BrowserReloadMiddleware",
         "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
+
+# 4. Project Settings --------------------------------------------------------------------

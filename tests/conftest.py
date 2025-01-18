@@ -58,7 +58,7 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
             return f"'{string}'"
         return string
 
-    def _run(copier_input_data: dict):
+    def _run(copier_input_data: dict, *, generate_dotenv=True):
         if test_project_dir.exists():
             shutil.rmtree(test_project_dir, ignore_errors=True)
 
@@ -79,6 +79,9 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
             ],
             exit=False,
         )
+
+        if generate_dotenv:
+            shutil.copyfile(test_project_dir / ".env.in", test_project_dir / ".env")
 
     return _run
 
