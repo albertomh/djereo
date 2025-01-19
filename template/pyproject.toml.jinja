@@ -67,15 +67,17 @@ select = [
     # isort
     "I",
     # flake8-no-pep420
-    "INT",
+    "INP",
     # Pyflakes
     "F",
+    #flake8-logging-format
+    "G",
     # flake8-logging
     "LOG",
     # flake8-bandit
     "S",
     # flake8-tidy-imports
-    "T",
+    "TID",
     # flake8-print
     "T20",
     # pycodestyle warnings
@@ -85,6 +87,9 @@ select = [
 [tool.ruff.lint.per-file-ignores]
 "tests/**.py" = ["S"]
 "{{project_name}}/settings.py" = ["E501"]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"{{project_name}}.settings".msg = "Do not import project settings module - use `from django.conf import settings` instead"
 
 [tool.coverage.run]
 source = [
