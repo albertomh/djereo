@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.6.0](https://github.com/albertomh/djereo/compare/v0.5.0...v0.6.0) (2025-01-19)
+
+
+### Features
+
+* Ban importing the project settings module directly in gen. projects ([#33](https://github.com/albertomh/djereo/issues/33)) ([1cbf892](https://github.com/albertomh/djereo/commit/1cbf89223d037c880792293a2de9e8138b9dcdb0))
+* Read settings from a .env file in generated projects ([#31](https://github.com/albertomh/djereo/issues/31)) ([bcb1dd1](https://github.com/albertomh/djereo/commit/bcb1dd1dc0f8162391723ee6ecf1479786afb655))
+* Use sensible defaults instead of .env values in gen. project tests ([#32](https://github.com/albertomh/djereo/issues/32)) ([0f747d8](https://github.com/albertomh/djereo/commit/0f747d8954aa17c6aeeca82a16b0665755c67795))
+* Use the django-upgrade pre-commit hook in generated projects ([#29](https://github.com/albertomh/djereo/issues/29)) ([5619083](https://github.com/albertomh/djereo/commit/561908314126a17a84ed719d2b40d4cd2a3624db))
+
 ## [0.5.0](https://github.com/albertomh/djereo/compare/v0.4.0...v0.5.0) (2025-01-17)
 
 
