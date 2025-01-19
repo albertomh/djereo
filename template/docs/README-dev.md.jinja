@@ -52,6 +52,17 @@ configured for use locally:
   about the request/response cycle on each page.
 - [rich](https://pypi.org/project/rich/): nicer formatting and colours for `runserver` logs.
 
+## Checks and git hooks
+
+`ruff` is configured as a pre-commit git hook to lint and format your code. Check the
+`tool.ruff.lint` table in `pyproject.toml` for a full list of rules and options.
+Notable rules include:
+
+- [banned-api](https://docs.astral.sh/ruff/rules/banned-api/) from the `flake8-tidy-imports`
+linter. Configured to ban importing the project settings module directly, preferring to use
+`django.conf.settings`. This is to improve consistency, particulary when overriding
+settings in tests.
+
 ## Upgrade checklist
 
 - [ ] Bump the version of Django specified in the config for the `django-upgrade` hook in
