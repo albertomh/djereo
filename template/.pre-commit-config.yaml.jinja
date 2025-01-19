@@ -57,6 +57,12 @@ repos:
           stages: [ commit-msg ]
           additional_dependencies: [ '@commitlint/config-conventional' ]
 
+  - repo: https://github.com/adamchainz/djade-pre-commit
+    rev: 1.3.2
+    hooks:
+        - id: djade
+          args: [--target-version, "{{django_version}}"]
+
   - repo: https://github.com/adamchainz/django-upgrade
     rev: 1.22.2
     hooks:
