@@ -1,5 +1,8 @@
 default_language_version:
   python: python{{python_version}}
+  # Pin Node LTS for Biome and for markdownlint:
+  # https://github.com/DavidAnson/markdownlint-cli2/issues/437
+  node: 22.11.0
 default_install_hook_types: ["commit-msg", "pre-commit"]
 default_stages: ["pre-commit"]
 
@@ -43,15 +46,12 @@ repos:
     hooks:
       - id: markdownlint-cli2
         args: ["--config", ".markdownlint-cli2.yaml"]
-        # https://github.com/DavidAnson/markdownlint-cli2/issues/437
-        language_version: 22.10.0
 
-  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v9.20.0
+  - repo: https://github.com/biomejs/pre-commit
+    rev: v0.6.1
     hooks:
-      - id: commitlint
-        stages: ["commit-msg"]
-        additional_dependencies: ["@commitlint/config-conventional"]
+      - id: biome-check
+        additional_dependencies: ["@biomejs/biome@1.9.4"]
 
   - repo: https://github.com/adamchainz/djade-pre-commit
     rev: 1.3.2
@@ -64,3 +64,10 @@ repos:
     hooks:
       - id: django-upgrade
         args: [--target-version, "{{django_version}}"]
+
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.20.0
+    hooks:
+      - id: commitlint
+        stages: ["commit-msg"]
+        additional_dependencies: ["@commitlint/config-conventional"]
