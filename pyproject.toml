@@ -3,10 +3,10 @@ name = "djereo"
 version = "0.6.0"
 description = ""
 authors = [
-    {name = "Alberto Morón Hernández", email = "<alberto.moronh@gmail.com>"}
+    {name = "Alberto Morón Hernández", email = "alberto.moronh@gmail.com"}
 ]
-license = "MIT"
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">=3.12"
 dependencies = [
     "ipython>=8.30.0,<9.0.0",
@@ -49,15 +49,17 @@ select = [
     # isort
     "I",
     # flake8-no-pep420
-    "INT",
+    "INP",
     # Pyflakes
     "F",
+    #flake8-logging-format
+    "G",
     # flake8-logging
     "LOG",
     # flake8-bandit
     "S",
     # flake8-tidy-imports
-    "T",
+    "TID",
     # flake8-print
     "T20",
     # pycodestyle warnings

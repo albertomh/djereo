@@ -1,5 +1,5 @@
 <!-- markdownlint-disable MD013 -->
-## Changelog
+# Changelog
 
 Notable changes to this project are documented in this file.
 
