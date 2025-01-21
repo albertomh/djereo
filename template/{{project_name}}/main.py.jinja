@@ -10,7 +10,7 @@ configure_logging()
 def main():
     """Entrypoint for {{project_name}}."""
     logger = structlog.get_logger()
-    logger.info("{{project_name}} v%", version("{{project_name}}"))
+    logger.info("{{project_name}} v%s", version("{{project_name}}"))
     return
 
 

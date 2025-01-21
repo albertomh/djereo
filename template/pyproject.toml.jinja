@@ -7,6 +7,7 @@ authors = [
   {name = "{{author_name}}", email = "{{author_email}}"}
 ]
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">={{python_version}}"
 {% set django_ver_parts = django_version.split('.') %}
 {% set django_ver_major = django_ver_parts[0] | int + 1 %}

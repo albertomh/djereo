@@ -7,4 +7,5 @@ default:
 
 test +args='':
   @uv sync --group test
+  @uv pip install -e .
   @uv run -m pytest tests/ -s -vvv -W always --pdb "$@"
