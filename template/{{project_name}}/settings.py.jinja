@@ -53,7 +53,9 @@ ALLOWED_HOSTS: list[str] = []
 FIRST_PARTY_APPS = [
     "{{project_name}}.apps.{{project_name|title}}Config",
 ]
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    "django_linear_migrations",
+]
 CONTRIB_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
