@@ -50,11 +50,11 @@ ALLOWED_HOSTS: list[str] = []
 # static file, management command, translation), the application listed first in
 # INSTALLED_APPS has precedence.
 # https://docs.djangoproject.com/en/5.1/ref/settings/#installed-apps
-INSTALLED_APPS = [
-    # First Party
+FIRST_PARTY_APPS = [
     "{{project_name}}.apps.{{project_name|title}}Config",
-    # Third Party
-    # Contrib
+]
+THIRD_PARTY_APPS = []
+CONTRIB_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+INSTALLED_APPS = FIRST_PARTY_APPS + THIRD_PARTY_APPS + CONTRIB_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
