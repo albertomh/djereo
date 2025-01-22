@@ -8,7 +8,7 @@ import pytest
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
-from tests.conftest import run_process_and_wait, start_process_and_capture_streams
+from tests._utils import run_process_and_wait, start_process_and_capture_streams
 
 
 @pytest.mark.integration
