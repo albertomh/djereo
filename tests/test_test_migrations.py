@@ -4,7 +4,7 @@ from typing import Callable
 
 import pytest
 
-from tests.conftest import run_process_and_wait
+from tests._utils import run_process_and_wait
 
 TEST_MODELS_PY_CONTENT = textwrap.dedent("""
 from django.db import models
