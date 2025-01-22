@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.7.0](https://github.com/albertomh/djereo/compare/v0.6.0...v0.7.0) (2025-01-21)
+
+
+### Features
+
+* Add Biome pre-commit hook for frontend formatting & linting ([#38](https://github.com/albertomh/djereo/issues/38)) ([e80536c](https://github.com/albertomh/djereo/commit/e80536c096d2e032f5b9619be58922fec630bd62))
+* Format Django templates with Djade via a pre-commit hook ([#34](https://github.com/albertomh/djereo/issues/34)) ([6b78a5d](https://github.com/albertomh/djereo/commit/6b78a5dd9e244b35c43c9f1dabe7d60c229297c9))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.13.0 ([#37](https://github.com/albertomh/djereo/issues/37)) ([e855ef3](https://github.com/albertomh/djereo/commit/e855ef35541ca14be6181d081a6a15386c698959))
+
 ## [0.6.0](https://github.com/albertomh/djereo/compare/v0.5.0...v0.6.0) (2025-01-19)
 
 
