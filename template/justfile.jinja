@@ -5,6 +5,12 @@ set positional-arguments
 default:
   @just --list
 
+manage +args='':
+  @uv venv
+  @uv sync --dev
+  @uv pip install -e .
+  @uv run manage.py "$@"
+
 runserver $PYTHONDEVMODE="1":
   @uv venv
   @uv sync --dev
