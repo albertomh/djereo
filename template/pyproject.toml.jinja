@@ -21,7 +21,6 @@ dependencies = [
 [dependency-groups]
 test = [
     "coverage>=7.6.7",
-    "pytest>=8.3.3",
 ]
 dev = [
     "django-browser-reload>=1.17.0",
@@ -29,17 +28,6 @@ dev = [
     "ipdb>=0.13.13",
     "ipython>=8.31.0",
     "rich>=13.9.4",
-]
-
-[tool.pytest.ini_options]
-addopts = [
-    "--pdbcls=IPython.terminal.debugger:TerminalPdb",
-]
-markers = [
-    "integration",
-    "slow",
-    "smoke",
-    "unit",
 ]
 
 [tool.coverage.report]
