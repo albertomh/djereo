@@ -10,7 +10,7 @@ _dev_setup:
   @uv sync --dev
   @uv pip install -e .
 
-manage +args='': _dev_setup
+manage +args='help': _dev_setup
   @uv run manage.py "$@"
 
 runserver $PYTHONDEVMODE="1": _dev_setup
