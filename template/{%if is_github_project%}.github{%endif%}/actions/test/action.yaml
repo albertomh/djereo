@@ -1,4 +1,4 @@
-# Re-usable GitHub Action that runs the pytest suite.
+# Re-usable GitHub Action that runs the Django unit test suite.
 #
 # Usage:
 #   ```
@@ -15,7 +15,7 @@ runs:
     - uses: astral-sh/setup-uv@v3
       with:
         version: "0.5.4"
+    - uses: extractions/setup-just@v2
     - run: |
-        uv sync --group test
-        uv run -m pytest tests/ -s -vvv -W always
+        just test
       shell: bash
