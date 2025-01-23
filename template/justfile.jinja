@@ -19,7 +19,7 @@ runserver $PYTHONDEVMODE="1": _dev_setup
 shell: _dev_setup
   @uv run manage.py shell
 
-test +args='{{project_name}}':
+test +args='tests':
   @uv venv
   @uv sync --group test
   @uv pip install -e .
