@@ -8,6 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.8.0](https://github.com/albertomh/djereo/compare/v0.7.0...v0.8.0) (2025-01-23)
+
+
+### Features
+
+* Add 'just manage' recipe to gen. projects ([#43](https://github.com/albertomh/djereo/issues/43)) ([e0ed5f6](https://github.com/albertomh/djereo/commit/e0ed5f67d0f1813616d89beafca9b8285822be83))
+* Allow passing arguments to 'just test' in gen. project ([#39](https://github.com/albertomh/djereo/issues/39)) ([1fcbdcb](https://github.com/albertomh/djereo/commit/1fcbdcb8305b1a15db0c4b22cbf07e43c5c74e08))
+* Test suite fails if there are pending migrations in gen. project ([#41](https://github.com/albertomh/djereo/issues/41)) ([937d5c0](https://github.com/albertomh/djereo/commit/937d5c0c3b8c7d5e22787da7ade888cc062ffa82))
+* Use django-linear-migrations in generated projects ([#42](https://github.com/albertomh/djereo/issues/42)) ([585b964](https://github.com/albertomh/djereo/commit/585b964f8f610e0c5e2bab3bfe2ea0ec2ff5be56))
+
+
+### Bug Fixes
+
+* Pass correct default arg to 'just test' recipe ([#44](https://github.com/albertomh/djereo/issues/44)) ([cb4fddf](https://github.com/albertomh/djereo/commit/cb4fddf1e82ff96974beee131509e099dc6c53df))
+
 ## [0.7.0](https://github.com/albertomh/djereo/compare/v0.6.0...v0.7.0) (2025-01-21)
 
 
