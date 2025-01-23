@@ -104,23 +104,15 @@ Valid commit types are defined in `.commitlintrc.ts`.
 
 ## Test
 
-`pytest` and `coverage` are defined as test dependencies.
-
-Run all tests and report on code coverage:
-
-```sh
-just test <marker>
-```
-
-Tests can have marks, allowing you to run only a subset:
+Django's test runner (using the standard library's `unittest`) is used for the suite of
+unit tests. Run all tests and report on code coverage:
 
 ```sh
-just test -m unit
-# or
-just test -m "not smoke"
-```
+just test [<expression>]
 
-See the `tool.pytest.ini_options` table in `pyproject.toml` for a list of all marks.
+# eg. to only run tests inside the `test_migrations` module
+just test tests.test_migrations
+```
 {%if is_github_project%}
 ## Release
 
