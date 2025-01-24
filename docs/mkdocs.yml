@@ -1,1 +1,4 @@
 site_name: Djereo documentation
+docs_dir: 'src'
+nav:
+  - Home: index.md
