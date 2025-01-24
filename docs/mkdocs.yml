@@ -1,0 +1,12 @@
+site_name: Djereo documentation
+docs_dir: 'src'
+extra_css:
+    - css/extra.css
+nav:
+  - Home: index.md
+theme:
+    name: readthedocs
+    highlightjs: true
+    hljs_languages:
+        - yaml
+    logo: media/djereo_wordmark-logo.webp
