@@ -1,4 +1,8 @@
 site_name: Djereo documentation
 docs_dir: 'src'
+extra_css:
+    - css/extra.css
 nav:
   - Home: index.md
+theme:
+    name: readthedocs
