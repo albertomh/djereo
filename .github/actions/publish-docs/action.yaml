@@ -5,7 +5,7 @@
 #   steps:
 #     - uses: ./.github/actions/publish-docs
 #       with:
-#         github_token: ${{ secrets.GITHUB_TOKENd }}
+#         github_token: ${{ secrets.GITHUB_TOKEN }}
 #   ```
 
 name: 'publish-docs'
