@@ -49,9 +49,3 @@ runs:
       with:
         github_token: ${{ inputs.github_token }}
         publish_dir: ./docs/site
-    #- name: Publish docs
-    #  run: |
-    #    cd docs/
-    #    uv sync
-    #    uv run -m mkdocs gh-deploy --force
-    #  shell: bash
