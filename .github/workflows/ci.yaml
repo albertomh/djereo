@@ -27,6 +27,8 @@ jobs:
 
   build-docs:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write  # for `mkdocs gh-deploy`
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/publish-docs
