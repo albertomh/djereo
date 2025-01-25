@@ -13,3 +13,5 @@ theme:
     hljs_languages:
         - yaml
     logo: media/djereo_wordmark-logo.webp
+markdown_extensions:
+  - attr_list

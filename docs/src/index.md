@@ -2,7 +2,7 @@
 
 `djereo` - a Django project template with opinionated tooling.
 
-Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
+Built on top of the [pycliche](https://github.com/albertomh/pycliche){target=\"_blank"} template.
 
 [![python: 3.10](https://img.shields.io/badge/>=3.10-4584b6?logo=python&logoColor=ffde57)](https://docs.python.org/3.10/whatsnew/3.10.html)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/albertomh/djereo/main/docs/media/copier-badge.json)](https://github.com/copier-org/copier)
