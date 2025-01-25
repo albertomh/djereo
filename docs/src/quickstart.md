@@ -14,8 +14,8 @@ The following must be available locally:
 1. Navigate to the directory under which you wish to create a new project.
 1. Run `uvx copier copy --trust gh:albertomh/djereo <project_name>` and follow the wizard.
 
-This creates a directory under your current location. Follow the README in the new directory
-to get started with your project.
+This creates a directory under your current location. Follow the README in the new
+`<project_name>/` directory to get started with your project.
 
 Please note:
 
