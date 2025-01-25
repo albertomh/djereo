@@ -19,3 +19,8 @@ A `justfile` defines common development tasks. Run `just` to show all available 
 # install dependencies in a virtual environment and run the mkdocs development server
 just serve
 ```
+
+## Develop djereo's docs
+
+See [develop.md#document](./src/develop.md#document) for more on how `mkdocs` is used and
+configured to publish documentation on [https://albertomh.github.io/djereo/](https://albertomh.github.io/djereo/).
