@@ -20,6 +20,8 @@ Built on top of the [pycliche](https://github.com/albertomh/pycliche){target=\"_
 [![Release Please](https://img.shields.io/badge/📦_Release_Please-6C97BB)](https://github.com/googleapis/release-please)
 [![CI](https://github.com/albertomh/djereo/actions/workflows/ci.yaml/badge.svg)](https://github.com/albertomh/djereo/actions/workflows/ci.yaml)
 
+## Features
+
 Projects created using `djereo` include:
 
 - A basic Python package and entrypoint, configured via a `pyproject.toml`.
@@ -40,6 +42,13 @@ Optionally, for projects intended to be hosted on GitHub, also include:
   - Run `pre-commit` hooks and `pytest` as part of a Continuous Integration pipeline.
 - A `dependabot` configuration to keep Python packages & GitHub Actions up to date.
 
+---
+
 > [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://docs.djangoproject.com/en/stable/)  
 > Starting a Python project? Try [pycliche](https://github.com/albertomh/pycliche), the base
-> djereo is built on, as your Python project template.
+> `djereo` is built on, as your Python project template.
+
+---
+
+If `djereo` sounds like a good foundation for your next project, explore the [full list of features](./featurelist.md)
+or get started with the instructions on the [Quickstart page](./quickstart.md).

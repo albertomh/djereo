@@ -7,6 +7,8 @@ extra_css:
     - css/extra.css
 nav:
   - Home: index.md
+  - quickstart.md
+  - Djereo's features: featurelist.md
 theme:
     name: readthedocs
     highlightjs: true

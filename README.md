@@ -30,6 +30,8 @@ Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
 [![Release Please](https://img.shields.io/badge/📦_Release_Please-6C97BB)](https://github.com/googleapis/release-please)
 [![CI](https://github.com/albertomh/djereo/actions/workflows/ci.yaml/badge.svg)](https://github.com/albertomh/djereo/actions/workflows/ci.yaml)
 
+## Features
+
 Projects created using `djereo` include:
 
 - A basic Python package and entrypoint, configured via a `pyproject.toml`.
@@ -51,16 +53,20 @@ Optionally, for projects intended to be hosted on GitHub, also include:
 
 > [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://docs.djangoproject.com/en/stable/)  
 > Starting a Python project? Try [pycliche](https://github.com/albertomh/pycliche), the base
-> djereo is built on, as your Python project template.
+> `djereo` is built on, as your Python project template.
 
-## Prerequisites
+## Quickstart
 
-To use `djereo` the following must be available locally:
+This section covers how to create a Django project using `djereo` as a template.
+
+### Prerequisites
+
+The following must be available locally:
 
 - [Python 3.10](https://docs.python.org/3.10/) or above
 - [uv](https://docs.astral.sh/uv/)
 
-## Bootstrap a new Django project
+### Bootstrap a new Django project
 
 Bootstrap a new Django project using `djereo`:
 
@@ -74,8 +80,8 @@ Please note:
 
 - it is not necessary to clone `djereo`. The `gh:albertomh/djereo` argument will pull
   the latest tag from GitHub.
-- the `--trust` flag is necessary since a post-creation task initialises the new directory
-  as a git repository and generates a `uv` lockfile.
+- the `--trust` flag is necessary to allow a post-creation task to initialise the new directory
+  as a git repository and generate a `uv` lockfile.
 
 ## Update existing projects
 
