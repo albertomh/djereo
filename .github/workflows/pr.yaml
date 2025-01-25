@@ -2,6 +2,7 @@
 # Runs when a commit on a feature branch is pushed up to GitHub.
 name: PR
 
+
 on:
   push:
     branches-ignore:
@@ -24,3 +25,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test
+
+  build-docs:
+    needs:
+      - pre_commit
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write  # for `mkdocs gh-deploy`
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/publish-docs
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

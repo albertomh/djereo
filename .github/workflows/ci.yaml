@@ -24,3 +24,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test
+
+  build-docs:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write  # for `mkdocs gh-deploy`
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/publish-docs
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
