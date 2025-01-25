@@ -9,6 +9,7 @@ nav:
   - Home: index.md
   - quickstart.md
   - Djereo's features: featurelist.md
+  - Developer docs: develop.md
 theme:
     name: readthedocs
     highlightjs: true

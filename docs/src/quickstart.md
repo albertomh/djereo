@@ -6,8 +6,8 @@ This section covers how to create a Django project using `djereo` as a template.
 
 The following must be available locally:
 
-- [Python 3.10](https://docs.python.org/3.10/) or above
-- [uv](https://docs.astral.sh/uv/)
+- [Python 3.10](https://docs.python.org/3.10/){target=\"_blank"} or above
+- [uv](https://docs.astral.sh/uv/){target=\"_blank"}
 
 ## Bootstrap a new Django project
 
@@ -23,3 +23,17 @@ Please note:
   the latest tag from GitHub.
 - the `--trust` flag is necessary to allow a post-creation task to initialise the new directory
   as a git repository and generate a `uv` lockfile.
+
+---
+
+## Update existing projects
+
+To update a project created using an older version of `djereo` to a newer version of the
+template:
+
+```sh
+cd ~/Projects/existing_project/
+uvx copier update --skip-answered --trust [--vcs-ref=<TAG>]
+```
+
+If the `--vcs-ref` flag is not specified `copier` will use the latest `djereo` tag.

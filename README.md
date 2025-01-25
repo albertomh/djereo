@@ -83,41 +83,35 @@ Please note:
 - the `--trust` flag is necessary to allow a post-creation task to initialise the new directory
   as a git repository and generate a `uv` lockfile.
 
-## Update existing projects
+---
 
-To update a project created using an older version of `djereo` to a newer version of the
-template:
+## Documentation
 
-```sh
-cd ~/Projects/existing_project/
-uvx copier update --skip-answered --trust [--vcs-ref=<TAG>]
-```
-
-If the `--vcs-ref` flag is not specified `copier` will use the latest `djereo` tag.
+`djereo`'s documentation is available at [https://albertomh.github.io/djereo/](https://albertomh.github.io/djereo/).
 
 ---
 
 ## Develop
 
-The developer README ([docs/README-dev.md](docs/README-dev.md)) covers how to work on
-`djereo` itself. It covers:
+The developer documentation ([https://albertomh.github.io/djereo/develop/](https://albertomh.github.io/djereo/develop/))
+covers how to work on `djereo` itself:
 
-- [Develop](docs/README-dev.md#develop)
-  - [Development prerequisites](docs/README-dev.md#development-prerequisites)
-  - [Upgrading the pycliche version](docs/README-dev.md#upgrading-the-pycliche-version)
-  - [Git principles](docs/README-dev.md#git-principles)
-  - [Dependency management](docs/README-dev.md#dependency-management)
-    - [Updating dependencies in the template](docs/README-dev.md#updating-dependencies-in-the-template)
-  - [Generate project using development version](docs/README-dev.md#generate-project-using-development-version)
-  - [Style](docs/README-dev.md#style)
-  - [Upgrade checklist](docs/README-dev.md#upgrade-checklist)
+- [Develop](https://albertomh.github.io/djereo/develop/#develop)
+  - Development prerequisites
+  - Upgrading the pycliche version
+  - Git principles
+  - Dependency management
+    - Updating dependencies in the template
+  - Generate project using development version
+  - Style
+  - Upgrade checklist
 
-- [Test](docs/README-dev.md#test)
+- [Test](https://albertomh.github.io/djereo/develop/#test)
 
-- [Release](docs/README-dev.md#release)
-  - [GitHub Personal Access Token](docs/README-dev.md#github-personal-access-token)
+- [Document](https://albertomh.github.io/djereo/develop/#document)
 
-- [Record demo](docs/README-dev.md#record-demo)
+- [Release](https://albertomh.github.io/djereo/develop/#release)
+  - GitHub Personal Access Token
 
 ---
 
