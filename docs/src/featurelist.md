@@ -51,3 +51,21 @@ See Release Please below for information on how this version can be used alongsi
 Conventional Commits to automatically generate changelogs and new semver tags.
 
 See [https://semver.org/](https://semver.org/){target=\"_blank"} for more information.
+
+<!-- markdownlint-disable MD013 line-length -->
+## <img src="https://simpleicons.org/icons/precommit.svg" width="20" alt="pre-commit logo"> Git pre-commit hooks
+<!-- markdownlint-enable MD013 line-length -->
+
+Every new project comes with a set of sensible [pre-commit](https://pre-commit.com/){target=\"_blank"}
+git hooks. These are defined in [.pre-commit-config.yaml](https://github.com/albertomh/djereo/blob/main/template/.pre-commit-config.yaml.jinja){target=\"_blank"}
+and include:
+
+- Common core hooks such as `check-merge-conflict` or `end-of-file-fixer`.
+- `mypy` to perform static type checks on Python code.
+- `asottile/pyupgrade` to convert syntax when the version of Python is upgraded.
+- `astral-sh/ruff-pre-commit` to lint & format Python code at lightspeed with Ruff.
+- `DavidAnson/markdownlint-cli2` to lint markdown files with rules configured in [.markdownlint-cli2.yaml](https://github.com/albertomh/djereo/blob/main/template/.markdownlint-cli2.yaml){target=\"_blank"}.
+- `biomejs/pre-commit` to lint & format frontend code (JS, TS, CSS) following config in [biome.jsonc](https://github.com/albertomh/djereo/blob/main/template/biome.jsonc){target=\"_blank"}.
+- `adamchainz/djade-pre-commit` to format Django templates.
+- `adamchainz/django-upgrade` to automatically migrate code to a new version of Django.
+- `alessandrojcm/commitlint-pre-commit-hook` to enforce [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/){target=\"_blank"}.
