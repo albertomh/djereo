@@ -236,6 +236,11 @@ for a list of all marks.</p>
 <p>Source markdown and configuration live in the <code>docs/</code> directory. The docs are styled using
 the <a href="https://www.mkdocs.org/user-guide/choosing-your-theme/#readthedocs" target="\&quot;_blank&quot;">readthedocs</a>
 theme.</p>
+<p>To view the docs when developing locally run the recipe:</p>
+<pre><code class="language-sh"># from the `docs/` directory
+just serve
+</code></pre>
+<p>and navigate to <a href="http://127.0.0.1:8001/">http://127.0.0.1:8001/</a>.</p>
 <p>A custom GitHub action (<a href="https://github.com/albertomh/djereo/blob/main/.github/actions/publish-docs/action.yaml" target="\&quot;_blank&quot;">.github/actions/publish-docs</a>)
 builds the <code>mkdocs</code> site and publishes it to the <code>gh-pages</code> branch. Changes to this branch
 are automatically deployed to <a href="https://albertomh.github.io/djereo/">https://albertomh.github.io/djereo/</a>.</p>
