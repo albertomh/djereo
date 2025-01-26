@@ -8,6 +8,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.9.0](https://github.com/albertomh/djereo/compare/v0.8.0...v0.9.0) (2025-01-26)
+
+
+### Features
+
+* Add a system check to prevent plural model names ([#47](https://github.com/albertomh/djereo/issues/47)) ([510ef0e](https://github.com/albertomh/djereo/commit/510ef0ef74be19d0b7cc4eac3357c66c54fa9111))
+* **ci:** Add a sys-check action to gen. project's pipeline ([#45](https://github.com/albertomh/djereo/issues/45)) ([030b8a9](https://github.com/albertomh/djereo/commit/030b8a9a9560395376f91ef4ea7d4720f1402f94))
+* **docs:** Add a mkdocs microsite styled with readthedocs theme ([#50](https://github.com/albertomh/djereo/issues/50)) ([48fd9f9](https://github.com/albertomh/djereo/commit/48fd9f9413c5c41b561ebf587b4bb1805e5b9d3a))
+* **docs:** Document GitHub Actions in gen. project's dev README ([#57](https://github.com/albertomh/djereo/issues/57)) ([14f8173](https://github.com/albertomh/djereo/commit/14f8173b934cc50b5d58b7108872f75bd5088f38))
+* Set USE_I18N to False in gen. projects for performance ([256a442](https://github.com/albertomh/djereo/commit/256a44235978dd5fd54d1aa481b4db32ea0bf21e))
+* Use django-version-checks to alert to version mismatches ([#48](https://github.com/albertomh/djereo/issues/48)) ([293e5cb](https://github.com/albertomh/djereo/commit/293e5cb0b40cbd6231b63120a9b5b8025e5694c6))
+
+
+### Documentation
+
+* Copier setup questionnaire in mkdocs ([#54](https://github.com/albertomh/djereo/issues/54)) ([087d6e8](https://github.com/albertomh/djereo/commit/087d6e86aac3eb34e2b3dd9f4a40f0b54824fcd6))
+* Features implemented from BYDDX in mkdocs ([#53](https://github.com/albertomh/djereo/issues/53)) ([12b4052](https://github.com/albertomh/djereo/commit/12b40520150b667f3ed786ee44882de6cf49f528))
+* Generated project's 'justfile' in mkdocs ([#56](https://github.com/albertomh/djereo/issues/56)) ([6f88fae](https://github.com/albertomh/djereo/commit/6f88fae6a2d0cf94f0634917a42bc892d1fd2812))
+* Pre-commit git hooks in mkdocs ([#55](https://github.com/albertomh/djereo/issues/55)) ([64c8b0b](https://github.com/albertomh/djereo/commit/64c8b0b5a3e10cdd7f50da093762a93c5f01d8d2))
+* Update mkdocs microsite ([#52](https://github.com/albertomh/djereo/issues/52)) ([06a5658](https://github.com/albertomh/djereo/commit/06a56584d50a0e5235b59639894efe9a8e8edb6a))
+
 ## [0.8.0](https://github.com/albertomh/djereo/compare/v0.7.0...v0.8.0) (2025-01-23)
 
 
