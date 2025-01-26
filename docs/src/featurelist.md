@@ -47,8 +47,8 @@ The generated project follows Semantic Versioning, with users prompted to provid
 initial version at project setup. The project's version is tracked in the `version` field
 of [pyproject.toml](https://github.com/albertomh/djereo/blob/main/template/pyproject.toml.jinja){target=\"_blank"}.
 
-See Release Please below for information on how this version can be used alongside
-Conventional Commits to automatically generate changelogs and new semver tags.
+See [Release Please](#release-please) below for information on how this version can be used
+alongside Conventional Commits to automatically generate changelogs and new semver tags.
 
 See [https://semver.org/](https://semver.org/){target=\"_blank"} for more information.
 
@@ -69,3 +69,71 @@ and include:
 - `adamchainz/djade-pre-commit` to format Django templates.
 - `adamchainz/django-upgrade` to automatically migrate code to a new version of Django.
 - `alessandrojcm/commitlint-pre-commit-hook` to enforce [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/){target=\"_blank"}.
+
+<!-- markdownlint-disable MD013 line-length -->
+## <img src="https://simpleicons.org/icons/github.svg" width="20" alt="GitHub logo"> Optional GitHub features
+<!-- markdownlint-enable MD013 line-length -->
+
+As part of the setup questionnaire users are asked whether the project they are creating
+will be hosted on GitHub. If this is the case, GitHub Actions config files are added to
+their project. The resulting custom actions and workflows are described below.
+
+### Custom GitHub actions
+
+Three re-usable custom actions are available:
+
+- `pre-commit`: runs all pre-commit hooks except `no-commit-to-branch` as this would
+   make merge pipelines fail. In workflows (see below) all jobs depend on this action
+   succeeding.
+- `sys-check`: runs Django's system checks (`manage.py check`).
+- `test`: runs all unit tests via the `just test` recipe (see [Justfile](#-justfile) for
+   details).
+
+See [.github/actions/](https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/actions){target=\"_blank"}
+for the definitions of these actions.
+
+### GitHub Actions workflows
+
+Four workflows are defined:
+
+#### `PR` (pull request)
+
+Runs whenever a pull request is opened against a branch or an existing PR receives new commits.
+
+#### `CI` (continuous integration)
+
+As with `PR`, but acts when a pull request is closed and changes merged into the `main` branch.
+
+#### Release Please
+
+Refreshes a pull request that updates the changelog & bumps the Semantic Version every
+time the `main` branch is merged to.  
+[.release-please-config.json](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.release-please-config.json%7B%25endif%25%7D.jinja){target=\"_blank"}
+configures the tool while [.release-please-manifest.json](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.release-please-manifest.json%7B%25endif%25%7D.jinja){target=\"_blank"}
+is the source of truth for the latest SemVer tag.
+
+**N.B.** conventional commits (as enforced by the relevant git hook) are a prerequisite
+for Release Please to generate changelogs and calculate new SemVer tags.
+
+#### Dependabot
+
+Configured to update Python dependencies & GitHub actions on a weekly schedule.
+
+See [.github/workflows/](https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/workflows){target=\"_blank"}
+and [.github/dependabot.yaml](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/dependabot.yaml){target=\"_blank"}
+for the definitions of these workflows.
+
+## 🤖 Justfile
+
+Four recipes are ready to use in every new project. Each takes care of setting up a
+virtualenv and installing dependencies (including the project itself in editable mode).
+
+- `manage`: wrapper around Django's `manage.py`. Takes one or more arguments, which
+  defaults to 'help'.
+- `runserver`: execute Django's `runserver` management command. Runs Python in Development
+  Mode by default, which will show additional warnings and enable extra debug hooks.
+  Development Mode can be disabled by passing an empty string i.e. `just runserver ""`
+- `shell`: run Django's management command to drop into a shell. By default this is IPython
+  in all new projects.
+- `test`: install test dependencies, run all unit tests via Django's test runner and
+  generate and display a coverage report (both on-screen and in HTML format).
