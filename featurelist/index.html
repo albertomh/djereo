@@ -236,9 +236,11 @@ virtualenv and installing dependencies (including the project itself in editable
 <ul>
 <li><code>manage</code>: wrapper around Django's <code>manage.py</code>. Takes one or more arguments, which
   defaults to 'help'.</li>
-<li><code>runserver</code>: execute Django's <code>runserver</code> management command. Runs Python in Development
-  Mode by default, which will show additional warnings and enable extra debug hooks.
-  Development Mode can be disabled by passing an empty string i.e. <code>just runserver ""</code></li>
+<li><code>runserver</code>: execute Django's <code>runserver</code> management command using Python in
+  <a href="https://docs.python.org/3/library/devmode.html" target="\&quot;_blank&quot;">Development Mode</a>.
+  This mode shows additional warnings (Deprecation, Import, Resource) and enables extra
+  debug hooks. Development Mode can be disabled by passing an empty string
+  i.e. <code>just runserver ""</code></li>
 <li><code>shell</code>: run Django's management command to drop into a shell. By default this is IPython
   in all new projects.</li>
 <li><code>test</code>: install test dependencies, run all unit tests via Django's test runner and
