@@ -42,6 +42,9 @@ Optionally, for projects intended to be hosted on GitHub, also include:
   - Run `pre-commit` hooks and `pytest` as part of a Continuous Integration pipeline.
 - A `dependabot` configuration to keep Python packages & GitHub Actions up to date.
 
+If `djereo` sounds like a good foundation for your next project, explore the [full list of features](./featurelist.md)
+or get started with the instructions on the [Quickstart page](./quickstart.md).
+
 ---
 
 > [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://docs.djangoproject.com/en/stable/)  
@@ -49,6 +52,3 @@ Optionally, for projects intended to be hosted on GitHub, also include:
 > `djereo` is built on, as your Python project template.
 
 ---
-
-If `djereo` sounds like a good foundation for your next project, explore the [full list of features](./featurelist.md)
-or get started with the instructions on the [Quickstart page](./quickstart.md).
