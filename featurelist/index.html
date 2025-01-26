@@ -69,6 +69,26 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#git-pre-commit-hooks">Git pre-commit hooks</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#optional-github-features">Optional GitHub features</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#custom-github-actions">Custom GitHub actions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#github-actions-workflows">GitHub Actions workflows</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#pr-pull-request">PR (pull request)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#ci-continuous-integration">CI (continuous integration)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#release-please">Release Please</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#dependabot">Dependabot</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#justfile">🤖 Justfile</a>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -134,8 +154,8 @@ more information.</p>
 <p>The generated project follows Semantic Versioning, with users prompted to provide an
 initial version at project setup. The project's version is tracked in the <code>version</code> field
 of <a href="https://github.com/albertomh/djereo/blob/main/template/pyproject.toml.jinja" target="\&quot;_blank&quot;">pyproject.toml</a>.</p>
-<p>See Release Please below for information on how this version can be used alongside
-Conventional Commits to automatically generate changelogs and new semver tags.</p>
+<p>See <a href="#release-please">Release Please</a> below for information on how this version can be used
+alongside Conventional Commits to automatically generate changelogs and new semver tags.</p>
 <p>See <a href="https://semver.org/" target="\&quot;_blank&quot;">https://semver.org/</a> for more information.</p>
 <!-- markdownlint-disable MD013 line-length -->
 <h2 id="git-pre-commit-hooks"><img src="https://simpleicons.org/icons/precommit.svg" width="20" alt="pre-commit logo"> Git pre-commit hooks</h2>
@@ -154,6 +174,58 @@ and include:</p>
 <li><code>adamchainz/djade-pre-commit</code> to format Django templates.</li>
 <li><code>adamchainz/django-upgrade</code> to automatically migrate code to a new version of Django.</li>
 <li><code>alessandrojcm/commitlint-pre-commit-hook</code> to enforce <a href="https://www.conventionalcommits.org/en/v1.0.0/" target="\&quot;_blank&quot;">Conventional Commits</a>.</li>
+</ul>
+<!-- markdownlint-disable MD013 line-length -->
+<h2 id="optional-github-features"><img src="https://simpleicons.org/icons/github.svg" width="20" alt="GitHub logo"> Optional GitHub features</h2>
+<!-- markdownlint-enable MD013 line-length -->
+
+<p>As part of the setup questionnaire users are asked whether the project they are creating
+will be hosted on GitHub. If this is the case, GitHub Actions config files are added to
+their project. The resulting custom actions and workflows are described below.</p>
+<h3 id="custom-github-actions">Custom GitHub actions</h3>
+<p>Three re-usable custom actions are available:</p>
+<ul>
+<li><code>pre-commit</code>: runs all pre-commit hooks except <code>no-commit-to-branch</code> as this would
+   make merge pipelines fail. In workflows (see below) all jobs depend on this action
+   succeeding.</li>
+<li><code>sys-check</code>: runs Django's system checks (<code>manage.py check</code>).</li>
+<li><code>test</code>: runs all unit tests via the <code>just test</code> recipe (see <a href="#-justfile">Justfile</a> for
+   details).</li>
+</ul>
+<p>See <a href="https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/actions" target="\&quot;_blank&quot;">.github/actions/</a>
+for the definitions of these actions.</p>
+<h3 id="github-actions-workflows">GitHub Actions workflows</h3>
+<p>Four workflows are defined:</p>
+<h4 id="pr-pull-request"><code>PR</code> (pull request)</h4>
+<p>Runs whenever a pull request is opened against a branch or an existing PR receives new commits.</p>
+<h4 id="ci-continuous-integration"><code>CI</code> (continuous integration)</h4>
+<p>As with <code>PR</code>, but acts when a pull request is closed and changes merged into the <code>main</code> branch.</p>
+<h4 id="release-please">Release Please</h4>
+<p>Refreshes a pull request that updates the changelog &amp; bumps the Semantic Version every
+time the <code>main</code> branch is merged to.<br />
+<a href="https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.release-please-config.json%7B%25endif%25%7D.jinja" target="\&quot;_blank&quot;">.release-please-config.json</a>
+configures the tool while <a href="https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.release-please-manifest.json%7B%25endif%25%7D.jinja" target="\&quot;_blank&quot;">.release-please-manifest.json</a>
+is the source of truth for the latest SemVer tag.</p>
+<p><strong>N.B.</strong> conventional commits (as enforced by the relevant git hook) are a prerequisite
+for Release Please to generate changelogs and calculate new SemVer tags.</p>
+<h4 id="dependabot">Dependabot</h4>
+<p>Configured to update Python dependencies &amp; GitHub actions on a weekly schedule.</p>
+<p>See <a href="https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/workflows" target="\&quot;_blank&quot;">.github/workflows/</a>
+and <a href="https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/dependabot.yaml" target="\&quot;_blank&quot;">.github/dependabot.yaml</a>
+for the definitions of these workflows.</p>
+<h2 id="justfile">🤖 Justfile</h2>
+<p>Four recipes are ready to use in every new project. Each takes care of setting up a
+virtualenv and installing dependencies (including the project itself in editable mode).</p>
+<ul>
+<li><code>manage</code>: wrapper around Django's <code>manage.py</code>. Takes one or more arguments, which
+  defaults to 'help'.</li>
+<li><code>runserver</code>: execute Django's <code>runserver</code> management command. Runs Python in Development
+  Mode by default, which will show additional warnings and enable extra debug hooks.
+  Development Mode can be disabled by passing an empty string i.e. <code>just runserver ""</code></li>
+<li><code>shell</code>: run Django's management command to drop into a shell. By default this is IPython
+  in all new projects.</li>
+<li><code>test</code>: install test dependencies, run all unit tests via Django's test runner and
+  generate and display a coverage report (both on-screen and in HTML format).</li>
 </ul>
               
             </div>
