@@ -2,7 +2,6 @@
 # Runs when a commit on a feature branch is pushed up to GitHub.
 name: PR
 
-
 on:
   push:
     branches-ignore:
