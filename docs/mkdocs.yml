@@ -6,10 +6,10 @@ site_author: Alberto Morón Hernández
 extra_css:
     - css/extra.css
 nav:
-  - Home: index.md
-  - quickstart.md
-  - Djereo's features: featurelist.md
-  - Developer docs: develop.md
+    - Home: index.md
+    - quickstart.md
+    - Djereo's features: featurelist.md
+    - Developer docs: develop.md
 theme:
     name: readthedocs
     highlightjs: true
@@ -18,4 +18,4 @@ theme:
     logo: media/djereo_wordmark-logo.webp
 repo_url: https://github.com/albertomh/djereo
 markdown_extensions:
-  - attr_list
+    - attr_list
