@@ -67,6 +67,8 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#git-pre-commit-hooks">Git pre-commit hooks</a>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -135,6 +137,24 @@ of <a href="https://github.com/albertomh/djereo/blob/main/template/pyproject.tom
 <p>See Release Please below for information on how this version can be used alongside
 Conventional Commits to automatically generate changelogs and new semver tags.</p>
 <p>See <a href="https://semver.org/" target="\&quot;_blank&quot;">https://semver.org/</a> for more information.</p>
+<!-- markdownlint-disable MD013 line-length -->
+<h2 id="git-pre-commit-hooks"><img src="https://simpleicons.org/icons/precommit.svg" width="20" alt="pre-commit logo"> Git pre-commit hooks</h2>
+<!-- markdownlint-enable MD013 line-length -->
+
+<p>Every new project comes with a set of sensible <a href="https://pre-commit.com/" target="\&quot;_blank&quot;">pre-commit</a>
+git hooks. These are defined in <a href="https://github.com/albertomh/djereo/blob/main/template/.pre-commit-config.yaml.jinja" target="\&quot;_blank&quot;">.pre-commit-config.yaml</a>
+and include:</p>
+<ul>
+<li>Common core hooks such as <code>check-merge-conflict</code> or <code>end-of-file-fixer</code>.</li>
+<li><code>mypy</code> to perform static type checks on Python code.</li>
+<li><code>asottile/pyupgrade</code> to convert syntax when the version of Python is upgraded.</li>
+<li><code>astral-sh/ruff-pre-commit</code> to lint &amp; format Python code at lightspeed with Ruff.</li>
+<li><code>DavidAnson/markdownlint-cli2</code> to lint markdown files with rules configured in <a href="https://github.com/albertomh/djereo/blob/main/template/.markdownlint-cli2.yaml" target="\&quot;_blank&quot;">.markdownlint-cli2.yaml</a>.</li>
+<li><code>biomejs/pre-commit</code> to lint &amp; format frontend code (JS, TS, CSS) following config in <a href="https://github.com/albertomh/djereo/blob/main/template/biome.jsonc" target="\&quot;_blank&quot;">biome.jsonc</a>.</li>
+<li><code>adamchainz/djade-pre-commit</code> to format Django templates.</li>
+<li><code>adamchainz/django-upgrade</code> to automatically migrate code to a new version of Django.</li>
+<li><code>alessandrojcm/commitlint-pre-commit-hook</code> to enforce <a href="https://www.conventionalcommits.org/en/v1.0.0/" target="\&quot;_blank&quot;">Conventional Commits</a>.</li>
+</ul>
               
             </div>
           </div><footer>
