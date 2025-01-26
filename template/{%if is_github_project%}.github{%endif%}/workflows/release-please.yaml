@@ -1,3 +1,10 @@
+# Release Please pipeline
+# Refreshes a pull request that updates the changelog & bumps the Semantic Version every
+# time the `main` branch is merged to.
+# N.B.conventional commits (as enforced by the relevant git hook) are a prerequisite for
+# Release Please to generate changelogs and calculate new SemVer tags.
+name: release-please
+
 on:
   push:
     branches:
@@ -6,8 +13,6 @@ on:
 permissions:
   contents: write
   pull-requests: write
-
-name: release-please
 
 jobs:
   release-please:
