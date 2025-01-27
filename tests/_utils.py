@@ -70,7 +70,7 @@ def start_process_and_capture_streams(
 
 
 def run_process_and_wait(
-    command_args: list, test_project_dir: Path, env: dict | None = None
+    command_args: list, test_project_dir: Path, *, env: dict | None = None
 ) -> tuple[list[str], list[str]]:
     """
     Runs a subprocess and waits for it to complete, capturing stdout and stderr.
