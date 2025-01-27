@@ -145,6 +145,7 @@ def test_generated_project_tests_run_successfully(
         cwd=test_project_dir,
         capture_output=True,
         text=True,
+        env=dict(os.environ, SECRET_KEY="test-secret-key"),
     )
 
     assert result.returncode == 0, f"Pytest failed:\n{result.stdout}\n{result.stderr}"
