@@ -10,6 +10,7 @@ nav:
     - quickstart.md
     - Djereo's features: featurelist.md
     - Developer docs: develop.md
+    - Changelog ↗: https://github.com/albertomh/djereo/blob/main/CHANGELOG.md
 theme:
     name: readthedocs
     highlightjs: true
