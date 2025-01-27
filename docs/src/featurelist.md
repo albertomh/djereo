@@ -227,6 +227,14 @@ configuration to have the `ruff` pre-commit hook enforce a ban on importing the 
 module directly. It suggests that you use `from django.conf import settings` instead as
 this is safer and avoids complications if `override_settings` is used in tests.
 
+## Third-party packages
+
+### whitenoise
+
+[whitenoise](https://whitenoise.readthedocs.io/en/stable/){target=\"_blank"} is included
+as a dependency. It is configured to serve static files using Brotli compression and add
+unique hashes to filenames so that each version can be cached for a long time.
+
 <!-- markdownlint-disable MD013 line-length -->
 ## <img src="https://simpleicons.org/icons/pytest.svg" width="25" alt="simple test tubes logo"> Tests
 <!-- markdownlint-enable MD013 line-length -->
