@@ -52,6 +52,7 @@ FIRST_PARTY_APPS = [
 THIRD_PARTY_APPS = [
     "django_linear_migrations",
     "django_version_checks",
+    "whitenoise.runserver_nostatic",
 ]
 CONTRIB_APPS = [
     "django.contrib.admin",
@@ -65,6 +66,7 @@ INSTALLED_APPS = FIRST_PARTY_APPS + THIRD_PARTY_APPS + CONTRIB_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -169,11 +171,21 @@ USE_I18N = False
 
 USE_TZ = True
 
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+
+STATIC_ROOT = BASE_DIR / "static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
