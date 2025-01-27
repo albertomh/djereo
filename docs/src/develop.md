@@ -1,5 +1,7 @@
 # Djereo developer documentation
 
+This page covers how to Develop, Test, Document and Release changes to `djereo` itself.
+
 ## Develop
 
 `djereo`'s source code can be found at [https://github.com/albertomh/djereo](https://github.com/albertomh/djereo){target=\"_blank"}.

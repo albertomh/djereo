@@ -37,10 +37,12 @@ Projects created using `djereo` include:
 
 Optionally, for projects intended to be hosted on GitHub, also include:
 
+<!-- markdownlint-disable MD007 ul-indent -->
 - GitHub Actions to:
-  - Automate cutting releases via `Release Please`.
-  - Run `pre-commit` hooks and `pytest` as part of a Continuous Integration pipeline.
+    - Automate cutting releases via `Release Please`.
+    - Run `pre-commit` hooks and `pytest` as part of a Continuous Integration pipeline.
 - A `dependabot` configuration to keep Python packages & GitHub Actions up to date.
+<!-- markdownlint-enable MD007 ul-indent -->
 
 If `djereo` sounds like a good foundation for your next project, explore the [full list of features](./featurelist.md)
 or get started with the instructions on the [Quickstart page](./quickstart.md).
