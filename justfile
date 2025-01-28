@@ -6,6 +6,7 @@ default:
   @just --list
 
 test +args='':
-  @uv sync --group test
+  @test -d .venv/ || uv venv
+  @test -x .venv/bin/pip || @uv sync --group test
   @uv pip install -e .
   @uv run -m pytest tests/ -s -vvv -W always --pdb "$@"
