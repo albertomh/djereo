@@ -40,9 +40,9 @@ def test_djereo_jinja_templates_converted(
     for file_name in template_file_names:
         expected_file_path = test_project_dir / file_name
 
-        assert (
-            expected_file_path.exists()
-        ), f"Expected file {expected_file_path} not found."
+        assert expected_file_path.exists(), (
+            f"Expected file {expected_file_path} not found."
+        )
 
 
 @pytest.mark.integration
@@ -105,9 +105,9 @@ def test_generated_project_django_version_range(
 
     specifier_set = SpecifierSet(constraint)
 
-    assert (
-        Version(django_version) in specifier_set
-    ), f"Django version {django_version} does not satisfy the constraint {constraint}"
+    assert Version(django_version) in specifier_set, (
+        f"Django version {django_version} does not satisfy the constraint {constraint}"
+    )
 
 
 @pytest.mark.integration
@@ -166,13 +166,13 @@ def test_generated_project_pre_commit_hooks_run_successfully(
 
     env = os.environ.copy()
     env["SKIP"] = "no-commit-to-branch"
-    pre_commit_result = subprocess.run(
+    pre_commit_res = subprocess.run(
         ["uv", "run", "pre-commit", "run", "--all-files"],
         cwd=test_project_dir,
         env=env,
         capture_output=True,
         text=True,
     )
-    assert (
-        pre_commit_result.returncode == 0
-    ), f"Pre-commit hooks failed:\n{pre_commit_result.stdout}\n{pre_commit_result.stderr}"
+    assert pre_commit_res.returncode == 0, (
+        f"Pre-commit hooks failed:\n{pre_commit_res.stdout}\n{pre_commit_res.stderr}"
+    )
