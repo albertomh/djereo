@@ -171,6 +171,14 @@ USE_I18N = False
 
 USE_TZ = True
 
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.1/howto/static-files/
+
+STATIC_URL = "static/"
+
+STATIC_ROOT = BASE_DIR / "static"
+
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -180,19 +188,15 @@ STORAGES = {
     },
 }
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = "static/"
-
-STATIC_ROOT = BASE_DIR / "static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
 # 2. Django Contrib Settings -------------------------------------------------------------
+
 
 # 3. Third Party Settings ----------------------------------------------------------------
 
@@ -213,5 +217,6 @@ if ENABLE_DEBUG_TOOLS:
         "django_browser_reload.middleware.BrowserReloadMiddleware",
         "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
+
 
 # 4. Project Settings --------------------------------------------------------------------
