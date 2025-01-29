@@ -8,6 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.10.0](https://github.com/albertomh/djereo/compare/v0.9.0...v0.10.0) (2025-01-29)
+
+
+### Features
+
+* Serve static files from gen. project using whitenoise ([#61](https://github.com/albertomh/djereo/issues/61)) ([bf4e64b](https://github.com/albertomh/djereo/commit/bf4e64b489578eafcc80fa930bc20db58e72f28a))
+
+
+### Bug Fixes
+
+* **docs:** Correct 'Edit on GitHub' path in mkdocs ([#58](https://github.com/albertomh/djereo/issues/58)) ([4616074](https://github.com/albertomh/djereo/commit/461607474841aea33463b443b1dbd03f0704690a))
+* Provide default value to SECRET_KEY when running tests ([#64](https://github.com/albertomh/djereo/issues/64)) ([aab7803](https://github.com/albertomh/djereo/commit/aab7803389de8cb9410945a82280bf3f5460fdfb))
+* Remove default value for SECRET_KEY setting ([#60](https://github.com/albertomh/djereo/issues/60)) ([c0d7643](https://github.com/albertomh/djereo/commit/c0d76433d0b064cc8f6be93e5f9d820e88756e40))
+* Use djereo tag in settings.py docstring ([#66](https://github.com/albertomh/djereo/issues/66)) ([dda2136](https://github.com/albertomh/djereo/commit/dda2136d32a68be90fa1c904e89b2d96e73a79cf))
+
 ## [0.9.0](https://github.com/albertomh/djereo/compare/v0.8.0...v0.9.0) (2025-01-26)
 
 
