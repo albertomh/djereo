@@ -20,7 +20,7 @@ runserver $PYTHONDEVMODE="1": _dev_setup
 shell: _dev_setup
   @uv run manage.py shell
 
-test +args='tests':
+test +args='.':
   @test -d .venv/ || uv venv
   @test -x .venv/bin/django-admin || uv sync --group test
   @uv pip install -e .
