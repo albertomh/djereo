@@ -216,7 +216,8 @@ defaults.
   defining the `BASE_DIR`.
 - **Django Core Settings**  
   `INSTALLED_APPS` is defined by combining three lists containing apps according to their
-  provenance, `LOGGING` is configured to use `rich`.
+  provenance. `LOGGING` is configured to use `rich` when DEBUG is True and `structlog`
+  otherwise.
 - **Django Contrib Settings**
 - **Third Party Settings**  
   Mainly for dev tools such as the debug toolbar and `django-version-checks`.

@@ -63,8 +63,8 @@ This repo follows trunk-based development. This means:
 - use short-lived feature branches
 
 Please follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/){target=\"_blank"}
-guidelines when writing commit messages. `commitlint` is enabled as
-pre-commit hook. Valid commit types are defined in `.commitlintrc.ts`.
+guidelines when writing commit messages. `commitlint` is enabled as a pre-commit hook.
+Valid commit types are defined in `.commitlintrc.ts`.
 
 > **N.B.**  
 > The phrase "gen. project" is used frequently in commit messages. It means "generated project",
