@@ -1,0 +1,29 @@
+from django.test import TestCase
+from parameterized import parameterized
+
+from {{project_name}}.logging import LoggingConfigFactory
+
+
+class LoggingConfigFactoryTest(TestCase):
+    @parameterized.expand(
+        [
+            (True, [["dev_log"], ["dev_log"], ["null"], ["dev_log"]]),
+            (False, [["prod_log"], ["null"], ["prod_log"], ["prod_log"]]),
+        ]
+    )
+    def test_build(self, debug_value, expected_handlers):
+        factory = LoggingConfigFactory(debug=debug_value)
+        config = factory.build()
+
+        self.assertEqual(len(config["filters"]), 2)
+        self.assertEqual(len(config["formatters"]), 2)
+        self.assertEqual(len(config["handlers"]), 3)
+        self.assertEqual(config["loggers"]["django"]["handlers"], expected_handlers[0])
+        self.assertEqual(
+            config["loggers"]["django.request"]["handlers"], expected_handlers[1]
+        )
+        self.assertEqual(
+            config["loggers"]["django_structlog"]["handlers"], expected_handlers[2]
+        )
+        self.assertEqual(all({v["propagate"] for v in config["loggers"].values()}), False)
+        self.assertEqual(config["root"]["handlers"], expected_handlers[3])
