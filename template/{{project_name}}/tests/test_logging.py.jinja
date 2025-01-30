@@ -1,4 +1,7 @@
-from django.test import TestCase
+import json
+import logging
+
+from django.test import Client, TestCase, override_settings
 from parameterized import parameterized
 
 from {{project_name}}.logging import LoggingConfigFactory
@@ -27,3 +30,54 @@ class LoggingConfigFactoryTest(TestCase):
         )
         self.assertEqual(all({v["propagate"] for v in config["loggers"].values()}), False)
         self.assertEqual(config["root"]["handlers"], expected_handlers[3])
+
+
+class LogsFormatTest(TestCase):
+    """Test logs format based on DEBUG mode in Django runserver."""
+
+    def setUp(self):
+        self.client = Client()
+
+    @override_settings(LOGGING=LoggingConfigFactory(False).build())
+    def test_logs_format_debug_false(self):
+        req_logger = logging.getLogger("django.request")
+        struct_logger = logging.getLogger("django_structlog")
+
+        with self.assertNoLogs(req_logger, level="INFO"):
+            self.client.get("/")
+        with self.assertLogs(struct_logger, level="INFO") as log:
+            self.client.get("/")
+            logs_output = log.output[1]  # get the `request_finished` log
+            json_part = logs_output.split("INFO:django_structlog.middlewares.request:")[1]
+            json_part = json_part.replace("'", '"').replace("None", "null")
+            log_dict: dict = json.loads(json_part)
+
+            expected_keys = {
+                "code",
+                "event",
+                "ip",
+                "level",
+                "logger",
+                "request",
+                "request_id",
+                "timestamp",
+                "user_id",
+            }
+            expected_values = {
+                "event": "request_finished",
+                "logger": "django_structlog.middlewares.request",
+                "request": "GET /",
+            }
+            self.assertEqual(
+                set(log_dict.keys()),
+                expected_keys,
+                "Log contains unexpected keys or missing keys",
+            )
+            for k in expected_values.keys():
+                self.assertEqual(log_dict[k], expected_values[k], f"{k} should match")
+
+    # Hard to test because Django loads logging configuration once, at startup. This means
+    # @override_settings would apply only after logging has been configured. Plus, the
+    # change to DEBUG would involve popping the structlog middleware from MIDDLEWARES.
+    # def test_logs_format_debug_true(self):
+    #     ...
