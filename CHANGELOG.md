@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.11.0](https://github.com/albertomh/djereo/compare/v0.10.0...v0.11.0) (2025-01-30)
+
+
+### Features
+
+* Settings.DEBUG toggles between structlog and rich logging ([#69](https://github.com/albertomh/djereo/issues/69)) ([4928e29](https://github.com/albertomh/djereo/commit/4928e29d96b503aa2f4311d043d072005dcbf402))
+
+
+### Bug Fixes
+
+* Just 'test' recipe's check for installed dependencies ([#67](https://github.com/albertomh/djereo/issues/67)) ([74bd056](https://github.com/albertomh/djereo/commit/74bd056446c2ab9b75ba207d66cc9f32ec5aa538))
+
 ## [0.10.0](https://github.com/albertomh/djereo/compare/v0.9.0...v0.10.0) (2025-01-29)
 
 
