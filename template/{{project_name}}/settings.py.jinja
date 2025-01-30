@@ -14,7 +14,10 @@ import os
 import sys
 from pathlib import Path
 
+import structlog
 from environs import Env, env
+
+from {{project_name}}.logging import LoggingConfigFactory
 
 # 0. Setup -------------------------------------------------------------------------------
 
@@ -53,6 +56,7 @@ FIRST_PARTY_APPS = [
 ]
 THIRD_PARTY_APPS = [
     "django_linear_migrations",
+    "django_structlog",
     "django_version_checks",
     "whitenoise.runserver_nostatic",
 ]
@@ -76,41 +80,34 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+if not DEBUG:
+    MIDDLEWARE += [
+        # structlog must be closest to Django ie. last in request phase, first in response
+        "django_structlog.middlewares.RequestMiddleware",
+    ]
 
 ROOT_URLCONF = "{{project_name}}.urls"
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "filters": {
-        "require_debug_true": {
-            "()": "django.utils.log.RequireDebugTrue",
-        },
-    },
-    "formatters": {
-        "rich": {"datefmt": "[%X]"},
-    },
-    "handlers": {
-        "console": {
-            "class": "rich.logging.RichHandler",
-            "filters": ["require_debug_true"],
-            "formatter": "rich",
-            "level": "DEBUG",
-            "rich_tracebacks": True,
-            "tracebacks_show_locals": True,
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": [],
-            "level": "INFO",
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "INFO",
-    },
-}
+logging_factory = LoggingConfigFactory(DEBUG)
+LOGGING = logging_factory.build()
+
+if not DEBUG:
+    structlog.configure(
+        processors=[
+            structlog.contextvars.merge_contextvars,
+            structlog.stdlib.filter_by_level,
+            structlog.processors.TimeStamper(fmt="iso"),
+            structlog.stdlib.add_logger_name,
+            structlog.stdlib.add_log_level,
+            structlog.stdlib.PositionalArgumentsFormatter(),
+            structlog.processors.StackInfoRenderer(),
+            structlog.processors.format_exc_info,
+            structlog.processors.UnicodeDecoder(),
+            structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
+        ],
+        logger_factory=structlog.stdlib.LoggerFactory(),
+        cache_logger_on_first_use=True,
+    )
 
 TEMPLATES = [
     # Look inside the `templates/` subdirectory of each Django app.
@@ -196,6 +193,7 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+TEST_RUNNER = "{{project_name}}.test.TestRunner"
 
 # 2. Django Contrib Settings -------------------------------------------------------------
 

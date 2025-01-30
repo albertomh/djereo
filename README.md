@@ -39,7 +39,7 @@ Projects created using `djereo` include:
 - IPython as the default shell.
 - Simple configuration to enhance your logs with `structlog`.
 - Ready-to-use dev tools: Django Debug Toolbar, `django-browser-reload`, runserver logs
-  formatted using `rich`.
+  formatted using `rich`, `structlog` in production.
 - Out-of-the-box code coverage reporting with `coverage.py`.
 - Batteries-included `pre-commit` hook configuration to lint & format code, and run SAST.
 - A `justfile` to enable using `just` as a task runner.
