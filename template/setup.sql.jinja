@@ -1,0 +1,20 @@
+/**
+ Usage:
+ ```
+ psql \
+   -U $(whoami) \
+   -d postgres \
+   --set=CURRENT_USER=$(whoami) \
+   --set=APP_USER_PASSWORD='password' \
+    -f setup.sql
+ ```
+**/
+
+CREATE USER {{project_name}} WITH PASSWORD :'APP_USER_PASSWORD';
+ALTER USER {{project_name}} CREATEDB;
+
+CREATE DATABASE {{project_name}} OWNER :CURRENT_USER;
+ALTER DATABASE {{project_name}} OWNER TO {{project_name}};
+
+CREATE DATABASE test_{{project_name}} OWNER :CURRENT_USER;
+ALTER DATABASE test_{{project_name}} OWNER TO {{project_name}};

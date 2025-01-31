@@ -7,7 +7,9 @@ This section covers how to create a Django project using `djereo` as a template.
 The following must be available locally:
 
 - [Python 3.10](https://docs.python.org/3.10/){target=\"_blank"} or above
+- [Postgres](https://www.postgresql.org/download/)
 - [uv](https://docs.astral.sh/uv/){target=\"_blank"}
+- [just](https://github.com/casey/just)
 
 ## Bootstrap a new Django project
 
