@@ -321,10 +321,12 @@ defaults.</p>
 <code>INSTALLED_APPS</code> is defined by combining three lists containing apps according to their
   provenance. <code>LOGGING</code> is configured to use <code>rich</code> when DEBUG is True and <code>structlog</code>
   otherwise.</li>
-<li><strong>Django Contrib Settings</strong></li>
+<li><strong>Django Contrib Settings</strong><br />
+  [<em>left empty for the user to populate</em>]</li>
 <li><strong>Third Party Settings</strong><br />
   Mainly for dev tools such as the debug toolbar and <code>django-version-checks</code>.</li>
-<li><strong>Project Settings</strong></li>
+<li><strong>Project Settings</strong><br />
+  [<em>left empty for the user to populate</em>]</li>
 </ul>
 <p>The <code>tool.ruff.lint.flake8-tidy-imports.banned-api</code> table in <code>pyproject.toml</code> includes
 configuration to have the <code>ruff</code> pre-commit hook enforce a ban on importing the <code>settings</code>
