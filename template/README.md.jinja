@@ -5,6 +5,7 @@
 To use `{{project_name}}` the following must be available locally:
 
 - [Python {{python_version}}](https://docs.python.org/{{python_version}}/) or above
+- [Postgres](https://www.postgresql.org/download/)
 - [uv](https://docs.astral.sh/uv/)
 - [just](https://github.com/casey/just)
 
@@ -15,6 +16,10 @@ A `justfile` defines common development tasks. Run `just` to show all available 
 ```sh
 # create a dotenv and populate it with values for local development
 cp .env.in .env
+
+# create a postgres user and database for your project. change 'password' below.
+psql -U $(whoami) -d postgres \
+  --set=CURRENT_USER=$(whoami) --set=APP_USER_PASSWORD='password' -f setup.sql
 
 # install dependencies in a virtual environment and run the Django development server
 just runserver
