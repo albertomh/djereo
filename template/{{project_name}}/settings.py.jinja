@@ -10,12 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-import os
 import sys
 from pathlib import Path
 
 import structlog
-from environs import Env, env
+from environs import env
 
 from {{project_name}}.logging import LoggingConfigFactory
 
