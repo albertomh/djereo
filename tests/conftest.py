@@ -33,7 +33,7 @@ def djereo_test_temp_dir() -> Path:
 
 @pytest.fixture
 def test_project_name() -> str:
-    return "test_project"
+    return "djereo_test_project"
 
 
 @pytest.fixture
@@ -42,10 +42,10 @@ def test_project_dir(djereo_test_temp_dir: Path, test_project_name: str) -> Path
 
 
 @pytest.fixture
-def copier_input_data() -> dict:
+def copier_input_data(test_project_name: str) -> dict:
     """Answers to core djereo template questions."""
     return {
-        "project_name": "test_project",
+        "project_name": test_project_name,
         "author_name": "Miguel de Cervantes",
         "author_email": "mike@alcala.net",
     }

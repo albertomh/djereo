@@ -6,6 +6,20 @@ from pathlib import Path
 from typing import Generator
 
 
+def is_git_repo(path: Path) -> bool:
+    """Check if the given path is a Git repository."""
+    try:
+        subprocess.run(
+            ["git", "-C", str(path), "status"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        return True
+    except subprocess.CalledProcessError:
+        return False
+
+
 def count_dirs_and_files(path: Path) -> tuple[int, int]:
     """Count the number of directories and files in a given path.
 

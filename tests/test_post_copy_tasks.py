@@ -5,7 +5,7 @@ from typing import Callable
 
 import pytest
 
-from tests.conftest import is_git_repo
+from tests._utils import is_git_repo
 
 
 @pytest.mark.integration
