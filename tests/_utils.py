@@ -3,7 +3,9 @@ import signal
 import subprocess
 import tempfile
 from pathlib import Path
-from typing import Generator
+from typing import Callable, Generator
+
+from sh import psql, whoami
 
 
 def is_git_repo(path: Path) -> bool:
@@ -95,3 +97,37 @@ def run_process_and_wait(
         return next(generator)
     except StopIteration as e:
         return e.value
+
+
+def get_current_os_user() -> str:
+    current_user = whoami()
+    return current_user.strip()
+
+
+def set_up_postgres(test_project_dir: Path) -> Callable[[], None]:
+    current_user = get_current_os_user()
+
+    psql(
+        "--user",
+        current_user,
+        "--dbname",
+        "postgres",
+        "--set=APP_USER_PASSWORD=password",
+        "--file",
+        "db/set_up.sql",
+        _cwd=test_project_dir.absolute().as_posix(),
+    )
+
+
+def tear_down_postgres(test_project_dir: Path):
+    current_user = get_current_os_user()
+
+    psql(
+        "--user",
+        current_user,
+        "--dbname",
+        "postgres",
+        "--file",
+        "db/tear_down.sql",
+        _cwd=test_project_dir.absolute().as_posix(),
+    )
