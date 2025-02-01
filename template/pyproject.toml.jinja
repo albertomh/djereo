@@ -7,7 +7,8 @@ authors = [
   {name = "{{author_name}}", email = "{{author_email}}"}
 ]
 readme = "README.md"
-license = { file = "LICENSE" }
+# create 'LICENSE' file and uncomment below line
+# license = { file = "LICENSE" }
 requires-python = ">={{python_version}}"
 {% set django_ver_parts = django_version.split('.') %}
 {% set django_ver_major = django_ver_parts[0] | int + 1 %}
@@ -33,6 +34,10 @@ dev = [
     "ipython>=8.31.0",
     "rich>=13.9.4",
 ]
+
+[tool.setuptools.packages.find]
+# allow `pip install -e .` to find the project package
+include = ["{{project_name}}"]
 
 [tool.coverage.report]
 omit = [
