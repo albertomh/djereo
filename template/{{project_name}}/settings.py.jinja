@@ -24,8 +24,7 @@ from {{project_name}}.logging import LoggingConfigFactory
 IS_TESTING = "test" in sys.argv
 
 if IS_TESTING:
-    env = Env()
-    os.environ["SECRET_KEY"] = "insecure-test-secret-key"  # noqa: S105
+    env.read_env(".env.test", recurse=False)
 else:
     env.read_env()
 
