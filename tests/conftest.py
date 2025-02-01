@@ -92,10 +92,18 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
     return _run
 
 
-def pytest_sessionstart(session):
-    """Hook to perform initial setup before all tests."""
-    if not DJEREO_TEST_TEMP_DIR.exists():
-        DJEREO_TEST_TEMP_DIR.mkdir()
+@pytest.fixture(autouse=True, scope="session")
+def session_setup_and_teardown():
+    def _set_up():
+        if not DJEREO_TEST_TEMP_DIR.exists():
+            DJEREO_TEST_TEMP_DIR.mkdir()
+
+    def _tear_down():
+        pass
+
+    _set_up()
+    yield
+    _tear_down()
 
 
 @pytest.fixture
