@@ -33,7 +33,7 @@ def djereo_test_temp_dir() -> Path:
 
 @pytest.fixture
 def test_project_name() -> str:
-    return "test_project"
+    return "djereo_test_project"
 
 
 @pytest.fixture
@@ -42,10 +42,10 @@ def test_project_dir(djereo_test_temp_dir: Path, test_project_name: str) -> Path
 
 
 @pytest.fixture
-def copier_input_data() -> dict:
+def copier_input_data(test_project_name: str) -> dict:
     """Answers to core djereo template questions."""
     return {
-        "project_name": "test_project",
+        "project_name": test_project_name,
         "author_name": "Miguel de Cervantes",
         "author_email": "mike@alcala.net",
     }
@@ -92,10 +92,18 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
     return _run
 
 
-def pytest_sessionstart(session):
-    """Hook to perform initial setup before all tests."""
-    if not DJEREO_TEST_TEMP_DIR.exists():
-        DJEREO_TEST_TEMP_DIR.mkdir()
+@pytest.fixture(autouse=True, scope="session")
+def session_setup_and_teardown():
+    def _set_up():
+        if not DJEREO_TEST_TEMP_DIR.exists():
+            DJEREO_TEST_TEMP_DIR.mkdir()
+
+    def _tear_down():
+        pass
+
+    _set_up()
+    yield
+    _tear_down()
 
 
 @pytest.fixture
