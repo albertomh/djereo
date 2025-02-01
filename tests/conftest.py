@@ -8,6 +8,8 @@ from typing import Callable
 import pytest
 from copier.cli import CopierApp
 
+from tests._utils import set_up_postgres, tear_down_postgres
+
 DJEREO_TEST_TEMP_DIR = Path("/", "tmp", "djereo_test")
 
 
@@ -87,7 +89,14 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
         )
 
         if generate_dotenv:
-            shutil.copyfile(test_project_dir / ".env.in", test_project_dir / ".env")
+            env_path = test_project_dir / ".env"
+            shutil.copyfile(test_project_dir / ".env.in", env_path)
+            with env_path.open("r+") as file:
+                env_content = file.read()
+                env_content = env_content.replace("{password}", "password")
+                file.seek(0)
+                file.write(env_content)
+                file.truncate()
 
     return _run
 
@@ -128,15 +137,10 @@ def install_test_project(
     )
 
 
-def is_git_repo(path: Path) -> bool:
-    """Check if the given path is a Git repository."""
-    try:
-        subprocess.run(
-            ["git", "-C", str(path), "status"],
-            check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        return True
-    except subprocess.CalledProcessError:
-        return False
+@pytest.fixture
+def configure_postgres(test_project_dir: Path) -> Callable[[], None]:
+    def _run() -> None:
+        tear_down_postgres(test_project_dir)
+        set_up_postgres(test_project_dir)
+
+    return _run
