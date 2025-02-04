@@ -138,9 +138,14 @@ def install_test_project(
 
 
 @pytest.fixture
-def configure_postgres(test_project_dir: Path) -> Callable[[], None]:
+def set_up_test_database(test_project_dir: Path) -> Callable[[], None]:
     def _run() -> None:
-        tear_down_postgres(test_project_dir)
         set_up_postgres(test_project_dir)
 
     return _run
+
+
+@pytest.fixture
+def tear_down_test_database(test_project_dir: Path):
+    yield
+    tear_down_postgres(test_project_dir)
