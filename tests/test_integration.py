@@ -44,8 +44,10 @@ def test_runserver(
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
     test_project_dir: Path,
+    configure_postgres: Callable[[], None],
 ):
     copier_copy(copier_input_data)
+    configure_postgres()
 
     stdout, _ = run_process_and_wait(
         ["just", "runserver"],
@@ -61,8 +63,10 @@ def test_django_debug_toolbar_is_enabled(
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
     test_project_dir: Path,
+    configure_postgres: Callable[[], None],
 ):
     copier_copy(copier_input_data)
+    configure_postgres()
     run_process_and_wait(
         ["just", "runserver"],
         test_project_dir,
