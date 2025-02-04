@@ -99,17 +99,30 @@ def run_process_and_wait(
         return e.value
 
 
+def in_ci() -> bool:
+    return os.getenv("CI") == "true"
+
+
 def get_current_os_user() -> str:
     current_user = whoami()
     return current_user.strip()
 
 
+def get_postgres_user() -> str:
+    if in_ci():
+        return "postgres"
+    return get_current_os_user()
+
+
 def set_up_postgres(test_project_dir: Path) -> Callable[[], None]:
-    current_user = get_current_os_user()
+    if in_ci():
+        os.environ["PGPASSWORD"] = "password"
 
     psql(
         "--user",
-        current_user,
+        get_postgres_user(),
+        "--host",
+        "localhost",
         "--dbname",
         "postgres",
         "--set=APP_USER_PASSWORD=password",
@@ -120,11 +133,14 @@ def set_up_postgres(test_project_dir: Path) -> Callable[[], None]:
 
 
 def tear_down_postgres(test_project_dir: Path):
-    current_user = get_current_os_user()
+    if in_ci():
+        os.environ["PGPASSWORD"] = "password"
 
     psql(
         "--user",
-        current_user,
+        get_postgres_user(),
+        "--host",
+        "localhost",
         "--dbname",
         "postgres",
         "--file",
