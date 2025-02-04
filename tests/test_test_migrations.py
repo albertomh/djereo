@@ -1,4 +1,3 @@
-import os
 import textwrap
 from pathlib import Path
 from typing import Callable
@@ -36,7 +35,6 @@ def test_migrations_check_fails_if_pending_migrations(
     _, stderr = run_process_and_wait(
         ["just", "test", "-k", "test_no_pending_migrations"],
         test_project_dir,
-        env=dict(os.environ, SECRET_KEY="test-secret-key"),
     )
 
     expected_error = (
