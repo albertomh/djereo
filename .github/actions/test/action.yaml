@@ -19,5 +19,5 @@ runs:
     - run: |
         uv sync --group test
         uv pip install pre-commit
-        uv run -m pytest tests/ -s -vvv -W always
+        uv run -m pytest tests/ -s -vvv --showlocals -W always
       shell: bash
