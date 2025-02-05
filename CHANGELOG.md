@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.12.0](https://github.com/albertomh/djereo/compare/v0.11.0...v0.12.0) (2025-02-05)
+
+
+### Features
+
+* Add 'tear down' script for postgres database ([#72](https://github.com/albertomh/djereo/issues/72)) ([fe2d8e5](https://github.com/albertomh/djereo/commit/fe2d8e584352e03c97e1d3d94a498f3b6cf253b9))
+* Add a .env.test file to generated projects ([#73](https://github.com/albertomh/djereo/issues/73)) ([907ddff](https://github.com/albertomh/djereo/commit/907ddffc2ab0c66ca8fdd71a31d8f74de53e2d88))
+* Add postgres as the default database to gen. projects ([#70](https://github.com/albertomh/djereo/issues/70)) ([f0ef8f2](https://github.com/albertomh/djereo/commit/f0ef8f262cb55ed070937eba90e108233d8a709d))
+
+
+### Bug Fixes
+
+* **test:** Database use in gen. project integration tests  ([#74](https://github.com/albertomh/djereo/issues/74)) ([c32ce13](https://github.com/albertomh/djereo/commit/c32ce133987a4dd8ef8e12eb60525600cd25c79d))
+
 ## [0.11.0](https://github.com/albertomh/djereo/compare/v0.10.0...v0.11.0) (2025-01-30)
 
 
