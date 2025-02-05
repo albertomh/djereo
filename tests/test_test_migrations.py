@@ -1,4 +1,3 @@
-import os
 import textwrap
 from pathlib import Path
 from typing import Callable
@@ -22,10 +21,11 @@ def test_migrations_check_fails_if_pending_migrations(
     copier_input_data: dict,
     test_project_name: str,
     test_project_dir: Path,
-    configure_postgres: Callable[[], None],
+    set_up_test_database: Callable[[], None],
+    tear_down_test_database,
 ):
     copier_copy(copier_input_data)
-    configure_postgres()
+    set_up_test_database()
     models_py_path = test_project_dir / test_project_name / "models.py"
     models_py_path.touch()
     models_py_path.write_text(TEST_MODELS_PY_CONTENT)
@@ -36,7 +36,6 @@ def test_migrations_check_fails_if_pending_migrations(
     _, stderr = run_process_and_wait(
         ["just", "test", "-k", "test_no_pending_migrations"],
         test_project_dir,
-        env=dict(os.environ, SECRET_KEY="test-secret-key"),
     )
 
     expected_error = (
@@ -53,10 +52,11 @@ def test_makemigrations_creates_a_max_migration_file(
     copier_input_data: dict,
     test_project_name: str,
     test_project_dir: Path,
-    configure_postgres: Callable[[], None],
+    set_up_test_database: Callable[[], None],
+    tear_down_test_database,
 ):
     copier_copy(copier_input_data)
-    configure_postgres()
+    set_up_test_database()
     models_py_path = test_project_dir / test_project_name / "models.py"
     models_py_path.touch()
     models_py_path.write_text(TEST_MODELS_PY_CONTENT)

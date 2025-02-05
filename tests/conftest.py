@@ -2,6 +2,7 @@ import os
 import shutil
 import subprocess
 import sys
+from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable
 
@@ -89,14 +90,21 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
         )
 
         if generate_dotenv:
-            env_path = test_project_dir / ".env"
-            shutil.copyfile(test_project_dir / ".env.in", env_path)
-            with env_path.open("r+") as file:
+
+            def _rewrite_password_in_dotenv(file: TextIOWrapper):
                 env_content = file.read()
                 env_content = env_content.replace("{password}", "password")
                 file.seek(0)
                 file.write(env_content)
                 file.truncate()
+
+            dotenv_path = test_project_dir / ".env"
+            shutil.copyfile(test_project_dir / ".env.in", dotenv_path)
+            with dotenv_path.open("r+") as file:
+                _rewrite_password_in_dotenv(file)
+            test_dotenv_path = test_project_dir / ".env.test"
+            with test_dotenv_path.open("r+") as file:
+                _rewrite_password_in_dotenv(file)
 
     return _run
 
@@ -138,9 +146,14 @@ def install_test_project(
 
 
 @pytest.fixture
-def configure_postgres(test_project_dir: Path) -> Callable[[], None]:
+def set_up_test_database(test_project_dir: Path) -> Callable[[], None]:
     def _run() -> None:
-        tear_down_postgres(test_project_dir)
         set_up_postgres(test_project_dir)
 
     return _run
+
+
+@pytest.fixture
+def tear_down_test_database(test_project_dir: Path):
+    yield
+    tear_down_postgres(test_project_dir)

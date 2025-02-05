@@ -44,8 +44,11 @@ def test_runserver(
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
     test_project_dir: Path,
+    set_up_test_database: Callable[[], None],
+    tear_down_test_database,
 ):
     copier_copy(copier_input_data)
+    set_up_test_database()
 
     stdout, _ = run_process_and_wait(
         ["just", "runserver"],
@@ -61,8 +64,11 @@ def test_django_debug_toolbar_is_enabled(
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
     test_project_dir: Path,
+    set_up_test_database: Callable[[], None],
+    tear_down_test_database,
 ):
     copier_copy(copier_input_data)
+    set_up_test_database()
     run_process_and_wait(
         ["just", "runserver"],
         test_project_dir,
@@ -83,9 +89,12 @@ def test_runserver_dev_logs_use_rich(
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
     test_project_dir: Path,
+    set_up_test_database: Callable[[], None],
+    tear_down_test_database,
 ):
     # arrange
     copier_copy(copier_input_data)
+    set_up_test_database()
     process_generator = start_process_and_capture_streams(
         ["just", "runserver"],
         test_project_dir,
