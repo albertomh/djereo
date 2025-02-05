@@ -23,6 +23,10 @@ test = [
     "sh>=2.2.1,<3.0.0",
 ]
 
+[tool.setuptools.packages.find]
+# allow `pip install -e .` to find the project package
+include = ["djereo"]
+
 [tool.pytest.ini_options]
 addopts = "--pdbcls=IPython.terminal.debugger:Pdb"
 markers = [
