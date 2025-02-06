@@ -25,8 +25,8 @@ jobs:
       postgres:
         image: postgres:{{postgres_version}}
         env:
-          POSTGRES_DB: postgres
-          POSTGRES_USER: postgres
+          POSTGRES_DB: {{project_name}}
+          POSTGRES_USER: {{project_name}}
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
