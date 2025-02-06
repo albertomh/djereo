@@ -20,4 +20,5 @@ theme:
         - yaml
     logo: media/djereo_wordmark-logo.webp
 markdown_extensions:
+    - admonition
     - attr_list
