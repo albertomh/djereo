@@ -196,6 +196,7 @@ TEST_RUNNER = "{{project_name}}.test.TestRunner"
 # https://github.com/adamchainz/django-version-checks#usage
 VERSION_CHECKS = {
     "python": ">={{python_version}}",
+    "postgresql": "~={{postgres_version}}.0",
 }
 
 # Only enable dev tools when in debug mode and tests are not running.
