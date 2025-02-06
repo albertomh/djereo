@@ -61,6 +61,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#python-version">Python version</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#postgres-version">Postgres version</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#semantic-versioning">Semantic Versioning</a>
     </li>
         </ul>
@@ -102,6 +104,14 @@
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#settingspy">settings.py</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#postgres-database">Postgres database</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#set-up-tear-down-scripts">Set up &amp; tear down scripts</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#database-connection-string">Database connection string</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#third-party-packages">Third-party packages</a>
         <ul>
@@ -176,6 +186,16 @@ support Python 3.10 and above. The user's choice is recorded in a <a href="https
 file and in the <code>requires-python</code> field of <a href="https://github.com/albertomh/djereo/blob/main/template/pyproject.toml.jinja" target="\&quot;_blank&quot;">pyproject.toml</a>.</p>
 <p>See <a href="https://endoflife.date/python" target="\&quot;_blank&quot;">https://endoflife.date/python</a> for
 more information.</p>
+<h4 id="postgres-version">Postgres version</h4>
+<p><code>djereo</code> is configured to work with a postgres database and contains utilities and checks
+to help with this. See <a href="#postgres-database">Postgres database</a> below for more information.</p>
+<p>Note that it is trivial to switch from postgres to SQLite (a single-line change in <code>.env.in</code>)
+if you prefer that database engine.</p>
+<div class="admonition note">
+<p class="admonition-title">Keeping versions consistent</p>
+<p>The <code>django-version-checks</code> package is used to ensure all environments (local, CI, dev,
+prod) use the same versions of Python &amp; postgres.</p>
+</div>
 <h4 id="semantic-versioning">Semantic Versioning</h4>
 <p>The generated project follows Semantic Versioning, with users prompted to provide an
 initial version at project setup. The project's version is tracked in the <code>version</code> field
@@ -332,6 +352,22 @@ defaults.</p>
 configuration to have the <code>ruff</code> pre-commit hook enforce a ban on importing the <code>settings</code>
 module directly. It suggests that you use <code>from django.conf import settings</code> instead as
 this is safer and avoids complications if <code>override_settings</code> is used in tests.</p>
+<h2 id="postgres-database">Postgres database</h2>
+<p><code>djereo</code> projects are configured to use a <code>postgres</code> database out-of-the-box.</p>
+<p>This can easily be switched to use a SQLite database instead by changing a single line in
+the dotenv template, <code>.env.in</code>.</p>
+<h3 id="set-up-tear-down-scripts">Set up &amp; tear down scripts</h3>
+<p>The <code>db/</code> directory contains the following database scripts:</p>
+<ul>
+<li><code>set_up.sql</code> creates a postgres user and database with the same name as the project.</li>
+<li><code>tear_down.sql</code> undoes <code>set_up.sql</code> and removes the database and user.</li>
+</ul>
+<p>Django's default test database behaviour (creating a new database with a name formed by
+prepending the name of the default database with <code>test_</code>) is left as-is.</p>
+<h3 id="database-connection-string">Database connection string</h3>
+<p>The database connection is configured in <code>settings.py</code> using the <code>environs</code> package's
+'Django database URL' extension. That is, as a single database connection string that is
+located in <code>.env</code> as the environment variable <code>DATABASE_URL</code>.</p>
 <h2 id="third-party-packages">Third-party packages</h2>
 <h3 id="whitenoise">whitenoise</h3>
 <p><a href="https://whitenoise.readthedocs.io/en/stable/" target="\&quot;_blank&quot;">whitenoise</a> is included
