@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-import os
 import sys
 from pathlib import Path
 
@@ -22,11 +21,8 @@ from {{project_name}}.logging import LoggingConfigFactory
 # 0. Setup -------------------------------------------------------------------------------
 
 IS_TESTING = "test" in sys.argv
-IS_CI = os.getenv("CI") == "true"
 
-if IS_CI:
-    env.read_env(".env.ci", recurse=False)
-elif IS_TESTING:
+if IS_TESTING:
     env.read_env(".env.test", recurse=False)
 else:
     env.read_env()
