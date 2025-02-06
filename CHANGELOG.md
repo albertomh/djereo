@@ -8,6 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.13.0](https://github.com/albertomh/djereo/compare/v0.12.0...v0.13.0) (2025-02-06)
+
+
+### Features
+
+* Add postgres service to gen. project's GitHub Actions workflows ([#82](https://github.com/albertomh/djereo/issues/82)) ([364f68e](https://github.com/albertomh/djereo/commit/364f68ec4b88479ead322d01cf378196d6987f4f))
+* Postgres version is configurable via copier questionnaire ([#81](https://github.com/albertomh/djereo/issues/81)) ([1992064](https://github.com/albertomh/djereo/commit/199206466f44bea472eed846306ebf3468f22847))
+
+
+### Bug Fixes
+
+* Allow editable installs to find the top-level djereo package ([#78](https://github.com/albertomh/djereo/issues/78)) ([6881720](https://github.com/albertomh/djereo/commit/6881720b14cc147c9a57a6388830ee1c2b9c878f))
+
+
+### Documentation
+
+* Add postgres to featurelist in mkdocs ([#80](https://github.com/albertomh/djereo/issues/80)) ([21b353a](https://github.com/albertomh/djereo/commit/21b353a07789c0fac2e3f2a520d04bb05b9e0dbe))
+
 ## [0.12.0](https://github.com/albertomh/djereo/compare/v0.11.0...v0.12.0) (2025-02-05)
 
 
