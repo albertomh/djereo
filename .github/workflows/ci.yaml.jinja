@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-24.04
     services:
       postgres:
-        image: postgres:17
+        image: postgres:{{postgres_version}}
         env:
           POSTGRES_DB: postgres
           POSTGRES_USER: postgres
