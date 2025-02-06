@@ -28,9 +28,10 @@ Projects created using `djereo` include:
 - Dependencies managed via `uv`, using a `uv.lock` file for reproducible builds.
 - IPython as the default shell.
 - Simple configuration to enhance your logs with `structlog`.
+- Sensible defaults to use a `postgres` database from the start.
 - Ready-to-use dev tools: Django Debug Toolbar, `django-browser-reload`, runserver logs
   formatted using `rich`, `structlog` in production.
-- Out-of-the-box code coverage reporting with `coverage.py`.
+- Out-of-the-box unit test suite & code coverage reporting.
 - Batteries-included `pre-commit` hook configuration to lint & format code, and run SAST.
 - A `justfile` to enable using `just` as a task runner.
 - ...and more!
@@ -49,8 +50,9 @@ or get started with the instructions on the [Quickstart page](./quickstart.md).
 
 ---
 
-> [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://docs.djangoproject.com/en/stable/)  
-> Starting a Python project? Try [pycliche](https://github.com/albertomh/pycliche), the base
-> `djereo` is built on, as your Python project template.
+!!! note ""
+    [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://docs.djangoproject.com/en/stable/)  
+    Starting a Python project? Try [pycliche](https://github.com/albertomh/pycliche), the base
+    _djereo_ is built on, as your Python project template.
 
 ---
