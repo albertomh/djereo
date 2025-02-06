@@ -31,6 +31,7 @@ def test_djereo_jinja_templates_converted(
 
     def _transform_file_name(fname: str):
         fname = fname.replace("{{project_name}}", copier_input_data["project_name"])
+        fname = fname.replace("{%if is_github_project%}.github{%endif%}", ".github")
         fname = fname.removesuffix(".jinja")
         return fname
 
@@ -48,7 +49,7 @@ def test_djereo_jinja_templates_converted(
 @pytest.mark.integration
 @pytest.mark.parametrize(
     "is_github_project, expected_directory_count, expected_file_count",
-    [(True, 6, 19), (False, 5, 17)],
+    [(True, 6, 20), (False, 5, 18)],
 )
 def test_is_github_project(
     is_github_project: bool,

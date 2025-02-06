@@ -102,9 +102,6 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
             shutil.copyfile(test_project_dir / ".env.in", dotenv_path)
             with dotenv_path.open("r+") as file:
                 _rewrite_password_in_dotenv(file)
-            test_dotenv_path = test_project_dir / ".env.test"
-            with test_dotenv_path.open("r+") as file:
-                _rewrite_password_in_dotenv(file)
 
     return _run
 
