@@ -31,6 +31,7 @@ def test_djereo_jinja_templates_converted(
 
     def _transform_file_name(fname: str):
         fname = fname.replace("{{project_name}}", copier_input_data["project_name"])
+        fname = fname.replace("{%if is_github_project%}.github{%endif%}", ".github")
         fname = fname.removesuffix(".jinja")
         return fname
 

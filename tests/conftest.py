@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -12,6 +13,7 @@ from copier.cli import CopierApp
 from tests._utils import set_up_postgres, tear_down_postgres
 
 DJEREO_TEST_TEMP_DIR = Path("/", "tmp", "djereo_test")
+IS_CI = os.getenv("CI") == "true"
 
 
 @pytest.fixture
@@ -102,9 +104,19 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
             shutil.copyfile(test_project_dir / ".env.in", dotenv_path)
             with dotenv_path.open("r+") as file:
                 _rewrite_password_in_dotenv(file)
+
+        if IS_CI:
             test_dotenv_path = test_project_dir / ".env.test"
             with test_dotenv_path.open("r+") as file:
-                _rewrite_password_in_dotenv(file)
+                test_env_content = file.read()
+                re.sub(
+                    r"DATABASE_URL=.*",
+                    'DATABASE_URL="postgres://test_djereo:password@localhost:5432/test_djereo"',
+                    test_env_content,
+                )
+                file.seek(0)
+                file.write(test_env_content)
+                file.truncate()
 
     return _run
 

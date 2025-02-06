@@ -11,7 +11,7 @@ on:
 
 jobs:
   pre_commit:
-    if: ${{ github.event.pull_request.merged }}
+    if: {% raw %}${{ github.event.pull_request.merged }}{% endraw %}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +21,16 @@ jobs:
     needs:
       - pre_commit
     runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:{{postgres_version}}
+        env:
+          POSTGRES_DB: {{project_name}}
+          POSTGRES_USER: {{project_name}}
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test
