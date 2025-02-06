@@ -41,6 +41,18 @@ file and in the `requires-python` field of [pyproject.toml](https://github.com/a
 See [https://endoflife.date/python](https://endoflife.date/python){target=\"_blank"} for
 more information.
 
+#### Postgres version
+
+`djereo` is configured to work with a postgres database and contains utilities and checks
+to help with this. See [Postgres database](#postgres-database) below for more information.
+
+Note that it is trivial to switch from postgres to SQLite (a single-line change in `.env.in`)
+if you prefer that database engine.
+
+!!! note "Keeping versions consistent"
+    The `django-version-checks` package is used to ensure all environments (local, CI, dev,
+    prod) use the same versions of Python & postgres.
+
 #### Semantic Versioning
 
 The generated project follows Semantic Versioning, with users prompted to provide an
@@ -229,6 +241,29 @@ The `tool.ruff.lint.flake8-tidy-imports.banned-api` table in `pyproject.toml` in
 configuration to have the `ruff` pre-commit hook enforce a ban on importing the `settings`
 module directly. It suggests that you use `from django.conf import settings` instead as
 this is safer and avoids complications if `override_settings` is used in tests.
+
+## Postgres database
+
+`djereo` projects are configured to use a `postgres` database out-of-the-box.
+
+This can easily be switched to use a SQLite database instead by changing a single line in
+the dotenv template, `.env.in`.
+
+### Set up & tear down scripts
+
+The `db/` directory contains the following database scripts:
+
+- `set_up.sql` creates a postgres user and database with the same name as the project.
+- `tear_down.sql` undoes `set_up.sql` and removes the database and user.
+
+Django's default test database behaviour (creating a new database with a name formed by
+prepending the name of the default database with `test_`) is left as-is.
+
+### Database connection string
+
+The database connection is configured in `settings.py` using the `environs` package's
+'Django database URL' extension. That is, as a single database connection string that is
+located in `.env` as the environment variable `DATABASE_URL`.
 
 ## Third-party packages
 
