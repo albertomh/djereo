@@ -55,6 +55,8 @@ Optionally, for projects intended to be hosted on GitHub, also include:
 > Starting a Python project? Try [pycliche](https://github.com/albertomh/pycliche), the base
 > `djereo` is built on, as your Python project template.
 
+Read about all of `djereo`'s features: [https://albertomh.github.io/djereo/featurelist/](https://albertomh.github.io/djereo/featurelist/)
+
 ## Quickstart
 
 This section covers how to create a Django project using `djereo` as a template.
@@ -64,7 +66,9 @@ This section covers how to create a Django project using `djereo` as a template.
 The following must be available locally:
 
 - [Python 3.10](https://docs.python.org/3.10/) or above
-- [uv](https://docs.astral.sh/uv/)
+- [Postgres](https://www.postgresql.org/download/)
+- [uv](https://docs.astral.sh/uv/){target=\"_blank"}
+- [just](https://github.com/casey/just)
 
 ### Bootstrap a new Django project
 
