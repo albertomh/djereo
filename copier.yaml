@@ -73,3 +73,4 @@ is_github_project:
 _tasks:
     - "git init"
     - "uv lock"
+    - "cp .env.in .env"
