@@ -14,15 +14,13 @@ To use `{{project_name}}` the following must be available locally:
 A `justfile` defines common development tasks. Run `just` to show all available recipes.
 
 ```sh
-# 1/4 create a postgres user and database for your project - change 'password' below
+# 1/3 create a postgres user and database for your project - change 'password' below
 psql -U $(whoami) -d postgres -v APP_USER_PASSWORD='password' -f db/set_up.sql
 
-# 2/4 create a dotenv and populate it with values for local development
-cp .env.in .env
+# 2/3 update the {password} in the DATABASE_URL connection strings in both .env & .env.test
+# The .env file is created for you as a post-creation task.
 
-# 3/4 update the {password} in the DATABASE_URL connection strings in both .env & .env.test
-
-# 4/4 install dependencies in a virtual environment and run the Django development server
+# 3/3 install dependencies in a virtual environment and run the Django development server
 just runserver
 ```
 
