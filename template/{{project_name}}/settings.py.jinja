@@ -134,6 +134,8 @@ WSGI_APPLICATION = "{{project_name}}.wsgi.application"
 DATABASES = {"default": env.dj_db_url("DATABASE_URL")}
 
 
+AUTH_USER_MODEL = "accounts.AuthUser"
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
