@@ -74,3 +74,4 @@ _tasks:
     - "git init"
     - "uv lock"
     - "cp .env.in .env"
+    - "just manage makemigrations"
