@@ -20,14 +20,26 @@ def test_is_git_repo(
     assert is_git_repo(test_project_dir), "The test project is not a Git repository."
 
 
+@pytest.mark.parametrize(
+    "file_path, expected_message",
+    [
+        ("uv.lock", "lock file"),
+        (".env", "dotenv"),
+        ("accounts/migrations/0001_custom_auth_user.py", "migration"),
+    ],
+)
 @pytest.mark.integration
 @pytest.mark.smoke
-def test_uv_lockfile_exists(
+def test_file_exists(
+    file_path: str,
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
     test_project_dir: Path,
+    expected_message: str,
 ):
     copier_copy(copier_input_data)
 
-    uv_lock_file = test_project_dir / "uv.lock"
-    assert uv_lock_file.exists(), f"Expected lock file {uv_lock_file} not found."
+    file_to_check = test_project_dir / file_path
+    assert file_to_check.exists(), (
+        f"Expected {expected_message} {file_to_check} not found."
+    )

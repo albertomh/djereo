@@ -51,6 +51,7 @@ ALLOWED_HOSTS: list[str] = []
 # https://docs.djangoproject.com/en/5.1/ref/settings/#installed-apps
 FIRST_PARTY_APPS = [
     "{{project_name}}.apps.{{project_name|title}}Config",
+    "accounts.apps.AccountsConfig",
 ]
 THIRD_PARTY_APPS = [
     "django_linear_migrations",
@@ -132,6 +133,8 @@ WSGI_APPLICATION = "{{project_name}}.wsgi.application"
 
 DATABASES = {"default": env.dj_db_url("DATABASE_URL")}
 
+
+AUTH_USER_MODEL = "accounts.AuthUser"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
