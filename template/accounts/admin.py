@@ -5,11 +5,9 @@ from accounts.forms import AuthUserChangeForm, AuthUserCreationForm
 from accounts.models import AuthUser
 
 
+@admin.register(AuthUser)
 class AuthUserAdmin(UserAdmin):
     add_form = AuthUserCreationForm
     form = AuthUserChangeForm
     model = AuthUser
     list_display = ["email", "username"]
-
-
-admin.site.register(AuthUser, AuthUserAdmin)
