@@ -51,6 +51,7 @@ ALLOWED_HOSTS: list[str] = []
 # https://docs.djangoproject.com/en/5.1/ref/settings/#installed-apps
 FIRST_PARTY_APPS = [
     "{{project_name}}.apps.{{project_name|title}}Config",
+    "accounts.apps.AccountsConfig",
 ]
 THIRD_PARTY_APPS = [
     "django_linear_migrations",
