@@ -23,6 +23,7 @@ from {{project_name}} import views as {{project_name}}_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("accounts/", include("allauth.urls")),
     path("", {{project_name}}_views.index, name="index"),
 ]
 
