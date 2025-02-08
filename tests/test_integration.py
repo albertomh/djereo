@@ -147,3 +147,29 @@ def test_shell_uses_ipython(
     stdout, _ = run_process_and_wait(["just", "shell"], test_project_dir)
 
     assert "An enhanced Interactive Python" in "".join(stdout)
+
+
+@pytest.mark.integration
+@pytest.mark.smoke
+@pytest.mark.slow
+def test_django_allauth_pages_exist(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    test_project_dir: Path,
+    set_up_test_database: Callable[[], None],
+    tear_down_test_database,
+):
+    allauth_urls = [
+        "/accounts/login/",
+        "/accounts/signup/",
+    ]
+    copier_copy(copier_input_data)
+    set_up_test_database()
+    run_process_and_wait(
+        ["just", "runserver"],
+        test_project_dir,
+    )
+
+    for url in allauth_urls:
+        with urlopen(f"http://127.0.0.1:8000{url}") as response:
+            assert response.status == 200
