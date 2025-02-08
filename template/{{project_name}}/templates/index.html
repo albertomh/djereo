@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "_base.html" %}
 
-<head>
-    <title></title>
-    <meta charset="utf-8">
-    <style></style>
-    <script></script>
-</head>
-
-<body>
+{% block content %}
     <h1>Index</h1>
     {% if user.is_authenticated %}
     Hi {{ user.email }}!
@@ -18,6 +10,4 @@
     <a href="{% url 'account_login' %}">Log In</a> |
     <a href="{% url 'account_signup' %}">Sign Up</a>
     {% endif %}
-</body>
-
-</html>
+{% endblock content %}
