@@ -14,6 +14,7 @@ requires-python = ">={{python_version}}"
 {% set django_ver_major = django_ver_parts[0] | int + 1 %}
 dependencies = [
     "django>={{django_version}},<{{django_ver_major}}.0",
+    "django-allauth>=65.4.1,<66.0.0",
     "django-linear-migrations>=2.16.0,<3.0.0",
     "django-structlog>=9.0.1,<10.0.0",
     "django-version-checks>=1.13.0,<2.0.0",
