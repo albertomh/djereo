@@ -1,1 +1,1 @@
-0001_custom_auth_user
+0001_initial
