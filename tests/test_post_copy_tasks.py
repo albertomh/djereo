@@ -25,7 +25,7 @@ def test_is_git_repo(
     [
         ("uv.lock", "lock file"),
         (".env", "dotenv"),
-        ("accounts/migrations/0001_initial.py", "migration"),
+        ("users/migrations/0001_initial.py", "migration"),
     ],
 )
 @pytest.mark.integration
