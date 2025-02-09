@@ -51,7 +51,7 @@ ALLOWED_HOSTS: list[str] = []
 # https://docs.djangoproject.com/en/5.1/ref/settings/#installed-apps
 FIRST_PARTY_APPS = [
     "{{project_name}}.apps.{{project_name|title}}Config",
-    "accounts.apps.AccountsConfig",
+    "users.apps.UsersConfig",
 ]
 THIRD_PARTY_APPS = [
     "allauth",
@@ -142,7 +142,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DATABASES = {"default": env.dj_db_url("DATABASE_URL")}
 
 
-AUTH_USER_MODEL = "accounts.AuthUser"
+AUTH_USER_MODEL = "users.AuthUser"
 
 AUTHENTICATION_BACKENDS = (
     # Needed to log in by username in Django admin, regardless of `django-allauth`
