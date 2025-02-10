@@ -92,7 +92,6 @@ def test_runserver_dev_logs_use_rich(
     set_up_test_database: Callable[[], None],
     tear_down_test_database,
 ):
-    # arrange
     copier_copy(copier_input_data)
     set_up_test_database()
     process_generator = start_process_and_capture_streams(
@@ -101,7 +100,6 @@ def test_runserver_dev_logs_use_rich(
     )
     stdout_path, _ = next(process_generator)
 
-    # act
     sentinel = "Quit the server with CONTROL-C."
     timeout, interval = 10, 0.1  # seconds
     start_time = time.time()
@@ -128,8 +126,7 @@ def test_runserver_dev_logs_use_rich(
     except StopIteration as e:
         stdout, _ = e.value
 
-    # assert
-    pattern = r'\[\d{2}:\d{2}:\d{2}\] INFO\s+"GET \/ HTTP\/1\.1" 200 \d+\s+basehttp\.py'
+    pattern = r"\[\d{2}:\d{2}:\d{2}\] INFO\s+ 200 GET \/ HTTP\/1\.1\s+basehttp\.py"
     match = re.search(pattern, "".join(stdout))
     assert match is not None
 
