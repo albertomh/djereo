@@ -113,6 +113,8 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#user-authentication">User authentication</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#third-party-packages">Third-party packages</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#whitenoise">whitenoise</a>
@@ -344,7 +346,7 @@ defaults.</p>
 <li><strong>Django Contrib Settings</strong><br />
   [<em>left empty for the user to populate</em>]</li>
 <li><strong>Third Party Settings</strong><br />
-  Mainly for dev tools such as the debug toolbar and <code>django-version-checks</code>.</li>
+  Settings for <code>django-allauth</code> and dev tools such as the debug toolbar and <code>django-version-checks</code>.</li>
 <li><strong>Project Settings</strong><br />
   [<em>left empty for the user to populate</em>]</li>
 </ul>
@@ -368,6 +370,14 @@ prepending the name of the default database with <code>test_</code>) is left as-
 <p>The database connection is configured in <code>settings.py</code> using the <code>environs</code> package's
 'Django database URL' extension. That is, as a single database connection string that is
 located in <code>.env</code> as the environment variable <code>DATABASE_URL</code>.</p>
+<!-- markdownlint-disable MD013 line-length -->
+<h2 id="user-authentication"><img src="https://simpleicons.org/icons/monkeytie.svg" width="25" alt="fingerprint logo"> User authentication</h2>
+<!-- markdownlint-enable MD013 line-length -->
+
+<p>Projects generated with <code>djereo</code> follow the 'custom User + UserProfile' pattern common in
+modern Django apps. Authentication functionality is implemented via the <a href="https://allauth.org/" target="\&quot;_blank&quot;">django-allauth</a>
+package for simplicity and to ease future extensibility. A dedicated Django app, <code>users</code>,
+centralises models, template overrides and configuration for auth-related features.</p>
 <h2 id="third-party-packages">Third-party packages</h2>
 <h3 id="whitenoise">whitenoise</h3>
 <p><a href="https://whitenoise.readthedocs.io/en/stable/" target="\&quot;_blank&quot;">whitenoise</a> is included
