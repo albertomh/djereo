@@ -1,4 +1,16 @@
+import logging
+
 import structlog
+
+
+class FirstArgOnlyFilter(logging.Filter):
+    """Extracts the first argument from args and sets it as the log message."""
+
+    def filter(self, record):
+        if record.args and isinstance(record.args, tuple):
+            record.msg = record.args[0]
+            record.args = ()
+        return True
 
 
 class LoggingConfigFactory:
