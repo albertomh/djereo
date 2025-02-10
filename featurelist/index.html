@@ -105,6 +105,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#settingspy">settings.py</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#logging">Logging</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#postgres-database">Postgres database</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#set-up-tear-down-scripts">Set up &amp; tear down scripts</a>
@@ -354,7 +356,23 @@ defaults.</p>
 configuration to have the <code>ruff</code> pre-commit hook enforce a ban on importing the <code>settings</code>
 module directly. It suggests that you use <code>from django.conf import settings</code> instead as
 this is safer and avoids complications if <code>override_settings</code> is used in tests.</p>
-<h2 id="postgres-database">Postgres database</h2>
+<!-- markdownlint-disable MD013 line-length -->
+<h2 id="logging"><img src="https://simpleicons.org/icons/googlemessages.svg" width="25" alt="message bubble"> Logging</h2>
+<!-- markdownlint-enable MD013 line-length -->
+
+<p>Logging differs between hosted environments (eg. production) and development.</p>
+<p>In development (<code>runserver</code>) <a href="https://pypi.org/project/rich/" target="\&quot;_blank&quot;">rich</a> is
+used to output coloured logs:</p>
+<p><img alt="runserver logs for a project generated using djereo" src="../media/djereo_runserver-logs.png" /></p>
+<p>When <code>DEBUG=False</code>, as in production, <a href="https://www.structlog.org/" target="\&quot;_blank&quot;">structlog</a>
+is used instead.</p>
+<p>Logging configuration is dynamically generated based on the <code>DEBUG</code> environment variable.
+The <code>LoggingConfigFactory</code> class is used to generate settings for filters, formaters,
+handlers and loggers.</p>
+<!-- markdownlint-disable MD013 line-length -->
+<h2 id="postgres-database"><img src="https://simpleicons.org/icons/postgresql.svg" width="25" alt="postgres elephant logo"> Postgres database</h2>
+<!-- markdownlint-enable MD013 line-length -->
+
 <p><code>djereo</code> projects are configured to use a <code>postgres</code> database out-of-the-box.</p>
 <p>This can easily be switched to use a SQLite database instead by changing a single line in
 the dotenv template, <code>.env.in</code>.</p>
