@@ -233,7 +233,7 @@ defaults.
 - **Django Contrib Settings**  
   [_left empty for the user to populate_]
 - **Third Party Settings**  
-  Mainly for dev tools such as the debug toolbar and `django-version-checks`.
+  Settings for `django-allauth` and dev tools such as the debug toolbar and `django-version-checks`.
 - **Project Settings**  
   [_left empty for the user to populate_]
 
@@ -264,6 +264,15 @@ prepending the name of the default database with `test_`) is left as-is.
 The database connection is configured in `settings.py` using the `environs` package's
 'Django database URL' extension. That is, as a single database connection string that is
 located in `.env` as the environment variable `DATABASE_URL`.
+
+<!-- markdownlint-disable MD013 line-length -->
+## <img src="https://simpleicons.org/icons/monkeytie.svg" width="25" alt="fingerprint logo"> User authentication
+<!-- markdownlint-enable MD013 line-length -->
+
+Projects generated with `djereo` follow the 'custom User + UserProfile' pattern common in
+modern Django apps. Authentication functionality is implemented via the [django-allauth](https://allauth.org/){target=\"_blank"}
+package for simplicity and to ease future extensibility. A dedicated Django app, `users`,
+centralises models, template overrides and configuration for auth-related features.
 
 ## Third-party packages
 
