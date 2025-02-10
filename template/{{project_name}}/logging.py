@@ -18,64 +18,64 @@ class LoggingConfigFactory:
         self.debug = debug
 
     def build(self):
+        dev_mode = self.debug
+
+        console_rich = {
+            "class": "rich.logging.RichHandler",
+            "filters": ["require_debug_true"],
+            "formatter": "rich",
+            "level": "INFO",
+            "rich_tracebacks": True,
+            "tracebacks_show_locals": True,
+        }
+
         return {
             "version": 1,
             "disable_existing_loggers": False,
             "filters": {
-                "require_debug_true": {
-                    "()": "django.utils.log.RequireDebugTrue",
-                },
-                "require_debug_false": {
-                    "()": "django.utils.log.RequireDebugFalse",
-                },
+                "require_debug_true": {"()": "django.utils.log.RequireDebugTrue"},
+                "require_debug_false": {"()": "django.utils.log.RequireDebugFalse"},
+                "first_arg_only": {"()": FirstArgOnlyFilter},
             },
             "formatters": {
-                "json_formatter": {
+                "json": {
                     "()": structlog.stdlib.ProcessorFormatter,
                     "processor": structlog.processors.JSONRenderer(),
                 },
-                "rich": {
-                    "datefmt": "[%X]",
-                },
+                "rich": {"datefmt": "[%X]"},
+                "rich_http": {"datefmt": "[%X]", "format": "%(status_code)s %(msg)s"},
             },
             "handlers": {
-                "null": {
-                    "class": "logging.NullHandler",
-                },
-                "dev_log": {
-                    "class": "rich.logging.RichHandler",
-                    "filters": ["require_debug_true"],
-                    "formatter": "rich",
-                    "level": "INFO",
-                    "rich_tracebacks": True,
-                    "tracebacks_show_locals": True,
-                },
-                "prod_log": {
+                "console_dev": console_rich,
+                "console_http": {**console_rich, "formatter": "rich_http"},
+                "console_prod": {
                     "class": "logging.StreamHandler",
                     "filters": ["require_debug_false"],
-                    "formatter": "json_formatter",
+                    "formatter": "json",
                     "level": "INFO",
                 },
+                "null": {"class": "logging.NullHandler"},
             },
             "loggers": {
                 "django": {
-                    "handlers": ["dev_log" if self.debug else "prod_log"],
+                    "handlers": ["console_dev" if dev_mode else "console_prod"],
                     "level": "INFO",
                     "propagate": False,
                 },
-                "django.request": {
-                    "handlers": ["dev_log" if self.debug else "null"],
+                "django.server": {
+                    "handlers": ["console_http" if dev_mode else "null"],
                     "level": "INFO",
-                    "propagate": True,
+                    "propagate": False,
+                    "filters": ["first_arg_only"],
                 },
                 "django_structlog": {
-                    "handlers": ["null" if self.debug else "prod_log"],
+                    "handlers": ["null" if dev_mode else "console_prod"],
                     "level": "INFO",
                     "propagate": False,
                 },
             },
             "root": {
-                "handlers": ["dev_log" if self.debug else "prod_log"],
+                "handlers": ["console_dev" if dev_mode else "console_prod"],
                 "level": "INFO",
             },
         }
