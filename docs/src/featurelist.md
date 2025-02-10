@@ -242,7 +242,27 @@ configuration to have the `ruff` pre-commit hook enforce a ban on importing the 
 module directly. It suggests that you use `from django.conf import settings` instead as
 this is safer and avoids complications if `override_settings` is used in tests.
 
-## Postgres database
+<!-- markdownlint-disable MD013 line-length -->
+## <img src="https://simpleicons.org/icons/googlemessages.svg" width="25" alt="message bubble"> Logging
+<!-- markdownlint-enable MD013 line-length -->
+
+Logging differs between hosted environments (eg. production) and development.
+
+In development (`runserver`) [rich](https://pypi.org/project/rich/){target=\"_blank"} is
+used to output coloured logs:
+
+![runserver logs for a project generated using djereo](media/djereo_runserver-logs.png)
+
+When `DEBUG=False`, as in production, [structlog](https://www.structlog.org/){target=\"_blank"}
+is used instead.
+
+Logging configuration is dynamically generated based on the `DEBUG` environment variable.
+The `LoggingConfigFactory` class is used to generate settings for filters, formaters,
+handlers and loggers.
+
+<!-- markdownlint-disable MD013 line-length -->
+## <img src="https://simpleicons.org/icons/postgresql.svg" width="25" alt="postgres elephant logo"> Postgres database {#postgres-database}
+<!-- markdownlint-enable MD013 line-length -->
 
 `djereo` projects are configured to use a `postgres` database out-of-the-box.
 

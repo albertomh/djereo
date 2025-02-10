@@ -1,29 +1,56 @@
 import json
 import logging
 
-from django.test import Client, TestCase, override_settings
+from django.test import Client, SimpleTestCase, TestCase, override_settings
 from parameterized import parameterized
 
-from {{project_name}}.logging import LoggingConfigFactory
+from {{project_name}}.logging import FirstArgOnlyFilter, LoggingConfigFactory
+
+
+class TestFirstArgOnlyFilter(SimpleTestCase):
+    def setUp(self):
+        self.filter = FirstArgOnlyFilter()
+        self.record = logging.LogRecord(
+            name="test_logger",
+            level=logging.INFO,
+            pathname="test_path",
+            lineno=123,
+            msg="Test message",
+            args=("First argument", "Second argument"),
+            exc_info=None,
+        )
+
+    def test_filter_logs_first_arg_as_msg(self):
+        filtered = self.filter.filter(self.record)
+        self.assertTrue(filtered)
+        self.assertEqual(self.record.msg, "First argument")
+        self.assertEqual(self.record.args, ())
+
+    def test_filter_null_args_preserves_msg(self):
+        self.record.args = None
+        filtered = self.filter.filter(self.record)
+        self.assertTrue(filtered)
+        self.assertEqual(self.record.msg, "Test message")
+        self.assertIsNone(self.record.args)
 
 
 class LoggingConfigFactoryTest(TestCase):
     @parameterized.expand(
         [
-            (True, [["dev_log"], ["dev_log"], ["null"], ["dev_log"]]),
-            (False, [["prod_log"], ["null"], ["prod_log"], ["prod_log"]]),
+            (True, [["console_dev"], ["console_http"], ["null"], ["console_dev"]]),
+            (False, [["console_prod"], ["null"], ["console_prod"], ["console_prod"]]),
         ]
     )
     def test_build(self, debug_value, expected_handlers):
         factory = LoggingConfigFactory(debug=debug_value)
         config = factory.build()
 
-        self.assertEqual(len(config["filters"]), 2)
-        self.assertEqual(len(config["formatters"]), 2)
-        self.assertEqual(len(config["handlers"]), 3)
+        self.assertEqual(len(config["filters"]), 3)
+        self.assertEqual(len(config["formatters"]), 3)
+        self.assertEqual(len(config["handlers"]), 4)
         self.assertEqual(config["loggers"]["django"]["handlers"], expected_handlers[0])
         self.assertEqual(
-            config["loggers"]["django.request"]["handlers"], expected_handlers[1]
+            config["loggers"]["django.server"]["handlers"], expected_handlers[1]
         )
         self.assertEqual(
             config["loggers"]["django_structlog"]["handlers"], expected_handlers[2]
@@ -40,7 +67,7 @@ class LogsFormatTest(TestCase):
 
     @override_settings(LOGGING=LoggingConfigFactory(False).build())
     def test_logs_format_debug_false(self):
-        req_logger = logging.getLogger("django.request")
+        req_logger = logging.getLogger("django.server")
         struct_logger = logging.getLogger("django_structlog")
 
         with self.assertNoLogs(req_logger, level="INFO"):

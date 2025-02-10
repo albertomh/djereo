@@ -10,6 +10,8 @@ config:
     code_blocks: false
     line_length: 100
     tables: false
+  link-fragments:                   # MD051
+    ignore_case: true
   no-duplicate-heading:             # MD024
     # allow duplicate headings in eg. CHANGELOG.md
     siblings_only: true
