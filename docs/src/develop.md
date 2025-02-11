@@ -71,6 +71,14 @@ Valid commit types are defined in `.commitlintrc.ts`.
 > i.e. the repository created by invoking `copier` with the `djereo` template as documented
 > in the [Quickstart](./quickstart.md).
 
+<!-- break up blockquotes to avoid triggering markdownlint's MD028/no-blanks-blockquote -->
+
+> **N.B.**  
+> The commit type `feat(docs)` (and similarly scoped `feat`s) may seem unconventional at
+> first glance. This is used occasionally in `djereo`'s commit messages to indicate that
+> the work relates to the documentation (eg. `README.md`) included in generated projects.
+> It is a `feature` of `djereo` which relates to `documentation`.
+
 ### Dependency management
 
 Dependencies are defined in the [pyproject.toml](https://github.com/albertomh/djereo/blob/main/pyproject.toml){target=\"_blank"}
