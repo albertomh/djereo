@@ -285,6 +285,16 @@ The database connection is configured in `settings.py` using the `environs` pack
 'Django database URL' extension. That is, as a single database connection string that is
 located in `.env` as the environment variable `DATABASE_URL`.
 
+### `seed_database` management command
+
+A `seed_database` management command is included for quickstart purposes and as a starting
+point for you to populate with models needed for local development as your application grows.
+
+In a new project `seed_database` creates three users: admin, staff and a non-privileged
+regular user.
+
+Invoke it with `just manage seed_database`.
+
 <!-- markdownlint-disable MD013 line-length -->
 ## <img src="https://simpleicons.org/icons/monkeytie.svg" width="25" alt="fingerprint logo"> User authentication
 <!-- markdownlint-enable MD013 line-length -->
