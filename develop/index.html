@@ -182,6 +182,15 @@ The phrase "gen. project" is used frequently in commit messages. It means "gener
 i.e. the repository created by invoking <code>copier</code> with the <code>djereo</code> template as documented
 in the <a href="../quickstart/">Quickstart</a>.</p>
 </blockquote>
+<!-- break up blockquotes to avoid triggering markdownlint's MD028/no-blanks-blockquote -->
+
+<blockquote>
+<p><strong>N.B.</strong><br />
+The commit type <code>feat(docs)</code> (and similarly scoped <code>feat</code>s) may seem unconventional at
+first glance. This is used occasionally in <code>djereo</code>'s commit messages to indicate that
+the work relates to the documentation (eg. <code>README.md</code>) included in generated projects.
+It is a <code>feature</code> of <code>djereo</code> which relates to <code>documentation</code>.</p>
+</blockquote>
 <h3 id="dependency-management">Dependency management</h3>
 <p>Dependencies are defined in the <a href="https://github.com/albertomh/djereo/blob/main/pyproject.toml" target="\&quot;_blank&quot;">pyproject.toml</a>
 file. <code>uv</code> is used to manage

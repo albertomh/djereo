@@ -113,6 +113,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#database-connection-string">Database connection string</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#seed_database-management-command">seed_database management command</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#user-authentication">User authentication</a>
@@ -388,6 +390,12 @@ prepending the name of the default database with <code>test_</code>) is left as-
 <p>The database connection is configured in <code>settings.py</code> using the <code>environs</code> package's
 'Django database URL' extension. That is, as a single database connection string that is
 located in <code>.env</code> as the environment variable <code>DATABASE_URL</code>.</p>
+<h3 id="seed_database-management-command"><code>seed_database</code> management command</h3>
+<p>A <code>seed_database</code> management command is included for quickstart purposes and as a starting
+point for you to populate with models needed for local development as your application grows.</p>
+<p>In a new project <code>seed_database</code> creates three users: admin, staff and a non-privileged
+regular user.</p>
+<p>Invoke it with <code>just manage seed_database</code>.</p>
 <!-- markdownlint-disable MD013 line-length -->
 <h2 id="user-authentication"><img src="https://simpleicons.org/icons/monkeytie.svg" width="25" alt="fingerprint logo"> User authentication</h2>
 <!-- markdownlint-enable MD013 line-length -->
