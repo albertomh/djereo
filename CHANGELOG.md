@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.14.0](https://github.com/albertomh/djereo/compare/v0.13.0...v0.14.0) (2025-02-10)
+
+
+### Features
+
+* Add custom auth user ([#83](https://github.com/albertomh/djereo/issues/83)) ([dc3ab41](https://github.com/albertomh/djereo/commit/dc3ab419fe57eddeef111e579ff063be9af9cd8d))
+* Add django-allauth to generated projects ([#85](https://github.com/albertomh/djereo/issues/85)) ([3c8aa2e](https://github.com/albertomh/djereo/commit/3c8aa2e2d335dcab245ae11c56bd855771be8970))
+* Add UserProfile model to gen. project's 'users' app ([#86](https://github.com/albertomh/djereo/issues/86)) ([719daf1](https://github.com/albertomh/djereo/commit/719daf100fca1e65de77f9a74d2a605ba9589e7b))
+
+
+### Documentation
+
+* Custom User model & django-allauth in mkdocs ([#87](https://github.com/albertomh/djereo/issues/87)) ([db25189](https://github.com/albertomh/djereo/commit/db25189a6703e033d8ea3f732f5ec5094b3ccb7f))
+
 ## [0.13.0](https://github.com/albertomh/djereo/compare/v0.12.0...v0.13.0) (2025-02-06)
 
 
