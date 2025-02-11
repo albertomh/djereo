@@ -51,11 +51,14 @@ Optionally, for projects intended to be hosted on GitHub, also include:
   - Run `pre-commit` hooks and `pytest` as part of a Continuous Integration pipeline.
 - A `dependabot` configuration to keep Python packages & GitHub Actions up to date.
 
+> [![docs](https://img.shields.io/badge/📖_Docs-FFFFFF)](https://albertomh.github.io/djereo/)  
+> Read about all of `djereo`'s features: [https://albertomh.github.io/djereo/featurelist/](https://albertomh.github.io/djereo/featurelist/)
+
+<!-- break up blockquotes to avoid triggering markdownlint's MD028/no-blanks-blockquote -->
+
 > [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://docs.djangoproject.com/en/stable/)  
 > Starting a Python project? Try [pycliche](https://github.com/albertomh/pycliche), the base
 > `djereo` is built on, as your Python project template.
-
-Read about all of `djereo`'s features: [https://albertomh.github.io/djereo/featurelist/](https://albertomh.github.io/djereo/featurelist/)
 
 ## Quickstart
 
@@ -67,7 +70,7 @@ The following must be available locally:
 
 - [Python 3.10](https://docs.python.org/3.10/) or above
 - [Postgres](https://www.postgresql.org/download/)
-- [uv](https://docs.astral.sh/uv/){target=\"_blank"}
+- [uv](https://docs.astral.sh/uv/)
 - [just](https://github.com/casey/just)
 
 ### Bootstrap a new Django project
