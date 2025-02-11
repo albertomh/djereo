@@ -14,16 +14,19 @@ To use `{{project_name}}` the following must be available locally:
 A `justfile` defines common development tasks. Run `just` to show all available recipes.
 
 ```sh
-# 1/4 create a postgres user and database for your project - change 'password' below
+# 1/5 create a postgres user and database for your project - change 'password' below
 psql -U $(whoami) -d postgres -v APP_USER_PASSWORD='password' -f db/set_up.sql
 
-# 2/4 update the {password} in the DATABASE_URL connection strings in both .env & .env.test
+# 2/5 update the {password} in the DATABASE_URL connection strings in both .env & .env.test
 # The .env file is created for you as a post-creation task.
 
-# 3/4 Apply migrations to the database
+# 3/5 apply migrations to the database
 just manage migrate
 
-# 4/4 install dependencies in a virtual environment and run the Django development server
+# 4/5 create three users: admin, staff and regular (non-privileged)
+just manage seed_database
+
+# 5/5 install dependencies in a virtual environment and run the Django development server
 just runserver
 ```
 
