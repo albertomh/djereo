@@ -24,7 +24,7 @@ IS_TESTING = "test" in sys.argv
 
 if IS_TESTING:
     env.read_env(".env.test", recurse=False)
-else:
+else:  # pragma: no cover
     env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -223,7 +223,7 @@ VERSION_CHECKS = {
 # Only enable dev tools when in debug mode and tests are not running.
 # Django changes DEBUG to False for tests, so can't rely on DEBUG alone.
 ENABLE_DEBUG_TOOLS = DEBUG and not IS_TESTING
-if ENABLE_DEBUG_TOOLS:
+if ENABLE_DEBUG_TOOLS:  # pragma: no cover
     INSTALLED_APPS += [
         "django_browser_reload",
         "debug_toolbar",
