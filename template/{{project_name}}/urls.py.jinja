@@ -27,7 +27,7 @@ urlpatterns = [
     path("", {{project_name}}_views.index, name="index"),
 ]
 
-if settings.ENABLE_DEBUG_TOOLS:
+if settings.ENABLE_DEBUG_TOOLS:  # pragma: no cover
     from debug_toolbar.toolbar import debug_toolbar_urls
 
     urlpatterns += [
