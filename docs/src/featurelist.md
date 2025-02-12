@@ -304,6 +304,21 @@ modern Django apps. Authentication functionality is implemented via the [django-
 package for simplicity and to ease future extensibility. A dedicated Django app, `users`,
 centralises models, template overrides and configuration for auth-related features.
 
+### `users` app model factories
+
+Model factories for `AuthUser` and `UserProfile` are provided as a convenience. This includes
+subfactories to keep tests lean. This means that in a test one may generate a fleshed-out
+user with:
+
+```python
+from users.factories import UserProfileFactory  
+from users.models import AuthUser
+
+profile = UserProfileFactory()
+
+assert isinstance(up.user, AuthUser)
+```
+
 ## Third-party packages
 
 ### whitenoise
