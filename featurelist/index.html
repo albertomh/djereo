@@ -118,6 +118,10 @@
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#user-authentication">User authentication</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#users-app-model-factories">users app model factories</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#third-party-packages">Third-party packages</a>
         <ul>
@@ -404,6 +408,17 @@ regular user.</p>
 modern Django apps. Authentication functionality is implemented via the <a href="https://allauth.org/" target="\&quot;_blank&quot;">django-allauth</a>
 package for simplicity and to ease future extensibility. A dedicated Django app, <code>users</code>,
 centralises models, template overrides and configuration for auth-related features.</p>
+<h3 id="users-app-model-factories"><code>users</code> app model factories</h3>
+<p>Model factories for <code>AuthUser</code> and <code>UserProfile</code> are provided as a convenience. This includes
+subfactories to keep tests lean. This means that in a test one may generate a fleshed-out
+user with:</p>
+<pre><code class="language-python">from users.factories import UserProfileFactory  
+from users.models import AuthUser
+
+profile = UserProfileFactory()
+
+assert isinstance(up.user, AuthUser)
+</code></pre>
 <h2 id="third-party-packages">Third-party packages</h2>
 <h3 id="whitenoise">whitenoise</h3>
 <p><a href="https://whitenoise.readthedocs.io/en/stable/" target="\&quot;_blank&quot;">whitenoise</a> is included
