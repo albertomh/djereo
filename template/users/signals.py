@@ -6,7 +6,7 @@ from users.models import AuthUser, create_or_update_user_profile
 
 
 @contextmanager
-def disable_authuser_signal():
+def disable_authuser_postsave_signal():
     """Temporarily disable the `post_save` signal for `AuthUser`.
 
     Intended to be used alongside Factory Boy model factories."""

@@ -2,7 +2,7 @@ from factory import Faker, SubFactory
 from factory.django import DjangoModelFactory
 
 from users.models import AuthUser, UserProfile
-from users.signals import disable_authuser_signal
+from users.signals import disable_authuser_postsave_signal
 
 
 class AuthUserFactory(DjangoModelFactory):
@@ -22,7 +22,7 @@ class AuthUserFactory(DjangoModelFactory):
         Signals disabled because creating an AuthUser would create a UserProfile, which we
         wish to avoid and instead do explicitly via a subfactory in UserProfileFactory.
         """
-        with disable_authuser_signal():
+        with disable_authuser_postsave_signal():
             return super()._create(model_class, *args, **kwargs)
 
 
