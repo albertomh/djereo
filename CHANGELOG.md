@@ -8,6 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.15.0](https://github.com/albertomh/djereo/compare/v0.14.0...v0.15.0) (2025-02-13)
+
+
+### Features
+
+* Add disable_authuser_signal context manager ([#92](https://github.com/albertomh/djereo/issues/92)) ([91aa68c](https://github.com/albertomh/djereo/commit/91aa68c7555bd021b7fbdbfa58bf8d7accf54488))
+* Add factories for AuthUser and UserProfile in gen. projects ([#93](https://github.com/albertomh/djereo/issues/93)) ([abc1f5c](https://github.com/albertomh/djereo/commit/abc1f5cda40a579932c85462bb1c2604f00f9b76))
+* Django admin login form reads 'Email' instead of 'Username' ([#98](https://github.com/albertomh/djereo/issues/98)) ([0ffba64](https://github.com/albertomh/djereo/commit/0ffba6494d1b06666e856f6f7f4d086ef0f0b7b0))
+* **docs:** Add 'migrate' step to gen. project's README quickstart ([#89](https://github.com/albertomh/djereo/issues/89)) ([3ced1ca](https://github.com/albertomh/djereo/commit/3ced1caa4ffa2dcd33d92b113988a5f98b8d6a9d))
+* Seed_database management command creates users for local dev ([#91](https://github.com/albertomh/djereo/issues/91)) ([3f34372](https://github.com/albertomh/djereo/commit/3f343727e7491cece83fbe26e87df9ce9bac55f8))
+
+
+### Documentation
+
+* 'users' app model factories ([#94](https://github.com/albertomh/djereo/issues/94)) ([4b58765](https://github.com/albertomh/djereo/commit/4b58765abce831e4b1edd9197e06f3e8ec491232))
+
 ## [0.14.0](https://github.com/albertomh/djereo/compare/v0.13.0...v0.14.0) (2025-02-10)
 
 
