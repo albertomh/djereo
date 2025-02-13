@@ -1,7 +1,7 @@
 import json
 import logging
 
-from django.test import Client, SimpleTestCase, TestCase, override_settings
+from django.test import Client, SimpleTestCase, override_settings
 from parameterized import parameterized
 
 from {{project_name}}.logging import FirstArgOnlyFilter, LoggingConfigFactory
@@ -34,7 +34,7 @@ class TestFirstArgOnlyFilter(SimpleTestCase):
         self.assertIsNone(self.record.args)
 
 
-class LoggingConfigFactoryTest(TestCase):
+class LoggingConfigFactoryTest(SimpleTestCase):
     @parameterized.expand(
         [
             (True, [["console_dev"], ["console_http"], ["null"], ["console_dev"]]),
@@ -59,7 +59,7 @@ class LoggingConfigFactoryTest(TestCase):
         self.assertEqual(config["root"]["handlers"], expected_handlers[3])
 
 
-class LogsFormatTest(TestCase):
+class LogsFormatTest(SimpleTestCase):
     """Test logs format based on DEBUG mode in Django runserver."""
 
     def setUp(self):
