@@ -1,11 +1,10 @@
 from io import StringIO
 
 from django.apps import apps
+from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.test import TestCase
-
-from users.models import AuthUser
 
 
 class SeedDatabaseTests(TestCase):
@@ -22,7 +21,7 @@ class SeedDatabaseTests(TestCase):
         return out.getvalue(), err.getvalue()
 
     def test_error_data_exists(self):
-        AuthUser.objects.create_user(username="user")
+        get_user_model().objects.create_user(username="user")
         expected_msg = (
             "This command cannot be run when any users exist to guard "
             + "against accidental use on production."

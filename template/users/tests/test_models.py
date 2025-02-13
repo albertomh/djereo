@@ -13,7 +13,7 @@ class UserProfileTestCase(TestCase):
             password="rocinante",
         )
 
-    def test_user_profile_creation(self):
+    def test_user_profile_created_when_auth_user_created(self):
         profile = UserProfile.objects.get(user=self.user)
         self.assertEqual(profile.user, self.user)
         self.assertEqual(str(profile), f"Profile for {self.user}")

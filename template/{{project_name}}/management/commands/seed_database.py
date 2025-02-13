@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
@@ -41,4 +42,4 @@ class Command(BaseCommand):
 
 
 def create_user(data):
-    AuthUser.objects.create_user(**data)
+    get_user_model().objects.create_user(**data)
