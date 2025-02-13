@@ -1,0 +1,9 @@
+from django.test import SimpleTestCase
+
+from {{project_name}}.admin import CustomAdminAuthenticationForm
+
+
+class CustomAdminAuthenticationFormTest(SimpleTestCase):
+    def test_username_field_label_is_email(self):
+        form = CustomAdminAuthenticationForm()
+        self.assertEqual(form.fields["username"].label, "Email")
