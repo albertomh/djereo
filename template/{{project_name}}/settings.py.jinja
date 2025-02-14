@@ -40,7 +40,10 @@ DEBUG = env.bool("DEBUG", default=False)
 
 INTERNAL_IPS = ["127.0.0.1", "::1"]
 
-ALLOWED_HOSTS: list[str] = []
+if DEBUG:  # pragma: no cover
+    ALLOWED_HOSTS: list[str] = []
+else:
+    ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 
 # Application definition
