@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.16.0](https://github.com/albertomh/djereo/compare/v0.15.0...v0.16.0) (2025-02-14)
+
+
+### Features
+
+* Collectstatic locally if DEBUG=False ([#102](https://github.com/albertomh/djereo/issues/102)) ([1651db9](https://github.com/albertomh/djereo/commit/1651db90ba195df9cddb3474e5a4c988cc0c168e))
+
+
+### Bug Fixes
+
+* Override Django's admin.site instead of creating new instance ([#99](https://github.com/albertomh/djereo/issues/99)) ([76e3f36](https://github.com/albertomh/djereo/commit/76e3f364c6edd77e6c795521a282c11b7f373e1d))
+
 ## [0.15.0](https://github.com/albertomh/djereo/compare/v0.14.0...v0.15.0) (2025-02-13)
 
 
