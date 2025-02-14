@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.contrib.admin import AdminSite
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -12,4 +13,4 @@ class CustomAdminSite(AdminSite):
     login_form = CustomAdminAuthenticationForm
 
 
-admin_site = CustomAdminSite()
+admin.site = CustomAdminSite()
