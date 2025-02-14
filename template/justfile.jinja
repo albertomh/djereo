@@ -1,5 +1,6 @@
 # {{project_name}} - local development tooling
 
+set dotenv-load
 set positional-arguments
 
 default:
@@ -15,6 +16,9 @@ manage +args='help': _dev_setup
 
 runserver $PYTHONDEVMODE="1": _dev_setup
   # Disable PYTHONDEVMODE by passing an empty string ie. `just runserver ""`
+  @if ! $DEBUG; then \
+    uv run manage.py collectstatic; \
+  fi
   @uv run manage.py runserver
 
 shell: _dev_setup
