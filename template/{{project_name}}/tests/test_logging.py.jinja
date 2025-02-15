@@ -65,7 +65,7 @@ class LogsFormatTest(SimpleTestCase):
     def setUp(self):
         self.client = Client()
 
-    @override_settings(LOGGING=LoggingConfigFactory(False).build())
+    @override_settings(LOGGING=LoggingConfigFactory(debug=False).build())
     def test_logs_format_debug_false(self):
         req_logger = logging.getLogger("django.server")
         struct_logger = logging.getLogger("django_structlog")

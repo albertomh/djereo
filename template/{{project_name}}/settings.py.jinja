@@ -94,7 +94,7 @@ if not DEBUG:
 
 ROOT_URLCONF = "{{project_name}}.urls"
 
-logging_factory = LoggingConfigFactory(DEBUG)
+logging_factory = LoggingConfigFactory(debug=DEBUG)
 LOGGING = logging_factory.build()
 
 if not DEBUG:
