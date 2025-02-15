@@ -128,6 +128,17 @@ is the source of truth for the latest SemVer tag.
 **N.B.** conventional commits (as enforced by the relevant git hook) are a prerequisite
 for Release Please to generate changelogs and calculate new SemVer tags.
 
+In order for Release Please to automate the above process, a GitHub Actions 'repository secret'
+called `RELEASE_PLEASE_TOKEN` must exist in GitHub (under <repo>/secrets/actions).
+The contents of this secret must be a Personal Access Token (PAT) with the following permissions:
+
+```yaml
+contents: write
+pull-requests: write
+```
+
+For more information, consult the [release-please-action project](https://github.com/googleapis/release-please-action){target=\"_blank"}.
+
 #### Dependabot
 
 Configured to update Python dependencies & GitHub actions on a weekly schedule.
