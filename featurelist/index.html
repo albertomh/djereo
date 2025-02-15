@@ -265,6 +265,13 @@ configures the tool while <a href="https://github.com/albertomh/djereo/blob/main
 is the source of truth for the latest SemVer tag.</p>
 <p><strong>N.B.</strong> conventional commits (as enforced by the relevant git hook) are a prerequisite
 for Release Please to generate changelogs and calculate new SemVer tags.</p>
+<p>In order for Release Please to automate the above process, a GitHub Actions 'repository secret'
+called <code>RELEASE_PLEASE_TOKEN</code> must exist in GitHub (under <repo>/secrets/actions).
+The contents of this secret must be a Personal Access Token (PAT) with the following permissions:</p>
+<pre><code class="language-yaml">contents: write
+pull-requests: write
+</code></pre>
+<p>For more information, consult the <a href="https://github.com/googleapis/release-please-action" target="\&quot;_blank&quot;">release-please-action project</a>.</p>
 <h4 id="dependabot">Dependabot</h4>
 <p>Configured to update Python dependencies &amp; GitHub actions on a weekly schedule.</p>
 <p>See <a href="https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/workflows" target="\&quot;_blank&quot;">.github/workflows/</a>
