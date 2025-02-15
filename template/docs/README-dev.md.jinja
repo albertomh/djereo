@@ -20,7 +20,7 @@ mode).
 - `manage`: wrapper around Django's `manage.py`. Takes one or more arguments, which
   defaults to 'help'.
 - `runserver`: execute Django's `runserver` management command using Python in
-  [Development Mode](https://docs.python.org/3/library/devmode.html){target=\"_blank"}.
+  [Development Mode](https://docs.python.org/3/library/devmode.html).
   This mode shows additional warnings (Deprecation, Import, Resource) and enables extra
   debug hooks. Development Mode can be disabled by passing an empty string
   i.e. `just runserver ""`
@@ -93,7 +93,7 @@ Three re-usable custom actions are available:
 - `sys-check`: runs Django's system checks (`manage.py check`).
 - `test`: runs all unit tests via the `just test` recipe (see [Justfile recipes](#justfile-recipes)).
 
-See [.github/actions/](https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/actions){target=\"_blank"}
+See [.github/actions/](https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/actions)
 for the definitions of these actions.
 
 ### GitHub Actions workflows
@@ -112,19 +112,30 @@ As with `PR`, but acts when a pull request is closed and changes merged into the
 
 Refreshes a pull request that updates the changelog & bumps the Semantic Version every
 time the `main` branch is merged to.
-[.release-please-config.json](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.release-please-config.json%7B%25endif%25%7D.jinja){target=\"_blank"}
-configures the tool while [.release-please-manifest.json](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.release-please-manifest.json%7B%25endif%25%7D.jinja){target=\"_blank"}
+[.release-please-config.json](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.release-please-config.json%7B%25endif%25%7D.jinja)
+configures the tool while [.release-please-manifest.json](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.release-please-manifest.json%7B%25endif%25%7D.jinja)
 is the source of truth for the latest SemVer tag.
 
 **N.B.** conventional commits (as enforced by the relevant git hook) are a prerequisite
 for Release Please to generate changelogs and calculate new SemVer tags.
 
+In order for Release Please to automate the above process, a GitHub Actions 'repository secret'
+called `RELEASE_PLEASE_TOKEN` must exist in GitHub (under `github.com/<user>/<repo>/secrets/actions`).
+The contents of this secret must be a Personal Access Token (PAT) with the following permissions:
+
+```yaml
+contents: write
+pull-requests: write
+```
+
+For more information, consult the [release-please-action project](https://github.com/googleapis/release-please-action).
+
 #### Dependabot
 
 Configured to update Python dependencies & GitHub actions on a weekly schedule.
 
-See [.github/workflows/](https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/workflows){target=\"_blank"}
-and [.github/dependabot.yaml](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/dependabot.yaml){target=\"_blank"}
+See [.github/workflows/](https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/workflows)
+and [.github/dependabot.yaml](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/dependabot.yaml)
 for the definitions of these workflows.
 {% endif %}
 ---
