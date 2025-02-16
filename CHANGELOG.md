@@ -8,6 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.16.0](https://github.com/albertomh/djereo/compare/v0.15.0...v0.16.0) (2025-02-16)
+
+
+### Features
+
+* Collectstatic locally if DEBUG=False ([#102](https://github.com/albertomh/djereo/issues/102)) ([1651db9](https://github.com/albertomh/djereo/commit/1651db90ba195df9cddb3474e5a4c988cc0c168e))
+* **docs:** Document GitHub RELEASE_PLEASE_TOKEN in gen. project ([#105](https://github.com/albertomh/djereo/issues/105)) ([95e56ac](https://github.com/albertomh/djereo/commit/95e56acb4dee062105e523dadd45d7f2cb0b8cf4))
+
+
+### Bug Fixes
+
+* Delete static folder before collectstatic to avoid prompting ([#103](https://github.com/albertomh/djereo/issues/103)) ([843db06](https://github.com/albertomh/djereo/commit/843db06ba45640e658d11d1bc489938ad478fcb7))
+* Dev logging handlers use NullHandler if DEBUG=False ([#106](https://github.com/albertomh/djereo/issues/106)) ([11d4622](https://github.com/albertomh/djereo/commit/11d46222649b07cedda2937be3858f66e5f42d8e))
+* Override Django's admin.site instead of creating new instance ([#99](https://github.com/albertomh/djereo/issues/99)) ([76e3f36](https://github.com/albertomh/djereo/commit/76e3f364c6edd77e6c795521a282c11b7f373e1d))
+
 ## [0.15.0](https://github.com/albertomh/djereo/compare/v0.14.0...v0.15.0) (2025-02-13)
 
 
