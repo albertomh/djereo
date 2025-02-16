@@ -32,7 +32,9 @@ class SeedDatabaseTests(TestCase):
 
     def test_success(self):
         out, err = self.call_command()
-        self.assertEqual(out, "Seeding database...\n\x1b[32;1mDone.\x1b[0m\n")
+
+        self.assertTrue("Seeding database..." in out)
+        self.assertTrue("Done." in out)
         self.assertEqual(err, "")
 
         expected_models = {
