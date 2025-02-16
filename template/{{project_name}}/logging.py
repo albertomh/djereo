@@ -20,14 +20,18 @@ class LoggingConfigFactory:
     def build(self):
         dev_mode = self.debug
 
-        console_rich = {
-            "class": "rich.logging.RichHandler",
-            "filters": ["require_debug_true"],
-            "formatter": "rich",
-            "level": "INFO",
-            "rich_tracebacks": True,
-            "tracebacks_show_locals": True,
-        }
+        console_rich = (
+            {
+                "class": "rich.logging.RichHandler",
+                "filters": ["require_debug_true"],
+                "formatter": "rich",
+                "level": "INFO",
+                "rich_tracebacks": True,
+                "tracebacks_show_locals": True,
+            }
+            if dev_mode
+            else {}
+        )
 
         return {
             "version": 1,
@@ -46,8 +50,14 @@ class LoggingConfigFactory:
                 "rich_http": {"datefmt": "[%X]", "format": "%(status_code)s %(msg)s"},
             },
             "handlers": {
-                "console_dev": console_rich,
-                "console_http": {**console_rich, "formatter": "rich_http"},
+                "console_dev": (
+                    console_rich if dev_mode else {"class": "logging.NullHandler"}
+                ),
+                "console_http": (
+                    {**console_rich, "formatter": "rich_http"}
+                    if dev_mode
+                    else {"class": "logging.NullHandler"}
+                ),
                 "console_prod": {
                     "class": "logging.StreamHandler",
                     "filters": ["require_debug_false"],
