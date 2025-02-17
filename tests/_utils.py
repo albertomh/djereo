@@ -127,7 +127,7 @@ def set_up_postgres(test_project_dir: Path) -> Callable[[], None]:
         "postgres",
         "--set=APP_USER_PASSWORD=password",
         "--file",
-        "db/set_up.sql",
+        "_db/set_up.sql",
         _cwd=test_project_dir.absolute().as_posix(),
     )
 
@@ -144,6 +144,6 @@ def tear_down_postgres(test_project_dir: Path):
         "--dbname",
         "postgres",
         "--file",
-        "db/tear_down.sql",
+        "_db/tear_down.sql",
         _cwd=test_project_dir.absolute().as_posix(),
     )
