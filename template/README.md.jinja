@@ -15,7 +15,7 @@ A `justfile` defines common development tasks. Run `just` to show all available 
 
 ```sh
 # 1/5 create a postgres user and database for your project - change 'password' below
-psql -U $(whoami) -d postgres -v APP_USER_PASSWORD='password' -f db/set_up.sql
+psql -U $(whoami) -d postgres -v APP_USER_PASSWORD='password' -f _db/set_up.sql
 
 # 2/5 update the {password} in the DATABASE_URL connection strings in both .env & .env.test
 # The .env file is created for you as a post-creation task.

@@ -282,7 +282,7 @@ the dotenv template, `.env.in`.
 
 ### Set up & tear down scripts
 
-The `db/` directory contains the following database scripts:
+The `_db/` directory contains the following database scripts:
 
 - `set_up.sql` creates a postgres user and database with the same name as the project.
 - `tear_down.sql` undoes `set_up.sql` and removes the database and user.
