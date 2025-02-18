@@ -138,6 +138,11 @@ See [.github/workflows/](https://github.com/albertomh/djereo/tree/main/template/
 and [.github/dependabot.yaml](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/dependabot.yaml)
 for the definitions of these workflows.
 {% endif %}
+## Upgrading
+
+Project `settings` will look for a list of `SECRET_KEY_FALLBACKS` in the `.env` file that
+can be used to rotate keys. This defaults to an empty list.
+
 ---
 
 &copy; {{author_name}}
