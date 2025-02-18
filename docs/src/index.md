@@ -52,7 +52,7 @@ or get started with the instructions on the [Quickstart page](./quickstart.md).
 ---
 
 !!! note ""
-    [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://docs.djangoproject.com/en/stable/)  
+    [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://github.com/albertomh/pycliche)  
     Starting a Python project? Try [pycliche](https://github.com/albertomh/pycliche), the base
     _djereo_ is built on, as your Python project template.
 
