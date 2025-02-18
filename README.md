@@ -57,7 +57,7 @@ Optionally, for projects intended to be hosted on GitHub, also include:
 
 <!-- break up blockquotes to avoid triggering markdownlint's MD028/no-blanks-blockquote -->
 
-> [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://docs.djangoproject.com/en/stable/)  
+> [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://github.com/albertomh/pycliche)  
 > Starting a Python project? Try [pycliche](https://github.com/albertomh/pycliche), the base
 > `djereo` is built on, as your Python project template.
 
