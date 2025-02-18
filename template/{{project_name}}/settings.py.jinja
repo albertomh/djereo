@@ -135,6 +135,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "{{project_name}}.wsgi.application"
 
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS")
+if not DEBUG and "127.0.0.1" not in CSRF_TRUSTED_ORIGINS:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+
 SITE_ID = 1
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
