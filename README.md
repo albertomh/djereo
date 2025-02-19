@@ -29,6 +29,7 @@ Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
 [![coverage](https://img.shields.io/badge/😴_coverage-59aabd)](https://coverage.readthedocs.io/)
 [![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 [![Release Please](https://img.shields.io/badge/📦_Release_Please-6C97BB)](https://github.com/googleapis/release-please)
+[![gunicorn](https://img.shields.io/badge/gunicorn-f7f8f2?logo=gunicorn&logoColor=499848)](https://docs.gunicorn.org/en/latest/index.html)
 [![CI](https://github.com/albertomh/djereo/actions/workflows/ci.yaml/badge.svg)](https://github.com/albertomh/djereo/actions/workflows/ci.yaml)
 
 ## Features
