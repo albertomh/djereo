@@ -35,7 +35,8 @@ Projects created using `djereo` include:
   formatted using `rich`, `structlog` in production.
 - Out-of-the-box unit test suite & code coverage reporting.
 - Batteries-included `pre-commit` hook configuration to lint & format code, and run SAST.
-- A `justfile` to enable using `just` as a task runner.
+- A `justfile` to use `just` as a task runner for common jobs.
+- Lean containerisation to quickly deploy a project to hosted environments.
 - ...and more!
 
 Optionally, for projects intended to be hosted on GitHub, also include:
