@@ -148,6 +148,29 @@ pull-requests: write
 
 For more information, consult the [release-please-action project](https://github.com/googleapis/release-please-action).
 {%endif%}
+## Deploy {{project_name}}
+
+The `_deploy/` directory of includes a Dockerfile that uses the local development toolchain
+(the `uv` project manager) to containerise the application.
+
+The Dockerfile runs pre-production steps, such as enabling bytecode compilation to trade a longer
+installation time for faster start-up times, or running Django's `collectstatic` command.
+The container's entrypoint runs [gunicorn](https://docs.gunicorn.org/en/latest/index.html)
+as the WSGI web server to make the Django application available.
+
+Build an deployment-ready image with:
+
+```sh
+docker build \
+  --file _deploy/deploy.Dockerfile \
+  --platform linux/amd64 \
+  --tag testdjereo:amd64 \
+  --load .
+```
+
+The recommended use of the resulting container is to use [nginx](https://nginx.org/en/docs/index.html)
+as the reverse proxy, with `gunicorn` as the WSGI web server.
+
 ---
 
 ## Developer docs
