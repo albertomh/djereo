@@ -116,6 +116,8 @@ if not DEBUG:
         cache_logger_on_first_use=True,
     )
 
+# The cached template loader is enabled when `DEBUG = False`
+# <https://docs.djangoproject.com/en/stable/howto/deployment/checklist/#templates>
 TEMPLATES = [
     # Look inside the `templates/` subdirectory of each Django app.
     {
