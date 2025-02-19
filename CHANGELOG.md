@@ -8,6 +8,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [0.16.0](https://github.com/albertomh/djereo/compare/v0.15.0...v0.16.0) (2025-02-19)
+
+
+### Features
+
+* Add SECRET_KEY_FALLBACKS to settings, default to empty list ([#110](https://github.com/albertomh/djereo/issues/110)) ([2c33ac9](https://github.com/albertomh/djereo/commit/2c33ac92a3d84c4888eb1a32d16d67c25e812818))
+* Add the _deploy/ dir. and production-ready Dockerfile template ([#113](https://github.com/albertomh/djereo/issues/113)) ([802851a](https://github.com/albertomh/djereo/commit/802851a2471629b53c0db80ab65bb14cf3672ef3))
+* **chore:** Set CSRF and secure cookie settings in response to check --deploy ([#111](https://github.com/albertomh/djereo/issues/111)) ([7de08d5](https://github.com/albertomh/djereo/commit/7de08d5aa5364e67c2418bab07d08b6a67566201))
+* **chore:** Update pre-commit hooks in gen. project ([#112](https://github.com/albertomh/djereo/issues/112)) ([5ff1348](https://github.com/albertomh/djereo/commit/5ff1348e47d394f959890ada3f4394468529a71e))
+* Collectstatic locally if DEBUG=False ([#102](https://github.com/albertomh/djereo/issues/102)) ([1651db9](https://github.com/albertomh/djereo/commit/1651db90ba195df9cddb3474e5a4c988cc0c168e))
+* **docs:** Document GitHub RELEASE_PLEASE_TOKEN in gen. project ([#105](https://github.com/albertomh/djereo/issues/105)) ([95e56ac](https://github.com/albertomh/djereo/commit/95e56acb4dee062105e523dadd45d7f2cb0b8cf4))
+
+
+### Bug Fixes
+
+* Delete static folder before collectstatic to avoid prompting ([#103](https://github.com/albertomh/djereo/issues/103)) ([843db06](https://github.com/albertomh/djereo/commit/843db06ba45640e658d11d1bc489938ad478fcb7))
+* Dev logging handlers use NullHandler if DEBUG=False ([#106](https://github.com/albertomh/djereo/issues/106)) ([11d4622](https://github.com/albertomh/djereo/commit/11d46222649b07cedda2937be3858f66e5f42d8e))
+* Override Django's admin.site instead of creating new instance ([#99](https://github.com/albertomh/djereo/issues/99)) ([76e3f36](https://github.com/albertomh/djereo/commit/76e3f364c6edd77e6c795521a282c11b7f373e1d))
+* Re-register default models (User, Group) in custom admin ([#108](https://github.com/albertomh/djereo/issues/108)) ([d49e383](https://github.com/albertomh/djereo/commit/d49e38327faa575ae3e0d64cb61b4e9db42afb3e))
+* **test:** Do not consider prompt codes in SeedDatabaseTests ([#107](https://github.com/albertomh/djereo/issues/107)) ([e0fb9ad](https://github.com/albertomh/djereo/commit/e0fb9ad527ff49291b5e5e6bb05cddaeaf5f5d41))
+
 ## [0.15.0](https://github.com/albertomh/djereo/compare/v0.14.0...v0.15.0) (2025-02-13)
 
 
