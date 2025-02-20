@@ -26,15 +26,18 @@ Built on top of the [pycliche](https://github.com/albertomh/pycliche){target=\"_
 
 Projects created using `djereo` include:
 
-- A basic Python package and entrypoint, configured via a `pyproject.toml`.
+- A no-frills Django web application, configured via a `pyproject.toml`.
 - Dependencies managed via `uv`, using a `uv.lock` file for reproducible builds.
-- IPython as the default shell.
+- Dependencies managed via `uv`, using a `uv.lock` file for reproducible builds.
+- An implementation of the 'custom User + UserProfile' pattern, tied together with a
+  `django-allauth` integration.
 - Simple configuration to enhance your logs with `structlog`.
 - Sensible defaults to use a `postgres` database from the start.
 - Ready-to-use dev tools: Django Debug Toolbar, `django-browser-reload`, runserver logs
   formatted using `rich`, `structlog` in production.
+- IPython as the default shell.
 - Out-of-the-box unit test suite & code coverage reporting.
-- Batteries-included `pre-commit` hook configuration to lint & format code, and run SAST.
+- `pre-commit` hooks to lint & format code, and run SAST.
 - A `justfile` to use `just` as a task runner for common jobs.
 - Lean containerisation to quickly deploy a project to hosted environments.
 - ...and more!
