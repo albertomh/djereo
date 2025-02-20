@@ -330,7 +330,23 @@ profile = UserProfileFactory()
 assert isinstance(up.user, AuthUser)
 ```
 
-## Third-party packages
+<!-- markdownlint-disable MD013 line-length -->
+## <img src="https://simpleicons.org/icons/htmx.svg" width="25" alt="HTMX logo"> Frontend
+<!-- markdownlint-enable MD013 line-length -->
+
+### Default pages & styling
+
+Generated projects include a vendorised copy of [mvp.css](https://andybrewer.github.io/mvp/){target=\"_blank"}.
+This is used to style the default welcome page and the templates used by `django-allauth`
+for the pages under `/accounts/`.
+
+#### Styling `django-allauth` templates
+
+See the section on [Styling Existing Templates](https://docs.allauth.org/en/latest/common/templates.html#styling-the-existing-templates){target=\"_blank"}
+in the `django-allauth` docs for instructions on doing so. Out of the box `djereo` keeps
+changes minimal, only overriding `django-allauth`'s base template (`users/templates/allauth/layouts/base.html`).
+
+## 🤝 Third-party packages
 
 ### whitenoise
 
@@ -354,7 +370,9 @@ The `test_checks` module tests the custom Django system checks added by `djereo`
 To run these tests use the recipe `just test`, passing the same optional arguments you
 would when using `manage.py test` e.g. `just test package.module`.
 
-## Deployment
+<!-- markdownlint-disable MD013 line-length -->
+## <img src="https://simpleicons.org/icons/rocket.svg" width="25" alt="rocket icon"> Deployment
+<!-- markdownlint-enable MD013 line-length -->
 
 While `djereo` eschews Docker throughout development, the advantages of containerisation
 for tagged, reproducible builds in hosted environments are evident.
