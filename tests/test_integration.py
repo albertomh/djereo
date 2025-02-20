@@ -163,6 +163,10 @@ def test_django_allauth_pages_exist(
     copier_copy(copier_input_data)
     set_up_test_database()
     run_process_and_wait(
+        ["just", "manage", "migrate"],
+        test_project_dir,
+    )
+    run_process_and_wait(
         ["just", "runserver"],
         test_project_dir,
     )
