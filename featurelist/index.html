@@ -123,7 +123,17 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#third-party-packages">Third-party packages</a>
+    <li class="toctree-l2"><a class="reference internal" href="#frontend">Frontend</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#default-pages-styling">Default pages &amp; styling</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#styling-django-allauth-templates">Styling django-allauth templates</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#third-party-packages">🤝 Third-party packages</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#whitenoise">whitenoise</a>
     </li>
@@ -428,7 +438,19 @@ profile = UserProfileFactory()
 
 assert isinstance(up.user, AuthUser)
 </code></pre>
-<h2 id="third-party-packages">Third-party packages</h2>
+<!-- markdownlint-disable MD013 line-length -->
+<h2 id="frontend"><img src="https://simpleicons.org/icons/htmx.svg" width="25" alt="HTMX logo"> Frontend</h2>
+<!-- markdownlint-enable MD013 line-length -->
+
+<h3 id="default-pages-styling">Default pages &amp; styling</h3>
+<p>Generated projects include a vendorised copy of <a href="https://andybrewer.github.io/mvp/" target="\&quot;_blank&quot;">mvp.css</a>.
+This is used to style the default welcome page and the templates used by <code>django-allauth</code>
+for the pages under <code>/accounts/</code>.</p>
+<h4 id="styling-django-allauth-templates">Styling <code>django-allauth</code> templates</h4>
+<p>See the section on <a href="https://docs.allauth.org/en/latest/common/templates.html#styling-the-existing-templates" target="\&quot;_blank&quot;">Styling Existing Templates</a>
+in the <code>django-allauth</code> docs for instructions on doing so. Out of the box <code>djereo</code> keeps
+changes minimal, only overriding <code>django-allauth</code>'s base template (<code>users/templates/allauth/layouts/base.html</code>).</p>
+<h2 id="third-party-packages">🤝 Third-party packages</h2>
 <h3 id="whitenoise">whitenoise</h3>
 <p><a href="https://whitenoise.readthedocs.io/en/stable/" target="\&quot;_blank&quot;">whitenoise</a> is included
 as a dependency. It is configured to serve static files using Brotli compression and add
@@ -445,7 +467,10 @@ due to missing migrations.</p>
 <p>The <code>test_checks</code> module tests the custom Django system checks added by <code>djereo</code>.</p>
 <p>To run these tests use the recipe <code>just test</code>, passing the same optional arguments you
 would when using <code>manage.py test</code> e.g. <code>just test package.module</code>.</p>
-<h2 id="deployment">Deployment</h2>
+<!-- markdownlint-disable MD013 line-length -->
+<h2 id="deployment"><img src="https://simpleicons.org/icons/rocket.svg" width="25" alt="rocket icon"> Deployment</h2>
+<!-- markdownlint-enable MD013 line-length -->
+
 <p>While <code>djereo</code> eschews Docker throughout development, the advantages of containerisation
 for tagged, reproducible builds in hosted environments are evident.</p>
 <p>The <code>_deploy/</code> directory of projects generated with <code>djereo</code> includes a Dockerfile that
