@@ -22,12 +22,14 @@ RUN uv pip install .
 # Make executables available in the environment.
 ENV PATH="/app/.venv/bin:$PATH"
 
-COPY .env.in .env
+# Invoke with `docker build` with `--build-arg CACHEBUST=$(date +%s)` to bust layer cache.
+ARG CACHEBUST=1
+
+COPY _deploy/.env.deploy .env
 RUN python manage.py collectstatic --noinput
 RUN rm .env
 
 # Reset the entrypoint, avoid base image's call to `uv`.
 ENTRYPOINT []
 
-WORKDIR /app
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "{{project_name}}.wsgi:application"]
