@@ -103,8 +103,9 @@ class LogsFormatTest(SimpleTestCase):
             for k in expected_values.keys():
                 self.assertEqual(log_dict[k], expected_values[k], f"{k} should match")
 
-    # Hard to test because Django loads logging configuration once, at startup. This means
-    # @override_settings would apply only after logging has been configured. Plus, the
-    # change to DEBUG would involve popping the structlog middleware from MIDDLEWARES.
+    # Hard to test because Django loads logging configuration once, at startup (and DEBUG
+    # is False when running tests). This means @override_settings would apply only after
+    # logging has been configured using DEBUG=False. Plus, the change to DEBUG would
+    # involve popping the structlog middleware from MIDDLEWARES.
     # def test_logs_format_debug_true(self):
     #     ...
