@@ -14,7 +14,7 @@ collectstatic:
   # environment `test` runs in would be polluted instead of using values from `.env.test`.
   set -euo pipefail
   DEBUG_VALUE=$(awk -F= '/^DEBUG=/{gsub(/["'\'' ]/, "", $2); print tolower($2)}' .env)
-  if [ "$DEBUG_VALUE" = "true" ]; then
+  if [ "$DEBUG_VALUE" = "false" ]; then
     rm -rf static/;
     uv run manage.py collectstatic --noinput;
   fi
