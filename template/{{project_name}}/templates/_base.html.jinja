@@ -41,7 +41,7 @@
 {% raw %}
     <header>
         <nav style="margin-bottom: 0;">
-            <a href="/" style="font-size: large;">{{ project_name }}</a>
+            <a href="/" style="font-size: large;">{% endraw %}{{ project_name }}{% raw %}</a>
                 <ul>
                 {% if user.is_authenticated %}
                     <li>{{ user.email }} ▼
