@@ -1,3 +1,5 @@
+# Based on <https://github.com/astral-sh/uv-docker-example/blob/main/Dockerfile>
+
 FROM python:{{python_version}}-slim-bookworm
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
