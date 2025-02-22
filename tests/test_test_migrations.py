@@ -7,6 +7,7 @@ import pytest
 from tests._utils import run_process_and_wait
 
 TEST_MODELS_PY_CONTENT = textwrap.dedent("""
+
 from django.db import models
 
 class SomeModel(models.Model):
@@ -27,8 +28,8 @@ def test_migrations_check_fails_if_pending_migrations(
     copier_copy(copier_input_data)
     set_up_test_database()
     models_py_path = test_project_dir / test_project_name / "models.py"
-    models_py_path.touch()
-    models_py_path.write_text(TEST_MODELS_PY_CONTENT)
+    with open(models_py_path, "a") as models_file:
+        models_file.write(TEST_MODELS_PY_CONTENT)
     migrations_dir = test_project_dir / test_project_name / "migrations"
     migrations_dir.mkdir(parents=True, exist_ok=True)
     (migrations_dir / "__init__.py").touch()
@@ -58,8 +59,8 @@ def test_makemigrations_creates_a_max_migration_file(
     copier_copy(copier_input_data)
     set_up_test_database()
     models_py_path = test_project_dir / test_project_name / "models.py"
-    models_py_path.touch()
-    models_py_path.write_text(TEST_MODELS_PY_CONTENT)
+    with open(models_py_path, "a") as models_file:
+        models_file.write(TEST_MODELS_PY_CONTENT)
 
     run_process_and_wait(
         ["just", "manage", "makemigrations", test_project_name], test_project_dir

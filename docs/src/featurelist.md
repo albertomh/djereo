@@ -271,6 +271,12 @@ Logging configuration is dynamically generated based on the `DEBUG` environment 
 The `LoggingConfigFactory` class is used to generate settings for filters, formaters,
 handlers and loggers.
 
+## Models
+
+The core app defines an `UuidModel` abstract model. Models that subclass it will have
+a UUID as a primary key instead of the default `BigAutoField`. This is used by the models
+in the existing 'users' app and can be used by any new models you create.
+
 <!-- markdownlint-disable MD013 line-length -->
 ## <img src="https://simpleicons.org/icons/postgresql.svg" width="25" alt="postgres elephant logo"> Postgres database {#postgres-database}
 <!-- markdownlint-enable MD013 line-length -->

@@ -3,15 +3,17 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from {{project_name}}.models import UuidModel
 
-class AuthUser(AbstractUser):
+
+class AuthUser(UuidModel, AbstractUser):
     pass
 
     def __str__(self):
         return self.email
 
 
-class UserProfile(models.Model):
+class UserProfile(UuidModel):
     user = models.OneToOneField(
         "users.AuthUser",
         on_delete=models.CASCADE,
