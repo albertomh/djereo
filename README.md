@@ -1,8 +1,5 @@
 <!-- markdownlint-disable MD041 first-line-heading/first-line-h1 -->
 
-> ![Work In Progress](https://img.shields.io/badge/🚧-WIP-e0ca23)  
-> `djereo` is a work in progress. It will not be ready to use until v1.0.0.
-
 <!-- markdownlint-disable MD033 no-inline-html -->
 <p align="center">
   <!-- markdownlint-disable MD013 line-length -->
