@@ -1,5 +1,26 @@
 # {{project_name}} developer README
 
+## Development prerequisites
+
+In addition to the [Prerequisites](../README.md#prerequisites) listed in the main README
+you will need the following to develop `{{project_name}}`:
+
+- [pre-commit](https://pre-commit.com/)
+
+## The djereo project template
+
+`{{project_name}}` has been generated using the [djereo](https://github.com/albertomh/djereo)
+project template.
+
+To update `{{project_name}}` to a newer version of `djereo`:
+
+```sh
+cd ~/Projects/{{project_name}}/
+uvx copier update --skip-answered --trust [--vcs-ref=<TAG>]
+```
+
+If the `--vcs-ref` flag is not specified, `copier` will use the latest `djereo` tag.
+
 ## Git principles
 
 This repo follows trunk-based development. This means:
@@ -29,7 +50,48 @@ mode).
 - `test`: install test dependencies, run all unit tests via Django's test runner and
   generate and display a coverage report (both on-screen and in HTML format).
 
-### Use project metadata in the running application
+## Use IPython as your shell
+
+`IPython`, an improved Python shell, is installed as a development dependency. Django picks
+it up by default and uses it instead of the default Python shell.
+To use `IPython` run `manage.py shell` or the `just shell` recipe.
+
+By default IPython's debugger (`ipdb`) will launch when a `breakpoint()` is reached while
+running the application.
+`ipdb` is also used to debug tests and will launch when a test fails.
+
+## Style & pre-commit hooks
+
+Code style is enforced by pre-commit hooks.
+
+```sh
+# before you start developing, install pre-commit hooks
+pre-commit install
+```
+
+Linter and formatting rules are configured in the `ruff` tables in `pyproject.toml`. See
+the [full list](https://docs.astral.sh/ruff/rules/) of rules supported by `ruff` for more.
+
+Notable rules include:
+
+- [banned-api](https://docs.astral.sh/ruff/rules/banned-api/) from the `flake8-tidy-imports`
+linter. Configured to ban importing the project settings module directly, preferring to use
+`django.conf.settings`. This is to improve consistency, particulary when overriding
+settings in tests.
+
+Docstrings should follow the conventions set out in the [Google styleguide](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings).
+
+## Managing settings
+
+`environs` is used to load values from a `.env` file for use as settings. During testing,
+the `.env.test` file with sensible defaults is used instead.
+
+A `.env.in` template is used by `copier` to generate the local `.env` file on project
+initialisation. This `.env.in` template can be modified and copied to generate `.env`s for
+different environments. `.env` is listed in `.gitignore` as it should never be tracked in
+version control.
+
+## Use project metadata in the running application
 
 `{{project_name}}/__init__.py` exposes project metadata such as version and author information.
 To use it in a view:
@@ -44,16 +106,6 @@ def view(request):
     return HttpResponse(f"{{project_name}} v{__version__}")
 ```
 
-### Use IPython as your shell
-
-`IPython`, an improved Python shell, is installed as a development dependency. Django picks
-it up by default and uses it instead of the default Python shell.
-To use `IPython` run `manage.py shell` or the `just shell` recipe.
-
-By default IPython's debugger (`ipdb`) will launch when a `breakpoint()` is reached while
-running the application.
-`ipdb` is also used to debug tests and will launch when a test fails.
-
 ## Developer tools
 
 The project comes with some ready-to-use developer tools installed as dev dependencies and
@@ -65,18 +117,12 @@ configured for use locally:
   about the request/response cycle on each page.
 - [rich](https://pypi.org/project/rich/): nicer formatting and colours for `runserver` logs.
 
-## Checks and git hooks
+## Upgrading
 
-`ruff` is configured as a pre-commit git hook to lint and format your code. Check the
-`tool.ruff.lint` table in `pyproject.toml` for a full list of rules and options.
-Notable rules include:
+Project `settings` will look for a list of `SECRET_KEY_FALLBACKS` in the `.env` file that
+can be used to rotate keys. This defaults to an empty list.
 
-- [banned-api](https://docs.astral.sh/ruff/rules/banned-api/) from the `flake8-tidy-imports`
-linter. Configured to ban importing the project settings module directly, preferring to use
-`django.conf.settings`. This is to improve consistency, particulary when overriding
-settings in tests.
-
-## Upgrade checklist
+### Upgrade checklist
 
 - [ ] Bump the version of Django specified in the config for the `django-upgrade` hook in
       `.pre-commit-config.yaml`.
@@ -110,14 +156,14 @@ As with `PR`, but acts when a pull request is closed and changes merged into the
 
 #### Release Please
 
-Refreshes a pull request that updates the changelog & bumps the Semantic Version every
-time the `main` branch is merged to.
+When the `main` branch is merged to, opens or refreshes a pull request to update the
+changelog & bump the Semantic Version.
 [.release-please-config.json](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.release-please-config.json%7B%25endif%25%7D.jinja)
 configures the tool while [.release-please-manifest.json](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.release-please-manifest.json%7B%25endif%25%7D.jinja)
 is the source of truth for the latest SemVer tag.
 
 **N.B.** conventional commits (as enforced by the relevant git hook) are a prerequisite
-for Release Please to generate changelogs and calculate new SemVer tags.
+for Release Please to accurately generate changelogs and calculate new SemVer tags.
 
 In order for Release Please to automate the above process, a GitHub Actions 'repository secret'
 called `RELEASE_PLEASE_TOKEN` must exist in GitHub (under `github.com/<user>/<repo>/secrets/actions`).
@@ -138,11 +184,6 @@ See [.github/workflows/](https://github.com/albertomh/djereo/tree/main/template/
 and [.github/dependabot.yaml](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/dependabot.yaml)
 for the definitions of these workflows.
 {% endif %}
-## Upgrading
-
-Project `settings` will look for a list of `SECRET_KEY_FALLBACKS` in the `.env` file that
-can be used to rotate keys. This defaults to an empty list.
-
 ---
 
 &copy; {{author_name}}
