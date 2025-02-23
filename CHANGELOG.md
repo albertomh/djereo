@@ -8,6 +8,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [1.0.0](https://github.com/albertomh/djereo/compare/v0.16.0...v1.0.0) (2025-02-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* add an abstract 'UuidModel' with UUID as primary key ([#121](https://github.com/albertomh/djereo/issues/121))
+
+### Features
+
+* Add 'new project' welcome index page ([#114](https://github.com/albertomh/djereo/issues/114)) ([1726992](https://github.com/albertomh/djereo/commit/172699264fa639d98c00068b92d43b2d45749765))
+* Add an abstract 'UuidModel' with UUID as primary key ([#121](https://github.com/albertomh/djereo/issues/121)) ([76f1b69](https://github.com/albertomh/djereo/commit/76f1b699855e2cc19cafe6197df595b8660eec9c))
+* **docs:** Add badges to gen. project's README ([#123](https://github.com/albertomh/djereo/issues/123)) ([58651d3](https://github.com/albertomh/djereo/commit/58651d3b07ad3e59bcaeab67d928bfaac636a90e))
+* **fix:** Cachebust the collectstatic layer in deployment Dockerfile ([#119](https://github.com/albertomh/djereo/issues/119)) ([184eaef](https://github.com/albertomh/djereo/commit/184eaefdadde03f07a9d8253314df513e0df0579))
+* **fix:** Link to index in _base.html's navbar ([#120](https://github.com/albertomh/djereo/issues/120)) ([c402cb9](https://github.com/albertomh/djereo/commit/c402cb9e4317f81bb6026dc6d3c68d65f46aa24f))
+* **fix:** Use default staticfiles backend when running tests ([#117](https://github.com/albertomh/djereo/issues/117)) ([451f79f](https://github.com/albertomh/djereo/commit/451f79f8f3d818e8042deb26855d3cf3a2d49247))
+* Override and customise django-allauth's base template ([#116](https://github.com/albertomh/djereo/issues/116)) ([6d58fc5](https://github.com/albertomh/djereo/commit/6d58fc5ebe39ac2c9a9d0c17587f4137126f4c5d))
+
+
+### Bug Fixes
+
+* Avoid loading .env for all justfile recipes ([#118](https://github.com/albertomh/djereo/issues/118)) ([6fccc7c](https://github.com/albertomh/djereo/commit/6fccc7ca7237a45b5a73a75bca6f5e8c1e3263cf))
+
 ## [0.16.0](https://github.com/albertomh/djereo/compare/v0.15.0...v0.16.0) (2025-02-19)
 
 
