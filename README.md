@@ -1,8 +1,5 @@
 <!-- markdownlint-disable MD041 first-line-heading/first-line-h1 -->
 
-> ![Work In Progress](https://img.shields.io/badge/🚧-WIP-e0ca23)  
-> `djereo` is a work in progress. It will not be ready to use until v1.0.0.
-
 <!-- markdownlint-disable MD033 no-inline-html -->
 <p align="center">
   <!-- markdownlint-disable MD013 line-length -->
@@ -14,7 +11,7 @@
 
 Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
 
-[![python: 3.10](https://img.shields.io/badge/>=3.10-4584b6?logo=python&logoColor=ffde57)](https://docs.python.org/3.10/whatsnew/3.10.html)
+[![python >= 3.10](https://img.shields.io/badge/>=3.10-4584b6?logo=python&logoColor=ffde57)](https://docs.python.org/3.10/whatsnew/3.10.html)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/albertomh/djereo/main/docs/media/copier-badge.json)](https://github.com/copier-org/copier)
 [![justfile](https://img.shields.io/badge/🤖_justfile-EFF1F3)](https://github.com/casey/just)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json&labelColor=261230&color=de60e9)](https://github.com/astral-sh/uv)
