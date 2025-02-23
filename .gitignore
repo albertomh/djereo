@@ -105,3 +105,4 @@ ENV/
 .ruff_cache/
 
 *.DS_Store
+*tar.gz
