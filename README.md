@@ -36,7 +36,8 @@ Projects created using `djereo` include:
 - A no-frills Django web application, configured via a `pyproject.toml`.
 - Dependencies managed via `uv`, using a `uv.lock` file for reproducible builds.
 - An implementation of the 'custom User + UserProfile' pattern, tied together with a
-  `django-allauth` integration.- Simple configuration to enhance your logs with `structlog`.
+  `django-allauth` integration.
+- Simple configuration to enhance your logs with `structlog`.
 - Ready-to-use dev tools: Django Debug Toolbar, `django-browser-reload`, runserver logs
   formatted using `rich`, `structlog` in production.
 - IPython as the default shell.
