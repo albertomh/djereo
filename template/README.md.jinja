@@ -107,6 +107,9 @@ The core app (`{{project_name}}`) defines an `UuidModel` abstract model. Models 
 subclass it will have primary keys that are UUIDs instead of the default `BigAutoField`.
 Models in the 'users' app extend `UuidModel` and it can be used by any new models.
 
+Utility abstract models `CreatedAtModel`, `UpdatedAtModel` and `DeletedAtModel` (for
+soft-deletion) are available to store timestamps.
+
 ## Test
 
 Django's test runner (using the standard library's `unittest`) is used for the suite of
