@@ -400,6 +400,8 @@ handlers and loggers.</p>
 <p>The core app defines an <code>UuidModel</code> abstract model. Models that subclass it will have
 a UUID as a primary key instead of the default <code>BigAutoField</code>. This is used by the models
 in the existing 'users' app and can be used by any new models you create.</p>
+<p>Utility abstract models <code>CreatedAtModel</code>, <code>UpdatedAtModel</code> and <code>DeletedAtModel</code> (for
+soft-deletion) are available to store timestamps.</p>
 <!-- markdownlint-disable MD013 line-length -->
 <h2 id="postgres-database"><img src="https://simpleicons.org/icons/postgresql.svg" width="25" alt="postgres elephant logo"> Postgres database</h2>
 <!-- markdownlint-enable MD013 line-length -->
