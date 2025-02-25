@@ -63,6 +63,9 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    {% if use_htmx %}
+    "django_htmx",
+    {% endif %}
     "django_linear_migrations",
     "django_structlog",
     "django_version_checks",
@@ -81,6 +84,9 @@ INSTALLED_APPS = FIRST_PARTY_APPS + THIRD_PARTY_APPS + CONTRIB_APPS
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    {% if use_htmx %}
+    "django_htmx.middleware.HtmxMiddleware",
+    {% endif %}
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",

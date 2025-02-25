@@ -83,6 +83,19 @@ and include:
 - `adamchainz/django-upgrade` to automatically migrate code to a new version of Django.
 - `alessandrojcm/commitlint-pre-commit-hook` to enforce [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/){target=\"_blank"}.
 
+## Optional `htmx` frontend
+
+Projects generated using `djereo` include a vendorised copy of `htmx` in the static files
+directory and loaded in the `_base.html` template. You can opt out from this when
+completing the setup questionnaire.
+
+The `django-htmx` package is used to smoothly integrate `htmx` into projects, abstracting
+away header checks and allowing views to change their behaviour and responses based on the
+`request.htmx` attribute.
+
+See the [django-htmx documentation](https://django-htmx.readthedocs.io/en/latest/index.html)
+for more.
+
 <!-- markdownlint-disable MD013 line-length -->
 ## <img src="https://simpleicons.org/icons/github.svg" width="25" alt="GitHub logo"> Optional GitHub features
 <!-- markdownlint-enable MD013 line-length -->

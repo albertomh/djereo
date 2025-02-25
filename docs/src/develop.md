@@ -138,6 +138,10 @@ Docstrings should follow the conventions set out in the [Google styleguide](http
 1. Check [Django releases](https://docs.djangoproject.com/en/5.1/releases/){target=\"_blank"}
   and update the `django_version` question in `copier.yaml`.
 
+Optionally, if using `htmx`:
+
+1. Check <https://unpkg.com/browse/htmx.org@2.0.4/>
+
 ---
 
 ## Test

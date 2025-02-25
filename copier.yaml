@@ -37,6 +37,11 @@ postgres_version:
         - "17"
     default: "17"
 
+use_htmx:
+    help: "Do you wish to use htmx for the frontend?"
+    type: bool
+    default: yes
+
 author_name:
     help: "Who is the project's author?"
     type: str
@@ -74,3 +79,8 @@ _tasks:
     - "git init"
     - "uv lock"
     - "cp .env.in .env"
+
+_envops:
+  # Jinja settings to remove whitespace
+  lstrip_blocks: true
+  trim_blocks: true

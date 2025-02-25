@@ -11,7 +11,7 @@ on:
 
 jobs:
   pre_commit:
-    if: {% raw %}${{ github.event.pull_request.merged }}{% endraw %}
+    if: {% raw %}${{ github.event.pull_request.merged }}{% endraw +%}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4

@@ -37,6 +37,7 @@ Projects created using `djereo` include:
 - Dependencies managed via `uv`, using a `uv.lock` file for reproducible builds.
 - An implementation of the 'custom User + UserProfile' pattern, tied together with a
   `django-allauth` integration.
+- Optional vendorised `htmx` with sensible defaults for the frontend.
 - Simple configuration to enhance your logs with `structlog`.
 - Ready-to-use dev tools: Django Debug Toolbar, `django-browser-reload`, runserver logs
   formatted using `rich`, `structlog` in production.
@@ -107,21 +108,21 @@ The developer documentation ([https://albertomh.github.io/djereo/develop/](https
 covers how to work on `djereo` itself:
 
 - [Develop](https://albertomh.github.io/djereo/develop/#develop)
-  - Development prerequisites
-  - Upgrading the pycliche version
-  - Git principles
-  - Dependency management
-    - Updating dependencies in the template
-  - Generate project using development version
-  - Style
-  - Upgrade checklist
+  - [Development prerequisites](https://albertomh.github.io/djereo/develop/#development-prerequisites)
+  - [Upgrading the pycliche version](https://albertomh.github.io/djereo/develop/#upgrading-the-pycliche-version)
+  - [Git principles](https://albertomh.github.io/djereo/develop/#git-principles)
+  - [Dependency management](https://albertomh.github.io/djereo/develop/#dependency-management)
+    - [Updating dependencies in the template](https://albertomh.github.io/djereo/develop/#updating-dependencies-in-the-template)
+  - [Generate project using development version](https://albertomh.github.io/djereo/develop/#generate-project-using-development-version)
+  - [Style](https://albertomh.github.io/djereo/develop/#style)
+  - [Upgrade checklist](https://albertomh.github.io/djereo/develop/#upgrade-checklist)
 
 - [Test](https://albertomh.github.io/djereo/develop/#test)
 
 - [Document](https://albertomh.github.io/djereo/develop/#document)
 
 - [Release](https://albertomh.github.io/djereo/develop/#release)
-  - GitHub Personal Access Token
+  - [GitHub Personal Access Token](https://albertomh.github.io/djereo/develop/#github-personal-access-token)
 
 ---
 

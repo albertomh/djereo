@@ -126,7 +126,13 @@ can be used to rotate keys. This defaults to an empty list.
 
 - [ ] Bump the version of Django specified in the config for the `django-upgrade` hook in
       `.pre-commit-config.yaml`.
-{%if is_github_project%}
+{% if use_htmx %}
+
+1. Check <https://unpkg.com/browse/htmx.org@2.0.4/> for a newer version of HTMX and update
+the vendorised file included in the `static/{{project_name}}/` directory.
+{% endif %}
+
+{% if is_github_project %}
 ## GitHub Actions
 
 ### Custom GitHub actions
@@ -183,6 +189,7 @@ Configured to update Python dependencies & GitHub actions on a weekly schedule.
 See [.github/workflows/](https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/workflows)
 and [.github/dependabot.yaml](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/dependabot.yaml)
 for the definitions of these workflows.
+
 {% endif %}
 ---
 

@@ -31,6 +31,7 @@ Projects created using `djereo` include:
 - Dependencies managed via `uv`, using a `uv.lock` file for reproducible builds.
 - An implementation of the 'custom User + UserProfile' pattern, tied together with a
   `django-allauth` integration.
+- Optional vendorised `htmx` with sensible defaults for the frontend.
 - Simple configuration to enhance your logs with `structlog`.
 - Sensible defaults to use a `postgres` database from the start.
 - Ready-to-use dev tools: Django Debug Toolbar, `django-browser-reload`, runserver logs
