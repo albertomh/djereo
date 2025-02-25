@@ -71,6 +71,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#git-pre-commit-hooks">Git pre-commit hooks</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#optional-htmx-frontend">Optional htmx frontend</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#optional-github-features">Optional GitHub features</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#custom-github-actions">Custom GitHub actions</a>
@@ -246,6 +248,15 @@ and include:</p>
 <li><code>adamchainz/django-upgrade</code> to automatically migrate code to a new version of Django.</li>
 <li><code>alessandrojcm/commitlint-pre-commit-hook</code> to enforce <a href="https://www.conventionalcommits.org/en/v1.0.0/" target="\&quot;_blank&quot;">Conventional Commits</a>.</li>
 </ul>
+<h2 id="optional-htmx-frontend">Optional <code>htmx</code> frontend</h2>
+<p>Projects generated using <code>djereo</code> include a vendorised copy of <code>htmx</code> in the static files
+directory and loaded in the <code>_base.html</code> template. You can opt out from this when
+completing the setup questionnaire.</p>
+<p>The <code>django-htmx</code> package is used to smoothly integrate <code>htmx</code> into projects, abstracting
+away header checks and allowing views to change their behaviour and responses based on the
+<code>request.htmx</code> attribute.</p>
+<p>See the <a href="https://django-htmx.readthedocs.io/en/latest/index.html">django-htmx documentation</a>
+for more.</p>
 <!-- markdownlint-disable MD013 line-length -->
 <h2 id="optional-github-features"><img src="https://simpleicons.org/icons/github.svg" width="25" alt="GitHub logo"> Optional GitHub features</h2>
 <!-- markdownlint-enable MD013 line-length -->
