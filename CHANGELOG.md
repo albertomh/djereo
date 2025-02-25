@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [1.1.0](https://github.com/albertomh/djereo/compare/v1.0.0...v1.1.0) (2025-02-25)
+
+
+### Features
+
+* Add an updated_at timestamp field to the user model ([#126](https://github.com/albertomh/djereo/issues/126)) ([d950c67](https://github.com/albertomh/djereo/commit/d950c67f43d1191d7267fa5f07c8bfd08f52a046))
+* Add optional vendorised htmx  ([#127](https://github.com/albertomh/djereo/issues/127)) ([f555ff2](https://github.com/albertomh/djereo/commit/f555ff2fc2e618ad622df5ad63464109dcf66270))
+* Add timestamp models to the core app ([#124](https://github.com/albertomh/djereo/issues/124)) ([d597a78](https://github.com/albertomh/djereo/commit/d597a788c63e43f00afd3f8df49c054c84b32c9a))
+
 ## [1.0.0](https://github.com/albertomh/djereo/compare/v0.16.0...v1.0.0) (2025-02-23)
 
 
