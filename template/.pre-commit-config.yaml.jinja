@@ -51,9 +51,10 @@ repos:
     rev: v1.9.4
     hooks:
       - id: biome-check
-        {% if use_htmx -%}
+    {% if use_htmx %}
         exclude: '.*htmx.*\.min\.js'
-        {% endif %}
+    {% endif %}
+
   - repo: https://github.com/adamchainz/djade-pre-commit
     rev: 1.3.2
     hooks:

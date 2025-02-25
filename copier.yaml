@@ -79,3 +79,8 @@ _tasks:
     - "git init"
     - "uv lock"
     - "cp .env.in .env"
+
+_envops:
+  # Jinja settings to remove whitespace
+  lstrip_blocks: true
+  trim_blocks: true

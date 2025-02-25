@@ -15,7 +15,7 @@ requires-python = ">={{python_version}}"
 dependencies = [
     "django>={{django_version}},<{{django_ver_major}}.0",
     "django-allauth>=65.4.1,<66.0.0",
-    {% if use_htmx %}"django-htmx>=1.22.0,<2.0.0",{% endif -%}
+    {% if use_htmx %}"django-htmx>=1.22.0,<2.0.0",{% endif %}
     "django-linear-migrations>=2.16.0,<3.0.0",
     "django-structlog>=9.0.1,<10.0.0",
     "django-version-checks>=1.13.0,<2.0.0",

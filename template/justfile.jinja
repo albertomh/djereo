@@ -23,7 +23,7 @@ _dev_setup:
   @test -d .venv/ || uv venv
   @test -x .venv/bin/django-admin || uv sync --dev
   @uv pip install -e .
-  {% raw %}{{call_recipe}} collectstatic{% endraw %}
+{% raw %}  {{call_recipe}} collectstatic{% endraw %}
 
 
 manage +args='help': _dev_setup

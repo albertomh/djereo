@@ -12,7 +12,7 @@
 [![biome](https://img.shields.io/badge/Biome-FFFFFF?logo=biome&logoColor=60A5FA)](https://github.com/biomejs/biome)
 [![coverage](https://img.shields.io/badge/😴_coverage-59aabd)](https://coverage.readthedocs.io/)
 [![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
-{%if is_github_project%}[![Release Please](https://img.shields.io/badge/📦_Release_Please-6C97BB)](https://github.com/googleapis/release-please){%endif-%}
+{%if is_github_project%}[![Release Please](https://img.shields.io/badge/📦_Release_Please-6C97BB)](https://github.com/googleapis/release-please){%endif%}
 [![gunicorn](https://img.shields.io/badge/gunicorn-f7f8f2?logo=gunicorn&logoColor=499848)](https://docs.gunicorn.org/en/latest/index.html)
 
 ## Prerequisites
@@ -81,10 +81,12 @@ Dependencies are defined in the `pyproject.toml` file, with exact versions captu
 # add a dependency to the project
 uv add some-package
 ```
-{%if is_github_project%}
+
+{% if is_github_project %}
 Dependabot is configured to run weekly and update Python packages (minor & patch) and
 GitHub Actions. See [.github/dependabot.yaml](.github/dependabot.yaml).
-{%endif%}
+{% endif %}
+
 ### Logging
 
 `{{project_name}}` uses [structlog](https://www.structlog.org/en/stable/) when DEBUG is
@@ -109,6 +111,19 @@ Models in the 'users' app extend `UuidModel` and it can be used by any new model
 
 Utility abstract models `CreatedAtModel`, `UpdatedAtModel` and `DeletedAtModel` (for
 soft-deletion) are available to store timestamps.
+{% if use_htmx %}
+
+## `htmx` frontend
+
+A vendorised copy of `htmx` is included in the static files directory and loaded in the
+`_base.html` template.
+The `django-htmx` package is used to smoothly integrate `htmx` into projects, abstracting
+away header checks and allowing views to change their behaviour and responses based on the
+`request.htmx` attribute.
+
+See the [django-htmx documentation](https://django-htmx.readthedocs.io/en/latest/index.html)
+for more.
+{% endif %}
 
 ## Test
 
@@ -121,7 +136,8 @@ just test [<expression>]
 # eg. to only run tests inside the `test_migrations` module
 just test tests.test_migrations
 ```
-{%if is_github_project%}
+
+{% if is_github_project %}
 ## Release
 
 [Release Please](https://github.com/googleapis/release-please) is used to automate:
@@ -146,7 +162,8 @@ pull-requests: write
 ```
 
 For more information, consult the [release-please-action project](https://github.com/googleapis/release-please-action).
-{%endif%}
+{% endif %}
+
 ## Deploy `{{project_name}}`
 
 The `_deploy/` directory includes a Dockerfile that uses the local development toolchain
@@ -200,14 +217,15 @@ The developer README ([docs/README-dev.md](docs/README-dev.md)) covers how to wo
 - [Developer tools](docs/README-dev.md#developer-tools)
 - [Upgrading](docs/README-dev.md#upgrading)
   - [Upgrade checklist](docs/README-dev.md#upgrade-checklist)
-{%if is_github_project%}- [GitHub Actions](docs/README-dev.md#github-actions)
+{% if is_github_project %}- [GitHub Actions](docs/README-dev.md#github-actions)
   - [Custom GitHub Actions](docs/README-dev.md#custom-github-actions)
   - [GitHub Actions workflows](docs/README-dev.md#github-actions-workflows)
     - [`PR` (pull request)](docs/README-dev.md#pr-pull-request)
     - [`CI` (continuous integration)](docs/README-dev.md#ci-continuous-integration)
     - [Release Please](docs/README-dev.md#release-please)
     - [Dependabot](docs/README-dev.md#dependabot)
-{%endif%}
+{% endif %}
+
 ---
 
 &copy; {{author_name}}
