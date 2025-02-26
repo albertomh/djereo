@@ -9,6 +9,9 @@
 
 `djereo` - a Django project template with opinionated tooling.
 
+Embracing [Boring Technology](https://boringtechnology.club/), fighting bloat, striving for
+simplicity.
+
 Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
 
 [![python >= 3.10](https://img.shields.io/badge/>=3.10-4584b6?logo=python&logoColor=ffde57)](https://docs.python.org/3.10/whatsnew/3.10.html)

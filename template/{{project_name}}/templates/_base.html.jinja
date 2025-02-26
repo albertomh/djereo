@@ -39,7 +39,7 @@
     <title>Title</title>
 </head>
 
-<body>
+<body{%if use_htmx%} hx-headers='{"X-CSRFToken": "{% raw %}{{ csrf_token }}{% endraw %}"}'{%endif%}>
 
 {% raw %}
     <header>
