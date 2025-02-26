@@ -255,6 +255,10 @@ if ENABLE_DEBUG_TOOLS:  # pragma: no cover
         "django_browser_reload.middleware.BrowserReloadMiddleware",
         "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
+    {% if use_htmx %}
+    # ensure django-debug-toolbar works with htmx boosting
+    DEBUG_TOOLBAR_CONFIG = {"ROOT_TAG_EXTRA_ATTRS": "hx-preserve"}
+    {% endif %}
 
 # django-allauth
 
