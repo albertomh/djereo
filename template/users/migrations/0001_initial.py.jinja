@@ -28,6 +28,7 @@ class Migration(migrations.Migration):
                         serialize=False,
                     ),
                 ),
+                ("updated_at", models.DateTimeField(auto_now=True)),
                 ("password", models.CharField(max_length=128, verbose_name="password")),
                 (
                     "last_login",
@@ -44,21 +45,6 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "username",
-                    models.CharField(
-                        error_messages={
-                            "unique": "A user with that username already exists."
-                        },
-                        help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",  # noqa: E501
-                        max_length=150,
-                        unique=True,
-                        validators=[
-                            django.contrib.auth.validators.UnicodeUsernameValidator()
-                        ],
-                        verbose_name="username",
-                    ),
-                ),
-                (
                     "first_name",
                     models.CharField(
                         blank=True, max_length=150, verbose_name="first name"
@@ -68,12 +54,6 @@ class Migration(migrations.Migration):
                     "last_name",
                     models.CharField(
                         blank=True, max_length=150, verbose_name="last name"
-                    ),
-                ),
-                (
-                    "email",
-                    models.EmailField(
-                        blank=True, max_length=254, verbose_name="email address"
                     ),
                 ),
                 (
@@ -98,6 +78,8 @@ class Migration(migrations.Migration):
                         default=django.utils.timezone.now, verbose_name="date joined"
                     ),
                 ),
+                ("username", models.CharField(blank=True, max_length=150)),
+                ("email", models.EmailField(max_length=254, unique=True)),
                 (
                     "groups",
                     models.ManyToManyField(
@@ -121,7 +103,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={},
+            options={
+                "verbose_name": "auth user",
+            },
             managers=[
                 ("objects", django.contrib.auth.models.UserManager()),
             ],
