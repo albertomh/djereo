@@ -5,20 +5,15 @@ import tempfile
 from pathlib import Path
 from typing import Callable, Generator
 
-from sh import psql, whoami
+from sh import ErrorReturnCode, git, psql, whoami
 
 
 def is_git_repo(path: Path) -> bool:
     """Check if the given path is a Git repository."""
     try:
-        subprocess.run(
-            ["git", "-C", str(path), "status"],
-            check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
+        git("-C", str(path), "status")
         return True
-    except subprocess.CalledProcessError:
+    except ErrorReturnCode:
         return False
 
 
