@@ -1,0 +1,17 @@
+{% extends "_base.html" %}
+
+{% block head_title %}Something went wrong...{% endblock %}
+
+{% block content_root %}<section>
+    <header>
+        <h1>Something went wrong...</h1>
+        <p>The server encountered an error trying to process your request.</p>
+        <br>
+        <p>
+            <a href="{% url 'index' %}">
+                <em>Home</em>
+            </a>
+        </p>
+    </header>
+</section>
+{% endblock content_root %}

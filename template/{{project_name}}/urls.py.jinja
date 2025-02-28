@@ -34,3 +34,12 @@ if settings.ENABLE_DEBUG_TOOLS:  # pragma: no cover
         path("__reload__/", include("django_browser_reload.urls")),
         *debug_toolbar_urls(),
     ]
+
+if settings.IS_TESTING:  # pragma: no cover
+    from {{project_name}}.tests.test_app import views as test_app_views
+
+    urlpatterns += [
+        path(
+            "403/", test_app_views.permission_denied_view, name="permission-denied-view"
+        ),
+    ]
