@@ -8,6 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [2.0.0](https://github.com/albertomh/djereo/compare/v1.1.0...v2.0.0) (2025-02-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* make email AuthUser's username field ([#131](https://github.com/albertomh/djereo/issues/131))
+
+### Features
+
+* Add custom error view templates to gen. projects ([#133](https://github.com/albertomh/djereo/issues/133)) ([1adf2d6](https://github.com/albertomh/djereo/commit/1adf2d637dadb03aa817dba5a68370b8c6c0f286))
+* **chore:** Add django-debug-toolbar config to work with htmx boosting ([#130](https://github.com/albertomh/djereo/issues/130)) ([1b552f3](https://github.com/albertomh/djereo/commit/1b552f3bfe79ab7c3a9419ed805e36755bad5bf8))
+* Htmx requests automatically pass a header with the CSRFToken ([#128](https://github.com/albertomh/djereo/issues/128)) ([cc755b2](https://github.com/albertomh/djereo/commit/cc755b2f203e2003725e0919c5e42ac6b00d61a9))
+* Make email AuthUser's username field ([#131](https://github.com/albertomh/djereo/issues/131)) ([c84b195](https://github.com/albertomh/djereo/commit/c84b195272e9106231ce6eae28f2e6e93905dae4))
+* Use email for AuthUser in admin forms ([#132](https://github.com/albertomh/djereo/issues/132)) ([13c8f39](https://github.com/albertomh/djereo/commit/13c8f39243043dc2c738a02a732543200c8c0057))
+
 ## [1.1.0](https://github.com/albertomh/djereo/compare/v1.0.0...v1.1.0) (2025-02-25)
 
 
