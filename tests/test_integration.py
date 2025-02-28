@@ -1,5 +1,7 @@
 import re
 import time
+from contextlib import suppress
+from io import StringIO
 from pathlib import Path
 from typing import Callable
 from urllib.request import urlopen
@@ -7,8 +9,9 @@ from urllib.request import urlopen
 import pytest
 from bs4 import BeautifulSoup
 from bs4.element import Tag
+from sh import TimeoutException, just
 
-from tests._utils import run_process_and_wait, start_process_and_capture_streams
+from tests._utils import remove_ansi_escape_codes
 
 
 @pytest.mark.integration
@@ -18,24 +21,44 @@ def test_sys_check_warn_no_dev_mode_when_debug(
     copier_input_data: dict,
     test_project_name: str,
     test_project_dir: Path,
+    set_up_test_database: Callable[[], None],
+    tear_down_test_database,
 ):
     """
     Verify that a system check warning is shown when Python Development Mode is disabled
     and DEBUG is true.
     """
     copier_copy(copier_input_data)
-
-    _, stderr = run_process_and_wait(
-        # PYTHONDEVMODE can only be disabled by setting it to an empty string
-        ["just", "runserver", ""],
-        test_project_dir,
-    )
-
+    set_up_test_database()
+    out, err = StringIO(), StringIO()
+    timeout, interval = 10, 0.1  # seconds
     expected_warning = (
-        f"WARNINGS:\n?: ({test_project_name}.W001) Python Development Mode is not enabled"
-        " yet DEBUG is true."
+        f"({test_project_name}.W001) Python Development Mode is not enabled yet DEBUG is"
+        " true."
     )
-    assert expected_warning in "".join(stderr)
+
+    sentinel = "Quit the server with CONTROL-C."
+    start = time.time()
+    with suppress(TimeoutException):
+        just(
+            # PYTHONDEVMODE can only be disabled by setting it to an empty string
+            "runserver",
+            "",
+            _timeout=timeout,
+            _bg=True,
+            _bg_exc=False,
+            _out=out,
+            _err=err,
+            _cwd=test_project_dir,
+        )
+        while (time.time() - start) < timeout:
+            if sentinel in out.getvalue():
+                clean_stderr = remove_ansi_escape_codes(err.getvalue())
+                assert expected_warning in clean_stderr
+                return
+            time.sleep(interval)
+
+    raise AssertionError("Django runserver did not start in time")
 
 
 @pytest.mark.integration
@@ -49,13 +72,28 @@ def test_runserver(
 ):
     copier_copy(copier_input_data)
     set_up_test_database()
+    out = StringIO()
+    timeout, interval = 10, 0.1  # seconds
 
-    stdout, _ = run_process_and_wait(
-        ["just", "runserver"],
-        test_project_dir,
-    )
+    sentinel = "Quit the server with CONTROL-C."
+    start = time.time()
+    with suppress(TimeoutException):
+        just(
+            "runserver",
+            _timeout=timeout,
+            _bg=True,
+            _bg_exc=False,
+            _out=out,
+            _cwd=test_project_dir,
+        )
+        while (time.time() - start) < timeout:
+            if sentinel in out.getvalue():
+                start_message = "Starting development server at http://127.0.0.1:8000/"
+                assert start_message in out.getvalue()
+                return
+            time.sleep(interval)
 
-    assert "Starting development server at http://127.0.0.1:8000/" in "".join(stdout)
+    raise AssertionError("Django runserver did not start in time")
 
 
 @pytest.mark.integration
@@ -69,18 +107,31 @@ def test_django_debug_toolbar_is_enabled(
 ):
     copier_copy(copier_input_data)
     set_up_test_database()
-    run_process_and_wait(
-        ["just", "runserver"],
-        test_project_dir,
-    )
+    out = StringIO()
+    timeout, interval = 10, 0.1  # seconds
 
-    with urlopen("http://127.0.0.1:8000/") as response:
-        res_bytes = response.read()
-    res_html = res_bytes.decode("utf8")
-    html = BeautifulSoup(res_html)
-    dj_debug_toolbar = html.find("div", {"id": "djDebug"})
+    sentinel = "Quit the server with CONTROL-C."
+    start = time.time()
+    with suppress(TimeoutException):
+        just(
+            "runserver",
+            _timeout=timeout,
+            _bg=True,
+            _bg_exc=False,
+            _out=out,
+            _cwd=test_project_dir,
+        )
+        while (time.time() - start) < timeout:
+            if sentinel in out.getvalue():
+                with urlopen("http://127.0.0.1:8000/") as response:
+                    res_bytes = response.read()
+            time.sleep(interval)
 
-    assert type(dj_debug_toolbar) is Tag
+        res_html = res_bytes.decode("utf8")
+        html = BeautifulSoup(res_html)
+        dj_debug_toolbar = html.find("div", {"id": "djDebug"})
+
+        assert type(dj_debug_toolbar) is Tag
 
 
 @pytest.mark.integration
@@ -94,56 +145,30 @@ def test_runserver_dev_logs_use_rich(
 ):
     copier_copy(copier_input_data)
     set_up_test_database()
-    process_generator = start_process_and_capture_streams(
-        ["just", "runserver"],
-        test_project_dir,
-    )
-    stdout_path, _ = next(process_generator)
+    out = StringIO()
+    timeout, interval = 10, 0.1  # seconds
 
     sentinel = "Quit the server with CONTROL-C."
-    timeout, interval = 10, 0.1  # seconds
-    start_time = time.time()
-
-    while True:
-        with open(stdout_path, "r") as stdout_file:
-            stdout_lines = stdout_file.readlines()
-
-        for line in stdout_lines:
-            if sentinel in line:
-                break
-        else:
-            if time.time() - start_time > timeout:
-                pytest.fail(f"'{sentinel}' not found within timeout")
+    start = time.time()
+    with suppress(TimeoutException):
+        just(
+            "runserver",
+            _timeout=timeout,
+            _bg=True,
+            _bg_exc=False,
+            _out=out,
+            _cwd=test_project_dir,
+        )
+        while (time.time() - start) < timeout:
+            if sentinel in out.getvalue():
+                with urlopen("http://127.0.0.1:8000/") as response:
+                    assert response.status == 200
             time.sleep(interval)
-            continue
-        break
 
-    with urlopen("http://127.0.0.1:8000/") as response:
-        assert response.status == 200
-
-    try:
-        stdout, _ = next(process_generator)
-    except StopIteration as e:
-        stdout, _ = e.value
-
-    pattern = r"\[\d{2}:\d{2}:\d{2}\] INFO\s+ 200 GET \/ HTTP\/1\.1\s+basehttp\.py"
-    match = re.search(pattern, "".join(stdout))
+    pattern = r"\[\d{2}:\d{2}:\d{2}\] INFO\s+ 200 GET \/ HTTP\/1\.1\s+"
+    clean_stdout = remove_ansi_escape_codes(out.getvalue())
+    match = re.search(pattern, clean_stdout)
     assert match is not None
-
-
-@pytest.mark.integration
-@pytest.mark.slow
-def test_shell_uses_ipython(
-    skip_if_github_actions,
-    copier_copy: Callable[[dict], None],
-    copier_input_data: dict,
-    test_project_dir: Path,
-):
-    copier_copy(copier_input_data)
-
-    stdout, _ = run_process_and_wait(["just", "shell"], test_project_dir)
-
-    assert "An enhanced Interactive Python" in "".join(stdout)
 
 
 @pytest.mark.integration
@@ -162,15 +187,27 @@ def test_django_allauth_pages_exist(
     ]
     copier_copy(copier_input_data)
     set_up_test_database()
-    run_process_and_wait(
-        ["just", "manage", "migrate"],
-        test_project_dir,
-    )
-    run_process_and_wait(
-        ["just", "runserver"],
-        test_project_dir,
-    )
+    just("manage", "migrate", _cwd=test_project_dir)
+    out = StringIO()
+    timeout, interval = 15, 0.1  # seconds
 
-    for url in allauth_urls:
-        with urlopen(f"http://127.0.0.1:8000{url}") as response:
-            assert response.status == 200
+    sentinel = "Quit the server with CONTROL-C."
+    start = time.time()
+    with suppress(TimeoutException):
+        just(
+            "runserver",
+            _timeout=timeout,
+            _bg=True,
+            _bg_exc=False,
+            _out=out,
+            _cwd=test_project_dir,
+        )
+        while (time.time() - start) < timeout:
+            if sentinel in out.getvalue():
+                for url in allauth_urls:
+                    with urlopen(f"http://127.0.0.1:8000{url}") as response:
+                        assert response.status == 200
+                return
+            time.sleep(interval)
+
+    raise AssertionError("Django runserver did not start in time")

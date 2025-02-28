@@ -1,5 +1,4 @@
 import os
-import subprocess
 import tomllib
 from pathlib import Path
 from typing import Callable
@@ -8,6 +7,7 @@ import pytest
 import yaml
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
+from sh import RunningCommand, git, just, uv
 
 from tests._utils import count_dirs_and_files
 
@@ -132,24 +132,21 @@ def test_generated_yaml_is_valid(
                 pytest.fail(f"Invalid YAML file: {file_path}\nError: {e}")
 
 
-@pytest.mark.skip(reason="need to fix test postgres config")
 @pytest.mark.integration
 @pytest.mark.smoke
 def test_generated_project_tests_run_successfully(
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
     test_project_dir: Path,
+    set_up_test_database: Callable[[], None],
+    tear_down_test_database,
 ):
     copier_copy(copier_input_data)
+    set_up_test_database()
 
-    result = subprocess.run(
-        ["just", "test"],
-        cwd=test_project_dir,
-        capture_output=True,
-        text=True,
-    )
+    result: RunningCommand = just("test", _cwd=test_project_dir, _return_cmd=True)
 
-    assert result.returncode == 0, f"Pytest failed:\n{result.stdout}\n{result.stderr}"
+    assert result.exit_code == 0, f"Pytest failed:\n{result.stdout}\n{result.stderr}"
 
 
 @pytest.mark.integration
@@ -162,18 +159,20 @@ def test_generated_project_pre_commit_hooks_run_successfully(
     copier_copy(copier_input_data)
 
     # pre-commit will only run against files tracked by git
-    subprocess.run(["git", "init"], cwd=test_project_dir, check=True)
-    subprocess.run(["git", "add", "."], cwd=test_project_dir, check=True)
+    git("init", _cwd=test_project_dir)
+    git("add", ".", _cwd=test_project_dir)
 
     env = os.environ.copy()
     env["SKIP"] = "no-commit-to-branch"
-    pre_commit_res = subprocess.run(
-        ["uv", "run", "pre-commit", "run", "--all-files"],
-        cwd=test_project_dir,
-        env=env,
-        capture_output=True,
-        text=True,
+    pre_commit_res = uv(
+        "run",
+        "pre-commit",
+        "run",
+        "--all-files",
+        _cwd=test_project_dir,
+        _env=env,
+        _return_cmd=True,
     )
-    assert pre_commit_res.returncode == 0, (
+    assert pre_commit_res.exit_code == 0, (
         f"Pre-commit hooks failed:\n{pre_commit_res.stdout}\n{pre_commit_res.stderr}"
     )
