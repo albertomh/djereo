@@ -73,11 +73,11 @@ def start_process_and_capture_streams(
             process.send_signal(signal.SIGINT)
     finally:
         stdout_lines, stderr_lines = [], []
-        if os.path.exists(stdout_file.name):
+        if Path(stdout_file.name).exists():
             with open(stdout_file.name, "r") as f:
                 stdout_lines = f.readlines()
             os.unlink(stdout_file.name)
-        if os.path.exists(stderr_file.name):
+        if Path(stderr_file.name).exists():
             with open(stderr_file.name, "r") as f:
                 stderr_lines = f.readlines()
             os.unlink(stderr_file.name)
