@@ -1,24 +1,22 @@
 import os
-import signal
-import subprocess
-import tempfile
+import re
 from pathlib import Path
 from typing import Callable, Generator
 
-from sh import psql, whoami
+from sh import ErrorReturnCode, git, psql, whoami
+
+
+def remove_ansi_escape_codes(text):
+    ansi_escape = re.compile(r"\x1b[^m]*m")
+    return ansi_escape.sub("", text)
 
 
 def is_git_repo(path: Path) -> bool:
     """Check if the given path is a Git repository."""
     try:
-        subprocess.run(
-            ["git", "-C", str(path), "status"],
-            check=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
+        git("-C", str(path), "status")
         return True
-    except subprocess.CalledProcessError:
+    except ErrorReturnCode:
         return False
 
 
@@ -73,11 +71,11 @@ def start_process_and_capture_streams(
             process.send_signal(signal.SIGINT)
     finally:
         stdout_lines, stderr_lines = [], []
-        if os.path.exists(stdout_file.name):
+        if Path(stdout_file.name).exists():
             with open(stdout_file.name, "r") as f:
                 stdout_lines = f.readlines()
             os.unlink(stdout_file.name)
-        if os.path.exists(stderr_file.name):
+        if Path(stderr_file.name).exists():
             with open(stderr_file.name, "r") as f:
                 stderr_lines = f.readlines()
             os.unlink(stderr_file.name)

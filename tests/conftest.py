@@ -1,14 +1,13 @@
 import os
 import re
 import shutil
-import subprocess
-import sys
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable
 
 import pytest
 from copier.cli import CopierApp
+from sh import python
 
 from tests._utils import set_up_postgres, tear_down_postgres
 
@@ -144,17 +143,11 @@ def install_test_project(
 ):
     """Generate a test project, install and remove it before/after a test."""
     copier_copy(copier_input_data)
-    subprocess.run(
-        [sys.executable, "-m", "pip", "install", str(test_project_dir)],
-        check=True,
-    )
+    python("-m", "pip", "install", str(test_project_dir))
 
     yield
 
-    subprocess.run(
-        [sys.executable, "-m", "pip", "uninstall", "-y", test_project_name],
-        check=True,
-    )
+    python("-m", "pip", "uninstall", "-y", test_project_name)
 
 
 @pytest.fixture
