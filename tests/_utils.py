@@ -1,11 +1,14 @@
 import os
-import signal
-import subprocess
-import tempfile
+import re
 from pathlib import Path
 from typing import Callable, Generator
 
 from sh import ErrorReturnCode, git, psql, whoami
+
+
+def remove_ansi_escape_codes(text):
+    ansi_escape = re.compile(r"\x1b[^m]*m")
+    return ansi_escape.sub("", text)
 
 
 def is_git_repo(path: Path) -> bool:
