@@ -1,0 +1,17 @@
+{% extends "_base.html" %}
+
+{% block head_title %}404 Not Found{% endblock %}
+
+{% block content_root %}<section>
+    <header>
+        <h1>404 - Page Not Found</h1>
+        <p></p>
+        <br>
+        <p>
+            <a href="{% url 'index' %}">
+                <em>Home</em>
+            </a>
+        </p>
+    </header>
+</section>
+{% endblock content_root %}
