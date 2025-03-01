@@ -14,6 +14,20 @@ from sh import TimeoutException, just
 from tests._utils import remove_ansi_escape_codes
 
 
+def wait_for_server_start(
+    out: StringIO, timeout: float = 10, interval: float = 0.1
+) -> bool:
+    sentinel = "Quit the server with CONTROL-C."
+    start = time.time()
+
+    while time.time() - start < timeout:
+        if sentinel in out.getvalue():
+            return True
+        time.sleep(interval)
+
+    return False
+
+
 @pytest.mark.integration
 @pytest.mark.slow
 def test_sys_check_warn_no_dev_mode_when_debug(
@@ -31,34 +45,27 @@ def test_sys_check_warn_no_dev_mode_when_debug(
     copier_copy(copier_input_data)
     set_up_test_database()
     out, err = StringIO(), StringIO()
-    timeout, interval = 10, 0.1  # seconds
     expected_warning = (
         f"({test_project_name}.W001) Python Development Mode is not enabled yet DEBUG is"
         " true."
     )
 
-    sentinel = "Quit the server with CONTROL-C."
-    start = time.time()
     with suppress(TimeoutException):
         just(
-            # PYTHONDEVMODE can only be disabled by setting it to an empty string
             "runserver",
+            # PYTHONDEVMODE can only be disabled by setting it to an empty string
             "",
-            _timeout=timeout,
+            _timeout=10,
             _bg=True,
             _bg_exc=False,
             _out=out,
             _err=err,
             _cwd=test_project_dir,
         )
-        while (time.time() - start) < timeout:
-            if sentinel in out.getvalue():
-                clean_stderr = remove_ansi_escape_codes(err.getvalue())
-                assert expected_warning in clean_stderr
-                return
-            time.sleep(interval)
+        assert wait_for_server_start(out), "Django runserver did not start in time"
 
-    raise AssertionError("Django runserver did not start in time")
+    clean_stderr = remove_ansi_escape_codes(err.getvalue())
+    assert expected_warning in clean_stderr
 
 
 @pytest.mark.integration
@@ -73,27 +80,20 @@ def test_runserver(
     copier_copy(copier_input_data)
     set_up_test_database()
     out = StringIO()
-    timeout, interval = 10, 0.1  # seconds
 
-    sentinel = "Quit the server with CONTROL-C."
-    start = time.time()
     with suppress(TimeoutException):
         just(
             "runserver",
-            _timeout=timeout,
+            _timeout=10,
             _bg=True,
             _bg_exc=False,
             _out=out,
             _cwd=test_project_dir,
         )
-        while (time.time() - start) < timeout:
-            if sentinel in out.getvalue():
-                start_message = "Starting development server at http://127.0.0.1:8000/"
-                assert start_message in out.getvalue()
-                return
-            time.sleep(interval)
+        assert wait_for_server_start(out), "Django runserver did not start in time"
 
-    raise AssertionError("Django runserver did not start in time")
+    start_message = "Starting development server at http://127.0.0.1:8000/"
+    assert start_message in out.getvalue()
 
 
 @pytest.mark.integration
@@ -108,30 +108,24 @@ def test_django_debug_toolbar_is_enabled(
     copier_copy(copier_input_data)
     set_up_test_database()
     out = StringIO()
-    timeout, interval = 10, 0.1  # seconds
 
-    sentinel = "Quit the server with CONTROL-C."
-    start = time.time()
     with suppress(TimeoutException):
         just(
             "runserver",
-            _timeout=timeout,
+            _timeout=10,
             _bg=True,
             _bg_exc=False,
             _out=out,
             _cwd=test_project_dir,
         )
-        while (time.time() - start) < timeout:
-            if sentinel in out.getvalue():
-                with urlopen("http://127.0.0.1:8000/") as response:
-                    res_bytes = response.read()
-            time.sleep(interval)
+        assert wait_for_server_start(out), "Django runserver did not start in time"
+    with urlopen("http://127.0.0.1:8000/") as response:
+        res_bytes = response.read()
+    res_html = res_bytes.decode("utf8")
+    html = BeautifulSoup(res_html)
+    dj_debug_toolbar = html.find("div", {"id": "djDebug"})
 
-        res_html = res_bytes.decode("utf8")
-        html = BeautifulSoup(res_html)
-        dj_debug_toolbar = html.find("div", {"id": "djDebug"})
-
-        assert type(dj_debug_toolbar) is Tag
+    assert type(dj_debug_toolbar) is Tag
 
 
 @pytest.mark.integration
