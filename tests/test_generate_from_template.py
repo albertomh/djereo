@@ -135,15 +135,9 @@ def test_generated_yaml_is_valid(
 @pytest.mark.integration
 @pytest.mark.smoke
 def test_generated_project_tests_run_successfully(
-    copier_copy: Callable[[dict], None],
-    copier_input_data: dict,
     test_project_dir: Path,
-    set_up_test_database: Callable[[], None],
-    tear_down_test_database,
+    generate_test_project_with_db,
 ):
-    copier_copy(copier_input_data)
-    set_up_test_database()
-
     result: RunningCommand = just("test", _cwd=test_project_dir, _return_cmd=True)
 
     assert result.exit_code == 0, f"Pytest failed:\n{result.stdout}\n{result.stderr}"

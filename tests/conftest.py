@@ -155,4 +155,19 @@ def set_up_test_database(test_project_dir: Path) -> Callable[[], None]:
 @pytest.fixture
 def tear_down_test_database(test_project_dir: Path):
     yield
+
+
+@pytest.fixture
+def generate_test_project_with_db(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    set_up_test_database,
+    test_project_dir: Path,
+    tear_down_test_database,
+):
+    copier_copy(copier_input_data)
+    set_up_test_database()
+
+    yield
+
     tear_down_postgres(test_project_dir)
