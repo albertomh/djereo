@@ -3,7 +3,6 @@ import time
 from contextlib import suppress
 from io import StringIO
 from pathlib import Path
-from typing import Callable
 from urllib.request import urlopen
 
 import pytest
@@ -41,19 +40,14 @@ def wait_for_server_start(
 @pytest.mark.integration
 @pytest.mark.slow
 def test_sys_check_warn_no_dev_mode_when_debug(
-    copier_copy: Callable[[dict], None],
-    copier_input_data: dict,
     test_project_name: str,
     test_project_dir: Path,
-    set_up_test_database: Callable[[], None],
-    tear_down_test_database,
+    generate_test_project_with_db,
 ):
     """
     Verify that a system check warning is shown when Python Development Mode is disabled
     and DEBUG is true.
     """
-    copier_copy(copier_input_data)
-    set_up_test_database()
     out, err = StringIO(), StringIO()
     expected_warning = (
         f"({test_project_name}.W001) Python Development Mode is not enabled yet DEBUG is"
@@ -81,14 +75,9 @@ def test_sys_check_warn_no_dev_mode_when_debug(
 @pytest.mark.integration
 @pytest.mark.smoke
 def test_runserver(
-    copier_copy: Callable[[dict], None],
-    copier_input_data: dict,
     test_project_dir: Path,
-    set_up_test_database: Callable[[], None],
-    tear_down_test_database,
+    generate_test_project_with_db,
 ):
-    copier_copy(copier_input_data)
-    set_up_test_database()
     out = StringIO()
 
     with suppress(TimeoutException):
@@ -109,14 +98,9 @@ def test_runserver(
 @pytest.mark.integration
 @pytest.mark.slow
 def test_django_debug_toolbar_is_enabled(
-    copier_copy: Callable[[dict], None],
-    copier_input_data: dict,
     test_project_dir: Path,
-    set_up_test_database: Callable[[], None],
-    tear_down_test_database,
+    generate_test_project_with_db,
 ):
-    copier_copy(copier_input_data)
-    set_up_test_database()
     out = StringIO()
 
     with suppress(TimeoutException):
@@ -141,14 +125,9 @@ def test_django_debug_toolbar_is_enabled(
 @pytest.mark.integration
 @pytest.mark.slow
 def test_runserver_dev_logs_use_rich(
-    copier_copy: Callable[[dict], None],
-    copier_input_data: dict,
     test_project_dir: Path,
-    set_up_test_database: Callable[[], None],
-    tear_down_test_database,
+    generate_test_project_with_db,
 ):
-    copier_copy(copier_input_data)
-    set_up_test_database()
     out = StringIO()
 
     with suppress(TimeoutException):
@@ -175,18 +154,13 @@ def test_runserver_dev_logs_use_rich(
 @pytest.mark.smoke
 @pytest.mark.slow
 def test_django_allauth_pages_exist(
-    copier_copy: Callable[[dict], None],
-    copier_input_data: dict,
     test_project_dir: Path,
-    set_up_test_database: Callable[[], None],
-    tear_down_test_database,
+    generate_test_project_with_db,
 ):
     allauth_urls = [
         "accounts/login/",
         "accounts/signup/",
     ]
-    copier_copy(copier_input_data)
-    set_up_test_database()
     just("manage", "migrate", _cwd=test_project_dir)
     out = StringIO()
 
