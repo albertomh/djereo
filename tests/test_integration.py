@@ -15,13 +15,23 @@ from tests._utils import remove_ansi_escape_codes
 
 
 def wait_for_server_start(
-    out: StringIO, timeout: float = 10, interval: float = 0.1
+    out: StringIO,
+    *,
+    timeout=10.0,
+    interval=0.1,
+    urls_to_get: list[tuple[str, int]] = None,
 ) -> bool:
+    if urls_to_get is None:
+        urls_to_get = []
     sentinel = "Quit the server with CONTROL-C."
     start = time.time()
 
     while time.time() - start < timeout:
         if sentinel in out.getvalue():
+            for url, expected_status in urls_to_get:
+                with urlopen(url) as response:
+                    time.sleep(interval)
+                    assert response.status == expected_status
             return True
         time.sleep(interval)
 
@@ -140,24 +150,20 @@ def test_runserver_dev_logs_use_rich(
     copier_copy(copier_input_data)
     set_up_test_database()
     out = StringIO()
-    timeout, interval = 10, 0.1  # seconds
 
-    sentinel = "Quit the server with CONTROL-C."
-    start = time.time()
     with suppress(TimeoutException):
         just(
             "runserver",
-            _timeout=timeout,
+            _timeout=10,
             _bg=True,
             _bg_exc=False,
             _out=out,
             _cwd=test_project_dir,
         )
-        while (time.time() - start) < timeout:
-            if sentinel in out.getvalue():
-                with urlopen("http://127.0.0.1:8000/") as response:
-                    assert response.status == 200
-            time.sleep(interval)
+        urls_to_get = [("http://127.0.0.1:8000/", 200)]
+        assert wait_for_server_start(out, urls_to_get=urls_to_get), (
+            "Django runserver did not start in time"
+        )
 
     pattern = r"\[\d{2}:\d{2}:\d{2}\] INFO\s+ 200 GET \/ HTTP\/1\.1\s+"
     clean_stdout = remove_ansi_escape_codes(out.getvalue())
@@ -176,32 +182,24 @@ def test_django_allauth_pages_exist(
     tear_down_test_database,
 ):
     allauth_urls = [
-        "/accounts/login/",
-        "/accounts/signup/",
+        "accounts/login/",
+        "accounts/signup/",
     ]
     copier_copy(copier_input_data)
     set_up_test_database()
     just("manage", "migrate", _cwd=test_project_dir)
     out = StringIO()
-    timeout, interval = 15, 0.1  # seconds
 
-    sentinel = "Quit the server with CONTROL-C."
-    start = time.time()
     with suppress(TimeoutException):
         just(
             "runserver",
-            _timeout=timeout,
+            _timeout=10,
             _bg=True,
             _bg_exc=False,
             _out=out,
             _cwd=test_project_dir,
         )
-        while (time.time() - start) < timeout:
-            if sentinel in out.getvalue():
-                for url in allauth_urls:
-                    with urlopen(f"http://127.0.0.1:8000{url}") as response:
-                        assert response.status == 200
-                return
-            time.sleep(interval)
-
-    raise AssertionError("Django runserver did not start in time")
+        urls_to_get = [(f"http://127.0.0.1:8000/{url}", 200) for url in allauth_urls]
+        assert wait_for_server_start(out, urls_to_get=urls_to_get), (
+            "Django runserver did not start in time"
+        )
