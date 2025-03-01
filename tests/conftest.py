@@ -16,12 +16,6 @@ IS_CI = os.getenv("CI") == "true"
 
 
 @pytest.fixture
-def skip_if_github_actions():
-    if os.getenv("GITHUB_ACTIONS") == "true":
-        pytest.skip("Test fails in a GitHub Actions context")
-
-
-@pytest.fixture
 def djereo_root_dir() -> Path:
     """Provides the path to the djereo project root."""
     project_root = Path(__file__).resolve().parent.parent
