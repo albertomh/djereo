@@ -152,11 +152,11 @@ if not DEBUG and "http://127.0.0.1" not in CSRF_TRUSTED_ORIGINS:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
 
-    SECURE_SSL_REDIRECT = True
-
     SECURE_HSTS_SECONDS = 30
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+
+# rather than setting SECURE_SSL_REDIRECT, have the reverse proxy (eg. nginx) handle it
 
 SITE_ID = 1
 
