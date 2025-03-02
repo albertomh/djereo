@@ -21,7 +21,7 @@ class SeedDatabaseTests(TestCase):
         return out.getvalue(), err.getvalue()
 
     def test_error_data_exists(self):
-        get_user_model().objects.create_user(username="user")
+        get_user_model().objects.create_user(email="user@example.com")
         expected_msg = (
             "This command cannot be run when any users exist to guard "
             + "against accidental use on production."

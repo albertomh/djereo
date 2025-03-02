@@ -17,6 +17,18 @@ class AuthUserTestCase(TestCase):
         profile = AuthUser.objects.get(username=self.user.username)
         self.assertIsNotNone(profile.updated_at)
 
+    def test_create_user_without_email_raises_error(self):
+        with self.assertRaises(ValueError) as err:
+            get_user_model().objects.create_user(email=None, password="testpassword")
+        self.assertEqual(str(err.exception), "The 'email' field must be set")
+
+    def test_create_superuser(self):
+        superuser = get_user_model().objects.create_superuser(
+            email="super@quijano.es", password="testpassword"
+        )
+        self.assertTrue(superuser.is_staff)
+        self.assertTrue(superuser.is_superuser)
+
 
 class UserProfileTestCase(TestCase):
     @classmethod
