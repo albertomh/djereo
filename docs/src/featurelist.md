@@ -366,6 +366,24 @@ changes minimal, only overriding `django-allauth`'s base template (`users/templa
 as a dependency. It is configured to serve static files using Brotli compression and add
 unique hashes to filenames so that each version can be cached for a long time.
 
+## 🔒 Security
+
+`settings.py` is configured to detect whether the application is running in a hosted
+environment and enable security enhancements. A hosted environment is detected by checking
+that `DEBUG` is False and that localhost is not amongst the `CSRF_TRUSTED_ORIGINS`.
+
+- Strict-Transport-Security: this header is enabled via the `SECURE_HSTS_*` settings.
+  Configured for a duration of 3600 seconds to begin with, it is recommended this is
+  increased to 2592000 seconds (30 days).
+- Content-Security-Policy: [django-csp](https://django-csp.readthedocs.io/en/latest/index.html){target=\"_blank"}
+  is used to set this header to a locked-down default.
+- `SECURE_SSL_REDIRECT` is not set explicitly under the assumption that the application
+  will sit behind a reverse proxy that will take care of redirecting HTTP to HTTPS.
+  `SECURE_PROXY_SSL_HEADER` is also configured to ease this.
+- [django-permissions-policy](https://pypi.org/project/django-permissions-policy/){target=\"_blank"}
+  is used to apply sensible restrictions to block annoying & intrusive web APIs. See the
+  `PERMISSIONS_POLICY` setting for details.
+
 ## 🧪 Tests
 
 `djereo` projects come with all the tooling needed to get you writing tests quickly, as
