@@ -152,6 +152,9 @@ if not DEBUG and "http://127.0.0.1" not in CSRF_TRUSTED_ORIGINS:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
 
+    # for Django to detect the connection is secure when behind a reverse proxy eg. nginx
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
     # minimum recommended value is 2592000 (30 days) but best to start small and ramp up
     SECURE_HSTS_SECONDS = 3600
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
