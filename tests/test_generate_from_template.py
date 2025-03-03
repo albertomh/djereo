@@ -101,7 +101,7 @@ def test_generated_project_django_version_range(
         toml_data = tomllib.load(f)
 
     dependencies = toml_data["project"]["dependencies"]
-    django_dependency = next(dep for dep in dependencies if dep.startswith("django"))
+    django_dependency = next(dep for dep in dependencies if dep.startswith("django>="))
     constraint = django_dependency.split("django", 1)[1]
 
     specifier_set = SpecifierSet(constraint)
