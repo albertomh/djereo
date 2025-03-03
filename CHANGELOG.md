@@ -8,6 +8,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.0.0](https://github.com/albertomh/djereo/compare/v2.0.0...v3.0.0) (2025-03-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* use email, not username for (super)user creation ([#141](https://github.com/albertomh/djereo/issues/141))
+
+### Features
+
+* Add middleware to set missing Cross-Origin headers (COEP & CORP) ([#149](https://github.com/albertomh/djereo/issues/149)) ([c0ea6e5](https://github.com/albertomh/djereo/commit/c0ea6e55ee7b389dc8e1564fab7e844b5f82af29))
+* Bump Strict-Transport-Security duration to 3600 seconds ([#147](https://github.com/albertomh/djereo/issues/147)) ([d381c5b](https://github.com/albertomh/djereo/commit/d381c5b7d4c9e385516f3291abd96254d3979d9d))
+* **chore:** Enable branch coverage measurement in gen. projects ([#137](https://github.com/albertomh/djereo/issues/137)) ([67826bd](https://github.com/albertomh/djereo/commit/67826bd520420f9fc3b4da8b7d008460cce5e28a))
+* Enable Strict-Transport-Security in hosted environments ([#142](https://github.com/albertomh/djereo/issues/142)) ([b49995e](https://github.com/albertomh/djereo/commit/b49995e4c52de9e59719096cae5694075b433555))
+* Ensure Django detects secure connection behind reverse proxy ([#148](https://github.com/albertomh/djereo/issues/148)) ([933880b](https://github.com/albertomh/djereo/commit/933880b4a5e67c6274bc0c5f70c59f202dacee30))
+* Redirect HTTP requests to HTTPS in hosted environments ([#143](https://github.com/albertomh/djereo/issues/143)) ([31fdcf2](https://github.com/albertomh/djereo/commit/31fdcf261e40f9cf4c19f6d1d927c9b41fe26b9d))
+* Remove SECURE_SSL_REDIRECT and handle in reverse proxy ([#145](https://github.com/albertomh/djereo/issues/145)) ([fba942e](https://github.com/albertomh/djereo/commit/fba942e01fa694477c4011e4c3bc67c82692dd4a))
+* Set a locked-down Content-Security-Policy in gen. projects ([#144](https://github.com/albertomh/djereo/issues/144)) ([d280e7d](https://github.com/albertomh/djereo/commit/d280e7dbb4bab99ce64f933489df514dcbdc9911))
+* Set Permissions-Policy header to sensible restrictions ([#146](https://github.com/albertomh/djereo/issues/146)) ([5f6e381](https://github.com/albertomh/djereo/commit/5f6e38104dcae51d5328896d873f94e7940aacfc))
+
+
+### Bug Fixes
+
+* Use email, not username for (super)user creation ([#141](https://github.com/albertomh/djereo/issues/141)) ([ee3d6f1](https://github.com/albertomh/djereo/commit/ee3d6f161c321377e2f8c6e550f2b22678e71d31))
+
 ## [2.0.0](https://github.com/albertomh/djereo/compare/v1.1.0...v2.0.0) (2025-02-28)
 
 
