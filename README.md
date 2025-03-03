@@ -36,7 +36,7 @@ Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
 
 Projects created using `djereo` include:
 
-- A no-frills Django web application, configured via a `pyproject.toml`.
+- A Django web application, configured via a `pyproject.toml`.
 - Dependencies managed via `uv`, using a `uv.lock` file for reproducible builds.
 - An implementation of the 'custom User + UserProfile' pattern, tied together with a
   `django-allauth` integration.
@@ -49,6 +49,7 @@ Projects created using `djereo` include:
 - `pre-commit` hooks to lint & format code, and run SAST.
 - A `justfile` to use `just` as a task runner for common jobs.
 - Lean containerisation to quickly deploy a project to hosted environments.
+- Settings to score A+ on securityheaders.com, for peace of mind.
 - ...and more!
 
 Optionally, for projects intended to be hosted on GitHub, also include:
