@@ -71,8 +71,6 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#git-pre-commit-hooks">🪝 Git pre-commit hooks</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#optional-htmx-frontend">Optional htmx frontend</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#optional-github-features">Optional GitHub features</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#custom-github-actions">Custom GitHub actions</a>
@@ -134,6 +132,8 @@
     <li class="toctree-l4"><a class="reference internal" href="#styling-django-allauth-templates">Styling django-allauth templates</a>
     </li>
         </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#optional-htmx-frontend">Optional htmx frontend</a>
     </li>
         </ul>
     </li>
@@ -247,18 +247,6 @@ and include:</p>
 <li><code>adamchainz/django-upgrade</code> to automatically migrate code to a new version of Django.</li>
 <li><code>alessandrojcm/commitlint-pre-commit-hook</code> to enforce <a href="https://www.conventionalcommits.org/en/v1.0.0/" target="\&quot;_blank&quot;">Conventional Commits</a>.</li>
 </ul>
-<!-- markdownlint-disable MD013 line-length -->
-<h2 id="optional-htmx-frontend"><img src="https://simpleicons.org/icons/htmx.svg" width="25" alt="htmx logo"> Optional <code>htmx</code> frontend</h2>
-<!-- markdownlint-enable MD013 line-length -->
-
-<p>Projects generated using <code>djereo</code> include a vendorised copy of <code>htmx</code> in the static files
-directory and loaded in the <code>_base.html</code> template. You can opt out from this when
-completing the setup questionnaire.</p>
-<p>The <code>django-htmx</code> package is used to smoothly integrate <code>htmx</code> into projects, abstracting
-away header checks and allowing views to change their behaviour and responses based on the
-<code>request.htmx</code> attribute.</p>
-<p>See the <a href="https://django-htmx.readthedocs.io/en/latest/index.html">django-htmx documentation</a>
-for more.</p>
 <!-- markdownlint-disable MD013 line-length -->
 <h2 id="optional-github-features"><img src="https://simpleicons.org/icons/github.svg" width="25" alt="GitHub logo"> Optional GitHub features</h2>
 <!-- markdownlint-enable MD013 line-length -->
@@ -456,6 +444,15 @@ for the pages under <code>/accounts/</code>.</p>
 <p>See the section on <a href="https://docs.allauth.org/en/latest/common/templates.html#styling-the-existing-templates" target="\&quot;_blank&quot;">Styling Existing Templates</a>
 in the <code>django-allauth</code> docs for instructions on doing so. Out of the box <code>djereo</code> keeps
 changes minimal, only overriding <code>django-allauth</code>'s base template (<code>users/templates/allauth/layouts/base.html</code>).</p>
+<h3 id="optional-htmx-frontend">Optional <code>htmx</code> frontend</h3>
+<p>Projects generated using <code>djereo</code> include a vendorised copy of <code>htmx</code> in the static files
+directory and loaded in the <code>_base.html</code> template. You can opt out from this when
+completing the setup questionnaire.</p>
+<p>The <code>django-htmx</code> package is used to smoothly integrate <code>htmx</code> into projects, abstracting
+away header checks and allowing views to change their behaviour and responses based on the
+<code>request.htmx</code> attribute.</p>
+<p>See the <a href="https://django-htmx.readthedocs.io/en/latest/index.html">django-htmx documentation</a>
+for more.</p>
 <h2 id="third-party-packages">🤝 Third-party packages</h2>
 <h3 id="whitenoise">whitenoise</h3>
 <p><a href="https://whitenoise.readthedocs.io/en/stable/" target="\&quot;_blank&quot;">whitenoise</a> is included
@@ -477,6 +474,10 @@ that <code>DEBUG</code> is False and that localhost is not amongst the <code>CSR
 <li><a href="https://pypi.org/project/django-permissions-policy/" target="\&quot;_blank&quot;">django-permissions-policy</a>
   is used to apply sensible restrictions to block annoying &amp; intrusive web APIs. See the
   <code>PERMISSIONS_POLICY</code> setting for details.</li>
+<li>Cross-Origin-Opener-Policy: by default Django sets this to the secure <code>same-origin</code> value.</li>
+<li>Cross-Origin-Embedder-Policy &amp; Cross-Origin-Resource-Policy: these are set to their most
+  secure values by means of a custom middleware, <code>SecurityHeadersMiddleware</code>. There is an
+  open ticket to add these to Django (<a href="https://code.djangoproject.com/ticket/31923" target="\&quot;_blank&quot;">#31923</a>).</li>
 </ul>
 <h2 id="tests">🧪 Tests</h2>
 <p><code>djereo</code> projects come with all the tooling needed to get you writing tests quickly, as
