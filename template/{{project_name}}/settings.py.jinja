@@ -83,6 +83,7 @@ CONTRIB_APPS = [
 INSTALLED_APPS = FIRST_PARTY_APPS + THIRD_PARTY_APPS + CONTRIB_APPS
 
 MIDDLEWARE = [
+    "{{project_name}}.middleware.SecurityHeadersMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django_permissions_policy.PermissionsPolicyMiddleware",
     "csp.middleware.CSPMiddleware",

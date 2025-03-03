@@ -123,6 +123,10 @@ that `DEBUG` is False and that localhost is not amongst the `CSRF_TRUSTED_ORIGIN
 - [django-permissions-policy](https://pypi.org/project/django-permissions-policy/) is used
   to apply sensible restrictions to block annoying & intrusive web APIs. See the
   `PERMISSIONS_POLICY` setting for details.
+- Cross-Origin-Opener-Policy: by default Django sets this to the secure `same-origin` value.
+- Cross-Origin-Embedder-Policy & Cross-Origin-Resource-Policy: these are set to their most
+  secure values by means of a custom middleware, `SecurityHeadersMiddleware`. There is an
+  open ticket to add these to Django ([#31923](https://code.djangoproject.com/ticket/31923)).
 
 ## Developer tools
 
