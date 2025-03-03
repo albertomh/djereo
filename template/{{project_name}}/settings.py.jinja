@@ -270,11 +270,17 @@ TEST_RUNNER = "{{project_name}}.test.TestRunner"
 
 # 3. Third Party Settings ----------------------------------------------------------------
 
-# https://github.com/adamchainz/django-version-checks#usage
+# <https://github.com/adamchainz/django-version-checks#usage>
 VERSION_CHECKS = {
     "python": ">={{python_version}}",
     "postgresql": "~={{postgres_version}}.0",
 }
+
+# <https://github.com/lincolnloop/django-alive>
+ALIVE_CHECKS: list[tuple[str, dict]] = [
+    ("django_alive.checks.check_database", {}),
+    ("django_alive.checks.check_migrations", {}),
+]
 
 # Only enable dev tools when in debug mode and tests are not running.
 # Django changes DEBUG to False for tests, so can't rely on DEBUG alone.
