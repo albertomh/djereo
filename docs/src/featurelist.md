@@ -82,21 +82,6 @@ and include:
 - `alessandrojcm/commitlint-pre-commit-hook` to enforce [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/){target=\"_blank"}.
 
 <!-- markdownlint-disable MD013 line-length -->
-## <img src="https://simpleicons.org/icons/htmx.svg" width="25" alt="htmx logo"> Optional `htmx` frontend
-<!-- markdownlint-enable MD013 line-length -->
-
-Projects generated using `djereo` include a vendorised copy of `htmx` in the static files
-directory and loaded in the `_base.html` template. You can opt out from this when
-completing the setup questionnaire.
-
-The `django-htmx` package is used to smoothly integrate `htmx` into projects, abstracting
-away header checks and allowing views to change their behaviour and responses based on the
-`request.htmx` attribute.
-
-See the [django-htmx documentation](https://django-htmx.readthedocs.io/en/latest/index.html)
-for more.
-
-<!-- markdownlint-disable MD013 line-length -->
 ## <img src="https://simpleicons.org/icons/github.svg" width="25" alt="GitHub logo"> Optional GitHub features
 <!-- markdownlint-enable MD013 line-length -->
 
@@ -358,6 +343,19 @@ See the section on [Styling Existing Templates](https://docs.allauth.org/en/late
 in the `django-allauth` docs for instructions on doing so. Out of the box `djereo` keeps
 changes minimal, only overriding `django-allauth`'s base template (`users/templates/allauth/layouts/base.html`).
 
+### Optional `htmx` frontend
+
+Projects generated using `djereo` include a vendorised copy of `htmx` in the static files
+directory and loaded in the `_base.html` template. You can opt out from this when
+completing the setup questionnaire.
+
+The `django-htmx` package is used to smoothly integrate `htmx` into projects, abstracting
+away header checks and allowing views to change their behaviour and responses based on the
+`request.htmx` attribute.
+
+See the [django-htmx documentation](https://django-htmx.readthedocs.io/en/latest/index.html)
+for more.
+
 ## 🤝 Third-party packages
 
 ### whitenoise
@@ -383,6 +381,10 @@ that `DEBUG` is False and that localhost is not amongst the `CSRF_TRUSTED_ORIGIN
 - [django-permissions-policy](https://pypi.org/project/django-permissions-policy/){target=\"_blank"}
   is used to apply sensible restrictions to block annoying & intrusive web APIs. See the
   `PERMISSIONS_POLICY` setting for details.
+- Cross-Origin-Opener-Policy: by default Django sets this to the secure `same-origin` value.
+- Cross-Origin-Embedder-Policy & Cross-Origin-Resource-Policy: these are set to their most
+  secure values by means of a custom middleware, `SecurityHeadersMiddleware`. There is an
+  open ticket to add these to Django ([#31923](https://code.djangoproject.com/ticket/31923){target=\"_blank"}).
 
 ## 🧪 Tests
 
