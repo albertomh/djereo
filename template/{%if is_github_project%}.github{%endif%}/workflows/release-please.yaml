@@ -19,19 +19,24 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: googleapis/release-please-action@v4
+        id: release
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
       - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
         with:
           ref: release-please--branches--main
       - uses: astral-sh/setup-uv@v5
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
         with:
           version: "0.6.4"
       - run: uv lock
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
         shell: bash
       - uses: stefanzweifel/git-auto-commit-action@v5
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
         with:
           file_pattern: 'uv.lock'
           commit_message: 'chore: update uv.lock with new version from release-please'
