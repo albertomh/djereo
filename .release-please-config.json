@@ -1,5 +1,12 @@
 {
     "changelog-type": "default",
+    "extra-files": [
+        {
+            "type": "toml",
+            "path": "docs/pyproject.toml",
+            "jsonpath": "$.project.version"
+        }
+    ],
     "packages": {
         ".": {}
     },
