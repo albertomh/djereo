@@ -1,0 +1,39 @@
+# Release Please pipeline
+# Refreshes a pull request that updates the changelog & bumps the Semantic Version every
+# time the `main` branch is merged to.
+# N.B. conventional commits (as enforced by the relevant git hook) are a prerequisite for
+# Release Please to generate changelogs and calculate new SemVer tags.
+name: release-please
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.DJEREO_RELEASE_PLEASE_TOKEN }}
+          config-file: .release-please-config.json
+          manifest-file: .release-please-manifest.json
+      - uses: actions/checkout@v4
+        with:
+          ref: release-please--branches--main
+          fetch-depth: 0  # fetch all history so that commits can be amended
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.6.4"
+      - run: uv lock
+        shell: bash
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          file_pattern: 'uv.lock'
+          commit_options: '--amend --no-edit'
+          push_options: '--force'

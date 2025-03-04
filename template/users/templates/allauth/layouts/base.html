@@ -1,0 +1,113 @@
+{% extends "_base.html" %}
+
+{% block extra_head_style %}
+<style>
+    main section {
+        flex-direction: column !important;
+    }
+</style>
+{% endblock extra_head_style %}
+
+{% block content_root %}
+    {% block body %}
+
+        {% if messages %}
+        <section>
+            <article>
+                <aside>
+                    <ul>
+                        {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+                    </ul>
+                </aside>
+            </article>
+        </section>
+        {% endif %}
+
+    <section>
+        {% block content %}
+        {% endblock content %}
+    </section>
+
+    {% endblock body %}
+
+    {% block extra_body %}
+    {% endblock extra_body %}
+
+{% endblock content_root %}
+
+
+
+
+{% comment %}
+        {% block body %}
+            {% if messages %}
+                <div>
+                    <strong>Messages:</strong>
+                    <ul>
+                        {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <div>
+                <strong>Menu:</strong>
+                <ul>
+                    {% if user.is_authenticated %}
+                        {% url 'account_email' as email_url_ %}
+                        {% if email_url_ %}
+                            <li>
+                                <a href="{{ email_url_ }}">Change Email</a>
+                            </li>
+                        {% endif %}
+                        {% url 'account_change_password' as change_password_url_ %}
+                        {% if change_password_url_ %}
+                            <li>
+                                <a href="{{ change_password_url_ }}">Change Password</a>
+                            </li>
+                        {% endif %}
+                        {% url 'socialaccount_connections' as connections_url_ %}
+                        {% if connections_url_ %}
+                            <li>
+                                <a href="{{ connections_url_ }}">Account Connections</a>
+                            </li>
+                        {% endif %}
+                        {% url 'mfa_index' as mfa_url_ %}
+                        {% if mfa_url_ %}
+                            <li>
+                                <a href="{{ mfa_url_ }}">Two-Factor Authentication</a>
+                            </li>
+                        {% endif %}
+                        {% url 'usersessions_list' as usersessions_list_url_ %}
+                        {% if usersessions_list_url_ %}
+                            <li>
+                                <a href="{{ usersessions_list_url_ }}">Sessions</a>
+                            </li>
+                        {% endif %}
+                        {% url 'account_logout' as logout_url_ %}
+                        {% if logout_url_ %}
+                            <li>
+                                <a href="{{ logout_url_ }}">Sign Out</a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        {% url 'account_login' as login_url_ %}
+                        {% if login_url_ %}
+                            <li>
+                                <a href="{{ login_url_ }}">Sign In</a>
+                            </li>
+                        {% endif %}
+                        {% url 'account_signup' as signup_url_ %}
+                        {% if signup_url_ %}
+                            <li>
+                                <a href="{{ signup_url_ }}">Sign Up</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
+            {% block allauthcontent %}
+            {% endblock allauthcontent %}
+        {% endblock body %}
+
+{% block extra_body %}
+{% endblock extra_body %}
+{% endcomment %}

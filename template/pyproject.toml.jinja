@@ -1,0 +1,116 @@
+# https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
+[project]
+name = "{{project_name}}"
+version = "{{initial_version}}"
+description = ""
+authors = [
+  {name = "{{author_name}}", email = "{{author_email}}"}
+]
+readme = "README.md"
+# create 'LICENSE' file and uncomment below line
+# license = { file = "LICENSE" }
+requires-python = ">={{python_version}}"
+{% set django_ver_parts = django_version.split('.') %}
+{% set django_ver_major = django_ver_parts[0] | int + 1 %}
+dependencies = [
+    "django-alive>=2.0.0,<3.0.0",
+    "django>={{django_version}},<{{django_ver_major}}.0",
+    "django-allauth>=65.4.1,<66.0.0",
+    "django-csp>=3.8,<4.0",
+    {% if use_htmx %}
+    "django-htmx>=1.22.0,<2.0.0",
+    {% endif %}
+    "django-linear-migrations>=2.16.0,<3.0.0",
+    "django-permissions-policy>=4.25.0,<5.0.0",
+    "django-structlog>=9.0.1,<10.0.0",
+    "django-version-checks>=1.13.0,<2.0.0",
+    "environs[django]>=14.1.0,<15.0.0",
+    "gunicorn>=23.0.0,<24.0.0",
+    "psycopg[binary]>=3.2.4,<4.0.0",
+    "whitenoise[brotli]>=6.8.2,<7.0.0",
+]
+
+[dependency-groups]
+test = [
+    {%if use_htmx%}
+    "beautifulsoup4>=4.13.3,<5.0.0",
+    {% endif %}
+    "coverage>=7.6.7",
+    "factory-boy>=3.3.3,<4.0.0",
+    "parameterized>=0.9.0,<1.0.0",
+]
+dev = [
+    "django-browser-reload>=1.17.0",
+    "django-debug-toolbar>=5.0.1",
+    "ipdb>=0.13.13",
+    "ipython>=8.31.0",
+    "rich>=13.9.4",
+]
+
+[tool.setuptools.packages.find]
+# allow `pip install -e .` to find the project package
+include = ["{{project_name}}"]
+
+[tool.coverage.report]
+omit = [
+  "*/tests/*"
+]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "def __str__",
+    "if settings.debug",
+]
+
+[tool.ruff]
+exclude = [".pdbrc"]
+indent-width = 4
+line-length = 90
+target-version = "py{{python_version.replace('.', '')}}"
+
+[tool.ruff.lint]
+ignore = []
+select = [
+    # flake8-bugbear
+    "B",
+    # pydocstyle
+    "E",
+    # isort
+    "I",
+    # flake8-no-pep420
+    "INP",
+    # Pyflakes
+    "F",
+    #flake8-logging-format
+    "G",
+    # flake8-logging
+    "LOG",
+    # flake8-bandit
+    "S",
+    # flake8-tidy-imports
+    "TID",
+    # flake8-print
+    "T20",
+    # pycodestyle warnings
+    "W",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**.py" = ["S"]
+"**/tests/**.py" = ["S"]
+"{{project_name}}/settings.py" = ["E501"]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"{{project_name}}.settings".msg = "Do not import project settings module - use `from django.conf import settings` instead"
+
+[tool.coverage.run]
+source = [
+  "./{{project_name}}/",
+]
+omit = [
+  "manage.py",
+  "*/tests/*",
+  "{{project_name}}/asgi.py",
+  "{{project_name}}/wsgi.py",
+  "{{project_name}}/settings.py",
+]
