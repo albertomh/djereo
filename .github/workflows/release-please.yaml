@@ -23,10 +23,6 @@ jobs:
           token: ${{ secrets.DJEREO_RELEASE_PLEASE_TOKEN }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
-      - uses: actions/checkout@v4
-        with:
-          ref: release-please--branches--main
-          fetch-depth: 0  # fetch all history so that commits can be amended
       - uses: astral-sh/setup-uv@v5
         with:
           version: "0.6.4"
@@ -36,4 +32,3 @@ jobs:
         with:
           file_pattern: 'uv.lock'
           commit_message: 'chore: update uv.lock with new version from release-please'
-          push_options: ''
