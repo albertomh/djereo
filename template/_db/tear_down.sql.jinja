@@ -1,0 +1,13 @@
+/**
+ Usage:
+ ```
+ psql \
+   -U $(whoami) \
+   -d postgres \
+   -f _db/tear_down.sql
+ ```
+**/
+
+DROP DATABASE IF EXISTS {{project_name}};
+
+DROP USER IF EXISTS {{project_name}};
