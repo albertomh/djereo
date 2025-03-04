@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% raw %}{% load allauth static %}{% endraw %}
+
+<head>
+    <title>
+        {% raw %}{% block head_title %}{% endblock %}{% endraw %} | {{ project_name }}
+    </title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% raw %}{% static '{% endraw %}{{project_name}}{% raw %}/mvp.css' %}{% endraw %}">
+
+    <style>
+        header {
+            padding-bottom: 0;
+        }
+        h1 {
+            font-size: xx-large;
+        }
+        nav b {
+            font-size: x-large;
+        }
+        .inactive-link {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+    {% raw %}{% block extra_head_style %}{% endblock %}{% endraw %}
+
+    {% if use_htmx %}
+    <script src="{% raw %}{%{% endraw %} static '{{project_name}}/htmx-2.0.4.min.js' {% raw %}%}{% endraw %}" defer></script>
+    {% endif %}
+    <script></script>
+
+    <meta charset="utf-8">
+    <meta name="description" content="Description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Title</title>
+</head>
+
+<body{%if use_htmx%} hx-headers='{"X-CSRFToken": "{% raw %}{{ csrf_token }}{% endraw %}"}'{%endif%}>
+
+{% raw %}
+    <header>
+        <nav style="margin-bottom: 0;">
+            <a href="/" style="font-size: large;">{% endraw %}{{ project_name }}{% raw %}</a>
+                <ul>
+                {% if user.is_authenticated %}
+                    <li>{{ user.email }} ▼
+                        <ul>
+                            {% url 'account_email' as email_url_ %}
+                            {% if email_url_ %}
+                                <li>
+                                    <a href="{{ email_url_ }}">Change email</a>
+                                </li>
+                            {% endif %}
+                            {% url 'account_change_password' as change_password_url_ %}
+                            {% if change_password_url_ %}
+                                <li>
+                                    <a href="{{ change_password_url_ }}">Change password</a>
+                                </li>
+                            {% endif %}
+                            {% comment %}
+                            {% url 'socialaccount_connections' as connections_url_ %}
+                            {% if connections_url_ %}
+                                <li>
+                                    <a href="{{ connections_url_ }}">Account connections</a>
+                                </li>
+                            {% endif %}
+                            {% endcomment %}
+                            {% url 'mfa_index' as mfa_url_ %}
+                            {% if mfa_url_ %}
+                                <li>
+                                    <a href="{{ mfa_url_ }}">Two-Factor Authentication</a>
+                                </li>
+                            {% endif %}
+                            {% url 'usersessions_list' as usersessions_list_url_ %}
+                            {% if usersessions_list_url_ %}
+                                <li>
+                                    <a href="{{ usersessions_list_url_ }}">Sessions</a>
+                                </li>
+                            {% endif %}
+                            {% url 'account_logout' as logout_url_ %}
+                            {% if logout_url_ %}
+                                <li>
+                                    <a href="{{ logout_url_ }}">Sign out</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{% url 'account_login' %}">Log in</a></li>
+                    <li><a href="{% url 'account_signup' %}">Sign up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+{% endraw %}
+
+    <main>
+        {% raw %}{% block content_root %}{% endblock %}{% endraw %}
+    </main>
+
+    <footer>
+        <hr>
+        <p>
+            <small>{{ project_name }} {{ initial_version }} by {{ author_name }}</small>
+        </p>
+    </footer>
+
+    <script>
+        document.querySelectorAll("nav a").forEach(a => {
+            if (a.href === window.location.href) {
+                a.classList.add("inactive-link");
+            } else {
+                a.classList.remove("inactive-link");
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+default_language_version:
+      python: python3.12
+default_install_hook_types: ["commit-msg", "pre-commit"]
+default_stages: ["pre-commit"]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-docstring-first
+      - id: check-merge-conflict
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: no-commit-to-branch
+      - id: trailing-whitespace
+        args: ["--markdown-linebreak-ext", "md"]
+      - id: check-case-conflict
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.7
+    hooks:
+      # --config to stop ruff from using {{project_name}}/pyproject.toml
+      # https://github.com/astral-sh/ruff/issues/9585
+      - id: ruff
+        args: ["--fix", "--config", "pyproject.toml"]
+      - id: ruff-format
+        args: ["--config", "pyproject.toml"]
+
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.17.2
+    hooks:
+      - id: markdownlint-cli2
+        args: ["--config", ".markdownlint-cli2.yaml"]
+        # https://github.com/DavidAnson/markdownlint-cli2/issues/437
+        language_version: 22.10.0
+
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.21.0
+    hooks:
+      - id: commitlint
+        stages: ["commit-msg"]
+        additional_dependencies: ["@commitlint/config-conventional"]
