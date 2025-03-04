@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.1.0](https://github.com/albertomh/djereo/compare/v3.0.0...v3.1.0) (2025-03-04)
+
+
+### Features
+
+* Add healthchecks to gen. projects via django-alive ([#153](https://github.com/albertomh/djereo/issues/153)) ([c0103bf](https://github.com/albertomh/djereo/commit/c0103bf2217614d5d76a1b1f24421659118aa3f8))
+* **ci:** Release-please GitHub action updates uv.lock in gen. projects ([#160](https://github.com/albertomh/djereo/issues/160)) ([ed045d2](https://github.com/albertomh/djereo/commit/ed045d2d56d69890532cc5b033776051595e07a0))
+* Shuffle django test order in generated projects ([#150](https://github.com/albertomh/djereo/issues/150)) ([f0df83b](https://github.com/albertomh/djereo/commit/f0df83b29adcbea1949338f6ef94d2e6ea6d849f))
+
+
+### Dependencies
+
+* Add pytest-randomly ([#152](https://github.com/albertomh/djereo/issues/152)) ([4831241](https://github.com/albertomh/djereo/commit/4831241b56aef8c0e39498e865511f7750c87ba1))
+
 ## [3.0.0](https://github.com/albertomh/djereo/compare/v2.0.0...v3.0.0) (2025-03-03)
 
 
