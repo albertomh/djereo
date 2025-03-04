@@ -14,7 +14,7 @@ runs:
   steps:
     - uses: astral-sh/setup-uv@v5
       with:
-        version: "0.5.4"
+        version: "0.6.4"
     - uses: extractions/setup-just@v2
     - run: |
         uv sync --group test
