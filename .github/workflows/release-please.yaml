@@ -19,19 +19,27 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: googleapis/release-please-action@v4
+        id: release
         with:
           token: ${{ secrets.DJEREO_RELEASE_PLEASE_TOKEN }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
+      # Update the version in uv.lock only if release-please created or updated a Pull Request.
+      # Otherwise the 'checkout' step fails because the 'release-...' branch does not exist.
+      # Avoids attempting a uv.lock update immediately after a release-please PR is merged.
       - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.prs_created }}
         with:
           ref: release-please--branches--main
       - uses: astral-sh/setup-uv@v5
+        if: ${{ steps.release.outputs.prs_created }}
         with:
           version: "0.6.4"
       - run: uv lock
+        if: ${{ steps.release.outputs.prs_created }}
         shell: bash
       - uses: stefanzweifel/git-auto-commit-action@v5
+        if: ${{ steps.release.outputs.prs_created }}
         with:
           file_pattern: 'uv.lock'
           commit_message: 'chore: update uv.lock with new version from release-please'
