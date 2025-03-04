@@ -1,0 +1,12 @@
+# djereo docs commands
+
+default:
+  @just --list
+
+serve:
+  @uv sync
+  @uv run -m mkdocs serve --dev-addr 127.0.0.1:8001
+
+build:
+  @uv sync
+  @uv run -m mkdocs build

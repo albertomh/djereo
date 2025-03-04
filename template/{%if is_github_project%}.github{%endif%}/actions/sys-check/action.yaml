@@ -1,0 +1,22 @@
+# Re-usable GitHub Action that runs Django system checks.
+#
+# Usage:
+#   ```
+#   steps:
+#     - uses: ./.github/actions/sys-check
+#   ```
+
+name: 'sys-check'
+description: 'Run Django system checks'
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: astral-sh/setup-uv@v5
+      with:
+        version: "0.5.4"
+    - uses: extractions/setup-just@v2
+    - run: |
+        cp .env.in .env
+        PYTHONDEVMODE=1 just manage check
+      shell: bash

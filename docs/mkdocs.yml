@@ -1,0 +1,24 @@
+site_name: Djereo documentation
+docs_dir: src
+site_url: https://albertomh.github.io/djereo/
+site_description: Documentation for djereo, a Django project template.
+site_author: Alberto Morón Hernández
+repo_url: https://github.com/albertomh/djereo
+edit_uri: edit/main/docs/src/
+extra_css:
+    - css/extra.css
+nav:
+    - Home: index.md
+    - quickstart.md
+    - Djereo's features: featurelist.md
+    - Developer docs: develop.md
+    - Changelog ↗: https://github.com/albertomh/djereo/blob/main/CHANGELOG.md
+theme:
+    name: readthedocs
+    highlightjs: true
+    hljs_languages:
+        - yaml
+    logo: media/djereo_wordmark-logo.webp
+markdown_extensions:
+    - admonition
+    - attr_list
