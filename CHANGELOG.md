@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.1.1](https://github.com/albertomh/djereo/compare/v3.1.0...v3.1.1) (2025-03-05)
+
+
+### Bug Fixes
+
+* **ci:** Bump uv.lock only if release-please updated its PR ([#164](https://github.com/albertomh/djereo/issues/164)) ([#165](https://github.com/albertomh/djereo/issues/165)) ([81354fc](https://github.com/albertomh/djereo/commit/81354fc2c131ef28fa0ee23b78d8a6d35cd30c3b))
+
 ## [3.1.0](https://github.com/albertomh/djereo/compare/v3.0.0...v3.1.0) (2025-03-04)
 
 
