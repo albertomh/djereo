@@ -11,10 +11,10 @@ readme = "README.md"
 # license = { file = "LICENSE" }
 requires-python = ">={{python_version}}"
 {% set django_ver_parts = django_version.split('.') %}
-{% set django_ver_major = django_ver_parts[0] | int + 1 %}
+{% set django_ver_major_next = django_ver_parts[0] | int + 1 %}
 dependencies = [
     "django-alive>=2.0.0,<3.0.0",
-    "django>={{django_version}},<{{django_ver_major}}.0",
+    "django>={{django_version}},<{{django_ver_major_next}}.0",
     "django-allauth>=65.4.1,<66.0.0",
     "django-csp>=3.8,<4.0",
     {% if use_htmx %}
@@ -27,12 +27,13 @@ dependencies = [
     "environs[django]>=14.1.0,<15.0.0",
     "gunicorn>=23.0.0,<24.0.0",
     "psycopg[binary]>=3.2.4,<4.0.0",
+    "psycopg-pool>=3.2.6,<4.0.0",
     "whitenoise[brotli]>=6.8.2,<7.0.0",
 ]
 
 [dependency-groups]
 test = [
-    {%if use_htmx%}
+    {% if use_htmx %}
     "beautifulsoup4>=4.13.3,<5.0.0",
     {% endif %}
     "coverage>=7.6.7",
