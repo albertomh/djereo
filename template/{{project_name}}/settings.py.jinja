@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import sys
 from pathlib import Path
+from typing import Any
 
 import structlog
 from environs import env
@@ -191,8 +192,9 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {"default": env.dj_db_url("DATABASE_URL")}
-
+DATABASES: dict[str, dict[str, Any]] = {
+    "default": {"OPTIONS": {"pool": True}, **env.dj_db_url("DATABASE_URL")}
+}
 
 AUTH_USER_MODEL = "users.AuthUser"
 
