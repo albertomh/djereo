@@ -295,6 +295,12 @@ The database connection is configured in `settings.py` using the `environs` pack
 'Django database URL' extension. That is, as a single database connection string that is
 located in `.env` as the environment variable `DATABASE_URL`.
 
+### Connection pooling
+
+Djereo takes advantage of Django's built-in support for postgres connection pooling ([Django docs](https://docs.djangoproject.com/en/5.1/ref/databases/#connection-pool){target=\"_blank"}).
+While this is a premature optimisation for most projects, the overhead of opening a new
+postgres connection is considerable.
+
 ### `seed_database` management command
 
 A `seed_database` management command is included for quickstart purposes and as a starting
