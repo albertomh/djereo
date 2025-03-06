@@ -6,19 +6,36 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Enable bytecode compilation - trade longer installation for faster start-up times.
-ENV UV_COMPILE_BYTECODE=1
+# - Silence uv complaining about not being able to use hard links.
+# - Enable bytecode compilation - trade longer installation for faster start-up times.
+# - Prevent uv from accidentally downloading isolated Python builds.
+# - Declare `/app` as the target for `uv sync`.
+ENV UV_LINK_MODE=copy \
+    UV_COMPILE_BYTECODE=1 \
+    UV_PYTHON_DOWNLOADS=never
 
 WORKDIR /app
 
+# uv sync:
+#     --locked: Assert that `uv.lock` will remain unchanged as part of running `uv sync`.
+
+# Synchronise dependencies without the application itself.
+# Cached until `uv.lock` or `pyproject.toml` change.
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-install-project --no-dev
+    uv sync \
+        --locked \
+        --no-dev \
+        --no-install-project
 
+# Install the application without dependencies.
 ADD . .
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev
+    uv sync \
+        --locked \
+        --no-dev \
+        --no-editable
 RUN uv pip install .
 
 # Make executables available in the environment.
