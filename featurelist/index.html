@@ -63,11 +63,11 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#postgres-version">Postgres version</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#semantic-versioning">Semantic Versioning</a>
-    </li>
         </ul>
     </li>
         </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#semantic-versioning">🚦 Semantic Versioning</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#git-pre-commit-hooks">🪝 Git pre-commit hooks</a>
     </li>
@@ -202,6 +202,13 @@ create a ready-to-use opinionated Django project.</p>
 defines the questionnaire that <code>copier</code> will use to prompt the user when setting up a new
 project. The questions defined in this file include sensible defaults (where appropriate)
 and validation rules to prevent incoherent answers.</p>
+<div class="admonition note">
+<p class="admonition-title">Options? - I thought this was an opinionated template!</p>
+<p><code>djereo</code> is opinionated insofar as it embodies beliefs such as 'postgres is the best
+database for a new project' or 'htmx for frontends is great'. It lays out paved paths
+and sensible defaults if you choose to configure a new project with these tools. The
+aim isn't to be restrictive or force e.g. <code>htmx</code> or <code>django-waffle</code> on anyone.</p>
+</div>
 <h3 id="versions">Versions</h3>
 <p>Users are asked three version-related questions when initialising a project:</p>
 <h4 id="django-version">Django version</h4>
@@ -230,7 +237,7 @@ if you prefer that database engine.</p>
 <p>The <code>django-version-checks</code> package is used to ensure all environments (local, CI, dev,
 prod) use the same versions of Python &amp; postgres.</p>
 </div>
-<h4 id="semantic-versioning">Semantic Versioning</h4>
+<h2 id="semantic-versioning">🚦 Semantic Versioning</h2>
 <p>The generated project follows Semantic Versioning, with users prompted to provide an
 initial version at project setup. The project's version is tracked in the <code>version</code> field
 of <a href="https://github.com/albertomh/djereo/blob/main/template/pyproject.toml.jinja" target="\&quot;_blank&quot;">pyproject.toml</a>.</p>
