@@ -419,7 +419,7 @@ located in <code>.env</code> as the environment variable <code>DATABASE_URL</cod
 <h3 id="connection-pooling">Connection pooling</h3>
 <p>Djereo takes advantage of Django's built-in support for postgres connection pooling (<a href="https://docs.djangoproject.com/en/5.1/ref/databases/#connection-pool" target="\&quot;_blank&quot;">Django docs</a>).
 While this is a premature optimisation for most projects, the overhead of opening a new
-postgres connection is considerable.</p>
+postgres connection is considerable, so connection pooling is enabled to alleviate this.</p>
 <h3 id="seed_database-management-command"><code>seed_database</code> management command</h3>
 <p>A <code>seed_database</code> management command is included for quickstart purposes and as a starting
 point for you to populate with models needed for local development as your application grows.</p>
