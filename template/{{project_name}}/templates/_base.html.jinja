@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{% raw %}{% load allauth static %}{% endraw %}
+{% raw %}{% load allauth static %}{% endraw +%}
 
 <head>
     <title>
-        {% raw %}{% block head_title %}{% endblock %}{% endraw %} | {{ project_name }}
+{% raw %}        {% block head_title %}{% endblock %}{% endraw %} | {{ project_name }}
     </title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="{% raw %}{% static '{% endraw %}{{project_name}}{% raw %}/mvp.css' %}{% endraw %}">
@@ -25,7 +25,7 @@
             color: black;
         }
     </style>
-    {% raw %}{% block extra_head_style %}{% endblock %}{% endraw %}
+{% raw %}    {% block extra_head_style %}{% endblock %}{% endraw +%}
 
     {% if use_htmx %}
     <script src="{% raw %}{%{% endraw %} static '{{project_name}}/htmx-2.0.4.min.js' {% raw %}%}{% endraw %}" defer></script>
@@ -100,7 +100,7 @@
 {% endraw %}
 
     <main>
-        {% raw %}{% block content_root %}{% endblock %}{% endraw %}
+{% raw %}        {% block content_root %}{% endblock %}{% endraw +%}
     </main>
 
     <footer>
