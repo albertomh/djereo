@@ -40,7 +40,12 @@ SECRET_KEY_FALLBACKS = env.list("SECRET_KEY_FALLBACKS", default=[])
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-INTERNAL_IPS = ["127.0.0.1", "::1"]
+# Only enable dev debug tools when in debug mode and tests are not running.
+# Django changes DEBUG to False for tests, so can't rely on DEBUG alone.
+ENABLE_DEBUG_TOOLS = DEBUG and not IS_TESTING
+
+if ENABLE_DEBUG_TOOLS:
+    INTERNAL_IPS = ["127.0.0.1", "::1"]
 
 if DEBUG:
     ALLOWED_HOSTS: list[str] = []
@@ -284,9 +289,6 @@ ALIVE_CHECKS: list[tuple[str, dict]] = [
     ("django_alive.checks.check_migrations", {}),
 ]
 
-# Only enable dev tools when in debug mode and tests are not running.
-# Django changes DEBUG to False for tests, so can't rely on DEBUG alone.
-ENABLE_DEBUG_TOOLS = DEBUG and not IS_TESTING
 if ENABLE_DEBUG_TOOLS:
     INSTALLED_APPS += [
         "django_browser_reload",
