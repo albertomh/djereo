@@ -1,13 +1,21 @@
-{%if use_htmx%}
+{% if use_htmx %}
 import ast
 
 from bs4 import BeautifulSoup
-{%endif%}
+{% endif %}
+{% if use_htmx and use_django_waffle %}
+from django.test import Client, SimpleTestCase, TestCase
+{% else %}
 from django.test import Client, SimpleTestCase
+{% endif %}
 
 
-{%if use_htmx%}
+{% if use_htmx %}
+    {% if use_django_waffle %}
+class HtmxTest(TestCase):
+    {% else %}
 class HtmxTest(SimpleTestCase):
+    {% endif %}
     def setUp(self):
         self.client = Client()
 
@@ -24,7 +32,7 @@ class HtmxTest(SimpleTestCase):
             self.fail("No 'hx-headers' attribute found on <body> when one was expected")
 
 
-{%endif%}
+{% endif %}
 class CustomErrorViewTemplates(SimpleTestCase):
     def setUp(self):
         self.client = Client()
