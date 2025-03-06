@@ -42,6 +42,11 @@ use_htmx:
     type: bool
     default: yes
 
+use_django_waffle:
+    help: "Do you wish to use feature flags? (django-waffle)"
+    type: bool
+    default: yes
+
 author_name:
     help: "Who is the project's author?"
     type: str

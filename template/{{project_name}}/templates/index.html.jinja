@@ -1,5 +1,9 @@
 {% raw %}{% extends "_base.html" %}{% endraw +%}
 
+{% if use_django_waffle %}
+{% raw %}{% load waffle_tags %}{% endraw +%}
+
+{% endif %}
 {% raw %}{% block head_title %}Home{% endblock %}{% endraw +%}
 
 {% raw %}{% block content_root %}{% endraw %}
