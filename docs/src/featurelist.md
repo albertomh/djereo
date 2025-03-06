@@ -16,6 +16,12 @@ defines the questionnaire that `copier` will use to prompt the user when setting
 project. The questions defined in this file include sensible defaults (where appropriate)
 and validation rules to prevent incoherent answers.
 
+!!! note "Options? - I thought this was an opinionated template!"
+    `djereo` is opinionated insofar as it embodies beliefs such as 'postgres is the best
+    database for a new project' or 'htmx for frontends is great'. It lays out paved paths
+    and sensible defaults if you choose to configure a new project with these tools. The
+    aim isn't to be restrictive or force e.g. `htmx` or `django-waffle` on anyone.
+
 ### Versions
 
 Users are asked three version-related questions when initialising a project:
@@ -53,7 +59,7 @@ if you prefer that database engine.
     The `django-version-checks` package is used to ensure all environments (local, CI, dev,
     prod) use the same versions of Python & postgres.
 
-#### Semantic Versioning
+## 🚦 Semantic Versioning
 
 The generated project follows Semantic Versioning, with users prompted to provide an
 initial version at project setup. The project's version is tracked in the `version` field
