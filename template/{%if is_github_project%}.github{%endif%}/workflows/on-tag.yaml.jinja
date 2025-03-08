@@ -1,0 +1,50 @@
+# On Tag pipeline
+# Runs when a tag is pushed up to GitHub.
+name: on-tag
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  pre_commit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/pre-commit
+
+  test:
+    needs:
+      - pre_commit
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: {{project_name}}
+          POSTGRES_USER: {{project_name}}
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/test
+
+  containerise:
+    needs:
+      - test
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV
+      - uses: ./.github/actions/containerise
+        with:
+          dockerfile: _deploy/deploy.Dockerfile
+          username: {% raw %}${{ github.actor }}{% endraw +%}
+          password: {% raw %}${{ github.token }}{% endraw +%}
+          tags:
+{% raw %}            ghcr.io/${{ env.REPO_NAME }}:latest,{% endraw +%}
+{% raw %}            ghcr.io/${{ env.REPO_NAME }}:${{ github.ref_name }},{% endraw +%}
