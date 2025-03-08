@@ -17,6 +17,7 @@ repos:
       - id: no-commit-to-branch
       - id: trailing-whitespace
         args: ["--markdown-linebreak-ext", "md"]
+        exclude: ".*\\.md\\.jinja$"
       - id: check-case-conflict
 
   - repo: https://github.com/astral-sh/ruff-pre-commit

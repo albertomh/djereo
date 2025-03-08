@@ -1,20 +1,14 @@
-# Continuous Integration pipeline
-# Runs when a Pull Request is merged into the 'main' branch.
-#
-# Does not run the 'containerise' job for merges of the 'release-please--branches--main'
-# branch since this is handled by the `on-tag` workflow.
-name: CI
+# On Tag pipeline
+# Runs when a tag is pushed up to GitHub.
+name: on-tag
 
 on:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main
+  push:
+    tags:
+      - '*'
 
 jobs:
   pre_commit:
-    if: {% raw %}${{ github.event.pull_request.merged }}{% endraw +%}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +20,7 @@ jobs:
     runs-on: ubuntu-24.04
     services:
       postgres:
-        image: postgres:{{postgres_version}}
+        image: postgres:17
         env:
           POSTGRES_DB: {{project_name}}
           POSTGRES_USER: {{project_name}}
@@ -39,8 +33,6 @@ jobs:
       - uses: ./.github/actions/test
 
   containerise:
-    # containerisation of tagged releases is handled separately by the `on-tag` workflow
-    if: github.head_ref != 'release-please--branches--main'
     needs:
       - test
     runs-on: ubuntu-24.04
@@ -48,12 +40,11 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV
-          echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - uses: ./.github/actions/containerise
         with:
           dockerfile: _deploy/deploy.Dockerfile
           username: {% raw %}${{ github.actor }}{% endraw +%}
           password: {% raw %}${{ github.token }}{% endraw +%}
           tags:
-{% raw %}            ghcr.io/${{ env.REPO_NAME }}/${{ github.ref_name }}:latest,{% endraw +%}
-{% raw %}            ghcr.io/${{ env.REPO_NAME }}/${{ github.ref_name }}:${{ env.SHA_SHORT }},{% endraw +%}
+{% raw %}            ghcr.io/${{ env.REPO_NAME }}:latest,{% endraw +%}
+{% raw %}            ghcr.io/${{ env.REPO_NAME }}:${{ github.ref_name }},{% endraw +%}
