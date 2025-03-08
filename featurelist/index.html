@@ -268,7 +268,7 @@ and include:</p>
 will be hosted on GitHub. If this is the case, GitHub Actions config files are added to
 their project. The resulting custom actions and workflows are described below.</p>
 <h3 id="custom-github-actions">Custom GitHub actions</h3>
-<p>Three re-usable custom actions are available:</p>
+<p>Four re-usable custom actions are available:</p>
 <ul>
 <li><code>pre-commit</code>: runs all pre-commit hooks except <code>no-commit-to-branch</code> as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
@@ -276,6 +276,8 @@ their project. The resulting custom actions and workflows are described below.</
 <li><code>sys-check</code>: runs Django's system checks (<code>manage.py check</code>).</li>
 <li><code>test</code>: runs all unit tests via the <code>just test</code> recipe (see <a href="#-justfile">Justfile</a> for
    details).</li>
+<li><code>containerise</code>: builds a container image and pushes it to the specified registry. Accepts
+  a list of platforms to build for, a list of tags and the path to a Dockerfile.</li>
 </ul>
 <p>See <a href="https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/actions" target="\&quot;_blank&quot;">.github/actions/</a>
 for the definitions of these actions.</p>
