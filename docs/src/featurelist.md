@@ -106,7 +106,9 @@ Four re-usable custom actions are available:
 - `test`: runs all unit tests via the `just test` recipe (see [Justfile](#-justfile) for
    details).
 - `containerise`: builds a container image and pushes it to the specified registry. Accepts
-  a list of platforms to build for, a list of tags and the path to a Dockerfile.
+  a list of platforms to build for, a list of tags and the path to a Dockerfile.  
+  **N.B.** If wishing to use the GitHub Container Registry (ghcr.io, the default) make sure
+  you follow the click-ops steps detailed in `.github/actions/containerise/action.yaml`.
 
 See [.github/actions/](https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/actions){target=\"_blank"}
 for the definitions of these actions.
