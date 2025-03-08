@@ -97,7 +97,7 @@ their project. The resulting custom actions and workflows are described below.
 
 ### Custom GitHub actions
 
-Three re-usable custom actions are available:
+Four re-usable custom actions are available:
 
 - `pre-commit`: runs all pre-commit hooks except `no-commit-to-branch` as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
@@ -105,6 +105,8 @@ Three re-usable custom actions are available:
 - `sys-check`: runs Django's system checks (`manage.py check`).
 - `test`: runs all unit tests via the `just test` recipe (see [Justfile](#-justfile) for
    details).
+- `containerise`: builds a container image and pushes it to the specified registry. Accepts
+  a list of platforms to build for, a list of tags and the path to a Dockerfile.
 
 See [.github/actions/](https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/actions){target=\"_blank"}
 for the definitions of these actions.

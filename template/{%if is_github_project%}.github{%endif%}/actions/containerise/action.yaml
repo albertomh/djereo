@@ -1,0 +1,81 @@
+# Re-usable GitHub Action that builds a container and pushes it to a registry.
+#
+# Usage:
+#   ```
+#   steps:
+#     - run: |
+#         echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV
+#     - uses: ./.github/actions/containerise
+#         with:
+#           username: ${{ github.actor }}
+#           password: ${{ github.token }}
+#           tags:
+#             ghcr.io/${{ env.REPO_NAME }}:${{ github.ref_name }},
+#             <registry>/<name>:<some-tag>,
+#             ...
+#   ```
+#
+# IMPORTANT!
+# The following click-ops steps must be taken to allow this action to publish container
+# images to the GitHub Container Registry (ghcr.io).
+#
+# 1. Navigate to <https://github.com/users/<USERNAME>/packages/container/<REPO>/settings>
+# 2. Under 'Manage Actions access' click the [Add Repository] button.
+# 3. Select the repository this file belongs to.
+# 4. Change the repository's role from 'Read' to 'Write'.
+#
+# Additionally:
+# 1. Navigate to <https://github.com/<USERNAME>/<REPO>/settings/actions>
+# 2. Under 'Workflow permissions' select the 'Read and write permissions' option.
+# 3. Save changes.
+
+name: 'containerise'
+description: 'Run all pre-commit hooks against the codebase'
+
+inputs:
+  username:
+    description: 'Container registry username'
+    required: true
+  password:
+    description: 'Container registry password'
+    required: true
+  tags:
+    description: 'Tags to assign to the image'
+    required: true
+  dockerfile:
+    description: 'Path to Dockerfile'
+    required: false
+    default: 'Dockerfile'
+  registry:
+    description: 'Container registry'
+    required: false
+    default: 'ghcr.io'
+  platforms:
+    description: 'Comma-separated list of architectures to target'
+    required: false
+    default: linux/amd64,linux/arm64  # for Intel-based VPS, Apple Silicon
+  provenance:
+    description: 'Whether to generate provenance attestation for the build'
+    required: false
+    # must be false for multi-arch builds with recent versions of 'build-push-action'
+    # see https://github.com/docker/build-push-action/issues/773
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v4
+    - uses: docker/setup-buildx-action@v3
+    - uses: docker/login-action@v3
+      with:
+        registry: ${{ inputs.registry }}
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
+    - uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: ${{ inputs.dockerfile }}
+        platforms: ${{ inputs.platforms }}
+        push: true
+        provenance: ${{ inputs.provenance }}
+        tags: ${{ inputs.tags }}
