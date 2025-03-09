@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.3.0](https://github.com/albertomh/djereo/compare/v3.2.0...v3.3.0) (2025-03-09)
+
+
+### Features
+
+* Make app metadata available to templates via a context processor ([#175](https://github.com/albertomh/djereo/issues/175)) ([7ac7b2a](https://github.com/albertomh/djereo/commit/7ac7b2aef6f4f34c267be7fe859fade3d4bb428b))
+
 ## [3.2.0](https://github.com/albertomh/djereo/compare/v3.1.1...v3.2.0) (2025-03-08)
 
 
