@@ -106,6 +106,9 @@ def view(request):
     return HttpResponse(f"{{project_name}} v{__version__}")
 ```
 
+The custom `context_processors.metadata` processor also exposes the version for use in
+templates.
+
 ## Security
 
 `settings.py` is configured to detect whether the application is running in a hosted

@@ -1,0 +1,5 @@
+from {{ project_name }} import __version__
+
+
+def metadata(request):
+    return {"{{ project_name }}": {"meta": {"version": __version__}}}
