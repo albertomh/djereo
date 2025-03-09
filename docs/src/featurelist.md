@@ -230,6 +230,9 @@ def view(request):
     return HttpResponse(f"on version v{__version__}")
 ```
 
+The custom `context_processors.metadata` processor also exposes the version for use in
+templates.
+
 ## ⚙️ settings.py
 
 `settings.py` takes values for certain configuration options from environment variables,
