@@ -8,6 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.2.0](https://github.com/albertomh/djereo/compare/v3.1.1...v3.2.0) (2025-03-08)
+
+
+### Features
+
+* Add option to add feature flags via django-waffle to gen. projects ([#172](https://github.com/albertomh/djereo/issues/172)) ([b4f25ef](https://github.com/albertomh/djereo/commit/b4f25ef14e1313b88da67c6a2d7af62b26594c59))
+* **ci:** Add a reusable 'containerise' GitHub Action ([#173](https://github.com/albertomh/djereo/issues/173)) ([f7878c3](https://github.com/albertomh/djereo/commit/f7878c32ded84a2c2ab9cd345653be1b27e86472))
+* **ci:** Run 'containerise' action after merges & tag creation ([#174](https://github.com/albertomh/djereo/issues/174)) ([fe8e8f4](https://github.com/albertomh/djereo/commit/fe8e8f45b08fa8106c6c6fd9f091741a0840c353))
+* Enable postgres pooling by default in gen. projects ([#167](https://github.com/albertomh/djereo/issues/167)) ([e9b20e4](https://github.com/albertomh/djereo/commit/e9b20e40345844b8790d28fce16a4dd95c930ecb))
+
+
+### Bug Fixes
+
+* Set INTERNAL_IPS only when relevant - if dev tools enabled ([#170](https://github.com/albertomh/djereo/issues/170)) ([67292a5](https://github.com/albertomh/djereo/commit/67292a55a9867605d91170098e9c90250823e9b6))
+
 ## [3.1.1](https://github.com/albertomh/djereo/compare/v3.1.0...v3.1.1) (2025-03-05)
 
 
