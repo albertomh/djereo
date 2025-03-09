@@ -1,0 +1,8 @@
+{% raw %}{% extends "admin/base.html" %}{% endraw +%}
+
+{% raw %}{% block footer %}{% endraw %}
+<hr>
+<div id="content">
+    <p class="small quiet">{{project_name}} v{% raw %}{{{% endraw %} {{ project_name }}.meta.version {% raw %}}}{% endraw %}</p>
+</div>
+{% raw %}{% endblock footer %}{% endraw +%}
