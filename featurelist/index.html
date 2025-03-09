@@ -371,6 +371,8 @@ from {{project_name}} import __version__
 def view(request):
     return HttpResponse(f&quot;on version v{__version__}&quot;)
 </code></pre>
+<p>The custom <code>context_processors.metadata</code> processor also exposes the version for use in
+templates.</p>
 <h2 id="settingspy">⚙️ settings.py</h2>
 <p><code>settings.py</code> takes values for certain configuration options from environment variables,
 managed via the <code>environs</code> package. When no values are specified, it falls back to sensible
