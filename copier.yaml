@@ -64,13 +64,9 @@ author_email:
 
 initial_version:
     help: "What Semantic Version tag should the project start on?"
+    when: false
     type: str
-    choices:
-        - "1.0.0"
-        - "0.1.0"
-        - "0.0.1"
-        - "0.0.0"
-    default: "0.1.0"
+    default: "0.0.0"
     validator: "{% if initial_version == '' %}Must have value{% endif %}"
 
 is_github_project:
