@@ -80,7 +80,7 @@ def test_version_is_importable(
 ):
     from importlib.metadata import version
 
-    assert version(test_project_name) == "0.1.0"
+    assert version(test_project_name) == "0.0.0"
 
 
 @pytest.mark.integration
