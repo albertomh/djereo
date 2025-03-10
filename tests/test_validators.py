@@ -13,7 +13,7 @@ import pytest
         ("author_name", "Francisco de Quevedo", None),
         ("author_name", "", "author_name cannot be empty"),
         ("initial_version", "0.0.0", None),
-        ("initial_version", "", "Invalid choice"),
+        ("initial_version", "", "Must have value"),
     ],
 )
 def test_validator_is_empty(
