@@ -1,11 +1,12 @@
 # On Tag pipeline
-# Runs when a tag is pushed up to GitHub.
+# Runs when a semver tag is pushed up to GitHub.
 name: on-tag
 
 on:
   push:
+    # run this workflow only if the tag matches the format 'v<semver>'
     tags:
-      - '*'
+      - 'v*.*.*'
 
 jobs:
   pre_commit:
