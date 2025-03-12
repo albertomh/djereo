@@ -1,7 +1,25 @@
+# Usage:
+#
+# ```
+# docker network create {{project_name}}_net
+# docker image pull --platform linux/amd64 <registry>/<image>:<tag>
+#
+# docker run --detach --name {{project_name}} \
+#     --user root \
+#     --env-file /etc/{{project_name}}/.env \
+#     --env PORT=8000 \
+#     --network {{project_name}}_net \
+#     --publish 8000:8000 \
+#     --volume {{project_name}}_static:/app/static \
+#     <registry>/<image>:<tag>
+# ```
+#
 # Based on <https://github.com/astral-sh/uv-docker-example/blob/main/Dockerfile>
 
 FROM python:{{python_version}}-slim-bookworm
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+ENV PORT=
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -51,4 +69,4 @@ RUN rm .env
 # Reset the entrypoint, avoid base image's call to `uv`.
 ENTRYPOINT []
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "{{project_name}}.wsgi:application"]
+CMD gunicorn --bind 0.0.0.0:$PORT {{project_name}}.wsgi:application
