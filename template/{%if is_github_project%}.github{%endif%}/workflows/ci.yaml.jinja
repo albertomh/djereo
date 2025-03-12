@@ -14,13 +14,16 @@ on:
 
 jobs:
   pre_commit:
-    if: {% raw %}${{ github.event.pull_request.merged }}{% endraw +%}
+    # this job is redundant if pipeline was triggered by merge of a 'Release Please' PR
+    if: {% raw %}${{ github.event.pull_request.merged && github.head_ref != 'release-please--branches--main' }}{% endraw +%}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/pre-commit
 
   test:
+    # this job is redundant if pipeline was triggered by merge of a 'Release Please' PR
+    if: github.head_ref != 'release-please--branches--main'
     needs:
       - pre_commit
     runs-on: ubuntu-24.04
