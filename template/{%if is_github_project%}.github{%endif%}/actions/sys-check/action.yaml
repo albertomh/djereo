@@ -1,13 +1,23 @@
 # Re-usable GitHub Action that runs Django system checks.
+# Args:
+#   deploy[str]: whether to run Django checks with `--deploy` flag
 #
 # Usage:
 #   ```
 #   steps:
 #     - uses: ./.github/actions/sys-check
+#       with:
+#         deploy: true|false
 #   ```
 
 name: 'sys-check'
 description: 'Run Django system checks'
+
+inputs:
+  deploy:
+    description: 'Run checks in deploy mode'
+    required: false
+    default: 'false'
 
 runs:
   using: 'composite'
@@ -17,6 +27,11 @@ runs:
         version: "0.6.4"
     - uses: extractions/setup-just@v2
     - run: |
-        cp .env.in .env
-        PYTHONDEVMODE=1 just manage check
+        if [[ "${{ inputs.deploy }}" == "true" ]]; then
+            cp _deploy/.env.deploy .env
+            PYTHONDEVMODE=1 just manage check --deploy --fail-level WARNING
+        else
+            cp .env.in .env
+            PYTHONDEVMODE=1 just manage check
+        fi
       shell: bash
