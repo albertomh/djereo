@@ -20,13 +20,13 @@
 # The following click-ops steps must be taken to allow this action to publish container
 # images to the GitHub Container Registry (ghcr.io).
 #
-# 1. Navigate to <https://github.com/users/<USERNAME>/packages/container/<REPO>/settings>
+# 1. Navigate to <https://github.com/users/<user>/packages/container/<repo>/settings>
 # 2. Under 'Manage Actions access' click the [Add Repository] button.
 # 3. Select the repository this file belongs to.
 # 4. Change the repository's role from 'Read' to 'Write'.
 #
 # Additionally:
-# 1. Navigate to <https://github.com/<USERNAME>/<REPO>/settings/actions>
+# 1. Navigate to <https://github.com/<user>/<repo>/settings/actions>
 # 2. Under 'Workflow permissions' select the 'Read and write permissions' option.
 # 3. Save changes.
 

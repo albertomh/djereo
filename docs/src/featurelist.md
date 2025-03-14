@@ -97,7 +97,7 @@ their project. The resulting custom actions and workflows are described below.
 
 ### Custom GitHub actions
 
-Four re-usable custom actions are available:
+Five re-usable custom actions are available:
 
 - `pre-commit`: runs all pre-commit hooks except `no-commit-to-branch` as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
@@ -109,6 +109,8 @@ Four re-usable custom actions are available:
   a list of platforms to build for, a list of tags and the path to a Dockerfile.  
   **N.B.** If wishing to use the GitHub Container Registry (ghcr.io, the default) make sure
   you follow the click-ops steps detailed in `.github/actions/containerise/action.yaml`.
+- `service-health`: calls the liveness & health endpoints (see [Healthchecks](#healthchecks)
+  below), allowing you to check the status of a service after a deployment.
 
 See [.github/actions/](https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/actions){target=\"_blank"}
 for the definitions of these actions.
