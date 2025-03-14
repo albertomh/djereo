@@ -151,6 +151,20 @@ pull-requests: write
 
 For more information, consult the [release-please-action project](https://github.com/googleapis/release-please-action){target=\"_blank"}.
 
+#### On tag
+
+Runs whenever a tag matching the pattern `vM.m.p` is pushed to GitHub (where `M.m.p` is a
+SemVer tag, see [Semantic Versioning](#-semantic-versioning) above).
+
+This is intended as the foundation providing 80% of your deployment pipeline. Out of the
+box the `on-tag` workflow runs the following jobs:
+
+![Pipeline view of the 'on tag' GitHub Actions workflow](media/djereo_on-tag-workflow.png)
+
+This can be extended to end with the 'service-health' job (see [Custom GitHub actions](#custom-github-actions)
+above). This is not shown in the above workflow since `djereo` does not implement a 'deploy'
+job that would be necessary to bridge 'containerise' and 'service-health'.
+
 #### Dependabot
 
 Configured to update Python dependencies & GitHub actions on a weekly schedule.
@@ -452,3 +466,21 @@ to expose two endpoints with which to monitor the health of an application insta
 
 - `/-/alive/`
 - `/-/health/`
+
+### Continuous Deployment
+
+`djereo` aims to provide a foundation on which to build your continuous deployment pipeline.
+Given the diversity of hosting &amp; deployment solutions it doesn't attempt to provide a
+solution for the step that deploys your application. However, you can extend the `on-tag`
+GitHub Actions workflow, which contains the following sequence of jobs:
+
+- `pre-commit`: run all pre-commit hooks.
+- `test`: run Django unit tests.
+- `django_checks`: run the `check` management command with the `--deploy` flag.
+- `containerise`: build an image containing your application and push to GitHub Container Registry.
+
+(see [Custom GitHub actions](#custom-github-actions) above for more).
+
+You can easily add a custom GitHub Action to deploy your code after this last step.
+Finally, round off this pipeline with the pre-configured `service-health` action to confirm
+that your app deployment worked.
