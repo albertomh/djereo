@@ -1,0 +1,50 @@
+# Re-usable GitHub Action that checks the health of a deployed Django app
+#
+# Usage:
+#   ```
+#   steps:
+#     - uses: ./.github/actions/service-health
+#   ```
+#
+# Prerequisites:
+#   - GH secrets (<https://github.com/<user>/<repo>/settings/secrets/actions>):
+#     - `SERVICE_URL`: URL for the web service (WITHOUT trailing slash!)
+
+name: 'service-health'
+description: 'Check health of deployed service'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Check service liveness
+      id: alive_check
+      shell: bash
+      env:
+        SERVICE_URL: ${{ secrets.SERVICE_URL }}
+      run: |
+        response=$(wget --quiet --server-response -O - $SERVICE_URL/-/alive/ 2>&1)
+        status_code=$(echo "$response" | grep -o "HTTP/[0-9.]* [0-9]*" | awk '{print $2}')
+        if [[ "$status_code" == "200" ]]; then
+            echo "✅ Service is alive"
+        else
+            echo "🔴 /-/alive/ endpoint returned status 'HTTP $status_code'"
+            exit 1
+        fi
+
+    - name: Check service health
+      id: health_check
+      shell: bash
+      env:
+        SERVICE_URL: ${{ secrets.SERVICE_URL }}
+      run: |
+        response=$(wget --quiet --server-response -O - "$SERVICE_URL/-/health/" 2>&1)
+        status_code=$(echo "$response" | grep -o "HTTP/[0-9.]* [0-9]*" | awk '{print $2}')
+        body=$(echo "$response" | sed -n '/^\r$/,$p' | tail -n +2)
+        if [[ "$status_code" == "200" ]]; then
+            echo "✅ Service is healthy"
+        else
+            echo "🔴 /-/health/ endpoint returned status 'HTTP $status_code'"
+            echo "🔴 Response body:"
+            jq <<< '$body'
+            exit 1
+        fi
