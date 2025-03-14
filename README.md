@@ -132,7 +132,8 @@ covers how to work on `djereo` itself:
 
 ## Acknowledgements
 
-Several tooling choices have been guided by the work of [Adam Johnson](https://adamj.eu/tech/).
+Several tooling choices have been guided by the work of [Adam Johnson](https://adamj.eu/tech/)
+&amp; [Carlton Gibson](https://github.com/carltongibson).
 
 The `djereo` logo is typeset in [Black Ops One](https://fonts.google.com/specimen/Black+Ops+One).
 
