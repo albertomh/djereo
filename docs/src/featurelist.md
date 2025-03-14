@@ -151,6 +151,20 @@ pull-requests: write
 
 For more information, consult the [release-please-action project](https://github.com/googleapis/release-please-action){target=\"_blank"}.
 
+#### On tag
+
+Runs whenever a tag matching the pattern `vM.m.p` is pushed to GitHub (where `M.m.p` is a
+SemVer tag, see [Semantic Versioning](#-semantic-versioning) above).
+
+This is intended as the foundation providing 80% of your deployment pipeline. Out of the
+box the `on-tag` workflow runs the following jobs:
+
+![Pipeline view of the 'on tag' GitHub Actions workflow](media/djereo_on-tag-workflow.png)
+
+This can be extended to end with the 'service-health' job (see [Custom GitHub actions](#custom-github-actions)
+above). This is not shown in the above workflow since `djereo` does not implement a 'deploy'
+job that would be necessary to bridge 'containerise' and 'service-health'.
+
 #### Dependabot
 
 Configured to update Python dependencies & GitHub actions on a weekly schedule.
