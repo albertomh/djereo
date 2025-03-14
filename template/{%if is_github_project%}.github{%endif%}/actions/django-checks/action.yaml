@@ -5,12 +5,12 @@
 # Usage:
 #   ```
 #   steps:
-#     - uses: ./.github/actions/sys-check
+#     - uses: ./.github/actions/django-checks
 #       with:
 #         deploy: true|false
 #   ```
 
-name: 'sys-check'
+name: 'django-checks'
 description: 'Run Django system checks'
 
 inputs:

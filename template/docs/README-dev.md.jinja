@@ -167,10 +167,12 @@ Five re-usable custom actions are available:
 - `pre-commit`: runs all pre-commit hooks except `no-commit-to-branch` as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
    succeeding.
-- `sys-check`: runs Django's system checks (`manage.py check`).
+- `django-checks`: runs Django's system checks (`manage.py check`). Optionally with the `--deploy`
+  flag set. This check is strict by default, failing on warnings. Add checks to `SILENCED_SYSTEM_CHECKS`
+  in `settings.py` to ignore specific warnings.
 - `test`: runs all unit tests via the `just test` recipe (see [Justfile recipes](#justfile-recipes)).
 - `containerise`: builds a container image and pushes it to the specified registry. Accepts
-  a list of platforms to build for, a list of tags and the path to a Dockerfile.  
+  a list of platforms to build for, a list of tags and the path to a Dockerfile.
   **N.B.** If wishing to use the GitHub Container Registry (ghcr.io, the default) make sure
   you follow the click-ops steps detailed in `.github/actions/containerise/action.yaml`.
 - `service-health`: calls the liveness & health endpoints provided by `django-alive`, allowing
