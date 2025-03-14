@@ -102,7 +102,9 @@ Five re-usable custom actions are available:
 - `pre-commit`: runs all pre-commit hooks except `no-commit-to-branch` as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
    succeeding.
-- `sys-check`: runs Django's system checks (`manage.py check`).
+- `django-checks`: runs Django's system checks (`manage.py check`). Optionally with the `--deploy`
+  flag set. This check is strict by default, failing on warnings. Add checks to `SILENCED_SYSTEM_CHECKS`
+  in `settings.py` to ignore specific warnings.
 - `test`: runs all unit tests via the `just test` recipe (see [Justfile](#-justfile) for
    details).
 - `containerise`: builds a container image and pushes it to the specified registry. Accepts
@@ -209,7 +211,7 @@ invoked.
   be missing out on.
 - `check_model_names`: enforces consistent model names across the application.
 
-The `sys-check` GitHub action will run the default Django checks and the above custom
+The `django-checks` GitHub action will run the default Django checks and the above custom
 checks as part of the continuous integration pipeline.
 
 While strictly speaking not a system test, the `django-linear-migrations` package is enabled
