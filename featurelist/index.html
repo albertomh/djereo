@@ -83,6 +83,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#release-please">Release Please</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#on-tag">On tag</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#dependabot">Dependabot</a>
     </li>
         </ul>
@@ -152,6 +154,8 @@
     <li class="toctree-l2"><a class="reference internal" href="#deployment">🚀 Deployment</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#healthchecks">Healthchecks</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#continuous-deployment">Continuous Deployment</a>
     </li>
         </ul>
     </li>
@@ -308,6 +312,15 @@ The contents of this secret must be a Personal Access Token (PAT) with the follo
 pull-requests: write
 </code></pre>
 <p>For more information, consult the <a href="https://github.com/googleapis/release-please-action" target="\&quot;_blank&quot;">release-please-action project</a>.</p>
+<h4 id="on-tag">On tag</h4>
+<p>Runs whenever a tag matching the pattern <code>vM.m.p</code> is pushed to GitHub (where <code>M.m.p</code> is a
+SemVer tag, see <a href="#-semantic-versioning">Semantic Versioning</a> above).</p>
+<p>This is intended as the foundation providing 80% of your deployment pipeline. Out of the
+box the <code>on-tag</code> workflow runs the following jobs:</p>
+<p><img alt="Pipeline view of the 'on tag' GitHub Actions workflow" src="../media/djereo_on-tag-workflow.png" /></p>
+<p>This can be extended to end with the 'service-health' job (see <a href="#custom-github-actions">Custom GitHub actions</a>
+above). This is not shown in the above workflow since <code>djereo</code> does not implement a 'deploy'
+job that would be necessary to bridge 'containerise' and 'service-health'.</p>
 <h4 id="dependabot">Dependabot</h4>
 <p>Configured to update Python dependencies &amp; GitHub actions on a weekly schedule.</p>
 <p>See <a href="https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/workflows" target="\&quot;_blank&quot;">.github/workflows/</a>
@@ -538,6 +551,21 @@ to expose two endpoints with which to monitor the health of an application insta
 <li><code>/-/alive/</code></li>
 <li><code>/-/health/</code></li>
 </ul>
+<h3 id="continuous-deployment">Continuous Deployment</h3>
+<p><code>djereo</code> aims to provide a foundation on which to build your continuous deployment pipeline.
+Given the diversity of hosting &amp; deployment solutions it doesn't attempt to provide a
+solution for the step that deploys your application. However, you can extend the <code>on-tag</code>
+GitHub Actions workflow, which contains the following sequence of jobs:</p>
+<ul>
+<li><code>pre-commit</code>: run all pre-commit hooks.</li>
+<li><code>test</code>: run Django unit tests.</li>
+<li><code>django_checks</code>: run the <code>check</code> management command with the <code>--deploy</code> flag.</li>
+<li><code>containerise</code>: build an image containing your application and push to GitHub Container Registry.</li>
+</ul>
+<p>(see <a href="#custom-github-actions">Custom GitHub actions</a> above for more).</p>
+<p>You can easily add a custom GitHub Action to deploy your code after this last step.
+Finally, round off this pipeline with the pre-configured <code>service-health</code> action to confirm
+that your app deployment worked.</p>
               
             </div>
           </div><footer>
