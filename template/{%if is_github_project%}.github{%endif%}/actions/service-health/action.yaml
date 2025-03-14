@@ -4,6 +4,8 @@
 #   ```
 #   steps:
 #     - uses: ./.github/actions/service-health
+#       with:
+#         service_url: ${{ secrets.SERVICE_URL }}
 #   ```
 #
 # Prerequisites:
@@ -13,6 +15,11 @@
 name: 'service-health'
 description: 'Check health of deployed service'
 
+inputs:
+  service_url:
+    description: 'URL for the web service (without trailing slash)'
+    required: true
+
 runs:
   using: 'composite'
   steps:
@@ -20,7 +27,7 @@ runs:
       id: alive_check
       shell: bash
       env:
-        SERVICE_URL: ${{ secrets.SERVICE_URL }}
+        SERVICE_URL: ${{ inputs.service_url }}
       run: |
         response=$(wget --quiet --server-response -O - $SERVICE_URL/-/alive/ 2>&1)
         status_code=$(echo "$response" | grep -o "HTTP/[0-9.]* [0-9]*" | awk '{print $2}')
@@ -35,7 +42,7 @@ runs:
       id: health_check
       shell: bash
       env:
-        SERVICE_URL: ${{ secrets.SERVICE_URL }}
+        SERVICE_URL: ${{ inputs.service_url }}
       run: |
         response=$(wget --quiet --server-response -O - "$SERVICE_URL/-/health/" 2>&1)
         status_code=$(echo "$response" | grep -o "HTTP/[0-9.]* [0-9]*" | awk '{print $2}')
