@@ -102,7 +102,9 @@ Five re-usable custom actions are available:
 - `pre-commit`: runs all pre-commit hooks except `no-commit-to-branch` as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
    succeeding.
-- `sys-check`: runs Django's system checks (`manage.py check`).
+- `sys-check`: runs Django's system checks (`manage.py check`). Optionally with the `--deploy`
+  flag set. This check is strict by default, failing on warnings. Add checks to `SILENCED_SYSTEM_CHECKS`
+  in `settings.py` to ignore specific warnings.
 - `test`: runs all unit tests via the `just test` recipe (see [Justfile](#-justfile) for
    details).
 - `containerise`: builds a container image and pushes it to the specified registry. Accepts
@@ -148,6 +150,20 @@ pull-requests: write
 ```
 
 For more information, consult the [release-please-action project](https://github.com/googleapis/release-please-action){target=\"_blank"}.
+
+#### On tag
+
+Runs whenever a tag matching the pattern `vM.m.p` is pushed to GitHub (where `M.m.p` is a
+SemVer tag, see [Semantic Versioning](#-semantic-versioning) above).
+
+This is intended as the foundation providing 80% of your deployment pipeline. Out of the
+box the `on-tag` workflow runs the following jobs:
+
+![Pipeline view of the 'on tag' GitHub Actions workflow](media/djereo_on-tag-workflow.png)
+
+This can be extended to end with the 'service-health' job (see [Custom GitHub actions](#custom-github-actions)
+above). This is not shown in the above workflow since `djereo` does not implement a 'deploy'
+job that would be necessary to bridge 'containerise' and 'service-health'.
 
 #### Dependabot
 
