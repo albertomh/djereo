@@ -17,6 +17,7 @@ class AuthUserAdmin(UserAdmin):
     form = AuthUserChangeForm
     model = AuthUser
     list_display = ("email", "date_joined", "last_login")
+    readonly_fields = ("id",)
     search_fields = ("email",)
 
     add_fieldsets = ((None, {"fields": ("email", "password1", "password2")}),)
@@ -25,7 +26,7 @@ class AuthUserAdmin(UserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "password"),
+                "fields": ("id", "email", "password"),
             },
         ),
         ("Personal info", {"fields": ("first_name", "last_name")}),
