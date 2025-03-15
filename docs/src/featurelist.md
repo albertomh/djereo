@@ -70,6 +70,14 @@ alongside Conventional Commits to automatically generate changelogs and new semv
 
 See [https://semver.org/](https://semver.org/){target=\"_blank"} for more information.
 
+<!-- markdownlint-disable MD046 code-block-style [false positive] -->
+!!! note "Checking the app's version"
+    `djereo`'s base template &amp; its override of Django Admin's base template both
+    include a footer showing the deployed tag:
+
+    ![Custom footer in Django Admin showing application's semver tag](media/djereo_admin-footer-semver-tag.png)
+<!-- markdownlint-enable MD046 code-block-style -->
+
 ## 🪝 Git pre-commit hooks
 
 Every new project comes with a set of sensible [pre-commit](https://pre-commit.com/){target=\"_blank"}
