@@ -8,6 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.3.0](https://github.com/albertomh/djereo/compare/v3.2.0...v3.3.0) (2025-03-15)
+
+
+### Features
+
+* Add a 'django_checks' job to the on-tag workflow ([#186](https://github.com/albertomh/djereo/issues/186)) ([d80dd57](https://github.com/albertomh/djereo/commit/d80dd57b1462cf1f7ee4c958c5458e62a2671a33))
+* **ci:** Add 'service-health' action to check deployed service ([#184](https://github.com/albertomh/djereo/issues/184)) ([a5f9ea5](https://github.com/albertomh/djereo/commit/a5f9ea5fb7821e7b622c77bf2dcd0e81c21ff638))
+* **ci:** Sys-check action can also run in deploy mode ([#183](https://github.com/albertomh/djereo/issues/183)) ([1053b3a](https://github.com/albertomh/djereo/commit/1053b3a9bb82a27d01a6b4f66464a19612d3894d))
+* Make app metadata available to templates via a context processor ([#175](https://github.com/albertomh/djereo/issues/175)) ([7ac7b2a](https://github.com/albertomh/djereo/commit/7ac7b2aef6f4f34c267be7fe859fade3d4bb428b))
+* Silence W008 SECURE_SSL_REDIRECT sys check as handled by nginx ([#182](https://github.com/albertomh/djereo/issues/182)) ([8f6aa27](https://github.com/albertomh/djereo/commit/8f6aa27dd7ed87db6a6a75ec74c34f3a2a3fd41f))
+
+
+### Bug Fixes
+
+* **ci:** Avoid redundant 'CI' workflow if merged PR was from Release Please ([#179](https://github.com/albertomh/djereo/issues/179)) ([076956d](https://github.com/albertomh/djereo/commit/076956da07b334c0d1d79511defc8d5bb33b341e))
+* **ci:** Pass SERVICE_URL as an input to service-health GH Action ([#187](https://github.com/albertomh/djereo/issues/187)) ([4c41382](https://github.com/albertomh/djereo/commit/4c4138284ed42f9c361ed4d7b606369c9261981a))
+
 ## [3.2.0](https://github.com/albertomh/djereo/compare/v3.1.1...v3.2.0) (2025-03-08)
 
 
