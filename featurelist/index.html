@@ -248,6 +248,15 @@ of <a href="https://github.com/albertomh/djereo/blob/main/template/pyproject.tom
 <p>See <a href="#release-please">Release Please</a> below for information on how this version can be used
 alongside Conventional Commits to automatically generate changelogs and new semver tags.</p>
 <p>See <a href="https://semver.org/" target="\&quot;_blank&quot;">https://semver.org/</a> for more information.</p>
+<!-- markdownlint-disable MD046 code-block-style [false positive] -->
+<div class="admonition note">
+<p class="admonition-title">Checking the app's version</p>
+<p><code>djereo</code>'s base template &amp; its override of Django Admin's base template both
+include a footer showing the deployed tag:</p>
+<p><img alt="Custom footer in Django Admin showing application's semver tag" src="../media/djereo_admin-footer-semver-tag.png" /></p>
+</div>
+<!-- markdownlint-enable MD046 code-block-style -->
+
 <h2 id="git-pre-commit-hooks">🪝 Git pre-commit hooks</h2>
 <p>Every new project comes with a set of sensible <a href="https://pre-commit.com/" target="\&quot;_blank&quot;">pre-commit</a>
 git hooks. These are defined in <a href="https://github.com/albertomh/djereo/blob/main/template/.pre-commit-config.yaml.jinja" target="\&quot;_blank&quot;">.pre-commit-config.yaml</a>
