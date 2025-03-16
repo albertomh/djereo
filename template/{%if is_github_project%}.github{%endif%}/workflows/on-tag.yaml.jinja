@@ -9,44 +9,14 @@ on:
       - 'v*.*.*'
 
 jobs:
-  pre_commit:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/pre-commit
-
-  test:
-    needs:
-      - pre_commit
-    runs-on: ubuntu-24.04
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_DB: {{ project_name }}
-          POSTGRES_USER: {{ project_name }}
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/test
-
-  django_checks:
-    needs:
-      - pre_commit
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/django-checks
-        with:
-          deploy: true
+  checks:
+     uses: ./.github/workflows/_pre-build-checks.yaml
+     with:
+       django_checks_deploy: 'true'
 
   containerise:
     needs:
-      - test
-      - django_checks
+      - checks
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
