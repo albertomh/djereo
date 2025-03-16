@@ -13,39 +13,16 @@ on:
       - main
 
 jobs:
-  pre_commit:
+  checks:
     # this job is redundant if pipeline was triggered by merge of a 'Release Please' PR
     if: {% raw %}${{ github.event.pull_request.merged && github.head_ref != 'release-please--branches--main' }}{% endraw +%}
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/pre-commit
-
-  test:
-    # this job is redundant if pipeline was triggered by merge of a 'Release Please' PR
-    if: github.head_ref != 'release-please--branches--main'
-    needs:
-      - pre_commit
-    runs-on: ubuntu-24.04
-    services:
-      postgres:
-        image: postgres:{{postgres_version}}
-        env:
-          POSTGRES_DB: {{project_name}}
-          POSTGRES_USER: {{project_name}}
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/test
+    uses: ./.github/workflows/_pre-build-checks.yaml
 
   containerise:
     # containerisation of tagged releases is handled separately by the `on-tag` workflow
     if: github.head_ref != 'release-please--branches--main'
     needs:
-      - test
+      - checks
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
