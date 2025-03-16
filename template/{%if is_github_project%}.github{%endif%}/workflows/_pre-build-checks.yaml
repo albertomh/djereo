@@ -1,0 +1,37 @@
+# Run checks and test suite. Intended to be run ahead of building / containerising the app.
+#
+# Usage:
+# ```
+# jobs:
+#   checks:
+#     uses: ./.github/workflows/_pre-build-checks.yaml
+# ```
+name: Pre-build checks
+
+on:
+  workflow_call:
+
+jobs:
+  pre_commit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/pre-commit
+
+  test:
+    needs:
+      - pre_commit
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: testdjereo
+          POSTGRES_USER: testdjereo
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/test
