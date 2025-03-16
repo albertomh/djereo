@@ -26,8 +26,8 @@ jobs:
       postgres:
         image: postgres:17
         env:
-          POSTGRES_DB: testdjereo
-          POSTGRES_USER: testdjereo
+          POSTGRES_DB: {{ project_name }}
+          POSTGRES_USER: {{ project_name }}
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
