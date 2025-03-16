@@ -35,3 +35,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test
+
+  django_checks:
+    needs:
+      - pre_commit
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/django-checks
