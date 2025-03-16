@@ -5,11 +5,19 @@
 # jobs:
 #   checks:
 #     uses: ./.github/workflows/_pre-build-checks.yaml
+#     with:
+#       django_checks_deploy: 'false' | 'true'
 # ```
 name: Pre-build checks
 
 on:
   workflow_call:
+    inputs:
+      django_checks_deploy:
+          description: 'Run checks in deploy mode'
+          type: string
+          default: 'false'
+          required: false
 
 jobs:
   pre_commit:
@@ -36,10 +44,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test
 
-  django_checks:
+  django:
     needs:
       - pre_commit
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/django-checks
+        with:
+          deploy: {% raw %}${{ inputs.django_checks_deploy }}{% endraw +%}
