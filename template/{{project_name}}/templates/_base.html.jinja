@@ -29,7 +29,13 @@
 {% raw %}    {% block extra_head_style %}{% endblock %}{% endraw +%}
 
     {% if use_htmx %}
-{% raw %}   {% htmx_script %}{% endraw +%}
+    {%- raw %}
+    {% if debug %}
+        {% htmx_script minified=False %}
+    {% else %}
+        {% htmx_script %}
+    {% endif %}
+    {% endraw -%}
     {% endif %}
     <script></script>
 
