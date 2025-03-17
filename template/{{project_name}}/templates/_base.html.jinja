@@ -1,3 +1,4 @@
+{% if use_htmx %}{% raw %}{% load django_htmx %}{% endraw +%}{% endif %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,7 +29,7 @@
 {% raw %}    {% block extra_head_style %}{% endblock %}{% endraw +%}
 
     {% if use_htmx %}
-    <script src="{% raw %}{%{% endraw %} static '{{project_name}}/htmx-2.0.4.min.js' {% raw %}%}{% endraw %}" defer></script>
+{% raw %}   {% htmx_script %}{% endraw +%}
     {% endif %}
     <script></script>
 
