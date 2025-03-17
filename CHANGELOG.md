@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.4.0](https://github.com/albertomh/djereo/compare/v3.3.0...v3.4.0) (2025-03-17)
+
+
+### Features
+
+* Add 'ID' read-only field to the AuthUser admin form ([#189](https://github.com/albertomh/djereo/issues/189)) ([3e51bef](https://github.com/albertomh/djereo/commit/3e51bef6831ab15f39a0b3d3fb95d90b06c33d0a))
+* **ci:** Add 'pre-build checks' reusable, composable workflow ([#191](https://github.com/albertomh/djereo/issues/191)) ([1a9f793](https://github.com/albertomh/djereo/commit/1a9f79338a6aec7ef1da540852341693dd5097ba))
+* **ci:** Run Django system checks as part of pre-build checks workflow ([#192](https://github.com/albertomh/djereo/issues/192)) ([ab447c0](https://github.com/albertomh/djereo/commit/ab447c0a7fcaed4a31f78562353b42b2946324d2))
+
+
+### Dependencies
+
+* Remove structlog as metaproject dependency ([#197](https://github.com/albertomh/djereo/issues/197)) ([e65ad71](https://github.com/albertomh/djereo/commit/e65ad71b6f7017079c8cc9ee2639b4fab6e4c06a))
+
 ## [3.3.0](https://github.com/albertomh/djereo/compare/v3.2.0...v3.3.0) (2025-03-15)
 
 
