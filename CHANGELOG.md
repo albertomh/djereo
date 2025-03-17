@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.5.0](https://github.com/albertomh/djereo/compare/v3.4.0...v3.5.0) (2025-03-17)
+
+
+### Features
+
+* Pass CSP nonce to base template for use with inline styles & htmx ([#200](https://github.com/albertomh/djereo/issues/200)) ([efc9e91](https://github.com/albertomh/djereo/commit/efc9e91083ce248935a613f441ac9d8d68698bdf))
+* Use django-htmx's vendorised version of htmx in gen. projects ([#198](https://github.com/albertomh/djereo/issues/198)) ([2543e65](https://github.com/albertomh/djereo/commit/2543e656317f452d41643805b0d870b80392bb5f))
+
+
+### Bug Fixes
+
+* Replace deprecated allauth config with ACCOUNT_SIGNUP_FIELDS ([#201](https://github.com/albertomh/djereo/issues/201)) ([486f529](https://github.com/albertomh/djereo/commit/486f5297cd11f771c3ef7b590b7bb2f8145e895d))
+
 ## [3.4.0](https://github.com/albertomh/djereo/compare/v3.3.0...v3.4.0) (2025-03-17)
 
 
