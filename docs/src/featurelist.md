@@ -390,9 +390,9 @@ changes minimal, only overriding `django-allauth`'s base template (`users/templa
 
 ### Optional `htmx` frontend
 
-Projects generated using `djereo` include a vendorised copy of `htmx` in the static files
-directory and loaded in the `_base.html` template. You can opt out from this when
-completing the setup questionnaire.
+Projects generated using `djereo` include a vendorised copy of `htmx` that is loaded in
+the `_base.html` template via `django-htmx`'s `{% htmx_script %}` tag. You can opt out
+from this when completing the setup questionnaire.
 
 The `django-htmx` package is used to smoothly integrate `htmx` into projects, abstracting
 away header checks and allowing views to change their behaviour and responses based on the
