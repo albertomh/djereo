@@ -494,9 +494,9 @@ for the pages under <code>/accounts/</code>.</p>
 in the <code>django-allauth</code> docs for instructions on doing so. Out of the box <code>djereo</code> keeps
 changes minimal, only overriding <code>django-allauth</code>'s base template (<code>users/templates/allauth/layouts/base.html</code>).</p>
 <h3 id="optional-htmx-frontend">Optional <code>htmx</code> frontend</h3>
-<p>Projects generated using <code>djereo</code> include a vendorised copy of <code>htmx</code> in the static files
-directory and loaded in the <code>_base.html</code> template. You can opt out from this when
-completing the setup questionnaire.</p>
+<p>Projects generated using <code>djereo</code> include a vendorised copy of <code>htmx</code> that is loaded in
+the <code>_base.html</code> template via <code>django-htmx</code>'s <code>{% htmx_script %}</code> tag. You can opt out
+from this when completing the setup questionnaire.</p>
 <p>The <code>django-htmx</code> package is used to smoothly integrate <code>htmx</code> into projects, abstracting
 away header checks and allowing views to change their behaviour and responses based on the
 <code>request.htmx</code> attribute.</p>
