@@ -115,8 +115,8 @@ soft-deletion) are available to store timestamps.
 
 ## `htmx` frontend
 
-A vendorised copy of `htmx` is included in the static files directory and loaded in the
-`_base.html` template.
+A vendorised copy of `htmx` is included in the `_base.html` template via `django-htmx`'s
+{% raw %}`{% htmx_script %}`{% endraw %} tag.
 The `django-htmx` package is used to smoothly integrate `htmx` into projects, abstracting
 away header checks and allowing views to change their behaviour and responses based on the
 `request.htmx` attribute.
