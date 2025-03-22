@@ -445,6 +445,12 @@ The `test_checks` module tests the custom Django system checks added by `djereo`
 To run these tests use the recipe `just test`, passing the same optional arguments you
 would when using `manage.py test` e.g. `just test package.module`.
 
+### Profiling
+
+Invoke `just profile_tests` to output a [speedscope](https://www.speedscope.app/){target=\"_blank"}-compatible
+profile file to understand bottlenecks in your tests.
+**N.B.** this requires `py-spy` to be available globally on your system.
+
 ## 🚀 Deployment
 
 While `djereo` eschews Docker throughout development, the advantages of containerisation

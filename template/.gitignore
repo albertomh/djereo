@@ -102,6 +102,9 @@ ENV/
 # mypy
 .mypy_cache/
 
+# py-spy
+*.speedscope.json
+
 # IDE settings
 .vscode/
 .idea/

@@ -36,12 +36,20 @@ runserver $PYTHONDEVMODE="1": _dev_setup
 shell: _dev_setup
   @uv run manage.py shell
 
-test +args='.':
+_test_setup:
   @test -d .venv/ || uv venv
   @test -x .venv/bin/coverage || uv sync --group test
   @uv pip install -e .
+
+test +args='.': _test_setup
+  @test -d .venv/ || uv venv
+  @test -x .venv/bin/coverage || uv sync --group test
   @uv run coverage erase
   @uv run python -m coverage run --source="." \
     manage.py test "$@" --failfast --pdb --shuffle --verbosity=3
   @uv run coverage report
   @uv run coverage html
+
+profile_tests: _test_setup
+  @sudo py-spy record --subprocesses --format speedscope -o profile.speedscope.json -- \
+    uv run python manage.py test

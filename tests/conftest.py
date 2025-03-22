@@ -7,7 +7,7 @@ from typing import Callable
 
 import pytest
 from copier.cli import CopierApp
-from sh import python
+from sh import python as sh_python
 
 from tests._utils import set_up_postgres, tear_down_postgres
 
@@ -137,11 +137,11 @@ def install_test_project(
 ):
     """Generate a test project, install and remove it before/after a test."""
     copier_copy(copier_input_data)
-    python("-m", "pip", "install", str(test_project_dir))
+    sh_python("-m", "pip", "install", str(test_project_dir))
 
     yield
 
-    python("-m", "pip", "uninstall", "-y", test_project_name)
+    sh_python("-m", "pip", "uninstall", "-y", test_project_name)
 
 
 @pytest.fixture

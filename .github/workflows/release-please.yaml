@@ -35,11 +35,11 @@ jobs:
         if: ${{ steps.release.outputs.prs_created == 'true' }}
         with:
           version: "0.6.4"
-      - run: uv lock
+      - run: uv lock; cd docs/ && uv lock
         if: ${{ steps.release.outputs.prs_created == 'true' }}
         shell: bash
       - uses: stefanzweifel/git-auto-commit-action@v5
         if: ${{ steps.release.outputs.prs_created == 'true' }}
         with:
-          file_pattern: 'uv.lock'
+          file_pattern: '*uv.lock'
           commit_message: 'chore: update uv.lock with new version from release-please'
