@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.6.0](https://github.com/albertomh/djereo/compare/v3.5.0...v3.6.0) (2025-03-22)
+
+
+### Features
+
+* Add just recipe to profile tests ([#206](https://github.com/albertomh/djereo/issues/206)) ([3ecede7](https://github.com/albertomh/djereo/commit/3ecede7358d819a99612d29c98feeb8c1b587adf))
+
+
+### Bug Fixes
+
+* Specify 'html.parser' when instantiating BeautifulSoup ([#204](https://github.com/albertomh/djereo/issues/204)) ([66042c7](https://github.com/albertomh/djereo/commit/66042c7f49434a5b6565dfd5f1b445d15d1a27f2))
+
 ## [3.5.0](https://github.com/albertomh/djereo/compare/v3.4.0...v3.5.0) (2025-03-17)
 
 
