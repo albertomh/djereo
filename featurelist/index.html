@@ -150,6 +150,10 @@
     <li class="toctree-l2"><a class="reference internal" href="#security">🔒 Security</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#tests">🧪 Tests</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#profiling">Profiling</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#deployment">🚀 Deployment</a>
         <ul>
@@ -537,6 +541,10 @@ due to missing migrations.</p>
 <p>The <code>test_checks</code> module tests the custom Django system checks added by <code>djereo</code>.</p>
 <p>To run these tests use the recipe <code>just test</code>, passing the same optional arguments you
 would when using <code>manage.py test</code> e.g. <code>just test package.module</code>.</p>
+<h3 id="profiling">Profiling</h3>
+<p>Invoke <code>just profile_tests</code> to output a <a href="https://www.speedscope.app/" target="\&quot;_blank&quot;">speedscope</a>-compatible
+profile file to understand bottlenecks in your tests.
+<strong>N.B.</strong> this requires <code>py-spy</code> to be available globally on your system.</p>
 <h2 id="deployment">🚀 Deployment</h2>
 <p>While <code>djereo</code> eschews Docker throughout development, the advantages of containerisation
 for tagged, reproducible builds in hosted environments are evident.</p>
