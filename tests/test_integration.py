@@ -116,7 +116,7 @@ def test_django_debug_toolbar_is_enabled(
     with urlopen("http://127.0.0.1:8000/") as response:
         res_bytes = response.read()
     res_html = res_bytes.decode("utf8")
-    html = BeautifulSoup(res_html)
+    html = BeautifulSoup(res_html, features="html.parser")
     dj_debug_toolbar = html.find("div", {"id": "djDebug"})
 
     assert type(dj_debug_toolbar) is Tag
