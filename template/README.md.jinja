@@ -137,6 +137,11 @@ just test [<expression>]
 just test tests.test_migrations
 ```
 
+### Profiling
+
+Invoke `just profile_tests` to output a speedscope-compatible profile file to understand
+bottlenecks in your tests. N.B. this requires `py-spy` to be available globally on your system.
+
 {% if is_github_project %}
 ## Release
 
@@ -193,7 +198,7 @@ docker build \
   --load .
 ```
 
-NB. The `CACHEBUST` argument ensures the layer that runs `collectstatic` is not cached
+N.B. The `CACHEBUST` argument ensures the layer that runs `collectstatic` is not cached
 between builds.
 
 The recommended use of the resulting container is to place it behind [nginx](https://nginx.org/en/docs/index.html)
