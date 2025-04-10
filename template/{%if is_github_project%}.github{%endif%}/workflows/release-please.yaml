@@ -1,8 +1,21 @@
 # Release Please pipeline
 # Refreshes a pull request that updates the changelog & bumps the Semantic Version every
 # time the `main` branch is merged to.
+#
 # N.B. conventional commits (as enforced by the relevant git hook) are a prerequisite for
 # Release Please to generate changelogs and calculate new SemVer tags.
+#
+# IMPORTANT!
+# The following click-ops step must be taken to allow Release Please to make changes to
+# your repo.
+# 1. Create a Personal Access Token (PAT) with the following permissions:
+#    ```text
+#    contents: write
+#    pull-requests: write
+#    ```
+# 2. Use the PAT to populate a GitHub Actions secret called `RELEASE_PLEASE_TOKEN` (under
+#    `github.com/<user>/<repo>/settings/secrets/actions`).
+
 name: release-please
 
 on:
