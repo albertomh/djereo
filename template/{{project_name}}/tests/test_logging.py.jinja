@@ -65,6 +65,8 @@ class LogsFormatTest(SimpleTestCase):
     def setUp(self):
         self.client = Client()
 
+    # NB. If this test is failing, check that DEBUG is not set as an environment variable
+    # in the context / shell the test suite is running in.
     @override_settings(LOGGING=LoggingConfigFactory(debug=False).build())
     def test_logs_format_debug_false(self):
         req_logger = logging.getLogger("django.server")
