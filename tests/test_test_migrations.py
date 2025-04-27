@@ -3,7 +3,7 @@ from io import StringIO
 from pathlib import Path
 
 import pytest
-from sh import just
+from sh import just, nox
 
 from tests._utils import remove_ansi_escape_codes
 
@@ -29,13 +29,14 @@ def test_migrations_check_fails_if_pending_migrations(
     migrations_dir = test_project_dir / test_project_name / "migrations"
     migrations_dir.mkdir(parents=True, exist_ok=True)
     (migrations_dir / "__init__.py").touch()
-    err = StringIO()
+    out = StringIO()
 
-    just(
-        "test",
+    nox(
+        "--",
         "-k",
         "test_no_pending_migrations",
-        _err=err,
+        # use _out instead of _err since nox surfaces the subcommands' output in stdout
+        _out=out,
         # 1 is okay since we are expecting `test_no_pending_migrations` to fail
         _ok_code=[0, 1],
         _cwd=test_project_dir,
@@ -45,8 +46,8 @@ def test_migrations_check_fails_if_pending_migrations(
         "test_no_pending_migrations (tests.test_migrations.PendingMigrationsTests."
         "test_no_pending_migrations) ... FAIL\n"
     )
-    clean_stderr = remove_ansi_escape_codes(err.getvalue())
-    assert expected_error in clean_stderr
+    clean_stdout = remove_ansi_escape_codes(out.getvalue())
+    assert expected_error in clean_stdout
 
 
 @pytest.mark.integration

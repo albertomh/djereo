@@ -7,7 +7,7 @@ import pytest
 import yaml
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
-from sh import RunningCommand, git, just, uv
+from sh import RunningCommand, git, nox, uv
 
 from tests._utils import count_dirs_and_files
 
@@ -49,7 +49,7 @@ def test_djereo_jinja_templates_converted(
 @pytest.mark.integration
 @pytest.mark.parametrize(
     "is_github_project, expected_directory_count, expected_file_count",
-    [(True, 8, 20), (False, 7, 18)],
+    [(True, 8, 21), (False, 7, 19)],
 )
 def test_is_github_project(
     is_github_project: bool,
@@ -138,7 +138,7 @@ def test_generated_project_tests_run_successfully(
     test_project_dir: Path,
     generate_test_project_with_db,
 ):
-    result: RunningCommand = just("test", _cwd=test_project_dir, _return_cmd=True)
+    result: RunningCommand = nox(_cwd=test_project_dir, _return_cmd=True)
 
     assert result.exit_code == 0, f"Pytest failed:\n{result.stdout}\n{result.stderr}"
 
