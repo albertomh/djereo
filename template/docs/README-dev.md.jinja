@@ -47,10 +47,16 @@ mode).
   i.e. `just runserver ""`
 - `shell`: run Django's management command to drop into a shell. By default this is IPython
   in all new projects.
-- `test`: install test dependencies, run all unit tests via Django's test runner and
-  generate and display a coverage report (both on-screen and in HTML format).
 - `profile_tests`: uses py-spy to profile a test run and outputs results in speedscope format.
   N.B. this requires `py-spy` to be available globally on your system.
+
+## Running tests
+
+Invoke `nox` to run tests across various Python versions. You can select a single session ie.
+
+```sh
+nox --session tests_with_coverage-3.13
+```
 
 ## Use IPython as your shell
 
@@ -159,7 +165,7 @@ can be used to rotate keys. This defaults to an empty list.
 
 ### Custom GitHub actions
 
-Five re-usable custom actions are available:
+Four re-usable custom actions are available:
 
 - `pre-commit`: runs all pre-commit hooks except `no-commit-to-branch` as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
@@ -167,7 +173,6 @@ Five re-usable custom actions are available:
 - `django-checks`: runs Django's system checks (`manage.py check`). Optionally with the `--deploy`
   flag set. This check is strict by default, failing on warnings. Add checks to `SILENCED_SYSTEM_CHECKS`
   in `settings.py` to ignore specific warnings.
-- `test`: runs all unit tests via the `just test` recipe (see [Justfile recipes](#justfile-recipes)).
 - `containerise`: builds a container image and pushes it to the specified registry. Accepts
   a list of platforms to build for, a list of tags and the path to a Dockerfile.
   **N.B.** If wishing to use the GitHub Container Registry (ghcr.io, the default) make sure

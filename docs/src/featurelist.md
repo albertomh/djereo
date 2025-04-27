@@ -105,7 +105,7 @@ their project. The resulting custom actions and workflows are described below.
 
 ### Custom GitHub actions
 
-Five re-usable custom actions are available:
+Four re-usable custom actions are available:
 
 - `pre-commit`: runs all pre-commit hooks except `no-commit-to-branch` as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
@@ -113,8 +113,6 @@ Five re-usable custom actions are available:
 - `django-checks`: runs Django's system checks (`manage.py check`). Optionally with the `--deploy`
   flag set. This check is strict by default, failing on warnings. Add checks to `SILENCED_SYSTEM_CHECKS`
   in `settings.py` to ignore specific warnings.
-- `test`: runs all unit tests via the `just test` recipe (see [Justfile](#-justfile) for
-   details).
 - `containerise`: builds a container image and pushes it to the specified registry. Accepts
   a list of platforms to build for, a list of tags and the path to a Dockerfile.  
   **N.B.** If wishing to use the GitHub Container Registry (ghcr.io, the default) make sure
@@ -436,14 +434,14 @@ that `DEBUG` is False and that localhost is not amongst the `CSRF_TRUSTED_ORIGIN
 `djereo` projects come with all the tooling needed to get you writing tests quickly, as
 well as a couple of tests ready out-of-the-box.
 
+To run these tests call `nox`, passing the same optional arguments you would when using
+`manage.py test` e.g. `nox -- package.module`.
+
 The `PendingMigrationsTests` class will fail if any model changes are not yet captured in
 a migration, with the aim of negating the possibility of a deployment attempt that fails
 due to missing migrations.
 
 The `test_checks` module tests the custom Django system checks added by `djereo`.
-
-To run these tests use the recipe `just test`, passing the same optional arguments you
-would when using `manage.py test` e.g. `just test package.module`.
 
 ### Profiling
 
