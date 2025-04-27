@@ -18,9 +18,26 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/pre-commit
 
-  test:
+  generate-nox-py-versions:
     needs:
       - pre_commit
+    runs-on: ubuntu-24.04
+    outputs:
+      py_version: ${{ steps.set-matrix.outputs.py_version }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: wntrblm/nox@main
+    - id: set-matrix
+      shell: bash
+      run: echo py_version=$(nox --json -l | jq -c '[.[].python]') | tee --append $GITHUB_OUTPUT
+
+  test:
+    needs:
+      - generate-nox-py-versions
+    strategy:
+      fail-fast: false
+      matrix:
+        py_version: ${{ fromJson(needs.generate-nox-py-versions.outputs.py_version) }}
     runs-on: ubuntu-24.04
     services:
       postgres:
@@ -34,4 +51,12 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/test
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.6.17"
+      # Not redundant! Must be installed since used by integration tests in the next step.
+      - uses: extractions/setup-just@v2
+      - uses: wntrblm/nox@2025.02.09
+        with:
+          python-versions: "${{ matrix.py_version }}"
+      - run: nox --session "tests-${{ matrix.py_version }}"
