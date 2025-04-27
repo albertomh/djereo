@@ -285,7 +285,7 @@ and include:</p>
 will be hosted on GitHub. If this is the case, GitHub Actions config files are added to
 their project. The resulting custom actions and workflows are described below.</p>
 <h3 id="custom-github-actions">Custom GitHub actions</h3>
-<p>Five re-usable custom actions are available:</p>
+<p>Four re-usable custom actions are available:</p>
 <ul>
 <li><code>pre-commit</code>: runs all pre-commit hooks except <code>no-commit-to-branch</code> as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
@@ -293,8 +293,6 @@ their project. The resulting custom actions and workflows are described below.</
 <li><code>django-checks</code>: runs Django's system checks (<code>manage.py check</code>). Optionally with the <code>--deploy</code>
   flag set. This check is strict by default, failing on warnings. Add checks to <code>SILENCED_SYSTEM_CHECKS</code>
   in <code>settings.py</code> to ignore specific warnings.</li>
-<li><code>test</code>: runs all unit tests via the <code>just test</code> recipe (see <a href="#-justfile">Justfile</a> for
-   details).</li>
 <li><code>containerise</code>: builds a container image and pushes it to the specified registry. Accepts
   a list of platforms to build for, a list of tags and the path to a Dockerfile.<br />
 <strong>N.B.</strong> If wishing to use the GitHub Container Registry (ghcr.io, the default) make sure
@@ -535,12 +533,12 @@ that <code>DEBUG</code> is False and that localhost is not amongst the <code>CSR
 <h2 id="tests">🧪 Tests</h2>
 <p><code>djereo</code> projects come with all the tooling needed to get you writing tests quickly, as
 well as a couple of tests ready out-of-the-box.</p>
+<p>To run these tests call <code>nox</code>, passing the same optional arguments you would when using
+<code>manage.py test</code> e.g. <code>nox -- package.module</code>.</p>
 <p>The <code>PendingMigrationsTests</code> class will fail if any model changes are not yet captured in
 a migration, with the aim of negating the possibility of a deployment attempt that fails
 due to missing migrations.</p>
 <p>The <code>test_checks</code> module tests the custom Django system checks added by <code>djereo</code>.</p>
-<p>To run these tests use the recipe <code>just test</code>, passing the same optional arguments you
-would when using <code>manage.py test</code> e.g. <code>just test package.module</code>.</p>
 <h3 id="profiling">Profiling</h3>
 <p>Invoke <code>just profile_tests</code> to output a <a href="https://www.speedscope.app/" target="\&quot;_blank&quot;">speedscope</a>-compatible
 profile file to understand bottlenecks in your tests.
