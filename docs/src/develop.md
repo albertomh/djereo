@@ -145,15 +145,21 @@ Docstrings should follow the conventions set out in the [Google styleguide](http
 Run all tests using `pytest` with:
 
 ```sh
-just test
+nox
 ```
 
-Tests have marks, allowing you to run only a subset:
+Run only a given module:
 
 ```sh
-just test -m unit
+nox [--session tests-3.13] -- -k test_validators
+```
+
+Tests have marks, allowing you to run only a tagged subset:
+
+```sh
+nox -- -m unit
 # or
-just test -m "not smoke"
+nox -- -m "not smoke"
 ```
 
 See the `tool.pytest.ini_options` table in [pyproject.toml](https://github.com/albertomh/djereo/blob/main/pyproject.toml){target=\"_blank"}
