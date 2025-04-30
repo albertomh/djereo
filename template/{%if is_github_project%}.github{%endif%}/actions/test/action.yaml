@@ -15,6 +15,6 @@ runs:
     - uses: astral-sh/setup-uv@v6
       with:
         version: "0.6.4"
-    - uses: extractions/setup-just@v2
+    - uses: extractions/setup-just@v3
     - run: just test
       shell: bash
