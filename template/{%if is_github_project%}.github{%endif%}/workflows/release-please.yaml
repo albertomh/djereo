@@ -44,7 +44,7 @@ jobs:
         if: ${{ steps.release.outputs.prs_created == 'true' }}
         with:
           ref: release-please--branches--main
-      - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v6
         if: ${{ steps.release.outputs.prs_created == 'true' }}
         with:
           version: "0.6.4"
