@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.6.1](https://github.com/albertomh/djereo/compare/v3.6.0...v3.6.1) (2025-05-01)
+
+
+### Dependencies
+
+* Bump min version of django-csp to 4.0 in gen. project ([#220](https://github.com/albertomh/djereo/issues/220)) ([59cf2cd](https://github.com/albertomh/djereo/commit/59cf2cddfa51df627573760f74c0a4ca724a9de4))
+* Bump minimum version of ipython to 9.2.0 ([#218](https://github.com/albertomh/djereo/issues/218)) ([c310c5f](https://github.com/albertomh/djereo/commit/c310c5f545084c4e922344640d1b82270ad091ee))
+
 ## [3.6.0](https://github.com/albertomh/djereo/compare/v3.5.0...v3.6.0) (2025-04-27)
 
 
