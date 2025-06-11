@@ -62,7 +62,7 @@ jobs:
       - uses: astral-sh/setup-uv@v6
         with:
           version: "0.6.17"
-      - uses: wntrblm/nox@2025.02.09
+      - uses: wntrblm/nox@2025.05.01
       - run: nox --session {% raw %}"${{ matrix.session }}"{% endraw +%}
 
   django:
