@@ -55,17 +55,6 @@ dev = [
 # allow `pip install -e .` to find the project package
 include = ["{{project_name}}"]
 
-[tool.coverage.report]
-omit = [
-  "*/tests/*"
-]
-exclude_lines = [
-    "pragma: no cover",
-    "def __repr__",
-    "def __str__",
-    "if settings.debug",
-]
-
 [tool.ruff]
 exclude = [".pdbrc"]
 indent-width = 4
@@ -106,6 +95,17 @@ select = [
 
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
 "{{project_name}}.settings".msg = "Do not import project settings module - use `from django.conf import settings` instead"
+
+[tool.coverage.report]
+omit = [
+  "*/tests/*"
+]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "def __str__",
+    "if settings.debug",
+]
 
 [tool.coverage.run]
 source = [
