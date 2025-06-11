@@ -21,7 +21,7 @@ repos:
       - id: check-case-conflict
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.0
+    rev: v0.11.13
     hooks:
       # --config to stop ruff from using {{project_name}}/pyproject.toml
       # https://github.com/astral-sh/ruff/issues/9585
@@ -31,7 +31,7 @@ repos:
         args: ["--config", "pyproject.toml"]
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.17.2
+    rev: v0.18.1
     hooks:
       - id: markdownlint-cli2
         args: ["--config", ".markdownlint-cli2.yaml"]
