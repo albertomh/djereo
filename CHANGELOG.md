@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.7.0](https://github.com/albertomh/djereo/compare/v3.6.1...v3.7.0) (2025-06-12)
+
+
+### Features
+
+* Configure GitHub syntax highlighting for .py.jinja templates ([#226](https://github.com/albertomh/djereo/issues/226)) ([399ad93](https://github.com/albertomh/djereo/commit/399ad93ff8306f430cbc1d24eb0045deedfb0ea5))
+* Support Python 3.12 and above ([#222](https://github.com/albertomh/djereo/issues/222)) ([0f49b3e](https://github.com/albertomh/djereo/commit/0f49b3e42850b42916b9eaa53f57fb8c586697bd))
+* Use django-stubs mypy plugin when run via pre-commit ([#225](https://github.com/albertomh/djereo/issues/225)) ([d6e324c](https://github.com/albertomh/djereo/commit/d6e324c9b968f2d4e61c26180f3f703fc3e2e86a))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.16.0 ([#224](https://github.com/albertomh/djereo/issues/224)) ([0d2f112](https://github.com/albertomh/djereo/commit/0d2f11255dbb1795b740b9bcf1dd1210aec7167a))
+
 ## [3.6.1](https://github.com/albertomh/djereo/compare/v3.6.0...v3.6.1) (2025-05-01)
 
 
