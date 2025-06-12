@@ -443,7 +443,7 @@ due to missing migrations.
 
 The `test_checks` module tests the custom Django system checks added by `djereo`.
 
-### Profiling
+### Profiling tests
 
 Invoke `just profile_tests` to output a [speedscope](https://www.speedscope.app/){target=\"_blank"}-compatible
 profile file to understand bottlenecks in your tests.

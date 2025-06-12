@@ -13,7 +13,7 @@ class CustomAdminAuthenticationForm(AuthenticationForm):
 
 
 class CustomAdminSite(AdminSite):
-    login_form = CustomAdminAuthenticationForm
+    login_form = CustomAdminAuthenticationForm  # type: ignore
 
 
 admin.site = CustomAdminSite()
