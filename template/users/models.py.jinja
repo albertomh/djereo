@@ -30,7 +30,7 @@ class AuthUser(UpdatedAtModel, UuidModel, AbstractUser):
 
     USERNAME_FIELD = "email"
     # field names that will be prompted for when `createsuperuser` mgmt. command is called
-    REQUIRED_FIELDS = ()
+    REQUIRED_FIELDS: list[str] = []
 
     objects = AuthUserManager()
 
@@ -42,7 +42,7 @@ class AuthUser(UpdatedAtModel, UuidModel, AbstractUser):
 
 
 class UserProfile(UuidModel):
-    user = models.OneToOneField(
+    user: models.OneToOneField["UserProfile", AuthUser] = models.OneToOneField(
         "users.AuthUser",
         on_delete=models.CASCADE,
     )
