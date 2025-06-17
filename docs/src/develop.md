@@ -142,6 +142,9 @@ Docstrings should follow the conventions set out in the [Google styleguide](http
 
 ## Test
 
+Nox is used to automate testing across different Python versions. Test sessions are
+configured via `noxfile.py`.
+
 Run all tests using `pytest` with:
 
 ```sh
@@ -164,6 +167,11 @@ nox -- -m "not smoke"
 
 See the `tool.pytest.ini_options` table in [pyproject.toml](https://github.com/albertomh/djereo/blob/main/pyproject.toml){target=\"_blank"}
 for a list of all marks.
+
+### Tests in GitHub Actions
+
+The `test` job in GitHub Actions uses the matrix strategy. This runs each Nox session
+(i.e. Python version test run) as a separate pipeline job.
 
 ---
 

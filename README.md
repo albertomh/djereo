@@ -137,6 +137,7 @@ Several tooling choices have been guided by the work of [Adam Johnson](https://a
 &amp; [Carlton Gibson](https://github.com/carltongibson).
 
 The `djereo` logo is typeset in [Black Ops One](https://fonts.google.com/specimen/Black+Ops+One).
+Horse head icon generated using DALL·E.
 
 ## What's in a name?
 
