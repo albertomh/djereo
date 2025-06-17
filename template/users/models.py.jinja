@@ -1,3 +1,5 @@
+from typing import cast
+
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.db.models.signals import post_save
@@ -30,9 +32,9 @@ class AuthUser(UpdatedAtModel, UuidModel, AbstractUser):
 
     USERNAME_FIELD = "email"
     # field names that will be prompted for when `createsuperuser` mgmt. command is called
-    REQUIRED_FIELDS: list[str] = []
+    REQUIRED_FIELDS = []
 
-    objects = AuthUserManager()
+    objects: UserManager["AuthUser"] = cast(UserManager["AuthUser"], AuthUserManager())
 
     class Meta:
         verbose_name = "auth user"
