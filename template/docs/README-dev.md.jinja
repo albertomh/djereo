@@ -50,7 +50,11 @@ mode).
 - `profile_tests`: uses py-spy to profile a test run and outputs results in speedscope format.
   N.B. this requires `py-spy` to be available globally on your system.
 
-## Running tests
+## Running tests with Nox
+
+Nox is used to automate testing across different Python versions. Test sessions are
+configured via `noxfile.py`. `coverage` reporting will only run for test runs for the
+oldest and latest Python versions.
 
 Invoke `nox` to run tests across various Python versions. You can select a single session ie.
 
@@ -185,7 +189,7 @@ for the definitions of these actions.
 
 ### GitHub Actions workflows
 
-Four workflows are defined:
+Five workflows are defined:
 
 #### `PR` (pull request)
 
@@ -194,6 +198,9 @@ Runs whenever a pull request is opened against a branch or an existing PR receiv
 #### `CI` (continuous integration)
 
 As with `PR`, but acts when a pull request is closed and changes merged into the `main` branch.
+
+> The `test` job in GitHub Actions uses the matrix strategy. This runs each Nox session
+> (i.e. Python version test run) as a separate pipeline job.
 
 #### Release Please
 

@@ -437,6 +437,10 @@ well as a couple of tests ready out-of-the-box.
 To run these tests call `nox`, passing the same optional arguments you would when using
 `manage.py test` e.g. `nox -- package.module`.
 
+Nox is used to automate testing across different Python versions. Test sessions are
+configured via `noxfile.py`. `coverage` reporting will only run for test runs for the
+oldest and latest Python versions.
+
 The `PendingMigrationsTests` class will fail if any model changes are not yet captured in
 a migration, with the aim of negating the possibility of a deployment attempt that fails
 due to missing migrations.
@@ -448,6 +452,11 @@ The `test_checks` module tests the custom Django system checks added by `djereo`
 Invoke `just profile_tests` to output a [speedscope](https://www.speedscope.app/){target=\"_blank"}-compatible
 profile file to understand bottlenecks in your tests.
 **N.B.** this requires `py-spy` to be available globally on your system.
+
+### Tests in GitHub Actions
+
+The `test` job in GitHub Actions uses the matrix strategy. This runs each Nox session
+(i.e. Python version test run) as a separate pipeline job.
 
 ## 🚀 Deployment
 
