@@ -1,1 +1,1 @@
-0002_userprofile
+0003_alter_authuser_manager

@@ -1,6 +1,4 @@
-from typing import cast
-
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -8,7 +6,7 @@ from django.dispatch import receiver
 from {{project_name}}.models import UpdatedAtModel, UuidModel
 
 
-class AuthUserManager(BaseUserManager):
+class AuthUserManager(UserManager["AuthUser"]):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError("The 'email' field must be set")
@@ -34,7 +32,7 @@ class AuthUser(UpdatedAtModel, UuidModel, AbstractUser):
     # field names that will be prompted for when `createsuperuser` mgmt. command is called
     REQUIRED_FIELDS = []
 
-    objects: UserManager["AuthUser"] = cast(UserManager["AuthUser"], AuthUserManager())
+    objects = AuthUserManager()
 
     class Meta:
         verbose_name = "auth user"
