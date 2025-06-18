@@ -153,6 +153,8 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#profiling-tests">Profiling tests</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#tests-in-github-actions">Tests in GitHub Actions</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#deployment">🚀 Deployment</a>
@@ -535,6 +537,9 @@ that <code>DEBUG</code> is False and that localhost is not amongst the <code>CSR
 well as a couple of tests ready out-of-the-box.</p>
 <p>To run these tests call <code>nox</code>, passing the same optional arguments you would when using
 <code>manage.py test</code> e.g. <code>nox -- package.module</code>.</p>
+<p>Nox is used to automate testing across different Python versions. Test sessions are
+configured via <code>noxfile.py</code>. <code>coverage</code> reporting will only run for test runs for the
+oldest and latest Python versions.</p>
 <p>The <code>PendingMigrationsTests</code> class will fail if any model changes are not yet captured in
 a migration, with the aim of negating the possibility of a deployment attempt that fails
 due to missing migrations.</p>
@@ -543,6 +548,9 @@ due to missing migrations.</p>
 <p>Invoke <code>just profile_tests</code> to output a <a href="https://www.speedscope.app/" target="\&quot;_blank&quot;">speedscope</a>-compatible
 profile file to understand bottlenecks in your tests.
 <strong>N.B.</strong> this requires <code>py-spy</code> to be available globally on your system.</p>
+<h3 id="tests-in-github-actions">Tests in GitHub Actions</h3>
+<p>The <code>test</code> job in GitHub Actions uses the matrix strategy. This runs each Nox session
+(i.e. Python version test run) as a separate pipeline job.</p>
 <h2 id="deployment">🚀 Deployment</h2>
 <p>While <code>djereo</code> eschews Docker throughout development, the advantages of containerisation
 for tagged, reproducible builds in hosted environments are evident.</p>

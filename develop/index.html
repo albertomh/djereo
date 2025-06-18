@@ -84,6 +84,10 @@
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#test">Test</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#tests-in-github-actions">Tests in GitHub Actions</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#document">Document</a>
     </li>
@@ -234,6 +238,8 @@ pre-commit autoupdate
 </ol>
 <hr />
 <h2 id="test">Test</h2>
+<p>Nox is used to automate testing across different Python versions. Test sessions are
+configured via <code>noxfile.py</code>.</p>
 <p>Run all tests using <code>pytest</code> with:</p>
 <pre><code class="language-sh">nox
 </code></pre>
@@ -247,6 +253,9 @@ nox -- -m &quot;not smoke&quot;
 </code></pre>
 <p>See the <code>tool.pytest.ini_options</code> table in <a href="https://github.com/albertomh/djereo/blob/main/pyproject.toml" target="\&quot;_blank&quot;">pyproject.toml</a>
 for a list of all marks.</p>
+<h3 id="tests-in-github-actions">Tests in GitHub Actions</h3>
+<p>The <code>test</code> job in GitHub Actions uses the matrix strategy. This runs each Nox session
+(i.e. Python version test run) as a separate pipeline job.</p>
 <hr />
 <h2 id="document">Document</h2>
 <p><code>djereo</code>'s documentation is published as a static site generated using <code>mkdocs</code>.</p>
