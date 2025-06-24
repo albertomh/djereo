@@ -24,7 +24,8 @@ django_version:
     choices:
         - "4.2"
         - "5.1"
-    default: "5.1"
+        - "5.2"
+    default: "5.2"
 
 postgres_version:
     help: "What version of Postgres do you wish to use?"
