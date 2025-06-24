@@ -31,6 +31,7 @@ def tests(session: nox.Session) -> None:
 
     session.run(
         "python",
+        "-Wall",
         *run_tests_args,
         *session.posargs,
         *run_tests_flags,

@@ -90,7 +90,7 @@ def test_generated_project_django_version_range(
     copier_input_data: dict,
     test_project_dir: Path,
 ):
-    django_version = "5.1"
+    django_version = "5.2"
     copier_copy(
         {
             **copier_input_data,

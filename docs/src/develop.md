@@ -135,7 +135,7 @@ Docstrings should follow the conventions set out in the [Google styleguide](http
 
 ### Upgrade checklist
 
-1. Check [Django releases](https://docs.djangoproject.com/en/5.1/releases/){target=\"_blank"}
+1. Check [Django releases](https://docs.djangoproject.com/en/stable/releases/){target=\"_blank"}
   and update the `django_version` question in `copier.yaml`.
 
 ---
