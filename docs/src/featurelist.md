@@ -334,7 +334,7 @@ located in `.env` as the environment variable `DATABASE_URL`.
 
 ### Connection pooling
 
-Djereo takes advantage of Django's built-in support for postgres connection pooling ([Django docs](https://docs.djangoproject.com/en/5.1/ref/databases/#connection-pool){target=\"_blank"}).
+Djereo takes advantage of Django's built-in support for postgres connection pooling ([Django docs](https://docs.djangoproject.com/en/stable/ref/databases/#connection-pool){target=\"_blank"}).
 While this is a premature optimisation for most projects, the overhead of opening a new
 postgres connection is considerable, so connection pooling is enabled to alleviate this.
 
