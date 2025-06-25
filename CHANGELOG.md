@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.7.1](https://github.com/albertomh/djereo/compare/v3.7.0...v3.7.1) (2025-06-25)
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.16.2 ([#234](https://github.com/albertomh/djereo/issues/234)) ([42adae1](https://github.com/albertomh/djereo/commit/42adae18834103defd2768c80708b6e472376947))
+
+
+### Documentation
+
+* Add htmx badge to README ([#232](https://github.com/albertomh/djereo/issues/232)) ([3ed65dd](https://github.com/albertomh/djereo/commit/3ed65ddfd3482abe8a76e6ba8df589a2aa552bc6))
+
 ## [3.7.0](https://github.com/albertomh/djereo/compare/v3.6.1...v3.7.0) (2025-06-24)
 
 
