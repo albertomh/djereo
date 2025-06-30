@@ -32,7 +32,8 @@ Users are asked three version-related questions when initialising a project:
 framework written in Python. `djereo` gives you the choice between creating projects using
 Django versions:
 
-- 5.1 (latest)
+- 5.2 (latest)
+- 5.1
 - 4.2 (LTS, long-term support version)
 
 See [https://endoflife.date/django](https://endoflife.date/django){target=\"_blank"} for
@@ -105,7 +106,7 @@ their project. The resulting custom actions and workflows are described below.
 
 ### Custom GitHub actions
 
-Four re-usable custom actions are available:
+Four reusable custom actions are available:
 
 - `pre-commit`: runs all pre-commit hooks except `no-commit-to-branch` as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
@@ -415,7 +416,7 @@ that `DEBUG` is False and that localhost is not amongst the `CSRF_TRUSTED_ORIGIN
 
 - Strict-Transport-Security: this header is enabled via the `SECURE_HSTS_*` settings.
   Configured for a duration of 3600 seconds to begin with, it is recommended this is
-  increased to 2592000 seconds (30 days).
+  increased to 2,592,000 seconds (30 days).
 - Content-Security-Policy: [django-csp](https://django-csp.readthedocs.io/en/latest/index.html){target=\"_blank"}
   is used to set this header to a locked-down default.
 - `SECURE_SSL_REDIRECT` is not set explicitly under the assumption that the application
