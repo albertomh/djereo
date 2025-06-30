@@ -226,7 +226,8 @@ aim isn't to be restrictive or force e.g. <code>htmx</code> or <code>django-waff
 framework written in Python. <code>djereo</code> gives you the choice between creating projects using
 Django versions:</p>
 <ul>
-<li>5.1 (latest)</li>
+<li>5.2 (latest)</li>
+<li>5.1</li>
 <li>4.2 (LTS, long-term support version)</li>
 </ul>
 <p>See <a href="https://endoflife.date/django" target="\&quot;_blank&quot;">https://endoflife.date/django</a> for
@@ -287,7 +288,7 @@ and include:</p>
 will be hosted on GitHub. If this is the case, GitHub Actions config files are added to
 their project. The resulting custom actions and workflows are described below.</p>
 <h3 id="custom-github-actions">Custom GitHub actions</h3>
-<p>Four re-usable custom actions are available:</p>
+<p>Four reusable custom actions are available:</p>
 <ul>
 <li><code>pre-commit</code>: runs all pre-commit hooks except <code>no-commit-to-branch</code> as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
@@ -518,7 +519,7 @@ that <code>DEBUG</code> is False and that localhost is not amongst the <code>CSR
 <ul>
 <li>Strict-Transport-Security: this header is enabled via the <code>SECURE_HSTS_*</code> settings.
   Configured for a duration of 3600 seconds to begin with, it is recommended this is
-  increased to 2592000 seconds (30 days).</li>
+  increased to 2,592,000 seconds (30 days).</li>
 <li>Content-Security-Policy: <a href="https://django-csp.readthedocs.io/en/latest/index.html" target="\&quot;_blank&quot;">django-csp</a>
   is used to set this header to a locked-down default.</li>
 <li><code>SECURE_SSL_REDIRECT</code> is not set explicitly under the assumption that the application
