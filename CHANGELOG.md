@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.7.2](https://github.com/albertomh/djereo/compare/v3.7.1...v3.7.2) (2025-08-07)
+
+
+### Documentation
+
+* Fix typos in featurelist ([#238](https://github.com/albertomh/djereo/issues/238)) ([119d2b0](https://github.com/albertomh/djereo/commit/119d2b073c5260af7a836d566bfc57e0787a32fb))
+* **mkdocs:** Show djereo supports Django 5.2 ([#235](https://github.com/albertomh/djereo/issues/235)) ([83c2b48](https://github.com/albertomh/djereo/commit/83c2b48f9b017103dca6a137de2f3bd8afbc2645))
+
 ## [3.7.1](https://github.com/albertomh/djereo/compare/v3.7.0...v3.7.1) (2025-06-25)
 
 
