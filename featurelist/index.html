@@ -431,7 +431,7 @@ this is safer and avoids complications if <code>override_settings</code> is used
 <h2 id="logging">🪵 Logging</h2>
 <p>Logging differs between hosted environments (eg. production) and development.</p>
 <p>In development (<code>runserver</code>) <a href="https://pypi.org/project/rich/" target="\&quot;_blank&quot;">rich</a> is
-used to output coloured logs:</p>
+used to output colourful logs:</p>
 <p><img alt="runserver logs for a project generated using djereo" src="../media/djereo_runserver-logs.png" /></p>
 <p>When <code>DEBUG=False</code>, as in production, <a href="https://www.structlog.org/" target="\&quot;_blank&quot;">structlog</a>
 is used instead.</p>
@@ -484,7 +484,7 @@ from users.models import AuthUser
 
 profile = UserProfileFactory()
 
-assert isinstance(up.user, AuthUser)
+assert isinstance(profile.user, AuthUser)
 </code></pre>
 <!-- markdownlint-disable MD013 line-length -->
 <h2 id="frontend"><img src="https://simpleicons.org/icons/htmx.svg" width="25" alt="HTMX logo"> Frontend</h2>
