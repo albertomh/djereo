@@ -28,7 +28,6 @@ Projects created using `djereo` include:
 
 - A Django web application, configured via a `pyproject.toml`.
 - Dependencies managed via `uv`, using a `uv.lock` file for reproducible builds.
-- Dependencies managed via `uv`, using a `uv.lock` file for reproducible builds.
 - An implementation of the 'custom User + UserProfile' pattern, tied together with a
   `django-allauth` integration.
 - Optional vendorised `htmx` with sensible defaults for the frontend.

@@ -290,7 +290,7 @@ this is safer and avoids complications if `override_settings` is used in tests.
 Logging differs between hosted environments (eg. production) and development.
 
 In development (`runserver`) [rich](https://pypi.org/project/rich/){target=\"_blank"} is
-used to output coloured logs:
+used to output colourful logs:
 
 ![runserver logs for a project generated using djereo](media/djereo_runserver-logs.png)
 
@@ -368,7 +368,7 @@ from users.models import AuthUser
 
 profile = UserProfileFactory()
 
-assert isinstance(up.user, AuthUser)
+assert isinstance(profile.user, AuthUser)
 ```
 
 <!-- markdownlint-disable MD013 line-length -->
