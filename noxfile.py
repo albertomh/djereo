@@ -1,7 +1,7 @@
 import nox
 
 # https://endoflife.date/python
-py_versions = ["3.13", "3.12"]
+py_versions = ["3.12", "3.13"]
 
 nox.options.default_venv_backend = "uv"
 
