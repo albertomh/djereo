@@ -2,8 +2,10 @@ import nox
 
 # https://endoflife.date/python
 py_versions = ["3.12", "3.13"]
+OLDEST_PY, *MIDDLE_PY, LATEST_PY = py_versions
 
 nox.options.default_venv_backend = "uv"
+nox.options.sessions = [f"tests-{LATEST_PY}"]
 
 
 @nox.session(python=py_versions)

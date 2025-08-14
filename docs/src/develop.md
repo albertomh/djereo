@@ -145,10 +145,18 @@ Docstrings should follow the conventions set out in the [Google styleguide](http
 Nox is used to automate testing across different Python versions. Test sessions are
 configured via `noxfile.py`.
 
-Run all tests using `pytest` with:
+Run all `pytest` tests with:
 
 ```sh
 nox
+```
+
+By default this will only run the `nox` session for the latest supported Python release.
+
+To run all `nox` sessions (ie. for all supported Python releases):
+
+```sh
+nox -k tests
 ```
 
 Run only a given module:

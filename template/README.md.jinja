@@ -131,13 +131,22 @@ for more.
 ## Test
 
 Django's test runner (using the standard library's `unittest`) is used for the suite of
-unit tests. Run all tests and report on code coverage:
+unit tests. Nox is used to automate testing across different Python versions. Run all
+tests and report on code coverage:
 
 ```sh
 nox [-- <expression>]
 
 # eg. to only run tests inside the `test_migrations` module
 nox -- tests.test_migrations
+```
+
+By default `nox` will only run the session for the latest supported Python release.
+
+To run all `nox` sessions (ie. for all supported Python releases):
+
+```sh
+nox -k tests
 ```
 
 ### Profiling tests

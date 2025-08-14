@@ -37,7 +37,16 @@ jobs:
       - uses: wntrblm/nox@main
       - id: set-matrix
         shell: bash
-        run: echo session=$(nox --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
+        run: |
+          # Extract all nox session names (both selected and skipped) into a JSON array.
+          # Session lines start with '*' or '-'.
+          sessions_json="$(
+          nox --list \
+              | grep -E '^[*-] ' \
+              | cut -d' ' -f2 \
+              | jq -R -s -c 'split("\n")[:-1]'
+          )"
+          echo "session=$sessions_json" >> "$GITHUB_OUTPUT"
 
   test:
     needs:

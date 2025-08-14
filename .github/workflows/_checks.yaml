@@ -29,7 +29,17 @@ jobs:
     - uses: wntrblm/nox@main
     - id: set-matrix
       shell: bash
-      run: echo py_version=$(nox --json -l | jq -c '[.[].python]') | tee --append $GITHUB_OUTPUT
+      run: |
+        # Extract Python versions from nox session names (both selected and skipped)
+        # into a JSON array. Session lines start with '*' or '-'.
+        py_version_json="$(
+        nox --list \
+            | grep -E '^[*-] ' \
+            | cut -d' ' -f2 \
+            | sed 's/^tests-//' \
+            | jq -R -s -c 'split("\n")[:-1]'
+        )"
+        echo "py_version=$py_version_json" >> "$GITHUB_OUTPUT"
 
   test:
     needs:
