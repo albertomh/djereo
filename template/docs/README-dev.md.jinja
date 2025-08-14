@@ -56,7 +56,21 @@ Nox is used to automate testing across different Python versions. Test sessions 
 configured via `noxfile.py`. `coverage` reporting will only run for test runs for the
 oldest and latest Python versions.
 
-Invoke `nox` to run tests across various Python versions. You can select a single session ie.
+Run all tests and report on code coverage:
+
+```sh
+nox
+```
+
+By default this will only run the `nox` session for the latest supported Python release.
+
+To run all `nox` sessions (ie. for all supported Python releases):
+
+```sh
+nox -k tests
+```
+
+You can select a single session ie.
 
 ```sh
 nox --session tests_with_coverage-3.13

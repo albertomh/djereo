@@ -440,7 +440,8 @@ To run these tests call `nox`, passing the same optional arguments you would whe
 
 Nox is used to automate testing across different Python versions. Test sessions are
 configured via `noxfile.py`. `coverage` reporting will only run for test runs for the
-oldest and latest Python versions.
+oldest and latest Python versions.  
+By default calling `nox` will only run the session for the latest supported Python release.
 
 The `PendingMigrationsTests` class will fail if any model changes are not yet captured in
 a migration, with the aim of negating the possibility of a deployment attempt that fails
