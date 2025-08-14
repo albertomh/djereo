@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.7.3](https://github.com/albertomh/djereo/compare/v3.7.2...v3.7.3) (2025-08-14)
+
+
+### Bug Fixes
+
+* **test:** Correct order for Python versions defined in noxfile ([#242](https://github.com/albertomh/djereo/issues/242)) ([e28509d](https://github.com/albertomh/djereo/commit/e28509df301f695ac5ec29d291240f2eb1f30cb8))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.17.1 ([#244](https://github.com/albertomh/djereo/issues/244)) ([3fc73e0](https://github.com/albertomh/djereo/commit/3fc73e000621f7fd10a3375cb28a816bb048376f))
+
 ## [3.7.2](https://github.com/albertomh/djereo/compare/v3.7.1...v3.7.2) (2025-08-12)
 
 
