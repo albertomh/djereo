@@ -540,7 +540,8 @@ well as a couple of tests ready out-of-the-box.</p>
 <code>manage.py test</code> e.g. <code>nox -- package.module</code>.</p>
 <p>Nox is used to automate testing across different Python versions. Test sessions are
 configured via <code>noxfile.py</code>. <code>coverage</code> reporting will only run for test runs for the
-oldest and latest Python versions.</p>
+oldest and latest Python versions.<br />
+By default calling <code>nox</code> will only run the session for the latest supported Python release.</p>
 <p>The <code>PendingMigrationsTests</code> class will fail if any model changes are not yet captured in
 a migration, with the aim of negating the possibility of a deployment attempt that fails
 due to missing migrations.</p>
