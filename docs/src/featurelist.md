@@ -449,7 +449,34 @@ due to missing migrations.
 
 The `test_checks` module tests the custom Django system checks added by `djereo`.
 
-### Profiling tests
+### The custom TestRunner
+
+Djereo provides a custom `TestRunner` that subclasses Django's `DiscoverRunner`.
+This custom runner provides a `TEST_SETTINGS` dictionary and functionality to skip slow tests
+when running locally. Naturally, it can be extended to serve the needs of your test suite.
+
+#### `TEST_SETTINGS`
+
+`TEST_SETTINGS` is a dictionary defined in the `test` module and used by `TestRunner` to
+override settings for all tests. This is the source of truth for app settings during tests
+and by default sets `"DEBUG": False`.
+
+#### Skip slow tests locally
+
+`TestRunner` will check whether tests are being run from a CI pipeline. If no environment
+variable denoting a CI context is found (eg. when running locally), the runner will skip
+any tests tagged 'slow' such as in the below example:
+
+```python
+from django.test import TestCase, tag
+
+class AppTests(TestCase):
+    @tag("slow")
+    def test_all_the_things(self):
+        ...
+```
+
+### Profile tests
 
 Invoke `just profile_tests` to output a [speedscope](https://www.speedscope.app/){target=\"_blank"}-compatible
 profile file to understand bottlenecks in your tests.
