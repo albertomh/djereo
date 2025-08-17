@@ -151,7 +151,15 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#tests">🧪 Tests</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#profiling-tests">Profiling tests</a>
+    <li class="toctree-l3"><a class="reference internal" href="#the-custom-testrunner">The custom TestRunner</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#test_settings">TEST_SETTINGS</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#skip-slow-tests-locally">Skip slow tests locally</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#profile-tests">Profile tests</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#tests-in-github-actions">Tests in GitHub Actions</a>
     </li>
@@ -546,7 +554,26 @@ By default calling <code>nox</code> will only run the session for the latest sup
 a migration, with the aim of negating the possibility of a deployment attempt that fails
 due to missing migrations.</p>
 <p>The <code>test_checks</code> module tests the custom Django system checks added by <code>djereo</code>.</p>
-<h3 id="profiling-tests">Profiling tests</h3>
+<h3 id="the-custom-testrunner">The custom TestRunner</h3>
+<p>Djereo provides a custom <code>TestRunner</code> that subclasses Django's <code>DiscoverRunner</code>.
+This custom runner provides a <code>TEST_SETTINGS</code> dictionary and functionality to skip slow tests
+when running locally. Naturally, it can be extended to serve the needs of your test suite.</p>
+<h4 id="test_settings"><code>TEST_SETTINGS</code></h4>
+<p><code>TEST_SETTINGS</code> is a dictionary defined in the <code>test</code> module and used by <code>TestRunner</code> to
+override settings for all tests. This is the source of truth for app settings during tests
+and by default sets <code>"DEBUG": False</code>.</p>
+<h4 id="skip-slow-tests-locally">Skip slow tests locally</h4>
+<p><code>TestRunner</code> will check whether tests are being run from a CI pipeline. If no environment
+variable denoting a CI context is found (eg. when running locally), the runner will skip
+any tests tagged 'slow' such as in the below example:</p>
+<pre><code class="language-python">from django.test import TestCase, tag
+
+class AppTests(TestCase):
+    @tag(&quot;slow&quot;)
+    def test_all_the_things(self):
+        ...
+</code></pre>
+<h3 id="profile-tests">Profile tests</h3>
 <p>Invoke <code>just profile_tests</code> to output a <a href="https://www.speedscope.app/" target="\&quot;_blank&quot;">speedscope</a>-compatible
 profile file to understand bottlenecks in your tests.
 <strong>N.B.</strong> this requires <code>py-spy</code> to be available globally on your system.</p>
