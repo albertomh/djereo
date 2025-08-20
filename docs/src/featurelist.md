@@ -20,7 +20,7 @@ and validation rules to prevent incoherent answers.
     `djereo` is opinionated insofar as it embodies beliefs such as 'postgres is the best
     database for a new project' or 'htmx for frontends is great'. It lays out paved paths
     and sensible defaults if you choose to configure a new project with these tools. The
-    aim isn't to be restrictive or force e.g. `htmx` or `django-waffle` on anyone.
+    aim is not to be restrictive or force e.g. `htmx` or `django-waffle` on anyone.
 
 ### Versions
 
@@ -349,6 +349,24 @@ regular user.
 
 Invoke it with `just manage seed_database`.
 
+## 🗄️ Cache
+
+New projects' cache configuration aims for simplicity and speed when developing & running
+tests. You should probably switch to a dedicated cache server in production.
+
+For local development (ie. when `DEBUG=True`) or when running tests, Django's `DummyCache`
+is used. This is a transparent cache that implements the cache interface without actually
+storing any responses.
+
+Out of the box, `djereo` projects will use `LocMemCache`, which is Django's default if a
+cache is not specified.
+
+A `CACHE_COMMON_CONFIG` is defined, which should be used by all caches, even new ones you
+define. This defines a `KEY_PREFIX` used to namespace values. The `KEY_PREFIX` makes
+reference to the Python version used to generate the key. This is a safeguard against the
+case where breaking changes to `pickle` across different Python versions render a value
+cached using a previous version unreadable by a newer one.
+
 ## 🆔 User authentication
 
 Projects generated with `djereo` follow the 'custom User + UserProfile' pattern common in
@@ -520,7 +538,7 @@ to expose two endpoints with which to monitor the health of an application insta
 ### Continuous Deployment
 
 `djereo` aims to provide a foundation on which to build your continuous deployment pipeline.
-Given the diversity of hosting &amp; deployment solutions it doesn't attempt to provide a
+Given the diversity of hosting &amp; deployment solutions it does not attempt to provide a
 solution for the step that deploys your application. However, you can extend the `on-tag`
 GitHub Actions workflow, which contains the following sequence of jobs:
 
