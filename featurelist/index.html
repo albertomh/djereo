@@ -123,6 +123,8 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cache">🗄️ Cache</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#user-authentication">🆔 User authentication</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#users-app-model-factories">users app model factories</a>
@@ -225,7 +227,7 @@ and validation rules to prevent incoherent answers.</p>
 <p><code>djereo</code> is opinionated insofar as it embodies beliefs such as 'postgres is the best
 database for a new project' or 'htmx for frontends is great'. It lays out paved paths
 and sensible defaults if you choose to configure a new project with these tools. The
-aim isn't to be restrictive or force e.g. <code>htmx</code> or <code>django-waffle</code> on anyone.</p>
+aim is not to be restrictive or force e.g. <code>htmx</code> or <code>django-waffle</code> on anyone.</p>
 </div>
 <h3 id="versions">Versions</h3>
 <p>Users are asked three version-related questions when initialising a project:</p>
@@ -478,6 +480,19 @@ point for you to populate with models needed for local development as your appli
 <p>In a new project <code>seed_database</code> creates three users: admin, staff and a non-privileged
 regular user.</p>
 <p>Invoke it with <code>just manage seed_database</code>.</p>
+<h2 id="cache">🗄️ Cache</h2>
+<p>New projects' cache configuration aims for simplicity and speed when developing &amp; running
+tests. You should probably switch to a dedicated cache server in production.</p>
+<p>For local development (ie. when <code>DEBUG=True</code>) or when running tests, Django's <code>DummyCache</code>
+is used. This is a transparent cache that implements the cache interface without actually
+storing any responses.</p>
+<p>Out of the box, <code>djereo</code> projects will use <code>LocMemCache</code>, which is Django's default if a
+cache is not specified.</p>
+<p>A <code>CACHE_COMMON_CONFIG</code> is defined, which should be used by all caches, even new ones you
+define. This defines a <code>KEY_PREFIX</code> used to namespace values. The <code>KEY_PREFIX</code> makes
+reference to the Python version used to generate the key. This is a safeguard against the
+case where breaking changes to <code>pickle</code> across different Python versions render a value
+cached using a previous version unreadable by a newer one.</p>
 <h2 id="user-authentication">🆔 User authentication</h2>
 <p>Projects generated with <code>djereo</code> follow the 'custom User + UserProfile' pattern common in
 modern Django apps. Authentication functionality is implemented via the <a href="https://allauth.org/" target="\&quot;_blank&quot;">django-allauth</a>
@@ -605,7 +620,7 @@ to expose two endpoints with which to monitor the health of an application insta
 </ul>
 <h3 id="continuous-deployment">Continuous Deployment</h3>
 <p><code>djereo</code> aims to provide a foundation on which to build your continuous deployment pipeline.
-Given the diversity of hosting &amp; deployment solutions it doesn't attempt to provide a
+Given the diversity of hosting &amp; deployment solutions it does not attempt to provide a
 solution for the step that deploys your application. However, you can extend the <code>on-tag</code>
 GitHub Actions workflow, which contains the following sequence of jobs:</p>
 <ul>
