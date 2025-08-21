@@ -13,7 +13,11 @@ collectstatic:
   # approach since this would also load `.env` for the `test` recipe. Meaning the
   # environment `test` runs in would be polluted instead of using values from `.env.test`.
   set -euo pipefail
-  DEBUG_VALUE=$(awk -F= '/^DEBUG=/{gsub(/["'\'' ]/, "", $2); print tolower($2)}' .env)
+  DEBUG_VALUE="false"
+  if [ -f .env ]; then
+    # Extract DEBUG from .env (strip whitespace, lowercase). Default to "false" if missing.
+    DEBUG_VALUE=$(awk -F= '/^DEBUG=/{gsub(/["'\'' ]/, "", $2); print tolower($2)}' .env || echo "false")
+  fi
   if [ "$DEBUG_VALUE" = "false" ]; then
     rm -rf static/;
     uv run manage.py collectstatic --noinput;
