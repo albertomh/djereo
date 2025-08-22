@@ -49,7 +49,7 @@ def test_djereo_jinja_templates_converted(
 @pytest.mark.integration
 @pytest.mark.parametrize(
     "is_github_project, expected_directory_count, expected_file_count",
-    [(True, 8, 22), (False, 7, 20)],
+    [(True, 9, 22), (False, 8, 20)],
 )
 def test_is_github_project(
     is_github_project: bool,
