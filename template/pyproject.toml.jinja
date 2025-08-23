@@ -42,6 +42,7 @@ test = [
     "coverage>=7.6.7",
     "factory-boy>=3.3.3,<4.0.0",
     "parameterized>=0.9.0,<1.0.0",
+    "pytest-playwright>=0.7.0",
 ]
 dev = [
     "django-browser-reload>=1.17.0",
@@ -90,6 +91,7 @@ select = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**.py" = ["S"]
+"tests_e2e/**.py" = ["S"]
 "**/tests/**.py" = ["S"]
 "{{project_name}}/settings.py" = ["E501"]
 
