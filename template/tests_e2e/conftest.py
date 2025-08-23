@@ -4,12 +4,18 @@
 
 import pytest
 from environs import Env
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import Browser, Playwright, sync_playwright
 
 env = Env()
 env.read_env()
 
 BASE_URL = "http://127.0.0.1:8000"
+
+
+def _launch_browser(headless: bool = True) -> tuple[Playwright, Browser]:
+    playwright = sync_playwright().start()
+    browser = playwright.chromium.launch(headless=headless)
+    return playwright, browser
 
 
 @pytest.fixture(scope="session")
@@ -18,10 +24,7 @@ def browser():
     is_ci = env.bool("CI", default=False)
     is_gha = env.bool("GITHUB_ACTIONS", default=False)
     headless = is_ci or is_gha
-
-    playwright = sync_playwright().start()
-    browser = playwright.chromium.launch(headless=headless)
-
+    playwright, browser = _launch_browser(headless)
     yield browser
 
     browser.close()
