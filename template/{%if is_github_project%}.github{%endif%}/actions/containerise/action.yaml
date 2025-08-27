@@ -63,6 +63,11 @@ inputs:
     # see https://github.com/docker/build-push-action/issues/773
     default: 'false'
 
+outputs:
+  image_address:
+    description: 'The address of the image that was built and pushed'
+    value: ${{ steps.set-output.outputs.image_address }}
+
 runs:
   using: 'composite'
   steps:
@@ -81,3 +86,9 @@ runs:
         push: true
         provenance: ${{ inputs.provenance }}
         tags: ${{ inputs.tags }}
+    - name: Set output
+      id: set-output
+      shell: bash
+      run: |
+          FIRST_TAG=$(echo "${{ inputs.tags }}" | cut -d',' -f1)
+          echo "image_address=$FIRST_TAG" >> "$GITHUB_OUTPUT"
