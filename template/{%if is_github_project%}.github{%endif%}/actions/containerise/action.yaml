@@ -3,12 +3,17 @@
 #
 # Usage:
 #   ```
-#   steps:
-#     - uses: actions/checkout@v5
-#     - run: |
-#         echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV
-#         echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-#     - uses: ./.github/actions/containerise
+#   containerise:
+#     runs-on: ubuntu-24.04
+#     outputs:
+#       image_address: ${{ steps.containerise.outputs.image_address }}
+#     steps:
+#       - uses: actions/checkout@v5
+#       - run: |
+#           echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV
+#           echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+#       - id: containerise
+#         uses: ./.github/actions/containerise
 #         with:
 #           dockerfile: _deploy/deploy.Dockerfile
 #           username: ${{ github.actor }}
