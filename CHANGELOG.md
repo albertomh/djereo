@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.9.0](https://github.com/albertomh/djereo/compare/v3.8.0...v3.9.0) (2025-08-28)
+
+
+### Features
+
+* **ci:** Add e2e_test job to 'ci' workflow ([#257](https://github.com/albertomh/djereo/issues/257)) ([ebe8c66](https://github.com/albertomh/djereo/commit/ebe8c66111ff1a5536b13934431870c91540a744))
+* **ci:** Add image_address output to 'containerise' CI action ([#256](https://github.com/albertomh/djereo/issues/256)) ([75a9733](https://github.com/albertomh/djereo/commit/75a9733d9dad0fe433712496a0de94da83b54789))
+* **e2e:** Add minimal e2e test suite to gen. projects ([#253](https://github.com/albertomh/djereo/issues/253)) ([937a881](https://github.com/albertomh/djereo/commit/937a881d95f540dffb62836464ca25eafd3c7f81))
+* **e2e:** Check webapp is available before attempting e2e run ([#254](https://github.com/albertomh/djereo/issues/254)) ([344bb51](https://github.com/albertomh/djereo/commit/344bb51845588cdac2d3eca3f15ccbda8ceed7f7))
+* Env var USE_ENV_TEST makes webapp read '.env.test' config ([#251](https://github.com/albertomh/djereo/issues/251)) ([a7ebc8b](https://github.com/albertomh/djereo/commit/a7ebc8b6b0810e9b08b1ec9e0496b8838f979548))
+
 ## [3.8.0](https://github.com/albertomh/djereo/compare/v3.7.2...v3.8.0) (2025-08-20)
 
 
