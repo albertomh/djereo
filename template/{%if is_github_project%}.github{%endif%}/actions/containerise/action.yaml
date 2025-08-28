@@ -3,18 +3,23 @@
 #
 # Usage:
 #   ```
-#   steps:
-#     - uses: actions/checkout@v5
-#     - run: |
-#         echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV
-#         echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-#     - uses: ./.github/actions/containerise
+#   containerise:
+#     runs-on: ubuntu-24.04
+#     outputs:
+#       image_address: ${{ steps.containerise.outputs.image_address }}
+#     steps:
+#       - uses: actions/checkout@v5
+#       - run: |
+#           echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV
+#           echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+#       - id: containerise
+#         uses: ./.github/actions/containerise
 #         with:
 #           dockerfile: _deploy/deploy.Dockerfile
 #           username: ${{ github.actor }}
 #           password: ${{ github.token }}
 #           tags:
-#             ghcr.io/${{ env.REPO_NAME }}:${{ github.ref_name }}:latest,
+#             ghcr.io/${{ env.REPO_NAME }}/${{ github.ref_name }}:latest,
 #             ghcr.io/${{ env.REPO_NAME }}/${{ github.ref_name }}:${{ env.SHA_SHORT }},
 #             <registry>/<name>:<some-tag>,
 #             ...
@@ -34,10 +39,13 @@
 # 3. Save changes.
 #
 # Additionally:
-# 1. Navigate to <https://github.com/users/<user>/packages/container/<repo>/settings>
-# 2. Under 'Manage Actions access' click the [Add Repository] button.
-# 3. Select the repository this file belongs to.
-# 4. Change the repository's role from 'Read' to 'Write'.
+# 1. Navigate to <https://github.com/users/<user>/packages>
+# 2. Select the package in question. This might be the repo name by itself or a
+#    `<repo>/<branch>` reference.
+# 3. Click 'Package settings' in the right-hand sidebar.
+# 4. Under 'Manage Actions access' click the [Add Repository] button.
+# 5. Select the repository this file belongs to.
+# 6. Change the repository's role from 'Read' to 'Write'.
 
 name: 'containerise'
 description: 'Run all pre-commit hooks against the codebase'
