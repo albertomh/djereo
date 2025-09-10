@@ -303,13 +303,20 @@ their project. The resulting custom actions and workflows are described below.</
 <li><code>pre-commit</code>: runs all pre-commit hooks except <code>no-commit-to-branch</code> as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
    succeeding.</li>
-<li><code>django-checks</code>: runs Django's system checks (<code>manage.py check</code>). Optionally with the <code>--deploy</code>
+<li>
+<p><code>django-checks</code>: runs Django's system checks (<code>manage.py check</code>). Optionally with the <code>--deploy</code>
   flag set. This check is strict by default, failing on warnings. Add checks to <code>SILENCED_SYSTEM_CHECKS</code>
-  in <code>settings.py</code> to ignore specific warnings.</li>
-<li><code>containerise</code>: builds a container image and pushes it to the specified registry. Accepts
+  in <code>settings.py</code> to ignore specific warnings.<br />
+<strong>N.B.</strong> For system checks to succeed in 'deploy' mode, a GitHub Actions 'repository secret'
+  called <code>DJANGO_SECRET_KEY</code> must exist in GitHub (under <repo>/secrets/actions).
+  The contents of this secret must be a random string at least 50 characters long.</p>
+</li>
+<li>
+<p><code>containerise</code>: builds a container image and pushes it to the specified registry. Accepts
   a list of platforms to build for, a list of tags and the path to a Dockerfile.<br />
 <strong>N.B.</strong> If wishing to use the GitHub Container Registry (ghcr.io, the default) make sure
-  you follow the click-ops steps detailed in <code>.github/actions/containerise/action.yaml</code>.</li>
+  you follow the click-ops steps detailed in <code>.github/actions/containerise/action.yaml</code>.</p>
+</li>
 <li><code>service-health</code>: calls the liveness &amp; health endpoints (see <a href="#healthchecks">Healthchecks</a>
   below), allowing you to check the status of a service after a deployment.</li>
 </ul>
