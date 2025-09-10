@@ -1,0 +1,88 @@
+# Run playwright E2E tests in CI.
+#
+# Usage:
+# ```
+# jobs:
+#   playwright_e2e:
+#     needs: containerise
+#     uses: ./.github/workflows/_playwright_e2e.yaml
+#     with:
+#       image_address: {% raw %}${{ needs.containerise.outputs.image_address }}{% endraw +%}
+# ```
+name: E2E
+
+on:
+  workflow_call:
+    inputs:
+      image_address:
+        required: true
+        type: string
+
+jobs:
+  e2e:
+    runs-on: ubuntu-24.04
+    env:
+      USE_ENV_TEST: "1"
+      SECRET_KEY: django-insecure_not-a-secret
+      ALLOWED_HOSTS: 127.0.0.1,::1
+      CSRF_TRUSTED_ORIGINS: http://127.0.0.1
+      DATABASE_URL: postgres://{{ project_name }}:password@host.docker.internal:5432/{{ project_name }}
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: {{ project_name }}
+          POSTGRES_USER: {{ project_name }}
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.6.17"
+
+      - name: Apply migrations and seed database
+        run: |
+          docker run --rm \
+            --add-host=host.docker.internal:host-gateway \
+            --env USE_ENV_TEST \
+            --env SECRET_KEY \
+            --env ALLOWED_HOSTS \
+            --env CSRF_TRUSTED_ORIGINS \
+            --env DATABASE_URL \
+{% raw %}            ${{ inputs.image_address }} \{% endraw +%}
+            /bin/bash -c "python manage.py migrate && python manage.py seed_database"
+
+      - name: Run webapp in the background
+        run: |
+          docker run --detach \
+            --add-host=host.docker.internal:host-gateway \
+            --env USE_ENV_TEST \
+            --env SECRET_KEY \
+            --env ALLOWED_HOSTS \
+            --env CSRF_TRUSTED_ORIGINS \
+            --env DATABASE_URL \
+            --env PORT=8000 \
+            --publish 8000:8000 \
+            --volume {{ project_name }}_static:/app/static \
+{% raw %}            ${{ inputs.image_address }}{% endraw +%}
+
+      - name: Cache Playwright browsers
+        id: cache-playwright
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: {% raw %}playwright-${{ runner.os }}-chromium{% endraw +%}
+
+      - run: uv sync --group=test
+
+      - if: {% raw %}${{ steps.cache-playwright.outputs.cache-hit != 'true' }}{% endraw +%}
+        run: uv run playwright install --with-deps chromium
+
+      - run: uv run pytest tests_e2e/
