@@ -18,6 +18,9 @@ on:
           type: string
           default: 'false'
           required: false
+    secrets:
+      DJANGO_SECRET_KEY:
+        required: false
 
 jobs:
   pre_commit:
@@ -87,3 +90,4 @@ jobs:
       - uses: ./.github/actions/django-checks
         with:
           deploy: {% raw %}${{ inputs.django_checks_deploy }}{% endraw +%}
+          django-secret-key: {% raw %}${{ secrets.DJANGO_SECRET_KEY }}{% endraw +%}

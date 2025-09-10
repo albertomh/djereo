@@ -18,6 +18,10 @@ inputs:
     description: 'Run checks in deploy mode'
     required: false
     default: 'false'
+  django-secret-key:
+    description: 'Secret key for the Django webapp'
+    required: false
+    default: ''
 
 runs:
   using: 'composite'
@@ -29,6 +33,8 @@ runs:
     - run: |
         if [[ "${{ inputs.deploy }}" == "true" ]]; then
             cp _deploy/.env.deploy .env
+            grep -v '^SECRET_KEY=' .env > .env.tmp && mv .env.tmp .env
+            echo "SECRET_KEY=${{ inputs.django-secret-key }}" >> .env
             PYTHONDEVMODE=1 just manage check --deploy --fail-level WARNING
         else
             cp .env.in .env
