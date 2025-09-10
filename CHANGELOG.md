@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.10.0](https://github.com/albertomh/djereo/compare/v3.9.0...v3.10.0) (2025-09-10)
+
+
+### Features
+
+* **ci:** Use a GHA secret to set Django secret key when tagging in 'deploy' mode ([#258](https://github.com/albertomh/djereo/issues/258)) ([ea18a46](https://github.com/albertomh/djereo/commit/ea18a462979365f477e8af7527195a15eb4e2676))
+
 ## [3.9.0](https://github.com/albertomh/djereo/compare/v3.8.0...v3.9.0) (2025-08-28)
 
 
