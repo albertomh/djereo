@@ -1,5 +1,12 @@
 # On Tag pipeline
 # Runs when a semver tag is pushed up to GitHub.
+#
+# IMPORTANT!
+# The following click-ops step must be taken to allow this action to propagate a secret
+# key when running the django-checks action in deploy mode:
+# 1. Populate a GitHub Actions secret called `DJANGO_SECRET_KEY` with a random string at
+#    least 50 characters long in `github.com/albertomh/djereo/settings/secrets/actions`.
+
 name: on-tag
 
 on:
@@ -10,9 +17,11 @@ on:
 
 jobs:
   checks:
-     uses: ./.github/workflows/_pre-build-checks.yaml
-     with:
-       django_checks_deploy: 'true'
+    uses: ./.github/workflows/_pre-build-checks.yaml
+    with:
+      django_checks_deploy: 'true'
+    secrets:
+{% raw %}      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}{% endraw +%}
 
   containerise:
     needs:

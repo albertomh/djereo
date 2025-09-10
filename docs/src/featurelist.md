@@ -113,7 +113,11 @@ Four reusable custom actions are available:
    succeeding.
 - `django-checks`: runs Django's system checks (`manage.py check`). Optionally with the `--deploy`
   flag set. This check is strict by default, failing on warnings. Add checks to `SILENCED_SYSTEM_CHECKS`
-  in `settings.py` to ignore specific warnings.
+  in `settings.py` to ignore specific warnings.  
+  **N.B.** For system checks to succeed in 'deploy' mode, a GitHub Actions 'repository secret'
+  called `DJANGO_SECRET_KEY` must exist in GitHub (under <repo>/secrets/actions).
+  The contents of this secret must be a random string at least 50 characters long.
+
 - `containerise`: builds a container image and pushes it to the specified registry. Accepts
   a list of platforms to build for, a list of tags and the path to a Dockerfile.  
   **N.B.** If wishing to use the GitHub Container Registry (ghcr.io, the default) make sure
