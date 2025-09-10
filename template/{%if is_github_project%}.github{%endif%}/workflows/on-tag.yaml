@@ -21,7 +21,7 @@ jobs:
     with:
       django_checks_deploy: 'true'
     secrets:
-{% raw %}      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}{% endraw +%}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
 
   containerise:
     needs:
@@ -34,8 +34,8 @@ jobs:
       - uses: ./.github/actions/containerise
         with:
           dockerfile: _deploy/deploy.Dockerfile
-          username: {% raw %}${{ github.actor }}{% endraw +%}
-          password: {% raw %}${{ github.token }}{% endraw +%}
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
           tags:
-{% raw %}            ghcr.io/${{ env.REPO_NAME }}:latest,{% endraw +%}
-{% raw %}            ghcr.io/${{ env.REPO_NAME }}:${{ github.ref_name }},{% endraw +%}
+            ghcr.io/${{ env.REPO_NAME }}:latest,
+            ghcr.io/${{ env.REPO_NAME }}:${{ github.ref_name }},
