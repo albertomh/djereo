@@ -4,7 +4,7 @@ name = "{{project_name}}"
 version = "{{initial_version}}"
 description = ""
 authors = [
-  {name = "{{author_name}}", email = "{{author_email}}"}
+    {name = "{{author_name}}", email = "{{author_email}}"}
 ]
 readme = "README.md"
 # create 'LICENSE' file and uncomment below line
@@ -100,7 +100,11 @@ select = [
 
 [tool.coverage.report]
 omit = [
-  "*/tests/*"
+    "*/__init__.py",
+    "*/migrations/*",
+    "noxfile.py",
+    "*/tests/*",
+    "*/tests_e2e/*",
 ]
 exclude_lines = [
     "pragma: no cover",
@@ -111,12 +115,12 @@ exclude_lines = [
 
 [tool.coverage.run]
 source = [
-  "./{{project_name}}/",
+    "./{{project_name}}/",
 ]
 omit = [
-  "manage.py",
-  "*/tests/*",
-  "{{project_name}}/asgi.py",
-  "{{project_name}}/wsgi.py",
-  "{{project_name}}/settings.py",
+    "manage.py",
+    "*/tests/*",
+    "{{project_name}}/asgi.py",
+    "{{project_name}}/wsgi.py",
+    "{{project_name}}/settings.py",
 ]
