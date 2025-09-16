@@ -458,7 +458,7 @@ that `DEBUG` is False and that localhost is not amongst the `CSRF_TRUSTED_ORIGIN
 well as a couple of tests ready out-of-the-box.
 
 To run these tests call `nox`, passing the same optional arguments you would when using
-`manage.py test` e.g. `nox -- package.module`.
+`manage.py test` e.g. `nox -- package.module` or `nox -- --pdb`.
 
 Nox is used to automate testing across different Python versions. Test sessions are
 configured via `noxfile.py`. `coverage` reporting will only run for test runs for the
