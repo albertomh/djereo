@@ -10,8 +10,9 @@
 # the `djereo` repo.
 # 1. Create a Personal Access Token (PAT) with the following permissions:
 #    ```text
-#    contents: write
-#    pull-requests: write
+#    contents: read & write
+#    metadata: read & write
+#    pull-requests: read & write
 #    ```
 # 2. Use the PAT to populate a GitHub Actions secret called `DJEREO_RELEASE_PLEASE_TOKEN`
 #    (under `github.com/albertomh/djereo/settings/secrets/actions`).
