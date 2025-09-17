@@ -1,6 +1,7 @@
 import os
 import re
 import shutil
+import uuid
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable
@@ -31,7 +32,7 @@ def djereo_test_temp_dir() -> Path:
 
 @pytest.fixture
 def test_project_name() -> str:
-    return "djereo_test_project"
+    return f"djereo_test_project_{uuid.uuid4().hex[:4]}"
 
 
 @pytest.fixture
@@ -118,7 +119,7 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
 def session_setup_and_teardown():
     def _set_up():
         if not DJEREO_TEST_TEMP_DIR.exists():
-            DJEREO_TEST_TEMP_DIR.mkdir()
+            DJEREO_TEST_TEMP_DIR.mkdir(exist_ok=True)
 
     def _tear_down():
         pass
