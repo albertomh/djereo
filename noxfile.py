@@ -23,12 +23,10 @@ def tests(session: nox.Session) -> None:
 
     session.run(
         "pytest",
-        "tests/",
-        "-s",
-        "-vvv",
+        "--capture=no",
+        "--verbosity=3",
         "--showlocals",
-        "-W",
-        "always",
+        "--pythonwarnings=always",
         "--pdb",
         *session.posargs,
     )
