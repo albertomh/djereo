@@ -94,7 +94,10 @@ select = [
 "tests/**.py" = ["S"]
 "tests_e2e/**.py" = ["S"]
 "**/tests/**.py" = ["S"]
+"manage.py" = ["E501"]
 "{{project_name}}/settings.py" = ["E501"]
+"{{project_name}}/asgi.py" = ["E501"]
+"{{project_name}}/wsgi.py" = ["E501"]
 
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
 "{{project_name}}.settings".msg = "Do not import project settings module - use `from django.conf import settings` instead"
