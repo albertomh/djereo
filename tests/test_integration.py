@@ -37,6 +37,7 @@ def wait_for_server_start(
     return False
 
 
+@pytest.mark.xdist_group(name="integration")
 @pytest.mark.integration
 @pytest.mark.slow
 def test_sys_check_warn_no_dev_mode_when_debug(
@@ -73,6 +74,7 @@ def test_sys_check_warn_no_dev_mode_when_debug(
     assert expected_warning in clean_stderr
 
 
+@pytest.mark.xdist_group(name="integration")
 @pytest.mark.integration
 @pytest.mark.smoke
 def test_runserver(
@@ -98,6 +100,7 @@ def test_runserver(
     assert start_message in out.getvalue()
 
 
+@pytest.mark.xdist_group(name="integration")
 @pytest.mark.integration
 @pytest.mark.slow
 def test_django_debug_toolbar_is_enabled(
@@ -127,6 +130,7 @@ def test_django_debug_toolbar_is_enabled(
     assert type(dj_debug_toolbar) is Tag
 
 
+@pytest.mark.xdist_group(name="integration")
 @pytest.mark.integration
 @pytest.mark.slow
 def test_runserver_dev_logs_use_rich(
@@ -157,6 +161,7 @@ def test_runserver_dev_logs_use_rich(
     assert match is not None
 
 
+@pytest.mark.xdist_group(name="integration")
 @pytest.mark.integration
 @pytest.mark.smoke
 @pytest.mark.slow
@@ -164,7 +169,7 @@ def test_django_allauth_pages_exist(
     test_project_dir: Path,
     generate_test_project_with_db,
 ):
-    allauth_urls = [
+    allauth_paths = [
         "accounts/login/",
         "accounts/signup/",
     ]
@@ -182,7 +187,7 @@ def test_django_allauth_pages_exist(
             _out=out,
             _cwd=test_project_dir,
         )
-        urls_to_get = [(f"http://{addrport}/{url}", 200) for url in allauth_urls]
+        urls_to_get = [(f"http://{addrport}/{path}", 200) for path in allauth_paths]
         assert wait_for_server_start(out, urls_to_get=urls_to_get), (
             "Django runserver did not start in time"
         )

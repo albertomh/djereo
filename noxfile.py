@@ -38,9 +38,9 @@ def tests(session: nox.Session) -> None:
         pytest_args.extend(
             [
                 "--numprocesses=auto",
-                # Group tests by filename: ensure serial execution of integration tests
-                # that use `runserver`. All tests in a group are run by the same worker.
-                "--dist=loadfile",
+                # Run grouped tests (`@pytest.mark.xdist_group(name="my_group")`) with the
+                # same worker. Ensure serial execution of integration (`runserver`) tests.
+                "--dist=loadgroup",
             ]
         )
 
