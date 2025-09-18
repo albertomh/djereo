@@ -34,9 +34,14 @@ def tests(session: nox.Session) -> None:
         "--pythonwarnings=always",
     ]
 
-    if use_pdb:
-        pytest_args.append("--pdb")
-    else:
-        pytest_args.append("--numprocesses=auto")
+    if not use_pdb:
+        pytest_args.extend(
+            [
+                "--numprocesses=auto",
+                # Group tests by filename: ensure serial execution of integration tests
+                # that use `runserver`. All tests in a group are run by the same worker.
+                "--dist=loadfile",
+            ]
+        )
 
     session.run("pytest", "tests/", *pytest_args, *posargs)
