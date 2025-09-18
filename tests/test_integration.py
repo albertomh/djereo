@@ -10,13 +10,13 @@ from bs4 import BeautifulSoup
 from bs4.element import Tag
 from sh import TimeoutException, just
 
-from tests._utils import remove_ansi_escape_codes
+from tests._utils import get_free_port_from_os, remove_ansi_escape_codes
 
 
 def wait_for_server_start(
     out: StringIO,
     *,
-    timeout=10.0,
+    timeout=30.0,
     interval=0.1,
     urls_to_get: list[tuple[str, int]] = None,
 ) -> bool:
@@ -57,9 +57,10 @@ def test_sys_check_warn_no_dev_mode_when_debug(
     with suppress(TimeoutException):
         just(
             "runserver",
+            f"'127.0.0.1:{get_free_port_from_os()}'",
             # PYTHONDEVMODE can only be disabled by setting it to an empty string
             "",
-            _timeout=10,
+            _timeout=30,
             _bg=True,
             _bg_exc=False,
             _out=out,
@@ -79,11 +80,13 @@ def test_runserver(
     generate_test_project_with_db,
 ):
     out = StringIO()
+    addrport = f"127.0.0.1:{get_free_port_from_os()}"
 
     with suppress(TimeoutException):
         just(
             "runserver",
-            _timeout=10,
+            addrport,
+            _timeout=30,
             _bg=True,
             _bg_exc=False,
             _out=out,
@@ -91,7 +94,7 @@ def test_runserver(
         )
         assert wait_for_server_start(out), "Django runserver did not start in time"
 
-    start_message = "Starting development server at http://127.0.0.1:8000/"
+    start_message = f"Starting development server at http://{addrport}/"
     assert start_message in out.getvalue()
 
 
@@ -102,18 +105,20 @@ def test_django_debug_toolbar_is_enabled(
     generate_test_project_with_db,
 ):
     out = StringIO()
+    addrport = f"127.0.0.1:{get_free_port_from_os()}"
 
     with suppress(TimeoutException):
         just(
             "runserver",
-            _timeout=10,
+            addrport,
+            _timeout=30,
             _bg=True,
             _bg_exc=False,
             _out=out,
             _cwd=test_project_dir,
         )
         assert wait_for_server_start(out), "Django runserver did not start in time"
-    with urlopen("http://127.0.0.1:8000/") as response:
+    with urlopen(f"http://{addrport}/") as response:
         res_bytes = response.read()
     res_html = res_bytes.decode("utf8")
     html = BeautifulSoup(res_html, features="html.parser")
@@ -129,17 +134,19 @@ def test_runserver_dev_logs_use_rich(
     generate_test_project_with_db,
 ):
     out = StringIO()
+    addrport = f"127.0.0.1:{get_free_port_from_os()}"
 
     with suppress(TimeoutException):
         just(
             "runserver",
-            _timeout=10,
+            addrport,
+            _timeout=30,
             _bg=True,
             _bg_exc=False,
             _out=out,
             _cwd=test_project_dir,
         )
-        urls_to_get = [("http://127.0.0.1:8000/", 200)]
+        urls_to_get = [(f"http://{addrport}/", 200)]
         assert wait_for_server_start(out, urls_to_get=urls_to_get), (
             "Django runserver did not start in time"
         )
@@ -163,17 +170,19 @@ def test_django_allauth_pages_exist(
     ]
     just("manage", "migrate", _cwd=test_project_dir)
     out = StringIO()
+    addrport = f"127.0.0.1:{get_free_port_from_os()}"
 
     with suppress(TimeoutException):
         just(
             "runserver",
-            _timeout=10,
+            addrport,
+            _timeout=30,
             _bg=True,
             _bg_exc=False,
             _out=out,
             _cwd=test_project_dir,
         )
-        urls_to_get = [(f"http://127.0.0.1:8000/{url}", 200) for url in allauth_urls]
+        urls_to_get = [(f"http://{addrport}/{url}", 200) for url in allauth_urls]
         assert wait_for_server_start(out, urls_to_get=urls_to_get), (
             "Django runserver did not start in time"
         )
