@@ -240,8 +240,11 @@ pre-commit autoupdate
 <h2 id="test">Test</h2>
 <p>Nox is used to automate testing across different Python versions. Test sessions are
 configured via <code>noxfile.py</code>.</p>
-<p>Run all <code>pytest</code> tests with:</p>
-<pre><code class="language-sh">nox
+<pre><code class="language-sh"># Run all `pytest` tests (in parallel by default)
+nox
+
+# Run tests with the debugger enabled (serial execution due to `pdb`)
+nox -- --pdb
 </code></pre>
 <p>By default this will only run the <code>nox</code> session for the latest supported Python release.</p>
 <p>To run all <code>nox</code> sessions (ie. for all supported Python releases):</p>
