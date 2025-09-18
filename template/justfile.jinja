@@ -4,6 +4,8 @@ set positional-arguments
 
 call_recipe := just_executable() + " --justfile=" + justfile()
 
+default_addrport := '127.0.0.1:8000'
+
 default:
   @just --list
 
@@ -33,9 +35,9 @@ _dev_setup:
 manage +args='help': _dev_setup
   @uv run manage.py "$@"
 
-runserver $PYTHONDEVMODE="1": _dev_setup
-  # Disable PYTHONDEVMODE by passing an empty string ie. `just runserver ""`
-  @uv run manage.py runserver
+runserver addrport=default_addrport $PYTHONDEVMODE="1": _dev_setup
+  # Disable PYTHONDEVMODE by passing an empty string ie. `just runserver 127.0.0.1:8000 ""`
+{% raw %}  @uv run manage.py runserver {{addrport}}{% endraw %}
 
 shell: _dev_setup
   @uv run manage.py shell

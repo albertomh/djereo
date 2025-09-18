@@ -1,3 +1,6 @@
+# Usage:
+# > nox [-- --pdb | -m "mark"]
+
 import nox
 
 # https://endoflife.date/python
@@ -21,14 +24,24 @@ def tests(session: nox.Session) -> None:
     # Needed for assertions against `importlib.metadata.version`.
     session.install("-e", ".")
 
-    session.run(
-        "pytest",
-        "tests/",
-        "-s",
-        "-vvv",
+    posargs = list(session.posargs)
+    use_pdb = "--pdb" in posargs
+
+    pytest_args = [
+        "--capture=no",
+        "--verbosity=3",
         "--showlocals",
-        "-W",
-        "always",
-        "--pdb",
-        *session.posargs,
-    )
+        "--pythonwarnings=always",
+    ]
+
+    if not use_pdb:
+        pytest_args.extend(
+            [
+                "--numprocesses=auto",
+                # Run grouped tests (`@pytest.mark.xdist_group(name="my_group")`) with the
+                # same worker. Ensure serial execution of integration (`runserver`) tests.
+                "--dist=loadgroup",
+            ]
+        )
+
+    session.run("pytest", "tests/", *pytest_args, *posargs)

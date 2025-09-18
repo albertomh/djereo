@@ -44,7 +44,8 @@ mode).
   [Development Mode](https://docs.python.org/3/library/devmode.html).
   This mode shows additional warnings (Deprecation, Import, Resource) and enables extra
   debug hooks. Development Mode can be disabled by passing an empty string
-  i.e. `just runserver ""`
+  i.e. `just runserver ""` (the `portaddr` must be set when disabling Dev
+  Mode as these are positional arguments).
 - `shell`: run Django's management command to drop into a shell. By default this is IPython
   in all new projects.
 - `profile_tests`: uses py-spy to profile a test run and outputs results in speedscope format.

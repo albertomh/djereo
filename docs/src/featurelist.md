@@ -195,7 +195,8 @@ virtualenv and installing dependencies (including the project itself in editable
   [Development Mode](https://docs.python.org/3/library/devmode.html){target=\"_blank"}.
   This mode shows additional warnings (Deprecation, Import, Resource) and enables extra
   debug hooks. Development Mode can be disabled by passing an empty string
-  i.e. `just runserver ""`
+  i.e. `just runserver 127.0.0.1:8000 ""` (the `portaddr` must be set when disabling Dev
+  Mode as these are positional arguments).
 - `shell`: run Django's management command to drop into a shell. By default this is IPython
   in all new projects.
 - `test`: install test dependencies, run all unit tests via Django's test runner and
