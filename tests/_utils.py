@@ -1,5 +1,6 @@
 import os
 import re
+import socket
 from pathlib import Path
 from typing import Callable
 
@@ -86,3 +87,9 @@ def tear_down_postgres(test_project_dir: Path):
         "_db/tear_down.sql",
         _cwd=test_project_dir.absolute().as_posix(),
     )
+
+
+def get_free_port_from_os() -> int:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("", 0))
+        return s.getsockname()[1]
