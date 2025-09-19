@@ -19,8 +19,6 @@ jobs:
       - uses: ./.github/actions/pre-commit
 
   generate-nox-py-versions:
-    needs:
-      - pre_commit
     runs-on: ubuntu-24.04
     outputs:
       py_version: ${{ steps.set-matrix.outputs.py_version }}
@@ -43,6 +41,7 @@ jobs:
 
   test:
     needs:
+      - pre_commit
       - generate-nox-py-versions
     strategy:
       fail-fast: false

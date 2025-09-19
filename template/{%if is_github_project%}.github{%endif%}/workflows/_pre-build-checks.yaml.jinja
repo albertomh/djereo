@@ -30,8 +30,6 @@ jobs:
       - uses: ./.github/actions/pre-commit
 
   generate-nox-sessions:
-    needs:
-      - pre_commit
     runs-on: ubuntu-24.04
     outputs:
       session: {% raw %}${{ steps.set-matrix.outputs.session }}{% endraw +%}
@@ -53,6 +51,7 @@ jobs:
 
   test:
     needs:
+      - pre_commit
       - generate-nox-sessions
     strategy:
       fail-fast: false
