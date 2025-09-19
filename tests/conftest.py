@@ -12,7 +12,8 @@ from sh import python as sh_python
 
 from tests._utils import set_up_postgres, tear_down_postgres
 
-DJEREO_TEST_TEMP_DIR = Path("/", "tmp", "djereo_test")
+TESTS_DIR = Path(__file__).resolve().parent
+DJEREO_TESTS_SANDBOX_DIR = Path("/", "tmp", "djereo_test")
 IS_CI = os.getenv("CI") == "true"
 
 
@@ -26,18 +27,29 @@ def djereo_root_dir() -> Path:
 
 
 @pytest.fixture
-def djereo_test_temp_dir() -> Path:
-    return DJEREO_TEST_TEMP_DIR
-
-
-@pytest.fixture
 def test_project_name() -> str:
-    return f"djereo_test_project_{uuid.uuid4().hex[:4]}"
+    return f"djereo_test_{uuid.uuid4().hex[:8]}"
+
+
+def test_session_temp_dir(session: pytest.Session) -> Path:
+    return DJEREO_TESTS_SANDBOX_DIR / f"session_{id(session)}"
 
 
 @pytest.fixture
-def test_project_dir(djereo_test_temp_dir: Path, test_project_name: str) -> Path:
-    return djereo_test_temp_dir / test_project_name
+def test_project_dir(
+    request: pytest.FixtureRequest,
+    test_project_name: str,
+) -> Path:
+    """
+    Path of a temporary directory for per-test isolation. Namespaced per pytest session.
+    Used to avoid conflict when many tests (run in parallel) are attempting to create
+    'djereo' projects using 'copier'.
+    """
+    # per-session namespacing to ensure xdist workers delete the right subdir
+    # during clean-up in the sessionfinish hook
+    session_tmp_dir = test_session_temp_dir(request.session)
+    session_tmp_dir.mkdir(parents=True, exist_ok=True)
+    return session_tmp_dir / test_project_name
 
 
 @pytest.fixture
@@ -115,18 +127,14 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
     return _run
 
 
-@pytest.fixture(autouse=True, scope="session")
-def session_setup_and_teardown():
-    def _set_up():
-        if not DJEREO_TEST_TEMP_DIR.exists():
-            DJEREO_TEST_TEMP_DIR.mkdir(exist_ok=True)
+def pytest_sessionstart(session):
+    if not DJEREO_TESTS_SANDBOX_DIR.exists():
+        DJEREO_TESTS_SANDBOX_DIR.mkdir(exist_ok=True)
 
-    def _tear_down():
-        pass
 
-    _set_up()
-    yield
-    _tear_down()
+def pytest_sessionfinish(session):
+    # cleanup implemented in `noxfile.py` to ensure all xdist workers have finished
+    pass
 
 
 @pytest.fixture
