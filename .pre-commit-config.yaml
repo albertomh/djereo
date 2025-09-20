@@ -25,7 +25,7 @@ repos:
     hooks:
       # --config to stop ruff from using {{project_name}}/pyproject.toml
       # https://github.com/astral-sh/ruff/issues/9585
-      - id: ruff
+      - id: ruff-check
         args: ["--fix", "--config", "pyproject.toml"]
       - id: ruff-format
         args: ["--config", "pyproject.toml"]
