@@ -28,14 +28,14 @@ repos:
         args: ["--py{{python_version.replace('.', '')}}-plus"]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.17.1
+    rev: v1.18.2
     hooks:
       - id: mypy
         additional_dependencies: ["django-stubs[compatible-mypy]"]
         exclude: '\.pdbrc$'
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.8
+    rev: v0.13.1
     hooks:
       - id: ruff
         args: ["--fix"]
@@ -48,19 +48,19 @@ repos:
         args: ["--config", ".markdownlint-cli2.yaml"]
 
   - repo: https://github.com/biomejs/pre-commit
-    rev: v2.1.4
+    rev: v2.2.4
     hooks:
       - id: biome-check
         exclude: '(\.*htmx.*\.min\.js|.*/?mvp\.css)'
 
   - repo: https://github.com/adamchainz/djade-pre-commit
-    rev: 1.4.0
+    rev: 1.6.0
     hooks:
       - id: djade
         args: [--target-version, "{{django_version}}"]
 
   - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.25.0
+    rev: 1.28.0
     hooks:
       - id: django-upgrade
         args: [--target-version, "{{django_version}}"]
