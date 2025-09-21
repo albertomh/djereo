@@ -5,7 +5,11 @@ from logging.config import dictConfig
 from django.test import Client, SimpleTestCase, override_settings
 from parameterized import parameterized
 
-from {{project_name}}.logging import FirstArgOnlyFilter, LoggingConfigFactory, SafeHttpFormatter
+from {{project_name}}.logging import (
+    FirstArgOnlyFilter,
+    LoggingConfigFactory,
+    SafeHttpFormatter,
+)
 
 
 def make_logging_record(msg: str, **extra) -> logging.LogRecord:
@@ -42,6 +46,21 @@ class TestFirstArgOnlyFilter(SimpleTestCase):
         self.assertTrue(filtered)
         self.assertEqual(self.record.msg, "Test message")
         self.assertIsNone(self.record.args)
+
+
+class SafeHttpFormatterTest(SimpleTestCase):
+    def setUp(self):
+        self.formatter = SafeHttpFormatter("%(levelname)s %(status_code)s %(message)s")
+
+    def test_format_without_status_code(self):
+        record = make_logging_record("hello world")
+        formatted = self.formatter.format(record)
+        assert formatted == "INFO - hello world"
+
+    def test_format_with_status_code(self):
+        record = make_logging_record("hello world", status_code=200)
+        formatted = self.formatter.format(record)
+        assert formatted == "INFO 200 hello world"
 
 
 class LoggingConfigFactoryTest(SimpleTestCase):
