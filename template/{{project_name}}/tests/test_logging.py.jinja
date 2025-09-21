@@ -1,5 +1,6 @@
 import json
 import logging
+from logging.config import dictConfig
 
 from django.test import Client, SimpleTestCase, override_settings
 from parameterized import parameterized
@@ -114,9 +115,17 @@ class LogsFormatTest(SimpleTestCase):
             for k in expected_values.keys():
                 self.assertEqual(log_dict[k], expected_values[k], f"{k} should match")
 
-    # Hard to test because Django loads logging configuration once, at startup (and DEBUG
-    # is False when running tests). This means @override_settings would apply only after
-    # logging has been configured using DEBUG=False. Plus, the change to DEBUG would
-    # involve popping the structlog middleware from MIDDLEWARES.
-    # def test_logs_format_debug_true(self):
-    #     ...
+    def test_logs_format_debug_true(self):
+        config = LoggingConfigFactory(debug=True).build()
+        dictConfig(config)
+
+        struct_logger = logging.getLogger("django_structlog")
+        self.assertIsInstance(struct_logger.handlers[0], logging.NullHandler)
+
+        # django.server logger should be active
+        server_logger = logging.getLogger("django.server")
+        self.assertTrue(server_logger.hasHandlers())
+
+        with self.assertLogs(server_logger, level="INFO") as log:
+            server_logger.info("manual test")
+            self.assertIn("manual test", log.output[0])
