@@ -4,20 +4,29 @@ import logging
 from django.test import Client, SimpleTestCase, override_settings
 from parameterized import parameterized
 
-from {{project_name}}.logging import FirstArgOnlyFilter, LoggingConfigFactory
+from {{project_name}}.logging import FirstArgOnlyFilter, LoggingConfigFactory, SafeHttpFormatter
+
+
+def make_logging_record(msg: str, **extra) -> logging.LogRecord:
+    record = logging.LogRecord(
+        name="test_logger",
+        level=logging.INFO,
+        pathname=__file__,
+        lineno=10,
+        msg=msg,
+        args=(),
+        exc_info=None,
+    )
+    for key, value in extra.items():
+        setattr(record, key, value)
+    return record
 
 
 class TestFirstArgOnlyFilter(SimpleTestCase):
     def setUp(self):
         self.filter = FirstArgOnlyFilter()
-        self.record = logging.LogRecord(
-            name="test_logger",
-            level=logging.INFO,
-            pathname="test_path",
-            lineno=123,
-            msg="Test message",
-            args=("First argument", "Second argument"),
-            exc_info=None,
+        self.record = make_logging_record(
+            "Test message", args=("First argument", "Second argument")
         )
 
     def test_filter_logs_first_arg_as_msg(self):
