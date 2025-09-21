@@ -8,6 +8,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.10.0](https://github.com/albertomh/djereo/compare/v3.9.0...v3.10.0) (2025-09-21)
+
+
+### Features
+
+* Add a SafeHttpFormatter to the logging module ([#272](https://github.com/albertomh/djereo/issues/272)) ([7eade6f](https://github.com/albertomh/djereo/commit/7eade6f7089ac5a0c2ccb16797a86591024ab1ec))
+* **ci:** Use a GHA secret to set Django secret key when tagging in 'deploy' mode ([#258](https://github.com/albertomh/djereo/issues/258)) ([ea18a46](https://github.com/albertomh/djereo/commit/ea18a462979365f477e8af7527195a15eb4e2676))
+* **db:** Database tear-down script closes any connections first ([#270](https://github.com/albertomh/djereo/issues/270)) ([476e8e8](https://github.com/albertomh/djereo/commit/476e8e84082d21573eac34a0692402e61456ebb1))
+* **deps:** Update gen. project dependencies' version ranges ([#268](https://github.com/albertomh/djereo/issues/268)) ([55d67a8](https://github.com/albertomh/djereo/commit/55d67a8764126226dfe01979d16f9b1256f411dc))
+* **tests:** Add exclusions to reduce noise in coverage report ([#262](https://github.com/albertomh/djereo/issues/262)) ([dc48c52](https://github.com/albertomh/djereo/commit/dc48c521556b8481f9e5d98605eaa48201d0fb33))
+* **tests:** Run gen. project's tests in parallel ([#263](https://github.com/albertomh/djereo/issues/263)) ([9acfcf6](https://github.com/albertomh/djereo/commit/9acfcf6299f7d45b9501e29e9a28b6d5d27489e4))
+
+
+### Bug Fixes
+
+* **logs:** Stop rich_http crashing if HTTP status missing from record ([#273](https://github.com/albertomh/djereo/issues/273)) ([bb1a43b](https://github.com/albertomh/djereo/commit/bb1a43b38b44ec55a83b5d6db250dd36265b88ab))
+
+
+### Dependencies
+
+* Update pytest-randomly to 4.x in meta project ([#269](https://github.com/albertomh/djereo/issues/269)) ([2a3061d](https://github.com/albertomh/djereo/commit/2a3061d9d06da2d085a5727e7aadaedae54369d7))
+
 ## [3.9.0](https://github.com/albertomh/djereo/compare/v3.8.0...v3.9.0) (2025-08-28)
 
 
