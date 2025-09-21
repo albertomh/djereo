@@ -27,7 +27,7 @@ def make_logging_record(msg: str, **extra) -> logging.LogRecord:
     return record
 
 
-class TestFirstArgOnlyFilter(SimpleTestCase):
+class FirstArgOnlyFilterTest(SimpleTestCase):
     def setUp(self):
         self.filter = FirstArgOnlyFilter()
         self.record = make_logging_record(
@@ -148,3 +148,20 @@ class LogsFormatTest(SimpleTestCase):
         with self.assertLogs(server_logger, level="INFO") as log:
             server_logger.info("manual test")
             self.assertIn("manual test", log.output[0])
+
+
+class LogsCrashTest(SimpleTestCase):
+    def test_rich_http_formatter_raises_when_status_code_missing(self):
+        config = LoggingConfigFactory(debug=True).build()
+        dictConfig(config)  # force re-apply logging config
+
+        logger = logging.getLogger("django.server")
+        handler = logger.handlers[0]
+        fmt = handler.formatter
+
+        record = make_logging_record(
+            "Broken pipe from %s", name="django.server", args=("127.0.0.1",)
+        )
+
+        formatted = fmt.format(record)
+        self.assertIn("Broken pipe", formatted)
