@@ -54,7 +54,11 @@ class LoggingConfigFactory:
                     "processor": structlog.processors.JSONRenderer(),
                 },
                 "rich": {"datefmt": "[%X]"},
-                "rich_http": {"datefmt": "[%X]", "format": "%(status_code)s %(msg)s"},
+                "rich_http": {
+                    "()": SafeHttpFormatter,
+                    "format": "%(status_code)s %(message)s",
+                    "datefmt": "[%X]",
+                },
             },
             "handlers": {
                 "console_dev": (
