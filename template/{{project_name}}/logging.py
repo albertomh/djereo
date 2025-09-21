@@ -13,6 +13,13 @@ class FirstArgOnlyFilter(logging.Filter):
         return True
 
 
+class SafeHttpFormatter(logging.Formatter):
+    def format(self, record):
+        if not hasattr(record, "status_code"):
+            record.status_code = "-"
+        return super().format(record)
+
+
 class LoggingConfigFactory:
     def __init__(self, *, debug=False):
         self.debug = debug

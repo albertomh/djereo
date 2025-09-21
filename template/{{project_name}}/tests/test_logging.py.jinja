@@ -1,23 +1,37 @@
 import json
 import logging
+from logging.config import dictConfig
 
 from django.test import Client, SimpleTestCase, override_settings
 from parameterized import parameterized
 
-from {{project_name}}.logging import FirstArgOnlyFilter, LoggingConfigFactory
+from {{project_name}}.logging import (
+    FirstArgOnlyFilter,
+    LoggingConfigFactory,
+    SafeHttpFormatter,
+)
+
+
+def make_logging_record(msg: str, **extra) -> logging.LogRecord:
+    record = logging.LogRecord(
+        name="test_logger",
+        level=logging.INFO,
+        pathname=__file__,
+        lineno=10,
+        msg=msg,
+        args=(),
+        exc_info=None,
+    )
+    for key, value in extra.items():
+        setattr(record, key, value)
+    return record
 
 
 class TestFirstArgOnlyFilter(SimpleTestCase):
     def setUp(self):
         self.filter = FirstArgOnlyFilter()
-        self.record = logging.LogRecord(
-            name="test_logger",
-            level=logging.INFO,
-            pathname="test_path",
-            lineno=123,
-            msg="Test message",
-            args=("First argument", "Second argument"),
-            exc_info=None,
+        self.record = make_logging_record(
+            "Test message", args=("First argument", "Second argument")
         )
 
     def test_filter_logs_first_arg_as_msg(self):
@@ -32,6 +46,21 @@ class TestFirstArgOnlyFilter(SimpleTestCase):
         self.assertTrue(filtered)
         self.assertEqual(self.record.msg, "Test message")
         self.assertIsNone(self.record.args)
+
+
+class SafeHttpFormatterTest(SimpleTestCase):
+    def setUp(self):
+        self.formatter = SafeHttpFormatter("%(levelname)s %(status_code)s %(message)s")
+
+    def test_format_without_status_code(self):
+        record = make_logging_record("hello world")
+        formatted = self.formatter.format(record)
+        assert formatted == "INFO - hello world"
+
+    def test_format_with_status_code(self):
+        record = make_logging_record("hello world", status_code=200)
+        formatted = self.formatter.format(record)
+        assert formatted == "INFO 200 hello world"
 
 
 class LoggingConfigFactoryTest(SimpleTestCase):
@@ -105,9 +134,17 @@ class LogsFormatTest(SimpleTestCase):
             for k in expected_values.keys():
                 self.assertEqual(log_dict[k], expected_values[k], f"{k} should match")
 
-    # Hard to test because Django loads logging configuration once, at startup (and DEBUG
-    # is False when running tests). This means @override_settings would apply only after
-    # logging has been configured using DEBUG=False. Plus, the change to DEBUG would
-    # involve popping the structlog middleware from MIDDLEWARES.
-    # def test_logs_format_debug_true(self):
-    #     ...
+    def test_logs_format_debug_true(self):
+        config = LoggingConfigFactory(debug=True).build()
+        dictConfig(config)
+
+        struct_logger = logging.getLogger("django_structlog")
+        self.assertIsInstance(struct_logger.handlers[0], logging.NullHandler)
+
+        # django.server logger should be active
+        server_logger = logging.getLogger("django.server")
+        self.assertTrue(server_logger.hasHandlers())
+
+        with self.assertLogs(server_logger, level="INFO") as log:
+            server_logger.info("manual test")
+            self.assertIn("manual test", log.output[0])
