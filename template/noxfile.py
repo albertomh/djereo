@@ -9,8 +9,8 @@ OLDEST_PY, *MIDDLE_PY, LATEST_PY = py_versions
 nox.options.default_venv_backend = "uv"
 nox.options.sessions = [f"tests_with_coverage-{LATEST_PY}"]
 
-run_tests_args = ["manage.py", "test"]
-base_flags = ["--failfast", "--shuffle", "--verbosity=3"]
+RUN_TESTS_ARGS = ["manage.py", "test"]
+BASE_FLAGS = ["--failfast", "--shuffle", "--verbosity=3"]
 
 
 def _install_deps(session: nox.Session) -> None:
@@ -32,11 +32,22 @@ def _effective_flags(session: nox.Session) -> list[str]:
     Parallel execution must be disabled (force DJANGO_TEST_PROCESSES to 1) if using `pdb`.
     <https://docs.djangoproject.com/en/stable/ref/django-admin/#cmdoption-test-parallel>
     """
-    test_processes = 2
-    if "--pdb" in session.posargs:
-        test_processes = 1
+    posargs = [*session.posargs]
+    conditional_flags = []
 
-    return [*base_flags, f"--parallel={test_processes}", *session.posargs]
+    if "--create-db" in posargs:
+        posargs = [p for p in posargs if p != "--create-db"]
+        # needed to force re-creating old databases left over from runs with `--keepdb`
+        conditional_flags.append("--no-input")
+    else:
+        conditional_flags.append("--keepdb")
+
+    test_processes = 2
+    if "--pdb" in posargs:
+        test_processes = 1
+    conditional_flags.append(f"--parallel={test_processes}")
+
+    return [*BASE_FLAGS, *conditional_flags, *posargs]
 
 
 @nox.session(python=MIDDLE_PY)
@@ -46,7 +57,7 @@ def tests(session: nox.Session) -> None:
     session.run(
         "python",
         "-Wall",
-        *run_tests_args,
+        *RUN_TESTS_ARGS,
         *_effective_flags(session),
     )
 
@@ -61,7 +72,7 @@ def tests_with_coverage(session: nox.Session) -> None:
         "run",
         "--source",
         ".",
-        *run_tests_args,
+        *RUN_TESTS_ARGS,
         *_effective_flags(session),
     )
     session.run("coverage", "report")

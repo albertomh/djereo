@@ -57,13 +57,18 @@ Nox is used to automate testing across different Python versions. Test sessions 
 configured via `noxfile.py`. `coverage` reporting will only run for test runs for the
 oldest and latest Python versions.
 
-Run all tests and report on code coverage:
-
 ```sh
-nox
+# run all tests and report on code coverage
+nox [-- <expression>]
+
+# eg. to only run tests inside the `test_migrations` module
+nox -- testdjereo.tests.test_migrations
+
+# eg. to use `pdb` to debug tests
+nox -- --pdb
 ```
 
-By default this will only run the `nox` session for the latest supported Python release.
+By default `nox` will only run the session for the latest supported Python release.
 
 To run all `nox` sessions (ie. for all supported Python releases):
 
@@ -76,6 +81,25 @@ You can select a single session ie.
 ```sh
 nox --session tests_with_coverage-3.13
 ```
+
+### The test database
+
+The `noxfile` is configured to run tests with Django's `--keepdb` flag by default. This
+means existing databases from previous runs will be reused, eliminating the overhead of
+recreating the database and running migrations for each session.
+
+A downside of this is that when migrations are added, renamed, or modified, we do need
+them to be applied before our tests. To avoid reusing an existing test database for a
+single run and allow migrations to be re-applied, run with the `--create-db` flag:
+
+```sh
+nox -- --create-db
+```
+
+### Profiling tests
+
+Invoke `just profile_tests` to output a speedscope-compatible profile file to understand
+bottlenecks in your tests. N.B. this requires `py-spy` to be available globally on your system.
 
 ## Use IPython as your shell
 
