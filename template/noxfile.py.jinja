@@ -3,8 +3,15 @@
 import nox
 
 # https://endoflife.date/python
+{% if min_python_version == '3.12' %}
 py_versions = ["3.12", "3.13"]
-OLDEST_PY, *MIDDLE_PY, LATEST_PY = py_versions
+{% elif min_python_version == '3.13' %}
+py_versions = ["3.13"]
+{% endif %}
+OLDEST_PY = py_versions[0]
+MIDDLE_PY = py_versions[1:-1]
+LATEST_PY = py_versions[-1]
+COVERAGE_PY = list({OLDEST_PY, LATEST_PY})  # deduplicate if both are the same
 
 nox.options.default_venv_backend = "uv"
 nox.options.sessions = [f"tests_with_coverage-{LATEST_PY}"]
@@ -62,7 +69,7 @@ def tests(session: nox.Session) -> None:
     )
 
 
-@nox.session(python=[OLDEST_PY, LATEST_PY])
+@nox.session(python=COVERAGE_PY)
 def tests_with_coverage(session: nox.Session) -> None:
     _install_deps(session)
 

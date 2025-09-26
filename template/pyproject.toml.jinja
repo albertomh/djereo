@@ -9,7 +9,7 @@ authors = [
 readme = "README.md"
 # create 'LICENSE' file and uncomment below line
 # license-files = ["LICENSE"]
-requires-python = ">={{python_version}}"
+requires-python = ">={{min_python_version}}"
 {% set django_ver_parts = django_version.split('.') %}
 {% set django_ver_major_next = django_ver_parts[0] | int + 1 %}
 dependencies = [
@@ -61,7 +61,7 @@ include = ["{{project_name}}"]
 exclude = [".pdbrc"]
 indent-width = 4
 line-length = 90
-target-version = "py{{python_version.replace('.', '')}}"
+target-version = "py{{min_python_version.replace('.', '')}}"
 
 [tool.ruff.lint]
 ignore = []
