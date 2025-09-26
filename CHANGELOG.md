@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.11.0](https://github.com/albertomh/djereo/compare/v3.10.0...v3.11.0) (2025-09-26)
+
+
+### Features
+
+* **test:** Re-use database across tests in gen. project's suite ([#274](https://github.com/albertomh/djereo/issues/274)) ([b6f717a](https://github.com/albertomh/djereo/commit/b6f717a3504600d76970ec429cb03fba044e981c))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.19.0 ([#276](https://github.com/albertomh/djereo/issues/276)) ([8fea5f0](https://github.com/albertomh/djereo/commit/8fea5f086464ae92baa155eca2002337ced0082a))
+
 ## [3.10.0](https://github.com/albertomh/djereo/compare/v3.9.0...v3.10.0) (2025-09-21)
 
 
