@@ -10,8 +10,8 @@ project_name:
         project_name must start with a letter, be lowercase and may contain underscores
         {% endif %}
 
-python_version:
-    help: "What version of Python do you wish to use?"
+min_python_version:
+    help: "What is the minimum compatible version of Python?"
     type: str
     choices:
         - "3.12"

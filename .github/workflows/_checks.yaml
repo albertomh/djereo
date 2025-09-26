@@ -24,19 +24,33 @@ jobs:
       py_version: ${{ steps.set-matrix.outputs.py_version }}
     steps:
     - uses: actions/checkout@v5
-    - uses: wntrblm/nox@main
+    - name: Cache nox Python versions list
+      id: cache-nox-py-versions
+      uses: actions/cache@v4
+      with:
+        path: .nox-py-versions.json
+        key: nox-py-versions-${{ runner.os }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}
+    - uses: wntrblm/nox@2025.05.01
+      if: steps.cache-nox-py-versions.outputs.cache-hit != 'true'
     - id: set-matrix
       shell: bash
+      env:
+        CACHE_PY_VERSIONS_HIT: ${{ steps.cache-nox-py-versions.outputs.cache-hit }}
       run: |
         # Extract Python versions from nox session names (both selected and skipped)
         # into a JSON array. Session lines start with '*' or '-'.
-        py_version_json="$(
-        nox --list \
-            | grep -E '^[*-] ' \
-            | cut -d' ' -f2 \
-            | sed 's/^tests-//' \
-            | jq -R -s -c 'split("\n")[:-1]'
-        )"
+        if [[ $CACHE_PY_VERSIONS_HIT == "true" ]]; then
+          py_version_json="$(cat .nox-py-versions.json)"
+        else
+          py_version_json="$(
+            nox --list \
+              | grep -E '^[*-] ' \
+              | cut -d' ' -f2 \
+              | sed 's/^tests-//' \
+              | jq -R -s -c 'split("\n")[:-1]'
+          )"
+          echo "$py_version_json" > .nox-py-versions.json
+        fi
         echo "py_version=$py_version_json" >> "$GITHUB_OUTPUT"
 
   test:
@@ -66,7 +80,8 @@ jobs:
       - uses: actions/checkout@v5
       - uses: astral-sh/setup-uv@v6
         with:
-          version: "0.8.16"
+          version: "0.8.22"
+          enable-cache: true
       # Not redundant! Must be installed since used by integration tests in the next step.
       - uses: extractions/setup-just@v3
       - uses: wntrblm/nox@2025.05.01
