@@ -53,6 +53,11 @@ dev = [
     "rich>=14.0.0",
 ]
 
+{% if is_github_project %}
+[project.urls]
+Repository = "https://github.com"
+{% endif %}
+
 [tool.setuptools.packages.find]
 # allow `pip install -e .` to find the project package
 include = ["{{project_name}}"]
