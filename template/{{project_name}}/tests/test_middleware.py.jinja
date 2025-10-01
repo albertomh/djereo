@@ -5,12 +5,12 @@ from {{project_name}}.middleware import SecurityHeadersMiddleware
 
 
 class SecurityHeadersMiddlewareTests(SimpleTestCase):
-    def test_middleware(self):
-        def test_view(request):
-            return HttpResponse()
+    def setUp(self):
+        self.request_factory = RequestFactory()
 
-        middleware = SecurityHeadersMiddleware(test_view)
-        request = RequestFactory().get("/")
+    def test_middleware(self):
+        middleware = SecurityHeadersMiddleware(get_response=lambda req: HttpResponse())
+        request = self.request_factory.get("/")
 
         response = middleware(request)
 
