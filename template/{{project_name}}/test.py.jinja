@@ -1,16 +1,37 @@
 import os
 
+import responses
 from django.test.runner import DiscoverRunner
 from django.test.utils import override_settings
 
+TEST_SETTINGS = {
+    "DEBUG": False,
+}
+
+# Global placeholder for the active responses mocker
+ACTIVE_RESPONSES = None
+
 
 class TestRunner(DiscoverRunner):
-    """Custom test runner to apply test-specific settings.
+    """Custom test runner to apply test-specific settings & mock out requests.
 
-    Override per-test with the following decorator:
+    Override settings per-test with a decorator:
     ```
     @override_settings(DEBUG=False)
     def test_unit(self):
+        ...
+    ```
+
+    Intercept and mock out requests in tests with:
+    ```
+    from testdjereo.test import ACTIVE_RESPONSES
+
+    def test_view(self):
+        ACTIVE_RESPONSES.add(
+            responses.GET,
+            "https://example.com/api/resource",
+            json={"key": "value"},
+        )
         ...
     ```
     """
@@ -27,10 +48,10 @@ class TestRunner(DiscoverRunner):
         super().__init__(*args, exclude_tags=exclude_tags, **kwargs)
 
     def run_tests(self, *args, **kwargs):
-        with override_settings(**TEST_SETTINGS):
+        global ACTIVE_RESPONSES
+
+        with responses.RequestsMock() as rsps, override_settings(**TEST_SETTINGS):
+            ACTIVE_RESPONSES = rsps
             return super().run_tests(*args, **kwargs)
 
-
-TEST_SETTINGS = {
-    "DEBUG": False,
-}
+        ACTIVE_RESPONSES = None
