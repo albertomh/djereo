@@ -475,14 +475,44 @@ The `test_checks` module tests the custom Django system checks added by `djereo`
 ### The custom TestRunner
 
 Djereo provides a custom `TestRunner` that subclasses Django's `DiscoverRunner`.
-This custom runner provides a `TEST_SETTINGS` dictionary and functionality to skip slow tests
-when running locally. Naturally, it can be extended to serve the needs of your test suite.
+This custom runner provides:
 
-#### `TEST_SETTINGS`
+- a `TEST_SETTINGS` dictionary with which to override settings
+- an `ACTIVE_RESPONSES` list with which to mock responses from third-party services
+- functionality to skip slow tests when running locally
+
+Naturally, it can be extended to serve the needs of your test suite.
+
+#### Override settings with `TEST_SETTINGS`
 
 `TEST_SETTINGS` is a dictionary defined in the `test` module and used by `TestRunner` to
 override settings for all tests. This is the source of truth for app settings during tests
 and by default sets `"DEBUG": False`.
+
+#### Mock out requests with `ACTIVE_RESPONSES`
+
+The custom `TestRunner` uses [responses](https://github.com/getsentry/responses){target=\"_blank"}
+to enable you to mock responses from external services in tests.
+
+Mock responses by modifying `ACTIVE_RESPONSES` in the test class or function:
+
+```python
+from testdjereo.test import ACTIVE_RESPONSES
+
+def test_view(self):
+    ACTIVE_RESPONSES.add(
+        responses.GET,
+        "https://example.com/api/resource",
+        json={"key": "value"},
+    )
+    ...
+```
+
+<!-- markdownlint-disable MD013 line-length -->
+If a test exercises a path that calls out to an external service (by using the `requests`
+library) and this request is not mocked out, `responses` will step in and the test will
+fail with the error `requests.exceptions.ConnectionError: Connection refused by Responses - the call doesn't match any registered mock`.
+<!-- markdownlint-enable MD013 line-length -->
 
 #### Skip slow tests locally
 
