@@ -303,7 +303,7 @@ When `DEBUG=False`, as in production, [structlog](https://www.structlog.org/){ta
 is used instead.
 
 Logging configuration is dynamically generated based on the `DEBUG` environment variable.
-The `LoggingConfigFactory` class is used to generate settings for filters, formaters,
+The `LoggingConfigFactory` class is used to generate settings for filters, formatters,
 handlers and loggers.
 
 ## Models
@@ -491,21 +491,22 @@ and by default sets `"DEBUG": False`.
 
 #### Mock out requests with `ACTIVE_RESPONSES`
 
-The custom `TestRunner` uses [responses](https://github.com/getsentry/responses){target=\"_blank"}
-to enable you to mock responses from external services in tests.
+The custom `TestRunner` uses the [responses](https://github.com/getsentry/responses){target=\"_blank"}
+package to enable you to mock responses from external services in tests.
 
 Mock responses by modifying `ACTIVE_RESPONSES` in the test class or function:
 
 ```python
 from testdjereo.test import ACTIVE_RESPONSES
 
-def test_view(self):
-    ACTIVE_RESPONSES.add(
-        responses.GET,
-        "https://example.com/api/resource",
-        json={"key": "value"},
-    )
-    ...
+class ViewTests(SimpleTestCase):
+    def test_view(self):
+        ACTIVE_RESPONSES.add(
+            responses.GET,
+            "https://example.com/api/resource",
+            json={"key": "value"},
+        )
+        ...
 ```
 
 <!-- markdownlint-disable MD013 line-length -->

@@ -65,6 +65,14 @@ repos:
       - id: django-upgrade
         args: [--target-version, "{{django_version}}"]
 
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.37.2
+    hooks:
+      - id: typos
+        # Overwrite <https://github.com/crate-ci/typos/blob/master/.pre-commit-hooks.yaml>
+        # to avoid default `--write-changes` flag - report findings only.
+        args: [--force-exclude]
+
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v9.22.0
     hooks:
