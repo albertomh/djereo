@@ -155,7 +155,9 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#the-custom-testrunner">The custom TestRunner</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#test_settings">TEST_SETTINGS</a>
+    <li class="toctree-l4"><a class="reference internal" href="#override-settings-with-test_settings">Override settings with TEST_SETTINGS</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#mock-out-requests-with-active_responses">Mock out requests with ACTIVE_RESPONSES</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#skip-slow-tests-locally">Skip slow tests locally</a>
     </li>
@@ -579,12 +581,37 @@ due to missing migrations.</p>
 <p>The <code>test_checks</code> module tests the custom Django system checks added by <code>djereo</code>.</p>
 <h3 id="the-custom-testrunner">The custom TestRunner</h3>
 <p>Djereo provides a custom <code>TestRunner</code> that subclasses Django's <code>DiscoverRunner</code>.
-This custom runner provides a <code>TEST_SETTINGS</code> dictionary and functionality to skip slow tests
-when running locally. Naturally, it can be extended to serve the needs of your test suite.</p>
-<h4 id="test_settings"><code>TEST_SETTINGS</code></h4>
+This custom runner provides:</p>
+<ul>
+<li>a <code>TEST_SETTINGS</code> dictionary with which to override settings</li>
+<li>an <code>ACTIVE_RESPONSES</code> list with which to mock responses from third-party services</li>
+<li>functionality to skip slow tests when running locally</li>
+</ul>
+<p>Naturally, it can be extended to serve the needs of your test suite.</p>
+<h4 id="override-settings-with-test_settings">Override settings with <code>TEST_SETTINGS</code></h4>
 <p><code>TEST_SETTINGS</code> is a dictionary defined in the <code>test</code> module and used by <code>TestRunner</code> to
 override settings for all tests. This is the source of truth for app settings during tests
 and by default sets <code>"DEBUG": False</code>.</p>
+<h4 id="mock-out-requests-with-active_responses">Mock out requests with <code>ACTIVE_RESPONSES</code></h4>
+<p>The custom <code>TestRunner</code> uses <a href="https://github.com/getsentry/responses" target="\&quot;_blank&quot;">responses</a>
+to enable you to mock responses from external services in tests.</p>
+<p>Mock responses by modifying <code>ACTIVE_RESPONSES</code> in the test class or function:</p>
+<pre><code class="language-python">from testdjereo.test import ACTIVE_RESPONSES
+
+def test_view(self):
+    ACTIVE_RESPONSES.add(
+        responses.GET,
+        &quot;https://example.com/api/resource&quot;,
+        json={&quot;key&quot;: &quot;value&quot;},
+    )
+    ...
+</code></pre>
+<!-- markdownlint-disable MD013 line-length -->
+<p>If a test exercises a path that calls out to an external service (by using the <code>requests</code>
+library) and this request is not mocked out, <code>responses</code> will step in and the test will
+fail with the error <code>requests.exceptions.ConnectionError: Connection refused by Responses - the call doesn't match any registered mock</code>.</p>
+<!-- markdownlint-enable MD013 line-length -->
+
 <h4 id="skip-slow-tests-locally">Skip slow tests locally</h4>
 <p><code>TestRunner</code> will check whether tests are being run from a CI pipeline. If no environment
 variable denoting a CI context is found (eg. when running locally), the runner will skip
