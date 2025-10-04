@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.13.0](https://github.com/albertomh/djereo/compare/v3.12.0...v3.13.0) (2025-10-04)
+
+
+### Features
+
+* **test:** Mock responses from third-party services in tests ([#282](https://github.com/albertomh/djereo/issues/282)) ([d1322a9](https://github.com/albertomh/djereo/commit/d1322a93d7cc6fd620025db867e83843d77c4e10))
+
+
+### Documentation
+
+* Document mocking out requests to third-party services in tests ([#284](https://github.com/albertomh/djereo/issues/284)) ([2247c4b](https://github.com/albertomh/djereo/commit/2247c4bc81f66d422679b96c2b149188ac6d038b))
+
 ## [3.12.0](https://github.com/albertomh/djereo/compare/v3.11.0...v3.12.0) (2025-10-02)
 
 
