@@ -165,6 +165,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#profile-tests">Profile tests</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#end-to-end-e2e-tests">End-to-end (e2e) tests</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#tests-in-github-actions">Tests in GitHub Actions</a>
     </li>
         </ul>
@@ -627,9 +629,15 @@ class AppTests(TestCase):
 <p>Invoke <code>just profile_tests</code> to output a <a href="https://www.speedscope.app/" target="\&quot;_blank&quot;">speedscope</a>-compatible
 profile file to understand bottlenecks in your tests.
 <strong>N.B.</strong> this requires <code>py-spy</code> to be available globally on your system.</p>
+<h3 id="end-to-end-e2e-tests">End-to-end (e2e) tests</h3>
+<p>A suite of end-to-end tests written using the Playwright framework lives under <code>tests_e2e/</code>.
+Invoke <code>just e2e</code> to run these locally. This runs Django's <code>runserver</code> command in the
+background before launching the e2e suite.</p>
 <h3 id="tests-in-github-actions">Tests in GitHub Actions</h3>
 <p>The <code>test</code> job in GitHub Actions uses the matrix strategy. This runs each Nox session
 (i.e. Python version test run) as a separate pipeline job.</p>
+<p>A release candidate will be containerised when a Pull Request is merged. The relevant
+pipeline will run the end-to-end (e2e) test suite against this candidate container image.</p>
 <h2 id="deployment">🚀 Deployment</h2>
 <p>While <code>djereo</code> eschews Docker throughout development, the advantages of containerisation
 for tagged, reproducible builds in hosted environments are evident.</p>
