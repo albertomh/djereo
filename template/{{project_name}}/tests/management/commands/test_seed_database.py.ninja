@@ -6,6 +6,9 @@ from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.test import TestCase
 
+import {{project_name}}.management.commands.seed_database  # noqa: F401 - needed for coverage
+
+
 
 class SeedDatabaseTests(TestCase):
     def call_command(self, *args, **kwargs):

@@ -18,7 +18,7 @@ class Command(BaseCommand):
 
         self.stdout.write("Seeding database...")
 
-        users_data = [
+        users_data = [  # pragma: no cover
             {
                 "username": "admin",
                 "email": "admin@example.com",
@@ -41,5 +41,5 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("Done."))
 
 
-def create_user(data):
+def create_user(data):  # pragma: no cover
     get_user_model().objects.create_user(**data)

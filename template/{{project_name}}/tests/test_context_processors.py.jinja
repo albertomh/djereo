@@ -1,0 +1,19 @@
+from unittest import mock
+
+from django.test import RequestFactory, SimpleTestCase
+
+from {{project_name}}.context_processors import metadata
+
+
+@mock.patch("{{project_name}}.context_processors.__version__", "1.2.3-test")
+class MetadataContextProcessorTest(SimpleTestCase):
+    def setUp(self):
+        self.request_factory = RequestFactory()
+
+    def test_metadata_returns_version(self):
+        request = self.request_factory.get("/")
+        context = metadata(request)
+
+        self.assertIn("{{project_name}}", context)
+        self.assertIn("meta", context["{{project_name}}"])
+        self.assertEqual(context["{{project_name}}"]["meta"]["version"], "1.2.3-test")
