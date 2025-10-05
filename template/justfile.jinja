@@ -37,7 +37,7 @@ manage +args='help': _dev_setup
 
 runserver addrport=default_addrport $PYTHONDEVMODE="1": _dev_setup
   # Disable PYTHONDEVMODE by passing an empty string ie. `just runserver 127.0.0.1:8000 ""`
-{% raw %}  @uv run manage.py runserver {{addrport}}{% endraw %}
+{% raw %}  @uv run manage.py runserver {{addrport}}{% endraw +%}
 
 shell: _dev_setup
   @uv run manage.py shell
@@ -50,3 +50,12 @@ _test_setup:
 profile_tests: _test_setup
   @sudo py-spy record --subprocesses --format speedscope -o profile.speedscope.json -- \
     uv run python manage.py test
+
+e2e $USE_ENV_TEST="1": _test_setup
+  #!/usr/bin/env bash
+  set -euo pipefail
+   uv run manage.py runserver "" &
+  SERVER_PID=$!
+  uv run pytest tests_e2e/ || STATUS=$?
+  kill $SERVER_PID
+  exit ${STATUS:-0}

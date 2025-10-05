@@ -3,8 +3,10 @@
 # >>> CI=true uv run pytest tests_e2e/
 
 import sys
+import time
 
 import pytest
+import requests  # type: ignore
 from environs import Env
 from playwright.sync_api import Browser, Playwright, sync_playwright
 from playwright.sync_api import Error as PlaywrightError
@@ -23,6 +25,20 @@ def _launch_browser(headless: bool = True) -> tuple[Playwright, Browser]:
 
 def pytest_sessionstart(session):
     """Check webapp is available before attempting to collect and run the test suite."""
+    timeout = 10
+    interval = 0.5
+    start = time.time()
+    while True:
+        try:
+            resp = requests.get(BASE_URL, timeout=1)
+            if resp.status_code < 500:
+                break
+        except Exception:
+            pass
+        if time.time() - start > timeout:
+            pytest.exit(f"Server at {BASE_URL} is unavailable", returncode=1)
+        time.sleep(interval)
+
     try:
         playwright, browser = _launch_browser(True)
         context = browser.new_context()
@@ -30,7 +46,7 @@ def pytest_sessionstart(session):
         page.goto(BASE_URL, timeout=3000)
 
     except PlaywrightError as e:
-        print(e, file=sys.stderr)  # noqa: T201
+        print(e, file=sys.stderr)  # noqa: T201 print
         pytest.exit("Startup check failed", returncode=1)
 
     finally:
