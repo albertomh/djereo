@@ -149,6 +149,17 @@ By default `nox` will only run the session for the latest supported Python relea
 Read more about tests, how they are configured, and how to profile them in
 [README-dev.md#running-tests-with-nox](./docs/README-dev.md#running-tests-with-nox).
 
+### End-to-end (e2e) tests
+
+A suite of end-to-end tests written using the Playwright framework lives under `tests_e2e/`.
+Invoke the `e2e` just recipe to run these locally:
+
+```sh
+just e2e
+```
+
+This runs Django's `runserver` command in the background before launching the e2e suite.
+
 {% if is_github_project %}
 ## Release
 

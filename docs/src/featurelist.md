@@ -535,10 +535,19 @@ Invoke `just profile_tests` to output a [speedscope](https://www.speedscope.app/
 profile file to understand bottlenecks in your tests.
 **N.B.** this requires `py-spy` to be available globally on your system.
 
+### End-to-end (e2e) tests
+
+A suite of end-to-end tests written using the Playwright framework lives under `tests_e2e/`.
+Invoke `just e2e` to run these locally. This runs Django's `runserver` command in the
+background before launching the e2e suite.
+
 ### Tests in GitHub Actions
 
 The `test` job in GitHub Actions uses the matrix strategy. This runs each Nox session
 (i.e. Python version test run) as a separate pipeline job.
+
+A release candidate will be containerised when a Pull Request is merged. The relevant
+pipeline will run the end-to-end (e2e) test suite against this candidate container image.
 
 ## 🚀 Deployment
 
