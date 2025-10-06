@@ -9,7 +9,6 @@ from django.test import TestCase
 import {{project_name}}.management.commands.seed_database  # noqa: F401 - needed for coverage
 
 
-
 class SeedDatabaseTests(TestCase):
     def call_command(self, *args, **kwargs):
         out = StringIO()
@@ -41,8 +40,10 @@ class SeedDatabaseTests(TestCase):
         self.assertEqual(err, "")
 
         expected_models = {
+            ("account", "EmailAddress"),
             ("auth", "Permission"),
             ("contenttypes", "ContentType"),
+            ("sites", "Site"),
             ("users", "AuthUser"),
             ("users", "UserProfile"),
         }
@@ -50,8 +51,9 @@ class SeedDatabaseTests(TestCase):
             for model in app_config.get_models():
                 model_name = model.__name__
                 if (app_config.label, model_name) not in expected_models:
-                    with self.subTest(f"{app_config.label}.{model_name}"):
+                    model_path = f"{app_config.label}.{model_name}"
+                    with self.subTest(model_path):
                         self.assertFalse(
                             model.objects.exists(),
-                            f"{model_name} is not populated by seed_database",
+                            f"{model_path} is not populated by seed_database",
                         )
