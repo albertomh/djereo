@@ -8,6 +8,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.13.0](https://github.com/albertomh/djereo/compare/v3.12.0...v3.13.0) (2025-10-06)
+
+
+### Features
+
+* Add an e2e recipe to run end-to-end tests locally ([#287](https://github.com/albertomh/djereo/issues/287)) ([3e29759](https://github.com/albertomh/djereo/commit/3e2975998df0ebde32a8835bba4ed61a346cee4e))
+* Custom allauth adapter for fine-grained control ([#292](https://github.com/albertomh/djereo/issues/292)) ([eed3548](https://github.com/albertomh/djereo/commit/eed3548e7db37fb1836d79431f3756e0faf69b25))
+* **test:** Mock responses from third-party services in tests ([#282](https://github.com/albertomh/djereo/issues/282)) ([d1322a9](https://github.com/albertomh/djereo/commit/d1322a93d7cc6fd620025db867e83843d77c4e10))
+
+
+### Bug Fixes
+
+* Seed_database command creates allauth EmailAddress objects ([#291](https://github.com/albertomh/djereo/issues/291)) ([1345e07](https://github.com/albertomh/djereo/commit/1345e0776549bf618bd6b1fc4b1cf60c62ce4706))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.21.0 ([#285](https://github.com/albertomh/djereo/issues/285)) ([1a8210f](https://github.com/albertomh/djereo/commit/1a8210f924d5c6319c3374c06407f46eef72310d))
+
+
+### Documentation
+
+* Document mocking out requests to third-party services in tests ([#284](https://github.com/albertomh/djereo/issues/284)) ([2247c4b](https://github.com/albertomh/djereo/commit/2247c4bc81f66d422679b96c2b149188ac6d038b))
+* Document running e2e tests locally & in CI ([#288](https://github.com/albertomh/djereo/issues/288)) ([2069658](https://github.com/albertomh/djereo/commit/2069658fcd6f8f35adc91b20f2f3344f1fa9a91e))
+
 ## [3.12.0](https://github.com/albertomh/djereo/compare/v3.11.0...v3.12.0) (2025-10-02)
 
 
