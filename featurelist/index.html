@@ -458,7 +458,7 @@ used to output colourful logs:</p>
 <p>When <code>DEBUG=False</code>, as in production, <a href="https://www.structlog.org/" target="\&quot;_blank&quot;">structlog</a>
 is used instead.</p>
 <p>Logging configuration is dynamically generated based on the <code>DEBUG</code> environment variable.
-The <code>LoggingConfigFactory</code> class is used to generate settings for filters, formaters,
+The <code>LoggingConfigFactory</code> class is used to generate settings for filters, formatters,
 handlers and loggers.</p>
 <h2 id="models">Models</h2>
 <p>The core app defines an <code>UuidModel</code> abstract model. Models that subclass it will have
@@ -595,18 +595,19 @@ This custom runner provides:</p>
 override settings for all tests. This is the source of truth for app settings during tests
 and by default sets <code>"DEBUG": False</code>.</p>
 <h4 id="mock-out-requests-with-active_responses">Mock out requests with <code>ACTIVE_RESPONSES</code></h4>
-<p>The custom <code>TestRunner</code> uses <a href="https://github.com/getsentry/responses" target="\&quot;_blank&quot;">responses</a>
-to enable you to mock responses from external services in tests.</p>
+<p>The custom <code>TestRunner</code> uses the <a href="https://github.com/getsentry/responses" target="\&quot;_blank&quot;">responses</a>
+package to enable you to mock responses from external services in tests.</p>
 <p>Mock responses by modifying <code>ACTIVE_RESPONSES</code> in the test class or function:</p>
 <pre><code class="language-python">from testdjereo.test import ACTIVE_RESPONSES
 
-def test_view(self):
-    ACTIVE_RESPONSES.add(
-        responses.GET,
-        &quot;https://example.com/api/resource&quot;,
-        json={&quot;key&quot;: &quot;value&quot;},
-    )
-    ...
+class ViewTests(SimpleTestCase):
+    def test_view(self):
+        ACTIVE_RESPONSES.add(
+            responses.GET,
+            &quot;https://example.com/api/resource&quot;,
+            json={&quot;key&quot;: &quot;value&quot;},
+        )
+        ...
 </code></pre>
 <!-- markdownlint-disable MD013 line-length -->
 <p>If a test exercises a path that calls out to an external service (by using the <code>requests</code>
