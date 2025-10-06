@@ -26,13 +26,14 @@ class TestRunner(DiscoverRunner):
     ```
     from testdjereo.test import ACTIVE_RESPONSES
 
-    def test_view(self):
-        ACTIVE_RESPONSES.add(
-            responses.GET,
-            "https://example.com/api/resource",
-            json={"key": "value"},
-        )
-        ...
+    class ViewTests(SimpleTestCase):
+        def test_view(self):
+            ACTIVE_RESPONSES.add(
+                responses.GET,
+                "https://example.com/api/resource",
+                json={"key": "value"},
+            )
+            ...
     ```
     """
 
