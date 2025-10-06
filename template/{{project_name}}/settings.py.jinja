@@ -342,6 +342,7 @@ if ENABLE_DEBUG_TOOLS:
 
 # django-allauth
 
+ACCOUNT_ADAPTER = "users.django_allauth.adapter.CustomAccountAdapter"
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_LOGIN_METHODS = {"email"}
