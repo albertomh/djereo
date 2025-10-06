@@ -1,3 +1,4 @@
+from allauth.account.models import EmailAddress
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
@@ -42,4 +43,10 @@ class Command(BaseCommand):
 
 
 def create_user(data):  # pragma: no cover
-    get_user_model().objects.create_user(**data)
+    user = get_user_model().objects.create_user(**data)
+    EmailAddress.objects.create(
+        user=user,
+        email=user.email,
+        primary=True,
+        verified=True,
+    )
