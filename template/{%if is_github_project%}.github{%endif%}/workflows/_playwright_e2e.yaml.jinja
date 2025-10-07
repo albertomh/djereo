@@ -41,6 +41,13 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      mailpit:
+        image: axllent/mailpit:v1.27
+        env:
+          TZ: Europe/London
+        ports:
+          - 1025:1025
+          - 8025:8025
     steps:
       - uses: actions/checkout@v5
       - uses: astral-sh/setup-uv@v6
