@@ -15,6 +15,7 @@ env = Env()
 env.read_env()
 
 BASE_URL = "http://127.0.0.1:8000"
+MAILPIT_API_BASE_URL = "http://127.0.0.1:8025"
 
 
 def _launch_browser(headless: bool = True) -> tuple[Playwright, Browser]:
