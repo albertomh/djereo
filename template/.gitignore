@@ -114,3 +114,5 @@ ENV/
 
 *.DS_Store
 *tar.gz
+
+mailpit.db

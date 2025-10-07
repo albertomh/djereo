@@ -37,6 +37,7 @@ manage +args='help': _dev_setup
 
 runserver addrport=default_addrport $PYTHONDEVMODE="1": _dev_setup
   # Disable PYTHONDEVMODE by passing an empty string ie. `just runserver 127.0.0.1:8000 ""`
+  MP_DATABASE=mailpit.db mailpit &
 {% raw %}  @uv run manage.py runserver {{addrport}}{% endraw +%}
 
 shell: _dev_setup
