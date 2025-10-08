@@ -8,6 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.14.0](https://github.com/albertomh/djereo/compare/v3.13.0...v3.14.0) (2025-10-08)
+
+
+### Features
+
+* **ci:** Add a Mailpit service for e2e tests in CI ([#296](https://github.com/albertomh/djereo/issues/296)) ([1ad2a45](https://github.com/albertomh/djereo/commit/1ad2a4593556f0848d70ca18ddde67d7ba4db5fd))
+* **e2e:** Test signup attempt for existing email in gen. project ([#297](https://github.com/albertomh/djereo/issues/297)) ([f61594c](https://github.com/albertomh/djereo/commit/f61594c68753faeee7ff8ffde7049dc24dd8b752))
+* **test:** Use Mailpit for email integration tests ([#295](https://github.com/albertomh/djereo/issues/295)) ([5237f0f](https://github.com/albertomh/djereo/commit/5237f0f294e48e8695e630fcf35cd8bee8cf9305))
+* Use Mailpit as the development SMTP server ([#293](https://github.com/albertomh/djereo/issues/293)) ([3c0c0a1](https://github.com/albertomh/djereo/commit/3c0c0a1d0b3f27b53254a57fd91f363df978976f))
+
+
+### Documentation
+
+* Mention Mailpit (local SMTP server) in documentation ([#298](https://github.com/albertomh/djereo/issues/298)) ([047bc9d](https://github.com/albertomh/djereo/commit/047bc9d3f118b5819f45d9e1bcbbe08817e4e458))
+
 ## [3.13.0](https://github.com/albertomh/djereo/compare/v3.12.0...v3.13.0) (2025-10-06)
 
 
