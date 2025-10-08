@@ -22,6 +22,7 @@ Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
 [![Postgres](https://img.shields.io/badge/Postgres-346791?logo=postgresql&logoColor=ffffff)](https://www.postgresql.org/docs/)
 [![IPython](https://img.shields.io/badge/IP[y]:-3465a4)](https://ipython.readthedocs.io/en/stable/)
 [![structlog](https://img.shields.io/badge/🪵_structlog-b9a198)](https://github.com/hynek/structlog)
+[![Mailpit](https://img.shields.io/badge/📨_Mailpit-00b786)](https://mailpit.axllent.org/docs/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-FAB040?logo=pre-commit&logoColor=1f2d23)](https://github.com/pre-commit/pre-commit)
 [![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json&labelColor=261230&color=d8ff64)](https://github.com/astral-sh/ruff)
 [![biome](https://img.shields.io/badge/Biome-FFFFFF?logo=biome&logoColor=60A5FA)](https://github.com/biomejs/biome)
