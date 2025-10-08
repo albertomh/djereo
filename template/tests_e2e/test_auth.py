@@ -43,6 +43,25 @@ class TestSignUp(AuthTest):
         )
         assert snippet in msg["Snippet"]
 
+    def test_attempt_sign_up_with_existing_email(self, page):
+        page.goto(self.signup_url)
+
+        page.fill("#id_email", self.user_email)
+        page.fill("#id_password1", self.user_password)
+        page.click("button[type=submit]")
+
+        expect(
+            page.get_by_text("Check your email to confirm your account."),
+            "should show ambiguous message",
+        ).to_be_visible()
+        mp_res = requests.get(f"{MAILPIT_API_BASE_URL}/api/v1/messages").json()
+        msg: MailPitMessage = mp_res["messages"][0]
+        snippet = (
+            f"You are receiving this email because you or someone else tried to "
+            f"signup for an account using email address: {self.user_email}"
+        )
+        assert snippet in msg["Snippet"]
+
 
 class TestLogInPage(AuthTest):
     def test_log_in_as_a_regular_user(self, page):
