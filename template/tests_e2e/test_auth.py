@@ -1,9 +1,11 @@
 import random
 import string
 
+import requests
 from playwright.sync_api import expect
 
-from tests_e2e.conftest import BASE_URL
+from tests_e2e import MailPitMessage
+from tests_e2e.conftest import BASE_URL, MAILPIT_API_BASE_URL
 
 
 class AuthTest:
@@ -32,6 +34,14 @@ class TestSignUp(AuthTest):
 
         expect(page).to_have_url(f"{BASE_URL}/")
         expect(page.get_by_text(email), "should be logged in").to_be_visible()
+        mp_res = requests.get(f"{MAILPIT_API_BASE_URL}/api/v1/messages").json()
+        msg: MailPitMessage = mp_res["messages"][0]
+        assert msg["To"][0]["Address"] == email
+        snippet = (
+            f"Hello from example.com! You're receiving this email because user "
+            f"{email.split('@')[0]} has given your email address to register"
+        )
+        assert snippet in msg["Snippet"]
 
 
 class TestLogInPage(AuthTest):

@@ -55,8 +55,11 @@ profile_tests: _test_setup
 e2e $USE_ENV_TEST="1": _test_setup
   #!/usr/bin/env bash
   set -euo pipefail
-   uv run manage.py runserver "" &
+  mailpit &
+  MAILPIT_PID=$!
+  uv run manage.py runserver "" &
   SERVER_PID=$!
   uv run pytest tests_e2e/ || STATUS=$?
   kill $SERVER_PID
+  kill $MAILPIT_PID
   exit ${STATUS:-0}
