@@ -57,6 +57,7 @@ e2e $USE_ENV_TEST="1": _test_setup
   set -euo pipefail
   mailpit &
   MAILPIT_PID=$!
+  uv run manage.py flush --no-input
   uv run manage.py migrate
   uv run manage.py seed_database
   uv run manage.py runserver "" &
