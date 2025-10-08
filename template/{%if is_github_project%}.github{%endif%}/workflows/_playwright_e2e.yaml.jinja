@@ -26,6 +26,7 @@ jobs:
       SECRET_KEY: django-insecure_not-a-secret
       ALLOWED_HOSTS: 127.0.0.1,::1
       CSRF_TRUSTED_ORIGINS: http://127.0.0.1
+      EMAIL_HOST: host.docker.internal
       DATABASE_URL: postgres://{{ project_name }}:password@host.docker.internal:5432/{{ project_name }}
     services:
       postgres:
@@ -41,6 +42,13 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      mailpit:
+        image: axllent/mailpit:v1.27
+        env:
+          TZ: Europe/London
+        ports:
+          - 1025:1025
+          - 8025:8025
     steps:
       - uses: actions/checkout@v5
       - uses: astral-sh/setup-uv@v6
@@ -57,6 +65,7 @@ jobs:
             --env SECRET_KEY \
             --env ALLOWED_HOSTS \
             --env CSRF_TRUSTED_ORIGINS \
+            --env EMAIL_HOST \
             --env DATABASE_URL \
 {% raw %}            ${{ inputs.image_address }} \{% endraw +%}
             /bin/bash -c "python manage.py migrate && python manage.py seed_database"

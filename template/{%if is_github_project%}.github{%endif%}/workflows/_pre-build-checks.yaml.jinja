@@ -74,8 +74,8 @@ jobs:
       postgres:
         image: postgres:17
         env:
-          POSTGRES_DB: {{ project_name }}
-          POSTGRES_USER: {{ project_name }}
+          POSTGRES_DB: test_{{ project_name }}
+          POSTGRES_USER: test_{{ project_name }}
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432

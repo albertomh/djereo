@@ -204,6 +204,10 @@ PERMISSIONS_POLICY: dict[str, list] = {
 SITE_ID = 1
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+{% if is_github_project %}
+# env var needed so it can be set to `host.docker.internal` in GitHub Actions
+EMAIL_HOST = env.str("EMAIL_HOST", "localhost")
+{% endif %}
 EMAIL_PORT = 1025
 
 

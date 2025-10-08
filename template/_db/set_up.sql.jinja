@@ -15,3 +15,10 @@ ALTER USER {{project_name}} CREATEDB;
 COMMIT;
 
 CREATE DATABASE {{project_name}} OWNER {{project_name}};
+
+BEGIN;
+CREATE USER test_{{project_name}} WITH PASSWORD :'APP_USER_PASSWORD';
+ALTER USER test_{{project_name}} CREATEDB;
+COMMIT;
+
+CREATE DATABASE test_{{project_name}} OWNER test_{{project_name}};
