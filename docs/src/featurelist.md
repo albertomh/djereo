@@ -306,6 +306,12 @@ Logging configuration is dynamically generated based on the `DEBUG` environment 
 The `LoggingConfigFactory` class is used to generate settings for filters, formatters,
 handlers and loggers.
 
+## 📨 Local SMTP server (Mailpit)
+
+Development entrypoints (justfile recipes, e2e tests) assume that [Mailpit](https://mailpit.axllent.org/docs/){target=\"_blank"}
+is installed and available locally. This is a simple SMTP server that will run alongside
+your application locally to aid development. It can be accessed at <http://127.0.0.1:8025>.
+
 ## Models
 
 The core app defines an `UuidModel` abstract model. Models that subclass it will have
