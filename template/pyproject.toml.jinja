@@ -36,6 +36,7 @@ dependencies = [
 
 [dependency-groups]
 test = [
+    "axe-playwright-python>=0.1.5",
     {% if use_htmx %}
     "beautifulsoup4>=4.13.3,<5.0.0",
     {% endif %}
@@ -112,6 +113,11 @@ select = [
 
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
 "{{project_name}}.settings".msg = "Do not import project settings module - use `from django.conf import settings` instead"
+
+[tool.pytest.ini_options]
+markers = [
+    "axe",
+]
 
 [tool.coverage.report]
 omit = [

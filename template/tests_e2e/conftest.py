@@ -7,6 +7,7 @@ import time
 
 import pytest
 import requests  # type: ignore
+from axe_playwright_python.sync_playwright import Axe
 from environs import Env
 from playwright.sync_api import Browser, Playwright, sync_playwright
 from playwright.sync_api import Error as PlaywrightError
@@ -75,3 +76,9 @@ def page(browser):
     page = context.new_page()
     yield page
     context.close()
+
+
+@pytest.fixture
+def axe():
+    """Provide an Axe instance for accessibility testing."""
+    return Axe()
