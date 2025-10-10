@@ -40,8 +40,14 @@ jobs:
 {% raw %}            ghcr.io/${{ env.REPO_NAME }}/${{ github.ref_name }}:latest,{% endraw +%}
 {% raw %}            ghcr.io/${{ env.REPO_NAME }}/${{ github.ref_name }}:${{ env.SHA_SHORT }},{% endraw +%}
 
-  playwright_e2e:
+  e2e:
     needs: containerise
     uses: ./.github/workflows/_playwright_e2e.yaml
+    with:
+      image_address: {% raw %}${{ needs.containerise.outputs.image_address }}{% endraw +%}
+
+  accessibility:
+    needs: containerise
+    uses: ./.github/workflows/_playwright_axe.yaml
     with:
       image_address: {% raw %}${{ needs.containerise.outputs.image_address }}{% endraw +%}

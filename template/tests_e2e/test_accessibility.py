@@ -7,6 +7,7 @@ from playwright.sync_api import Page
 from tests_e2e.conftest import BASE_URL
 
 
+@pytest.mark.axe
 class TestAccessibility:
     @pytest.mark.parametrize(
         "url",
