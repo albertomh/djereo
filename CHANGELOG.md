@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.15.0](https://github.com/albertomh/djereo/compare/v3.14.0...v3.15.0) (2025-10-10)
+
+
+### Features
+
+* **ci:** Run e2e accessibility tests (axe) in CI ([#301](https://github.com/albertomh/djereo/issues/301)) ([4feba8f](https://github.com/albertomh/djereo/commit/4feba8f0760ce14e71cfc846a9c1ff16dcbd3e18))
+* **e2e:** Add automated accessibility tests to gen. project ([#299](https://github.com/albertomh/djereo/issues/299)) ([459c111](https://github.com/albertomh/djereo/commit/459c111a6467b152e461a13bcd4a1a11e1b09764))
+
 ## [3.14.0](https://github.com/albertomh/djereo/compare/v3.13.0...v3.14.0) (2025-10-08)
 
 
