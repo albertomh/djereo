@@ -1,15 +1,15 @@
-# Run playwright E2E tests in CI.
+# Run Playwright accessibility tests in CI.
 #
 # Usage:
 # ```
 # jobs:
-#   e2e:
+#   accessibility:
 #     needs: containerise
-#     uses: ./.github/workflows/_playwright_e2e.yaml
+#     uses: ./.github/workflows/_playwright_axe.yaml
 #     with:
 #       image_address: {% raw %}${{ needs.containerise.outputs.image_address }}{% endraw +%}
 # ```
-name: E2E
+name: Accessibility tests
 
 on:
   workflow_call:
@@ -19,14 +19,14 @@ on:
         type: string
 
 jobs:
-  playwright:
+  axe:
     runs-on: ubuntu-24.04
     env:
       USE_ENV_TEST: "1"
       SECRET_KEY: django-insecure_not-a-secret
       ALLOWED_HOSTS: 127.0.0.1,::1
       CSRF_TRUSTED_ORIGINS: http://127.0.0.1
-      EMAIL_HOST: mailpit
+      EMAIL_HOST: host.docker.internal
       DATABASE_URL: postgres://{{ project_name }}:password@host.docker.internal:5432/{{ project_name }}
     services:
       postgres:
@@ -42,6 +42,13 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      mailpit:
+        image: axllent/mailpit:v1.27
+        env:
+          TZ: Europe/London
+        ports:
+          - 1025:1025
+          - 8025:8025
     steps:
       - uses: actions/checkout@v5
       - uses: astral-sh/setup-uv@v6
@@ -49,19 +56,6 @@ jobs:
           version: "0.8.22"
           enable-cache: true
           prune-cache: false
-
-      - name: Create Docker network
-        run: docker network create test-network
-
-      - name: Run Mailpit in network
-        run: |
-            docker run --detach \
-            --name mailpit \
-            --network test-network \
-            --env TZ=Europe/London \
-            -p 1025:1025 \
-            -p 8025:8025 \
-            axllent/mailpit:v1.27
 
       - name: Apply migrations and seed database
         run: |
@@ -78,7 +72,6 @@ jobs:
       - name: Run webapp in the background
         run: |
           docker run --detach \
-            --network test-network \
             --add-host=host.docker.internal:host-gateway \
             --env USE_ENV_TEST \
             --env SECRET_KEY \
@@ -88,7 +81,7 @@ jobs:
             --env DATABASE_URL \
             --env PORT=8000 \
             --publish 8000:8000 \
-            --volume {{ project_name }}_static:/app/static \
+            --volume testdjereo_static:/app/static \
 {% raw %}            ${{ inputs.image_address }}{% endraw +%}
 
       - name: Cache Playwright browsers
@@ -103,4 +96,4 @@ jobs:
       - if: {% raw %}${{ steps.cache-playwright.outputs.cache-hit != 'true' }}{% endraw +%}
         run: uv run playwright install --with-deps chromium
 
-      - run: uv run pytest tests_e2e/ -m "not axe"
+      - run: uv run pytest tests_e2e/ -m axe
