@@ -11,7 +11,7 @@ from pathlib import Path
 import nox
 
 # https://endoflife.date/python
-py_versions = ["3.12", "3.13"]
+py_versions = ["3.13", "3.14"]
 OLDEST_PY, *MIDDLE_PY, LATEST_PY = py_versions
 
 PROJECT_ROOT_DIR = Path(__file__).resolve().parent
