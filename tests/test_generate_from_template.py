@@ -138,7 +138,9 @@ def test_generated_project_tests_run_successfully(
     test_project_dir: Path,
     generate_test_project_with_db,
 ):
-    result: RunningCommand = nox(_cwd=test_project_dir, _return_cmd=True)
+    result: RunningCommand = nox(
+        "--", "--parallel=1", _cwd=test_project_dir, _return_cmd=True
+    )
 
     assert result.exit_code == 0, f"Pytest failed:\n{result.stdout}\n{result.stderr}"
 
