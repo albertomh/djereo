@@ -78,6 +78,7 @@ def tests(session: nox.Session):
         )
 
     try:
+        session.env["NOX_SESSION"] = session.name
         session.run("pytest", "tests/", *pytest_args, *posargs)
     finally:
         if os.getenv("CI") != "true":

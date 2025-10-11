@@ -55,11 +55,18 @@ def test_project_dir(
 @pytest.fixture
 def copier_input_data(test_project_name: str) -> dict:
     """Answers to core djereo template questions."""
-    return {
+    input_data = {
         "project_name": test_project_name,
         "author_name": "Miguel de Cervantes",
         "author_email": "mike@alcala.net",
     }
+
+    nox_session = os.getenv("NOX_SESSION", "")
+    match = re.search(r"(\d+\.\d+)", nox_session)
+    if match:
+        input_data["min_python_version"] = match.group(1)
+
+    return input_data
 
 
 @pytest.fixture
