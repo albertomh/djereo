@@ -42,7 +42,11 @@ class AuthUser(UpdatedAtModel, UuidModel, AbstractUser):
 
 
 class UserProfile(UuidModel):
+    {% if min_python_version == '3.13' %}
     user: models.OneToOneField["UserProfile", AuthUser] = models.OneToOneField(
+    {% else %}
+    user: models.OneToOneField[UserProfile, AuthUser] = models.OneToOneField(
+    {% endif %}
         "users.AuthUser",
         on_delete=models.CASCADE,
     )

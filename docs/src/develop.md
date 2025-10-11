@@ -164,7 +164,7 @@ nox -k tests
 Run only a given module:
 
 ```sh
-nox [--session tests-3.13] -- -k test_validators
+nox [--session tests-3.14] -- -k test_validators
 ```
 
 Tests have marks, allowing you to run only a tagged subset:
