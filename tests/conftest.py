@@ -10,7 +10,7 @@ import pytest
 from copier.cli import CopierApp
 from sh import python as sh_python
 
-from tests._utils import set_up_postgres, tear_down_postgres
+from tests._utils import get_postgres_host, set_up_postgres, tear_down_postgres
 
 TESTS_DIR = Path(__file__).resolve().parent
 DJEREO_TESTS_SANDBOX_DIR = Path("/", "tmp", "djereo_test")
@@ -112,12 +112,13 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
                 _rewrite_password_in_dotenv(file)
 
         if IS_CI:
+            postgres_host = get_postgres_host()
             test_dotenv_path = test_project_dir / ".env.test"
             with test_dotenv_path.open("r+") as file:
                 test_env_content = file.read()
                 re.sub(
                     r"DATABASE_URL=.*",
-                    'DATABASE_URL="postgres://test_djereo:password@localhost:5432/test_djereo"',
+                    f'DATABASE_URL="postgres://test_djereo:password@{postgres_host}:5432/test_djereo"',
                     test_env_content,
                 )
                 file.seek(0)

@@ -54,6 +54,12 @@ def get_postgres_user() -> str:
     return get_current_os_user()
 
 
+def get_postgres_host() -> str:
+    if in_ci():
+        return "host.docker.internal"
+    return "localhost"
+
+
 def set_up_postgres(test_project_dir: Path) -> Callable[[], None]:
     if in_ci():
         os.environ["PGPASSWORD"] = "password"
@@ -62,7 +68,7 @@ def set_up_postgres(test_project_dir: Path) -> Callable[[], None]:
         "--user",
         get_postgres_user(),
         "--host",
-        "localhost",
+        get_postgres_host(),
         "--dbname",
         "postgres",
         "--set=APP_USER_PASSWORD=password",
@@ -80,7 +86,7 @@ def tear_down_postgres(test_project_dir: Path):
         "--user",
         get_postgres_user(),
         "--host",
-        "localhost",
+        get_postgres_host(),
         "--dbname",
         "postgres",
         "--file",
