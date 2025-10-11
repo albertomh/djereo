@@ -14,9 +14,9 @@ min_python_version:
     help: "What is the minimum compatible version of Python?"
     type: str
     choices:
-        - "3.12"
         - "3.13"
-    default: "3.12"
+        - "3.14"
+    default: "3.14"
 
 django_version:
     help: "What version of Django do you wish to use?"
