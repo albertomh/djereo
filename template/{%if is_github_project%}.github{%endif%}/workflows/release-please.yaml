@@ -49,7 +49,6 @@ jobs:
         with:
           version: "0.8.22"
           enable-cache: true
-          prune-cache: false
       - run: uv lock
         if: ${{ steps.release.outputs.prs_created == 'true' }}
         shell: bash

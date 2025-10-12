@@ -15,45 +15,45 @@ requires-python = ">={{min_python_version}}"
 dependencies = [
     "django-alive>=2.0.0,<3.0.0",
     "django>={{django_version}},<{{django_ver_major_next}}.0",
-    "django-allauth>=65.4.1,<66.0.0",
+    "django-allauth>=65.12.0,<66.0.0",
     "django-csp>=4.0,<5.0",
     {% if use_htmx %}
-    "django-htmx>=1.23.0,<2.0.0",
+    "django-htmx>=1.26.0,<2.0.0",
     {% endif %}
-    "django-linear-migrations>=2.16.0,<3.0.0",
-    "django-permissions-policy>=4.25.0,<5.0.0",
-    "django-structlog>=9.0.1,<10.0.0",
-    "django-version-checks>=1.13.0,<2.0.0",
+    "django-linear-migrations>=2.19.0,<3.0.0",
+    "django-permissions-policy>=4.28.0,<5.0.0",
+    "django-structlog>=9.1.1,<10.0.0",
+    "django-version-checks>=1.16.0,<2.0.0",
     {% if use_django_waffle %}
     "django-waffle>=5.0.0,<6.0.0",
     {% endif %}
-    "environs[django]>=14.1.0,<15.0.0",
+    "environs[django]>=14.3.0,<15.0.0",
     "gunicorn>=23.0.0,<24.0.0",
-    "psycopg[binary]>=3.2.4,<4.0.0",
+    "psycopg[binary]>=3.2.10,<4.0.0",
     "psycopg-pool>=3.2.6,<4.0.0",
-    "whitenoise[brotli]>=6.8.2,<7.0.0",
+    "whitenoise[brotli]>=6.11.0,<7.0.0",
 ]
 
 [dependency-groups]
 test = [
     "axe-playwright-python>=0.1.5",
     {% if use_htmx %}
-    "beautifulsoup4>=4.13.3,<5.0.0",
+    "beautifulsoup4>=4.14.2,<5.0.0",
     {% endif %}
-    "coverage>=7.6.7",
+    "coverage>=7.10.7,<8.0.0",
     "factory-boy>=3.3.3,<4.0.0",
     "parameterized>=0.9.0,<1.0.0",
-    "pytest-playwright>=0.7.0",
+    "pytest-playwright>=0.7.1",
     "requests>=2.32.5,<3.0.0",
     "responses>=0.25.8",
     "tblib>=3.1.0",
 ]
 dev = [
-    "django-browser-reload>=1.17.0",
-    "django-debug-toolbar>=6.0.0",
+    "django-browser-reload>=1.21.0",
+    "django-debug-toolbar>=6.0.0,<7.0.0",
     "ipdb>=0.13.13",
-    "ipython>=9.2.0",
-    "rich>=14.0.0",
+    "ipython>=9.6.0,<10.0.0",
+    "rich>=14.2.0",
 ]
 
 {% if is_github_project %}

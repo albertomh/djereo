@@ -31,7 +31,6 @@ runs:
       with:
         version: "0.8.22"
         enable-cache: true
-        prune-cache: false
     - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
       shell: bash
     - uses: actions/cache@v4

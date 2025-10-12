@@ -30,7 +30,6 @@ runs:
       with:
         version: "0.8.22"
         enable-cache: true
-        prune-cache: false
     - uses: extractions/setup-just@v3
     - run: |
         if [[ "${{ inputs.deploy }}" == "true" ]]; then

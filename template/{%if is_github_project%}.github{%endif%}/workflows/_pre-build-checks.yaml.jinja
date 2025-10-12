@@ -90,7 +90,6 @@ jobs:
         with:
           version: "0.8.22"
           enable-cache: true
-          prune-cache: false
       - uses: wntrblm/nox@2025.05.01
       - run: nox --session {% raw %}"${{ matrix.session }}"{% endraw +%}
 
