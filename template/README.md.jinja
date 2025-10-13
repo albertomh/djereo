@@ -181,7 +181,7 @@ To cut a release, simply merge the release pull request.
 ### GitHub Personal Access Token
 
 In order for Release Please to automate the above process, a GitHub Actions secret called
-`RELEASE_PLEASE_TOKEN` must exist in GitHub (under `github.com/<user>/<repo>/settings/secrets/actions`).
+`RELEASE_PLEASE_TOKEN` must exist in GitHub (under `github.com/<user>/{{project_name}}/settings/secrets/actions`).
 The contents of this secret must be a Personal Access Token (PAT) with the following permissions:
 
 ```text
