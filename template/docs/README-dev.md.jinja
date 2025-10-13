@@ -264,7 +264,7 @@ is the source of truth for the latest SemVer tag.
 for Release Please to accurately generate changelogs and calculate new SemVer tags.
 
 In order for Release Please to automate the above process, a GitHub Actions 'repository secret'
-called `RELEASE_PLEASE_TOKEN` must exist in GitHub (under `github.com/<user>/<repo>/secrets/actions`).
+called `RELEASE_PLEASE_TOKEN` must exist in GitHub (under `github.com/<user>/{{project_name}}/secrets/actions`).
 The contents of this secret must be a Personal Access Token (PAT) with the following permissions:
 
 ```yaml

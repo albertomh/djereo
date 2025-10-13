@@ -5,7 +5,7 @@
 # The following click-ops step must be taken to allow this action to propagate a secret
 # key when running the django-checks action in deploy mode:
 # 1. Populate a GitHub Actions secret called `DJANGO_SECRET_KEY` with a random string at
-#    least 50 characters long in `github.com/albertomh/djereo/settings/secrets/actions`.
+#    least 50 characters long in `github.com/<user>/{{project_name}}/settings/secrets/actions`.
 
 name: on-tag
 
@@ -21,7 +21,7 @@ jobs:
     with:
       django_checks_deploy: 'true'
     secrets:
-      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DJANGO_SECRET_KEY: {% raw %}${{ secrets.DJANGO_SECRET_KEY }}{% endraw +%}
 
   containerise:
     needs:
@@ -30,12 +30,12 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV
+{% raw %}          echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV{% endraw +%}
       - uses: ./.github/actions/containerise
         with:
           dockerfile: _deploy/deploy.Dockerfile
-          username: ${{ github.actor }}
-          password: ${{ github.token }}
+{% raw %}          username: ${{ github.actor }}{% endraw +%}
+{% raw %}          password: ${{ github.token }}{% endraw +%}
           tags:
-            ghcr.io/${{ env.REPO_NAME }}:latest,
-            ghcr.io/${{ env.REPO_NAME }}:${{ github.ref_name }},
+{% raw %}            ghcr.io/${{ env.REPO_NAME }}:latest,{% endraw +%}
+{% raw %}            ghcr.io/${{ env.REPO_NAME }}:${{ github.ref_name }},{% endraw +%}
