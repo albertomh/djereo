@@ -22,7 +22,7 @@ repos:
       - id: check-case-conflict
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.20.0
+    rev: v3.21.0
     hooks:
       - id: pyupgrade
         args: ["--py{{min_python_version.replace('.', '')}}-plus"]
@@ -35,7 +35,7 @@ repos:
         exclude: '\.pdbrc$'
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.13.1
+    rev: v0.14.0
     hooks:
       - id: ruff-check
         args: ["--fix"]
@@ -48,7 +48,7 @@ repos:
         args: ["--config", ".markdownlint-cli2.yaml"]
 
   - repo: https://github.com/biomejs/pre-commit
-    rev: v2.2.4
+    rev: v2.2.6
     hooks:
       - id: biome-check
         exclude: '(\.*htmx.*\.min\.js|.*/?mvp\.css)'
@@ -60,13 +60,13 @@ repos:
         args: [--target-version, "{{django_version}}"]
 
   - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.28.0
+    rev: 1.29.0
     hooks:
       - id: django-upgrade
         args: [--target-version, "{{django_version}}"]
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.37.2
+    rev: v1.38.1
     hooks:
       - id: typos
         # Overwrite <https://github.com/crate-ci/typos/blob/master/.pre-commit-hooks.yaml>
@@ -74,7 +74,7 @@ repos:
         args: [--force-exclude]
 
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v9.22.0
+    rev: v9.23.0
     hooks:
       - id: commitlint
         stages: ["commit-msg"]
