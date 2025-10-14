@@ -41,7 +41,7 @@ jobs:
         with:
           path: .nox-sessions.json
           key: {% raw %}nox-sessions-${{ runner.os }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}{% endraw +%}
-      - uses: wntrblm/nox@2025.05.01
+      - uses: wntrblm/nox@2025.10.16
         if: steps.cache-sessions.outputs.cache-hit != 'true'
       - id: set-matrix
         shell: bash
@@ -90,7 +90,7 @@ jobs:
         with:
           version: "0.9.2"
           enable-cache: true
-      - uses: wntrblm/nox@2025.05.01
+      - uses: wntrblm/nox@2025.10.16
       - run: nox --session {% raw %}"${{ matrix.session }}"{% endraw +%}
 
   django:
