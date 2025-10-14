@@ -49,9 +49,14 @@ def _effective_flags(session: nox.Session) -> list[str]:
     else:
         conditional_flags.append("--keepdb")
 
-    test_processes = 2
+    parallel_arg = [p for p in posargs if p.startswith("--parallel")]
+    if parallel_arg:
+        test_processes = int(parallel_arg[0].split("=")[1])
+    else:
+        test_processes = 2
     if "--pdb" in posargs:
         test_processes = 1
+    posargs = [p for p in posargs if not p.startswith("--parallel")]
     conditional_flags.append(f"--parallel={test_processes}")
 
     return [*BASE_FLAGS, *conditional_flags, *posargs]
