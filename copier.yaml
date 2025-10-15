@@ -31,10 +31,10 @@ postgres_version:
     help: "What version of Postgres do you wish to use?"
     type: str
     choices:
-        - "15"
         - "16"
         - "17"
-    default: "17"
+        - "18"
+    default: "18"
 
 use_htmx:
     help: "Do you wish to use htmx for the frontend?"
