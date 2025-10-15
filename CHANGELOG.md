@@ -8,6 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.16.0](https://github.com/albertomh/djereo/compare/v3.15.0...v3.16.0) (2025-10-15)
+
+
+### Features
+
+* Enable gen. projects to use Postgres 18 ([#310](https://github.com/albertomh/djereo/issues/310)) ([3f311ac](https://github.com/albertomh/djereo/commit/3f311ac3857fe1ce51c8b591ad7c570d5761e1a4))
+
+
+### Bug Fixes
+
+* **test:** Improve handling of --parallel in noxfile ([#308](https://github.com/albertomh/djereo/issues/308)) ([304168b](https://github.com/albertomh/djereo/commit/304168b2774ba6240f46846e12468197e5ab5b95))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.23.0 ([#305](https://github.com/albertomh/djereo/issues/305)) ([13b2d9b](https://github.com/albertomh/djereo/commit/13b2d9bce2d4802b47fbe3e4be69f3631c4490cf))
+
 ## [3.15.0](https://github.com/albertomh/djereo/compare/v3.14.0...v3.15.0) (2025-10-11)
 
 
