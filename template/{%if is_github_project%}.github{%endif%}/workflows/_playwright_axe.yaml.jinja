@@ -30,7 +30,7 @@ jobs:
       DATABASE_URL: postgres://{{ project_name }}:password@host.docker.internal:5432/{{ project_name }}
     services:
       postgres:
-        image: postgres:17
+        image: postgres:18
         env:
           POSTGRES_DB: {{ project_name }}
           POSTGRES_USER: {{ project_name }}
