@@ -30,7 +30,7 @@ jobs:
       with:
         path: .nox-py-versions.json
         key: nox-py-versions-${{ runner.os }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}
-    - uses: wntrblm/nox@2025.05.01
+    - uses: wntrblm/nox@2025.10.16
       if: steps.cache-nox-py-versions.outputs.cache-hit != 'true'
     - id: set-matrix
       shell: bash
@@ -84,7 +84,7 @@ jobs:
           enable-cache: true
       # Not redundant! Must be installed since used by integration tests in the next step.
       - uses: extractions/setup-just@v3
-      - uses: wntrblm/nox@2025.05.01
+      - uses: wntrblm/nox@2025.10.16
         with:
           python-versions: "${{ matrix.py_version }}"
       - run: nox --session "tests-${{ matrix.py_version }}"
