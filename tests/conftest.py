@@ -2,9 +2,9 @@ import os
 import re
 import shutil
 import uuid
+from collections.abc import Callable
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Callable
 
 import pytest
 from copier.cli import CopierApp

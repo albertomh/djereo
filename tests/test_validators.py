@@ -1,7 +1,7 @@
 # Test the custom validators defined for certain questions in `copier.yaml`.
 
 
-from typing import Callable
+from collections.abc import Callable
 
 import pytest
 
