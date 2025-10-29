@@ -1,7 +1,7 @@
 # Test the effects of the tasks that run after generating or updating a project.
 
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
 import pytest
 

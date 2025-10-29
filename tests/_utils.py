@@ -1,8 +1,8 @@
 import os
 import re
 import socket
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
 from sh import ErrorReturnCode, git, psql, whoami
 
