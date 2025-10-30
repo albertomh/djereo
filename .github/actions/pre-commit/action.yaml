@@ -17,5 +17,5 @@ runs:
         # Skip hook since it causes issues when merging PRs, and already enforced by GitHub config.
         echo "SKIP=no-commit-to-branch" >> $GITHUB_ENV
       shell: bash
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
     - uses: pre-commit/action@v3.0.1
