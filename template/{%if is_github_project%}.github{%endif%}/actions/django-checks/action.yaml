@@ -18,10 +18,6 @@ inputs:
     description: 'Run checks in deploy mode'
     required: false
     default: 'false'
-  django-secret-key:
-    description: 'Secret key for the Django webapp'
-    required: false
-    default: ''
 
 runs:
   using: 'composite'
@@ -32,10 +28,12 @@ runs:
         enable-cache: true
     - uses: extractions/setup-just@v3
     - run: |
+        # write out all lines in .env _except_ the insecure default SECRET_KEY and
+        # generate a new, secure secret key and append it to .env
         if [[ "${{ inputs.deploy }}" == "true" ]]; then
             cp _deploy/.env.deploy .env
             grep -v '^SECRET_KEY=' .env > .env.tmp && mv .env.tmp .env
-            echo "SECRET_KEY=${{ inputs.django-secret-key }}" >> .env
+            printf 'SECRET_KEY=%s\n' "$(tr -dc 'a-zA-Z0-9!@#$%^&*(-_=+)' < /dev/urandom | head -c 50)" >> .env
             PYTHONDEVMODE=1 just manage check --deploy --fail-level WARNING
         else
             cp .env.in .env
