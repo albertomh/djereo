@@ -175,7 +175,7 @@ nox -- -m unit
 nox -- -m "not smoke"
 ```
 
-See the `tool.pytest.ini_options` table in [pyproject.toml](https://github.com/albertomh/djereo/blob/main/pyproject.toml){target=\"_blank"}
+See the `tool.pytest` table in [pyproject.toml](https://github.com/albertomh/djereo/blob/main/pyproject.toml){target=\"_blank"}
 for a list of all marks.
 
 ### Tests in GitHub Actions
