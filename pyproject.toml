@@ -7,18 +7,18 @@ authors = [
 ]
 readme = "README.md"
 license-files = ["LICENSE"]
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
-    "ipython>=9.6.0,<10.0.0",
+    "ipython>=9.7.0,<10.0.0",
 ]
 
 [dependency-groups]
 test = [
     "beautifulsoup4>=4.14.2,<5.0.0",
-    "copier>=9.10.2,<10.0.0",
-    "pip>=25.2,<26.0.0",
-    "pre-commit>=4.3.0,<5.0.0",
-    "pytest>=8.4.2,<9.0.0",
+    "copier>=9.10.3,<10.0.0",
+    "pip>=25.3,<26.0.0",
+    "pre-commit>=4.4.0,<5.0.0",
+    "pytest>=9.0.0,<10.0.0",
     "pytest-randomly>=4.0.1,<5.0.0",
     "pytest-xdist>=3.8.0,<4.0.0",
     "pyyaml>=6.0.3,<7.0.0",
@@ -34,8 +34,8 @@ Repository = "https://github.com/albertomh/djereo"
 # allow `pip install -e .` to find the project package
 include = ["djereo"]
 
-[tool.pytest.ini_options]
-addopts = "--pdbcls=IPython.terminal.debugger:Pdb"
+[tool.pytest]
+addopts = ["--pdbcls=IPython.terminal.debugger:Pdb"]
 markers = [
     "integration",
     "slow",

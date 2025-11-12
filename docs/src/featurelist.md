@@ -42,7 +42,7 @@ more information.
 #### Python version
 
 `djereo` (and its base, [pycliche](https://github.com/albertomh/pycliche){target=\"_blank"})
-support Python 3.12 and above. The user's choice is recorded in a [.python-version](https://github.com/albertomh/djereo/blob/main/template/.python-version.jinja){target=\"_blank"}
+support Python 3.13 and above. The user's choice is recorded in a [.python-version](https://github.com/albertomh/djereo/blob/main/template/.python-version.jinja){target=\"_blank"}
 file and in the `requires-python` field of [pyproject.toml](https://github.com/albertomh/djereo/blob/main/template/pyproject.toml.jinja){target=\"_blank"}.
 
 See [https://endoflife.date/python](https://endoflife.date/python){target=\"_blank"} for

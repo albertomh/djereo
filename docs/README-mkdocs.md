@@ -6,7 +6,7 @@ This directory holds the source to a `mkdocs` microsite containing the documenta
 
 To work on `djereo`'s docs the following must be available locally:
 
-- [Python 3.12](https://docs.python.org/3.12/) or above
+- [Python 3.13](https://docs.python.org/3.13/) or above
 - [uv](https://docs.astral.sh/uv/)
 
 ## Quickstart: run locally

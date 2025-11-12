@@ -14,7 +14,7 @@ simplicity.
 
 Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
 
-[![python >= 3.12](https://img.shields.io/badge/>=3.12-4584b6?logo=python&logoColor=ffde57)](https://docs.python.org/3.12/whatsnew/3.12.html)
+[![python >= 3.13](https://img.shields.io/badge/>=3.13-4584b6?logo=python&logoColor=ffde57)](https://docs.python.org/3.13/whatsnew/3.13.html)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/albertomh/djereo/main/docs/media/copier-badge.json)](https://github.com/copier-org/copier)
 [![justfile](https://img.shields.io/badge/🤖_justfile-EFF1F3)](https://github.com/casey/just)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json&labelColor=261230&color=de60e9)](https://github.com/astral-sh/uv)
@@ -79,10 +79,13 @@ This section covers how to create a Django project using `djereo` as a template.
 
 The following must be available locally:
 
-- [Python 3.12](https://docs.python.org/3.12/) or above
+- [Python 3.13](https://docs.python.org/3.13/) or above
 - [Postgres](https://www.postgresql.org/download/)
 - [uv](https://docs.astral.sh/uv/)
 - [just](https://github.com/casey/just)
+
+`djereo` supports the last two versions of Python - the ones with bugfix support as per
+<https://devguide.python.org/versions/>.
 
 ### Bootstrap a new Django project
 
