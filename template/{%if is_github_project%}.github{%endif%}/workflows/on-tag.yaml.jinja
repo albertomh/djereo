@@ -27,8 +27,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
-      - run: |
-{% raw %}          echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV{% endraw +%}
+      - run: {% raw %}echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV{% endraw +%}
       - uses: ./.github/actions/containerise
         with:
           dockerfile: _deploy/deploy.Dockerfile
