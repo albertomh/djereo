@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.16.1](https://github.com/albertomh/djereo/compare/v3.16.0...v3.16.1) (2025-11-12)
+
+
+### Bug Fixes
+
+* Markdownlint only ignores CHANGELOG if in a github project ([#316](https://github.com/albertomh/djereo/issues/316)) ([efde095](https://github.com/albertomh/djereo/commit/efde0958207149400f48a41eec12ce836d0e89ad))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.25.0 ([#318](https://github.com/albertomh/djereo/issues/318)) ([4c7a995](https://github.com/albertomh/djereo/commit/4c7a995681772a4755b48a148062ae5aa05796b8))
+
 ## [3.16.0](https://github.com/albertomh/djereo/compare/v3.15.0...v3.16.0) (2025-10-30)
 
 
