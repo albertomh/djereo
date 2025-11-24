@@ -23,7 +23,7 @@ jobs:
   pre_commit:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/pre-commit
 
   generate-nox-sessions:
@@ -31,14 +31,14 @@ jobs:
     outputs:
       session: {% raw %}${{ steps.set-matrix.outputs.session }}{% endraw +%}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Cache nox session list
         id: cache-sessions
         uses: actions/cache@v4
         with:
           path: .nox-sessions.json
           key: {% raw %}nox-sessions-${{ runner.os }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}{% endraw +%}
-      - uses: wntrblm/nox@2025.10.16
+      - uses: wntrblm/nox@2025.11.12
         if: steps.cache-sessions.outputs.cache-hit != 'true'
       - id: set-matrix
         shell: bash
@@ -82,12 +82,12 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: astral-sh/setup-uv@v7
         with:
-          version: "0.9.2"
+          version: "0.9.11"
           enable-cache: true
-      - uses: wntrblm/nox@2025.10.16
+      - uses: wntrblm/nox@2025.11.12
       - run: nox --session {% raw %}"${{ matrix.session }}"{% endraw +%}
 
   django:
@@ -95,7 +95,7 @@ jobs:
       - pre_commit
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/django-checks
         with:
           deploy: {% raw %}${{ inputs.django_checks_deploy }}{% endraw +%}
