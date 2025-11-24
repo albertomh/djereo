@@ -41,7 +41,7 @@ jobs:
       # Update the version in uv.lock only if release-please created or updated a Pull Request.
       # Otherwise the 'checkout' step fails because the 'release-...' branch does not exist.
       # Avoids attempting a uv.lock update immediately after a release-please PR is merged.
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         if: ${{ steps.release.outputs.prs_created == 'true' }}
         with:
           ref: release-please--branches--main
