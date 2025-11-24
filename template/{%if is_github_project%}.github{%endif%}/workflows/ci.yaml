@@ -26,7 +26,7 @@ jobs:
     outputs:
       image_address: ${{ steps.containerise.outputs.image_address }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - run: |
           echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV
           echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV

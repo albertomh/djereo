@@ -15,9 +15,9 @@ dependencies = [
 [dependency-groups]
 test = [
     "beautifulsoup4>=4.14.2,<5.0.0",
-    "copier>=9.10.3,<10.0.0",
+    "copier>=9.11.0,<10.0.0",
     "pip>=25.3,<26.0.0",
-    "pre-commit>=4.4.0,<5.0.0",
+    "pre-commit>=4.5.0,<5.0.0",
     "pytest>=9.0.0,<10.0.0",
     "pytest-randomly>=4.0.1,<5.0.0",
     "pytest-xdist>=3.8.0,<4.0.0",
