@@ -52,9 +52,12 @@ def pytest_sessionstart(session):
         pytest.exit("Startup check failed", returncode=1)
 
     finally:
-        context.close()
-        browser.close()
-        playwright.stop()
+        if context is not None:
+            context.close()
+        if browser is not None:
+            browser.close()
+        if playwright is not None:
+            playwright.stop()
 
 
 @pytest.fixture(scope="session")
@@ -75,7 +78,8 @@ def page(browser):
     context = browser.new_context()
     page = context.new_page()
     yield page
-    context.close()
+    if context is not None:
+        context.close()
 
 
 @pytest.fixture
