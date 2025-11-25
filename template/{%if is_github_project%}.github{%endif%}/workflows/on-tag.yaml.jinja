@@ -11,7 +11,7 @@ name: on-tag
 
 on:
   push:
-    # run this workflow only if the tag matches the format 'v<semver>'
+    # run this workflow only if the tag matches the format 'vM.m.p' (semver)
     tags:
       - 'v*.*.*'
 
@@ -26,7 +26,7 @@ jobs:
       - checks
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - run: {% raw %}echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV{% endraw +%}
       - uses: ./.github/actions/containerise
         with:

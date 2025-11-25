@@ -43,10 +43,10 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: astral-sh/setup-uv@v7
         with:
-          version: "0.9.2"
+          version: "0.9.11"
           enable-cache: true
 
       - name: Create Docker network
