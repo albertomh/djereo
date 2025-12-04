@@ -11,14 +11,15 @@ readme = "README.md"
 # license-files = ["LICENSE"]
 requires-python = ">={{min_python_version}}"
 {% set django_ver_parts = django_version.split('.') %}
-{% set django_ver_major_next = django_ver_parts[0] | int + 1 %}
+{% set django_ver_major = django_ver_parts[0] | int %}
+{% set django_ver_major_next = django_ver_major + 1 %}
 dependencies = [
     "django-alive>=2.0.0,<3.0.0",
     "django>={{django_version}},<{{django_ver_major_next}}.0",
-    "django-allauth>=65.13.0,<66.0.0",
+    "django-allauth>=65.13.1,<66.0.0",
     "django-csp>=4.0,<5.0",
     {% if use_htmx %}
-    "django-htmx>=1.26.0,<2.0.0",
+    "django-htmx>=1.27.0,<2.0.0",
     {% endif %}
     "django-linear-migrations>=2.19.0,<3.0.0",
     "django-permissions-policy>=4.28.0,<5.0.0",
@@ -29,8 +30,8 @@ dependencies = [
     {% endif %}
     "environs[django]>=14.5.0,<15.0.0",
     "gunicorn>=23.0.0,<24.0.0",
-    "psycopg[binary]>=3.2.12,<4.0.0",
-    "psycopg-pool>=3.2.8,<4.0.0",
+    "psycopg[binary]>=3.3.0,<4.0.0",
+    "psycopg-pool>=3.3.0,<4.0.0",
     "whitenoise[brotli]>=6.11.0,<7.0.0",
 ]
 
