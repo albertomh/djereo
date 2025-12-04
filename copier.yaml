@@ -22,10 +22,9 @@ django_version:
     help: "What version of Django do you wish to use?"
     type: str
     choices:
-        - "4.2"
-        - "5.1"
         - "5.2"
-    default: "5.2"
+        - "6.0"
+    default: "6.0"
 
 postgres_version:
     help: "What version of Postgres do you wish to use?"
