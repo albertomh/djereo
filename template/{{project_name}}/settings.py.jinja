@@ -313,12 +313,14 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+{% if django_ver_major < 6 %}
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/stable/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+{% endif %}
 
 TEST_RUNNER = "{{project_name}}.test.TestRunner"
 
