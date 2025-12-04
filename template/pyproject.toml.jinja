@@ -37,7 +37,7 @@ dependencies = [
 
 [dependency-groups]
 test = [
-    "axe-playwright-python>=0.1.6,<1.0.0",
+    "axe-playwright-python>=0.1.7,<1.0.0",
     {% if use_htmx %}
     "beautifulsoup4>=4.14.2,<5.0.0",
     {% endif %}
@@ -47,14 +47,14 @@ test = [
     "playwright>=1.56.0,<2.0.0",
     "pytest>=9.0.0,<10.0.0",
     "requests>=2.32.5,<3.0.0",
-    "responses>=0.25.8",
-    "tblib>=3.2.2",
+    "responses>=0.25.8,<1.0.0",
+    "tblib>=3.2.2,<4.0.0",
 ]
 dev = [
     "django-browser-reload>=1.21.0",
     "django-debug-toolbar>=6.1.0,<7.0.0",
     "ipdb>=0.13.13,<1.0.0",
-    "ipython>=9.7.0,<10.0.0",
+    "ipython>=9.8.0,<10.0.0",
     "rich>=14.2.0,<15.0.0",
 ]
 
