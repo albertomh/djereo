@@ -73,7 +73,6 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "csp",
     {% if use_htmx %}
     "django_htmx",
     {% endif %}
@@ -100,7 +99,6 @@ MIDDLEWARE = [
     "{{project_name}}.middleware.SecurityHeadersMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django_permissions_policy.PermissionsPolicyMiddleware",
-    "csp.middleware.CSPMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     {% if use_htmx %}
     "django_htmx.middleware.HtmxMiddleware",
