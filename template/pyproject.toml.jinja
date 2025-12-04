@@ -11,8 +11,7 @@ readme = "README.md"
 # license-files = ["LICENSE"]
 requires-python = ">={{min_python_version}}"
 {% set django_ver_parts = django_version.split('.') %}
-{% set django_ver_major = django_ver_parts[0] | int %}
-{% set django_ver_major_next = django_ver_major + 1 %}
+{% set django_ver_major_next = django_ver_parts[0] | int + 1 %}
 dependencies = [
     "django-alive>=2.0.0,<3.0.0",
     "django>={{django_version}},<{{django_ver_major_next}}.0",
