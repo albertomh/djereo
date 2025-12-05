@@ -8,6 +8,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.17.0](https://github.com/albertomh/djereo/compare/v3.16.0...v3.17.0) (2025-12-05)
+
+
+### Features
+
+* Add Django 6.0 as an option for new projects ([#326](https://github.com/albertomh/djereo/issues/326)) ([6f5f306](https://github.com/albertomh/djereo/commit/6f5f306f5aef794c103f67a6a0673db76d7a1bc5))
+
+
+### Bug Fixes
+
+* **ci:** Ensure cached Playwright is not stale when uv.lock changes ([#325](https://github.com/albertomh/djereo/issues/325)) ([d0e9827](https://github.com/albertomh/djereo/commit/d0e98270bb95488a7292817b755dfa90622514d4))
+* Ensure playwright resources are released only if they exist ([#323](https://github.com/albertomh/djereo/issues/323)) ([f95edce](https://github.com/albertomh/djereo/commit/f95edce2588f242d67bc03c2afac6c407bf64f45))
+* Markdownlint only ignores CHANGELOG if in a github project ([#316](https://github.com/albertomh/djereo/issues/316)) ([efde095](https://github.com/albertomh/djereo/commit/efde0958207149400f48a41eec12ce836d0e89ad))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.25.0 ([#318](https://github.com/albertomh/djereo/issues/318)) ([4c7a995](https://github.com/albertomh/djereo/commit/4c7a995681772a4755b48a148062ae5aa05796b8))
+* Upgrade to pycliche v2.26.0 ([#324](https://github.com/albertomh/djereo/issues/324)) ([149138f](https://github.com/albertomh/djereo/commit/149138fda734ebf56e0ac85618713cc1b7edfb27))
+
 ## [3.16.0](https://github.com/albertomh/djereo/compare/v3.15.0...v3.16.0) (2025-10-30)
 
 
