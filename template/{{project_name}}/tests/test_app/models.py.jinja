@@ -1,4 +1,9 @@
-from {{project_name}}.models import CreatedAtModel, DeletedAtModel, UpdatedAtModel
+from {{project_name}}.models import CreatedAtModel, DeletedAtModel, UpdatedAtModel, UuidModel
+
+
+class TestModelUuid(UuidModel):
+    class Meta:
+        app_label = "test_app"
 
 
 class TestModelCreatedAt(CreatedAtModel):

@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import migrations, models
 
 
@@ -7,6 +9,20 @@ class Migration(migrations.Migration):
     dependencies = []
 
     operations = [
+        migrations.CreateModel(
+            name="TestModelUuid",
+            fields=[
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid7,
+                        editable=False,
+                        primary_key=True,
+                        verbose_name="ID",
+                    ),
+                ),
+            ],
+        ),
         migrations.CreateModel(
             name="TestModelCreatedAt",
             fields=[
