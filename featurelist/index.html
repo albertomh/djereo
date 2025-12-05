@@ -561,7 +561,7 @@ that <code>DEBUG</code> is False and that localhost is not amongst the <code>CSR
 <li>Strict-Transport-Security: this header is enabled via the <code>SECURE_HSTS_*</code> settings.
   Configured for a duration of 3600 seconds to begin with, it is recommended this is
   increased to 2,592,000 seconds (30 days).</li>
-<li>Content-Security-Policy: <a href="https://django-csp.readthedocs.io/en/latest/index.html" target="\&quot;_blank&quot;">django-csp</a>
+<li>Content-Security-Policy: Django's <a href="https://docs.djangoproject.com/en/stable/topics/security/#security-csp" target="\&quot;_blank&quot;">built-in support for CSP</a>
   is used to set this header to a locked-down default.</li>
 <li><code>SECURE_SSL_REDIRECT</code> is not set explicitly under the assumption that the application
   will sit behind a reverse proxy that will take care of redirecting HTTP to HTTPS.
