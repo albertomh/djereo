@@ -316,7 +316,9 @@ your application locally to aid development. It can be accessed at <http://127.0
 
 The core app defines an `UuidModel` abstract model. Models that subclass it will have
 a UUID as a primary key instead of the default `BigAutoField`. This is used by the models
-in the existing 'users' app and can be used by any new models you create.
+in the existing 'users' app and can be used by any new models you create. `UuidModel`'s
+`id` field uses [UUID7](https://uuid7.com/) for time-sortable identifiers  in projects
+using Python 3.14 or above.
 
 Utility abstract models `CreatedAtModel`, `UpdatedAtModel` and `DeletedAtModel` (for
 soft-deletion) are available to store timestamps.

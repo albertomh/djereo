@@ -4,9 +4,16 @@ from django.db import models
 from django.utils import timezone
 
 
+{% set python_ver_parts = min_python_version.split('.') %}
+{% set python_ver_minor = python_ver_parts[1] | int -%}
+
 class UuidModel(models.Model):
     id: models.UUIDField = models.UUIDField(
+        {% if python_ver_minor < 14 %}
         primary_key=True, default=uuid.uuid4, editable=False
+        {% else %}
+        primary_key=True, default=uuid.uuid7, editable=False
+        {% endif %}
     )
 
     class Meta:

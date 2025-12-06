@@ -1,5 +1,9 @@
+import uuid
+
 from django.db import migrations, models
 
+{% set python_ver_parts = min_python_version.split('.') %}
+{% set python_ver_minor = python_ver_parts[1] | int %}
 
 class Migration(migrations.Migration):
     initial = True
@@ -7,6 +11,24 @@ class Migration(migrations.Migration):
     dependencies = []
 
     operations = [
+        migrations.CreateModel(
+            name="TestModelUuid",
+            fields=[
+                (
+                    "id",
+                    models.UUIDField(
+                        {% if python_ver_minor < 14 %}
+                        default=uuid.uuid4,
+                        {% else %}
+                        default=uuid.uuid7,
+                        {% endif %}
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+            ],
+        ),
         migrations.CreateModel(
             name="TestModelCreatedAt",
             fields=[

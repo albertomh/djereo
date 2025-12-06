@@ -1,3 +1,5 @@
+{% set python_ver_parts = min_python_version.split('.') %}
+{% set python_ver_minor = python_ver_parts[1] | int %}
 from datetime import timedelta
 
 from django.test import TestCase
@@ -7,10 +9,22 @@ from {{project_name}}.tests.test_app.models import (
     TestModelCreatedAt,
     TestModelDeletedAt,
     TestModelUpdatedAt,
+    {% if python_ver_minor >= 14 %}
+    TestModelUuid,
+    {% endif %}
 )
 
 
 class ModelTestCase(TestCase):
+    {% if python_ver_minor >= 14 %}
+    def test_uuidmodel_id_is_monotonic(self):
+        m1 = TestModelUuid()
+        m2 = TestModelUuid()
+
+        # uuid7 embeds timestamp bits - IDs of two models created in sequence are ordered.
+        assert m1.id < m2.id
+
+    {% endif %}
     def test_created_at_field_on_creation(self):
         obj = TestModelCreatedAt.objects.create()
         self.assertIsNotNone(obj.created_at)

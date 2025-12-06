@@ -116,6 +116,8 @@ logger.info("{{project_name}} is running", key="value")
 The core app (`{{project_name}}`) defines an `UuidModel` abstract model. Models that
 subclass it will have primary keys that are UUIDs instead of the default `BigAutoField`.
 Models in the 'users' app extend `UuidModel` and it can be used by any new models.
+`UuidModel`'s `id` field uses [UUID7](https://uuid7.com/) for time-sortable identifiers in
+projects using Python 3.14 or above.
 
 Utility abstract models `CreatedAtModel`, `UpdatedAtModel` and `DeletedAtModel` (for
 soft-deletion) are available to store timestamps.
