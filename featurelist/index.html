@@ -469,7 +469,9 @@ your application locally to aid development. It can be accessed at <a href="http
 <h2 id="models">Models</h2>
 <p>The core app defines an <code>UuidModel</code> abstract model. Models that subclass it will have
 a UUID as a primary key instead of the default <code>BigAutoField</code>. This is used by the models
-in the existing 'users' app and can be used by any new models you create.</p>
+in the existing 'users' app and can be used by any new models you create. <code>UuidModel</code>'s
+<code>id</code> field uses <a href="https://uuid7.com/">UUID7</a> for time-sortable identifiers  in projects
+using Python 3.14 or above.</p>
 <p>Utility abstract models <code>CreatedAtModel</code>, <code>UpdatedAtModel</code> and <code>DeletedAtModel</code> (for
 soft-deletion) are available to store timestamps.</p>
 <h2 id="postgres-database">🐘 Postgres database</h2>
