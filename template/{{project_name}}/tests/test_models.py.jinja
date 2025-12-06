@@ -1,3 +1,5 @@
+{% set python_ver_parts = min_python_version.split('.') %}
+{% set python_ver_minor = python_ver_parts[1] | int %}
 from datetime import timedelta
 
 from django.test import TestCase
@@ -7,11 +9,10 @@ from {{project_name}}.tests.test_app.models import (
     TestModelCreatedAt,
     TestModelDeletedAt,
     TestModelUpdatedAt,
+    {% if python_ver_minor >= 14 %}
     TestModelUuid,
+    {% endif %}
 )
-
-{% set python_ver_parts = min_python_version.split('.') %}
-{% set python_ver_minor = python_ver_parts[1] | int %}
 
 
 class ModelTestCase(TestCase):
