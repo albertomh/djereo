@@ -23,7 +23,7 @@ Built on top of the [pycliche](https://github.com/albertomh/pycliche) template.
 [![IPython](https://img.shields.io/badge/IP[y]:-3465a4)](https://ipython.readthedocs.io/en/stable/)
 [![structlog](https://img.shields.io/badge/🪵_structlog-b9a198)](https://github.com/hynek/structlog)
 [![Mailpit](https://img.shields.io/badge/📨_Mailpit-00b786)](https://mailpit.axllent.org/docs/)
-[![pre-commit](https://img.shields.io/badge/pre--commit-FAB040?logo=pre-commit&logoColor=1f2d23)](https://github.com/pre-commit/pre-commit)
+[![prek](https://img.shields.io/badge/prek-CC5A23?logo=prek&logoColor=FFFFFF)](https://github.com/j178/prek)
 [![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json&labelColor=261230&color=d8ff64)](https://github.com/astral-sh/ruff)
 [![biome](https://img.shields.io/badge/Biome-FFFFFF?logo=biome&logoColor=60A5FA)](https://github.com/biomejs/biome)
 [![htmx](https://img.shields.io/badge/htmx-FFFFFF?logo=htmx&logoColor=3D72D7)](https://github.com/bigskysoftware/htmx)
@@ -49,7 +49,7 @@ Projects created using `djereo` include:
   formatted using `rich`, `structlog` in production.
 - IPython as the default shell.
 - Out-of-the-box code coverage reporting with `coverage.py`.
-- `pre-commit` hooks to lint & format code, and run SAST.
+- `prek` pre-commit hooks to lint & format code, and run SAST.
 - A `justfile` to use `just` as a task runner for common jobs.
 - Lean containerisation to quickly deploy a project to hosted environments.
 - Settings to score A+ on securityheaders.com, for peace of mind.
@@ -59,15 +59,15 @@ Optionally, for projects intended to be hosted on GitHub, also include:
 
 - GitHub Actions to:
   - Automate cutting releases via `Release Please`.
-  - Run `pre-commit` hooks and `pytest` as part of a Continuous Integration pipeline.
+  - Run `prek` pre-commit hooks and `pytest` as part of a Continuous Integration pipeline.
 - A `dependabot` configuration to keep Python packages & GitHub Actions up to date.
 
-> [![docs](https://img.shields.io/badge/📖_Docs-FFFFFF)](https://albertomh.github.io/djereo/)  
+> [![docs](https://img.shields.io/badge/📖_Docs-FFFFFF)](https://albertomh.github.io/djereo/)
 > Read about all of `djereo`'s features: [https://albertomh.github.io/djereo/featurelist/](https://albertomh.github.io/djereo/featurelist/)
 
 <!-- break up blockquotes to avoid triggering markdownlint's MD028/no-blanks-blockquote -->
 
-> [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://github.com/albertomh/pycliche)  
+> [![Python](https://img.shields.io/badge/Python-4584b6?logo=python&logoColor=ffde57)](https://github.com/albertomh/pycliche)
 > Starting a Python project? Try [pycliche](https://github.com/albertomh/pycliche), the base
 > `djereo` is built on, as your Python project template.
 

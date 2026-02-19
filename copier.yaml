@@ -70,7 +70,7 @@ initial_version:
 is_github_project:
     help: |
         Will this project be hosted on GitHub?
-           (if 'yes', generates GitHub Actions for 'Release Please', 'pre-commit', 'dependabot')
+           (if 'yes', generates GitHub Actions for 'Release Please', 'prek', 'dependabot')
     type: bool
     default: yes
 

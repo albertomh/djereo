@@ -5,7 +5,7 @@
 In addition to the [Prerequisites](../README.md#prerequisites) listed in the main README
 you will need the following to develop `{{project_name}}`:
 
-- [pre-commit](https://pre-commit.com/)
+- [prek](https://prek.j178.dev/)
 
 ## The djereo project template
 
@@ -124,11 +124,11 @@ running the application.
 
 ## Style & pre-commit hooks
 
-Code style is enforced by pre-commit hooks.
+Code style is enforced by `prek` pre-commit hooks.
 
 ```sh
 # before you start developing, install pre-commit hooks
-pre-commit install
+prek install
 ```
 
 Linter and formatting rules are configured in the `ruff` tables in `pyproject.toml`. See
@@ -212,7 +212,7 @@ can be used to rotate keys. This defaults to an empty list.
 ### Upgrade checklist
 
 - [ ] Bump the version of Django specified in the config for the `django-upgrade` hook in
-      `.pre-commit-config.yaml`.
+      `prek.toml`.
 
 {% if is_github_project %}
 ## GitHub Actions
@@ -221,7 +221,7 @@ can be used to rotate keys. This defaults to an empty list.
 
 Four re-usable custom actions are available:
 
-- `pre-commit`: runs all pre-commit hooks except `no-commit-to-branch` as this would
+- `prek`: runs all pre-commit hooks except `no-commit-to-branch` as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
    succeeding.
 - `django-checks`: runs Django's system checks (`manage.py check`). Optionally with the `--deploy`

@@ -15,8 +15,8 @@ the following to develop `djereo`:
 
 ### Upgrading the pycliche version
 
-`djereo` is built on top of the [pycliche](https://github.com/albertomh/pycliche){target=\"_blank"} Python
-project template. To update `djereo` to a newer version of `pycliche`:
+`djereo` is built on top of the [pycliche](https://github.com/albertomh/pycliche){target=\"_blank"}
+Python project template. To update `djereo` to a newer version of `pycliche`:
 
 ```sh
 cd ~/Projects/djereo/
