@@ -1,0 +1,89 @@
+[[repos]]
+repo = "https://github.com/pre-commit/pre-commit-hooks"
+rev = "v6.0.0"
+hooks = [
+    { id = "check-added-large-files" },
+    { id = "check-docstring-first" },
+    { id = "check-merge-conflict" },
+    { id = "check-json" },
+    { id = "check-toml" },
+    { id = "check-yaml" },
+    { id = "end-of-file-fixer" },
+    { id = "no-commit-to-branch" },
+    { id = "trailing-whitespace", args = [
+        "--markdown-linebreak-ext",
+        "md",
+    ] },
+    { id = "check-case-conflict" },
+]
+
+[[repos]]
+repo = "https://github.com/asottile/pyupgrade"
+rev = "v3.21.2"
+hooks = [
+    { id = "pyupgrade", args = [
+        "--py{{min_python_version.replace('.', '')}}-plus",
+    ] },
+]
+
+[[repos]]
+repo = "https://github.com/pre-commit/mirrors-mypy"
+rev = "v1.19.1"
+hooks = [
+    { id = "mypy", additional_dependencies = [
+        "django-stubs[compatible-mypy]",
+    ], exclude = { glob = [
+        ".pdbrc",
+    ] } },
+]
+
+[[repos]]
+repo = "https://github.com/astral-sh/ruff-pre-commit"
+rev = "v0.15.1"
+hooks = [
+    # `--config` to stop ruff from using {{project_name}}/pyproject.toml
+    # https://github.com/astral-sh/ruff/issues/9585
+    { id = "ruff-check", args = ["--fix"] },
+    { id = "ruff-format" },
+]
+
+[[repos]]
+repo = "https://github.com/DavidAnson/markdownlint-cli2"
+rev = "v0.20.0"
+hooks = [
+    { id = "markdownlint-cli2", args = [
+        "--config",
+        ".markdownlint-cli2.yaml",
+    ] },
+]
+
+[[repos]]
+hooks = [{ id = "biome-check", exclude = { glob = ["**/mvp.css"] } }]
+repo = "https://github.com/biomejs/pre-commit"
+rev = "v2.4.2"
+
+[[repos]]
+repo = "https://github.com/adamchainz/djade-pre-commit"
+rev = "1.7.0"
+hooks = [{ id = "djade", args = ["--target-version", "{{django_version}}"] }]
+
+[[repos]]
+repo = "https://github.com/adamchainz/django-upgrade"
+rev = "1.29.1"
+hooks = [{ id = "django-upgrade", args = [] }]
+
+[[repos]]
+repo = "https://github.com/crate-ci/typos"
+rev = "v1.43.4"
+hooks = [{ id = "typos", args = ["--force-exclude"] }]
+
+[[repos]]
+repo = "https://github.com/alessandrojcm/commitlint-pre-commit-hook"
+rev = "v9.24.0"
+hooks = [
+    { id = "commitlint", stages = [
+        "commit-msg",
+    ], additional_dependencies = [
+        "@commitlint/config-conventional",
+    ] },
+]

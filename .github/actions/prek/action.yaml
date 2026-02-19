@@ -3,10 +3,10 @@
 # Usage:
 #   ```
 #   steps:
-#     - uses: ./.github/actions/pre-commit
+#     - uses: ./.github/actions/prek
 #   ```
 
-name: 'pre-commit'
+name: 'prek'
 description: 'Run all pre-commit hooks against the codebase'
 
 runs:
@@ -18,4 +18,4 @@ runs:
         echo "SKIP=no-commit-to-branch" >> $GITHUB_ENV
       shell: bash
     - uses: actions/setup-python@v6
-    - uses: pre-commit/action@v3.0.1
+    - uses: j178/prek-action@v1

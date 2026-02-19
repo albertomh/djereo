@@ -65,6 +65,9 @@ Repository = "https://github.com"
 # allow `pip install -e .` to find the project package
 include = ["{{project_name}}"]
 
+[tool.mypy]
+python_version = {{min_python_version}}
+
 [[tool.mypy.overrides]]
 module = "requests.*"
 ignore_missing_imports = true

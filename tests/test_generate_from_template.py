@@ -112,6 +112,27 @@ def test_generated_project_django_version_range(
 
 
 @pytest.mark.integration
+def test_generated_toml_is_valid(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    test_project_dir: Path,
+):
+    toml_files = [
+        test_project_dir / "prek.toml",
+        test_project_dir / "pyproject.toml",
+    ]
+
+    copier_copy(copier_input_data)
+
+    for file_path in toml_files:
+        try:
+            with open(file_path, "rb") as f:  # must be binary for tomllib
+                tomllib.load(f)
+        except tomllib.TOMLDecodeError as e:
+            pytest.fail(f"Invalid TOML file: {file_path}\nError: {e}")
+
+
+@pytest.mark.integration
 def test_generated_yaml_is_valid(
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
@@ -119,7 +140,6 @@ def test_generated_yaml_is_valid(
 ):
     yaml_files = [
         test_project_dir / ".markdownlint-cli2.yaml",
-        test_project_dir / ".pre-commit-config.yaml",
     ]
 
     copier_copy(copier_input_data)
@@ -154,7 +174,7 @@ def test_generated_project_pre_commit_hooks_run_successfully(
 ):
     copier_copy(copier_input_data)
 
-    # pre-commit will only run against files tracked by git
+    # prek will only run against files tracked by git
     git("init", _cwd=test_project_dir)
     git("add", ".", _cwd=test_project_dir)
 
@@ -162,15 +182,15 @@ def test_generated_project_pre_commit_hooks_run_successfully(
     # ignore 'typos' as too noisy / picking up false positives in test context
     # ignore 'djade' until it is updated to recognise Django 6.0
     env["SKIP"] = "no-commit-to-branch,typos,djade"
-    pre_commit_res = uv(
+    prek_res = uv(
         "run",
-        "pre-commit",
+        "prek",
         "run",
         "--all-files",
         _cwd=test_project_dir,
         _env=env,
         _return_cmd=True,
     )
-    assert pre_commit_res.exit_code == 0, (
-        f"Pre-commit hooks failed:\n{pre_commit_res.stdout}\n{pre_commit_res.stderr}"
+    assert prek_res.exit_code == 0, (
+        f"Pre-commit hooks failed:\n{prek_res.stdout}\n{prek_res.stderr}"
     )
