@@ -180,8 +180,7 @@ def test_generated_project_pre_commit_hooks_run_successfully(
 
     env = os.environ.copy()
     # ignore 'typos' as too noisy / picking up false positives in test context
-    # ignore 'djade' until it is updated to recognise Django 6.0
-    env["SKIP"] = "no-commit-to-branch,typos,djade"
+    env["SKIP"] = "no-commit-to-branch,typos"
     prek_res = uv(
         "run",
         "prek",
