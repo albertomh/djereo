@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [3.18.0](https://github.com/albertomh/djereo/compare/v3.17.0...v3.18.0) (2026-02-19)
+
+
+### Features
+
+* Switch UuidModel to uuid7 for monotonic IDs ([#327](https://github.com/albertomh/djereo/issues/327)) ([03db547](https://github.com/albertomh/djereo/commit/03db5479617a5c0c514069011beb115d8e50352f))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.27.0 ([#331](https://github.com/albertomh/djereo/issues/331)) ([6d32484](https://github.com/albertomh/djereo/commit/6d3248482106883535c2346e0515692d8fa645c5))
+
 ## [3.17.0](https://github.com/albertomh/djereo/compare/v3.16.0...v3.17.0) (2025-12-05)
 
 
