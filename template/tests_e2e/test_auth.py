@@ -39,7 +39,7 @@ class TestSignUp(AuthTest):
         assert msg["To"][0]["Address"] == email
         snippet = (
             f"Hello from example.com! You're receiving this email because user "
-            f"{email.split('@')[0]} has given your email address to register"
+            f"{email.split('@', maxsplit=1)[0]} has given your email address to register"
         )
         assert snippet in msg["Snippet"]
 

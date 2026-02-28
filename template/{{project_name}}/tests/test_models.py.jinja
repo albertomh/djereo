@@ -22,7 +22,7 @@ class ModelTestCase(TestCase):
         m2 = TestModelUuid()
 
         # uuid7 embeds timestamp bits - IDs of two models created in sequence are ordered.
-        assert m1.id < m2.id
+        self.assertLess(m1.id, m2.id)
 
     {% endif %}
     def test_created_at_field_on_creation(self):

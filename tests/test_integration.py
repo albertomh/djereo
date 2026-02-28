@@ -45,10 +45,7 @@ def test_sys_check_warn_no_dev_mode_when_debug(
     test_project_dir: Path,
     generate_test_project_with_db,
 ):
-    """
-    Verify that a system check warning is shown when Python Development Mode is disabled
-    and DEBUG is true.
-    """
+    """Ensure a system check warning is raised if Dev Mode is disabled & DEBUG is True."""
     out, err = StringIO(), StringIO()
     expected_warning = (
         f"({test_project_name}.W001) Python Development Mode is not enabled yet DEBUG is"

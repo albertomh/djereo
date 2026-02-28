@@ -17,6 +17,7 @@ env.read_env()
 
 BASE_URL = "http://127.0.0.1:8000"
 MAILPIT_API_BASE_URL = "http://127.0.0.1:8025"
+HTTP_SERVER_ERROR = 500
 
 
 def _launch_browser(headless: bool = True) -> tuple[Playwright, Browser]:
@@ -33,7 +34,7 @@ def pytest_sessionstart(session):
     while True:
         try:
             resp = requests.get(BASE_URL, timeout=1)
-            if resp.status_code < 500:
+            if resp.status_code < HTTP_SERVER_ERROR:
                 break
         except Exception:
             pass

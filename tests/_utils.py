@@ -16,9 +16,10 @@ def is_git_repo(path: Path) -> bool:
     """Check if the given path is a Git repository."""
     try:
         git("-C", str(path), "status")
-        return True
     except ErrorReturnCode:
         return False
+    else:
+        return True
 
 
 def count_dirs_and_files(path: Path) -> tuple[int, int]:

@@ -6,7 +6,10 @@ class {{project_name|title}}Config(AppConfig):
     name = "{{project_name}}"
 
     def ready(self) -> None:
-        from {{project_name}}.checks import check_dev_mode, check_model_names
+        from {{project_name}}.checks import (  # noqa: PLC0415
+            check_dev_mode,
+            check_model_names,
+        )
 
         checks.register(check_dev_mode)
         checks.register(check_model_names)

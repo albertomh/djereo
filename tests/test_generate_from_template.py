@@ -48,9 +48,10 @@ def test_djereo_jinja_templates_converted(
 
 @pytest.mark.integration
 @pytest.mark.parametrize(
-    "is_github_project, expected_directory_count, expected_file_count",
-    [(True, 9, 23), (False, 8, 21)],
+    ("is_github_project", "expected_directory_count", "expected_file_count"),
+    [(True, 9, 24), (False, 8, 22)],
 )
+# ruff: noqa: PLR0913
 def test_is_github_project(
     is_github_project: bool,
     expected_directory_count: int,
@@ -78,6 +79,7 @@ def test_version_is_importable(
     install_test_project,
     test_project_name: str,
 ):
+    # ruff: noqa: PLC0415
     from importlib.metadata import version
 
     assert version(test_project_name) == "0.0.0"
@@ -117,12 +119,10 @@ def test_generated_toml_is_valid(
     copier_input_data: dict,
     test_project_dir: Path,
 ):
-    toml_files = [
-        test_project_dir / "prek.toml",
-        test_project_dir / "pyproject.toml",
-    ]
-
     copier_copy(copier_input_data)
+
+    toml_files = list(test_project_dir.rglob("*.toml"))
+    assert toml_files, "No TOML files found in the generated project."
 
     for file_path in toml_files:
         try:
@@ -138,11 +138,12 @@ def test_generated_yaml_is_valid(
     copier_input_data: dict,
     test_project_dir: Path,
 ):
-    yaml_files = [
-        test_project_dir / ".markdownlint-cli2.yaml",
-    ]
-
     copier_copy(copier_input_data)
+
+    yaml_files = list(test_project_dir.rglob("*.yaml")) + list(
+        test_project_dir.rglob("*.yml")
+    )
+    assert yaml_files, "No YAML files found in the generated project."
 
     for file_path in yaml_files:
         with open(file_path) as f:

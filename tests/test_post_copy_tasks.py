@@ -21,7 +21,7 @@ def test_is_git_repo(
 
 
 @pytest.mark.parametrize(
-    "file_path, expected_message",
+    ("file_path", "expected_message"),
     [
         ("uv.lock", "lock file"),
         (".env", "dotenv"),
@@ -43,3 +43,20 @@ def test_file_exists(
     assert file_to_check.exists(), (
         f"Expected {expected_message} {file_to_check} not found."
     )
+
+
+@pytest.mark.integration
+@pytest.mark.smoke
+def test_generated_project_message_after_copy(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    capsys: pytest.CaptureFixture[str],
+):
+    copier_copy(copier_input_data)
+    captured = capsys.readouterr()
+
+    assert (
+        "Fill out the `description` and `repository` fields in pyproject.toml."
+        in captured.err
+    )
+    assert "Please update the LICENSE file with your license details." in captured.err

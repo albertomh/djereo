@@ -13,6 +13,6 @@ class UserProfileTestCase(SimpleTestCase):
             has_listeners_in_context = post_save.has_listeners(AuthUser)
         has_listeners_after = post_save.has_listeners(AuthUser)
 
-        self.assertTrue(has_listeners_before)
-        self.assertFalse(has_listeners_in_context)
-        self.assertTrue(has_listeners_after)
+        assert has_listeners_before
+        assert not has_listeners_in_context
+        assert has_listeners_after

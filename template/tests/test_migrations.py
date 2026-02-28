@@ -1,6 +1,4 @@
-"""
-Credit to Adam Johnson's 'Boost Your Django DX' book.
-"""
+"""Credit to Adam Johnson's 'Boost Your Django DX' book."""
 
 from io import StringIO
 
