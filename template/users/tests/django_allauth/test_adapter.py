@@ -1,4 +1,3 @@
-import pytest
 from allauth.account.models import EmailAddress
 from django.contrib.auth import get_user_model
 from django.core import mail
@@ -25,19 +24,21 @@ class CustomAccountAdapterTests(TestCase):
     def test_clean_email_allows_new_email(self):
         email = "new@example.com"
         result = self.adapter.clean_email(email)
-        assert result == email
-        assert len(mail.outbox) == 0
+        self.assertEqual(result, email)
+        self.assertEqual(len(mail.outbox), 0)
 
     def test_clean_email_existing_verified_email_sends_builtin_reminder(self):
         user = User.objects.create(username="alice", email="alice@example.com")
         EmailAddress.objects.create(user=user, email="alice@example.com", verified=True)
 
-        with pytest.raises(ValidationError) as ctx:
+        with self.assertRaises(ValidationError) as ctx:
             self.adapter.clean_email("alice@example.com")
 
-        assert ctx.value.message == AMBIGUOUS_EMAIL_CLASH_MESSAGE
-        assert len(mail.outbox) == 1
-        assert "alice@example.com" in mail.outbox[0].to
+        self.assertEqual(ctx.exception.message, AMBIGUOUS_EMAIL_CLASH_MESSAGE)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("alice@example.com", mail.outbox[0].to)
 
     def test_error_message_replaced(self):
-        assert self.adapter.error_messages["email_taken"] == AMBIGUOUS_EMAIL_CLASH_MESSAGE
+        self.assertEqual(
+            self.adapter.error_messages["email_taken"], AMBIGUOUS_EMAIL_CLASH_MESSAGE
+        )

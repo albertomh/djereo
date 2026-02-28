@@ -8,23 +8,23 @@ class AuthUserFactoryTest(TestCase):
     def test_authuser_factory_creates_user(self):
         user = AuthUserFactory()
 
-        assert isinstance(user, AuthUser)
-        assert AuthUser.objects.filter(id=user.id).exists()
+        self.assertIsInstance(user, AuthUser)
+        self.assertTrue(AuthUser.objects.filter(id=user.id).exists())
 
     def test_authuser_factory_does_not_trigger_post_save_signal(self):
         user = AuthUserFactory()
 
-        assert not UserProfile.objects.filter(user=user).exists()
+        self.assertFalse(UserProfile.objects.filter(user=user).exists())
 
 
 class UserProfileFactoryTest(TestCase):
     def test_userprofile_factory_creates_profile(self):
         profile = UserProfileFactory()
 
-        assert isinstance(profile, UserProfile)
-        assert UserProfile.objects.filter(id=profile.id).exists()
+        self.assertIsInstance(profile, UserProfile)
+        self.assertTrue(UserProfile.objects.filter(id=profile.id).exists())
 
     def test_userprofile_factory_does_not_duplicate_profiles(self):
         profile = UserProfileFactory()
 
-        assert UserProfile.objects.filter(user=profile.user).count() == 1
+        self.assertEqual(UserProfile.objects.filter(user=profile.user).count(), 1)
