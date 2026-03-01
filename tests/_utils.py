@@ -10,8 +10,13 @@ from sh import ErrorReturnCode, git, whoami
 
 
 def remove_ansi_escape_codes(text):
-    ansi_escape = re.compile(r"\x1b[^m]*m")
-    return ansi_escape.sub("", text)
+    if isinstance(text, bytes):
+        text = text.decode("utf-8", errors="replace")
+
+    # Match CSI (Control Sequence Introducer) sequences eg. colours, cursor movements
+    ansi_escape = re.compile(r"\x1b\[[0-9;]*[a-zA-Z]")
+    text = ansi_escape.sub("", text)
+    return text.replace("\r", "")
 
 
 def is_git_repo(path: Path) -> bool:
@@ -102,11 +107,28 @@ def set_up_postgres(test_project_dir: Path, project_name: str) -> Callable[[], N
                 cur.execute(
                     sql.SQL("ALTER USER {} CREATEDB").format(sql.Identifier(name))
                 )
+                if in_ci():
+                    cur.execute(
+                        sql.SQL("ALTER USER {} SUPERUSER").format(sql.Identifier(name))
+                    )
                 cur.execute(
                     sql.SQL("CREATE DATABASE {} OWNER {}").format(
                         sql.Identifier(name), sql.Identifier(name)
                     )
                 )
+
+                # Connect to the new database to grant schema permissions.
+                # In Postgres 15+, the public schema is no longer writable by anyone but
+                # the bootstrap user by default.
+                with psycopg.connect(
+                    get_postgres_connection_string(dbname=name), autocommit=True
+                ) as db_conn:
+                    with db_conn.cursor() as db_cur:
+                        db_cur.execute(
+                            sql.SQL("ALTER SCHEMA public OWNER TO {}").format(
+                                sql.Identifier(name)
+                            )
+                        )
 
 
 def tear_down_postgres(test_project_dir: Path, project_name: str):

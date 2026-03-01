@@ -29,7 +29,8 @@ def test_validator_is_empty(
             {
                 **copier_input_data,
                 question: answer,
-            }
+            },
+            use_cache=False,
         )
 
     if error_msg is None:
@@ -65,7 +66,8 @@ def test_validator_project_name(
             {
                 **copier_input_data,
                 "project_name": project_name,
-            }
+            },
+            use_cache=False,
         )
 
     expected_error_msg = (
@@ -105,7 +107,8 @@ def test_validator_author_email(
             {
                 **copier_input_data,
                 "author_email": author_email,
-            }
+            },
+            use_cache=False,
         )
 
     expected_error_msg = (

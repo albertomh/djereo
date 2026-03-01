@@ -43,7 +43,7 @@ just set_up_db 'password'
 # 3/5 apply migrations to the database
 just manage migrate
 
-# 4/5 create three users: admin, staff and regular (non-privileged)
+# 4/5 create three users: <[admin|staff|user]@example.com>
 just manage seed_database
 
 # 5/5 install dependencies in a virtual environment and run the Django development server

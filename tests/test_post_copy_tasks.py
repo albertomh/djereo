@@ -48,11 +48,11 @@ def test_file_exists(
 @pytest.mark.integration
 @pytest.mark.smoke
 def test_generated_project_message_after_copy(
-    copier_copy: Callable[[dict], None],
+    copier_copy: Callable,
     copier_input_data: dict,
     capsys: pytest.CaptureFixture[str],
 ):
-    copier_copy(copier_input_data)
+    copier_copy(copier_input_data, use_cache=False)
     captured = capsys.readouterr()
 
     assert (

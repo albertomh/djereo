@@ -1,5 +1,4 @@
 import textwrap
-from io import StringIO
 from pathlib import Path
 
 import pytest
@@ -29,25 +28,25 @@ def test_migrations_check_fails_if_pending_migrations(
     migrations_dir = test_project_dir / test_project_name / "migrations"
     migrations_dir.mkdir(parents=True, exist_ok=True)
     (migrations_dir / "__init__.py").touch()
-    out = StringIO()
-
-    nox(
+    res = nox(
         "--",
         "-k",
         "test_no_pending_migrations",
-        # use _out instead of _err since nox surfaces the subcommands' output in stdout
-        _out=out,
         # 1 is okay since we are expecting `test_no_pending_migrations` to fail
         _ok_code=[0, 1],
         _cwd=test_project_dir,
+        _return_cmd=True,
     )
 
-    expected_error = (
-        "test_no_pending_migrations (tests.test_migrations.PendingMigrationsTests."
-        "test_no_pending_migrations) ... FAIL\n"
+    combined_output = (
+        f"{remove_ansi_escape_codes(res.stdout)}\n{remove_ansi_escape_codes(res.stderr)}"
     )
-    clean_stdout = remove_ansi_escape_codes(out.getvalue())
-    assert expected_error in clean_stdout
+
+    assert (
+        "test_no_pending_migrations (tests.test_migrations.PendingMigrationsTests."
+        in combined_output
+    )
+    assert "test_no_pending_migrations) ... FAIL" in combined_output
 
 
 @pytest.mark.integration

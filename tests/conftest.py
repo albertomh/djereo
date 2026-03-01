@@ -1,5 +1,7 @@
 # ruff: noqa: PLR0913
 
+import hashlib
+import json
 import os
 import re
 import shutil
@@ -33,25 +35,58 @@ def test_project_name() -> str:
     return f"djereo_test_{uuid.uuid4().hex[:8]}"
 
 
+STABLE_PROJECT_NAME = "djereo_stable_cache_project"
+
+
+def _rename_project(project_dir: Path, old_name: str, new_name: str):
+    """Recursively renames project name in filenames and file contents."""
+    old_title = old_name.title()
+    new_title = new_name.title()
+
+    # Replace project name in file contents
+    for root, _dirs, files in os.walk(project_dir):
+        for file in files:
+            file_path = Path(root) / file
+            try:
+                content = file_path.read_text()
+                new_content = content.replace(old_name, new_name).replace(
+                    old_title, new_title
+                )
+                if new_content != content:
+                    file_path.write_text(new_content)
+            except (UnicodeDecodeError, PermissionError):
+                continue
+
+    # Rename directories and files (bottom-up to avoid path changes during iteration)
+    for root, dirs, files in os.walk(project_dir, topdown=False):
+        for name in files + dirs:
+            if old_name in name:
+                new_item_name = name.replace(old_name, new_name)
+                os.rename(os.path.join(root, name), os.path.join(root, new_item_name))
+
+
 def test_session_temp_dir(session: pytest.Session) -> Path:
-    return DJEREO_TESTS_SANDBOX_DIR / f"session_{id(session)}"
+    config = getattr(session, "config", None)
+    # Provided by pytest-xdist
+    worker_id = getattr(config, "workerinput", {}).get("workerid", "master")
+    return DJEREO_TESTS_SANDBOX_DIR / f"session_{worker_id}"
 
 
 @pytest.fixture
 def test_project_dir(
     request: pytest.FixtureRequest,
-    test_project_name: str,
 ) -> Path:
     """Path of a temporary directory for test isolation. Namespaced per pytest session.
 
     Used to avoid conflict when many tests (run in parallel) are attempting to create
     'djereo' projects using 'copier'.
     """
-    # per-session namespacing to ensure xdist workers delete the right subdir
+    # Per-session namespacing to ensure xdist workers delete the right subdir
     # during clean-up in the sessionfinish hook
     session_tmp_dir = test_session_temp_dir(request.session)
     session_tmp_dir.mkdir(parents=True, exist_ok=True)
-    return session_tmp_dir / test_project_name
+    test_run_id = uuid.uuid4().hex[:8]
+    return session_tmp_dir / f"test_{test_run_id}"
 
 
 @pytest.fixture
@@ -71,18 +106,61 @@ def copier_input_data(test_project_name: str) -> dict:
     return input_data
 
 
+def _compute_copier_hash(
+    djereo_root_dir: Path,
+    copier_input_data: dict,
+    generate_dotenv: bool,
+    is_ci: bool,
+) -> str:
+    """Computes a hash of the copier inputs and template state."""
+    stable_data = copier_input_data.copy()
+    stable_data["project_name"] = STABLE_PROJECT_NAME
+
+    hasher = hashlib.md5()
+    hasher.update(json.dumps(stable_data, sort_keys=True).encode())
+    hasher.update(str(generate_dotenv).encode())
+    hasher.update(str(is_ci).encode())
+
+    template_dir = djereo_root_dir / "template"
+    copier_yaml = djereo_root_dir / "copier.yaml"
+
+    # Files to hash - filenames and mtimes are enough for cache invalidation
+    files_to_hash = sorted([copier_yaml, *template_dir.rglob("*")])
+    for path in files_to_hash:
+        if path.is_file() and ".git" not in path.parts:
+            hasher.update(str(path.relative_to(djereo_root_dir)).encode())
+            hasher.update(str(path.stat().st_mtime).encode())
+
+    return hasher.hexdigest()
+
+
 @pytest.fixture
-def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict], None]:
+def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable:
     """Fixture to run `copier copy`, cleaning up destination directory beforehand.
 
-    Uses the `djereo_root_dir` & `test_project_dir` fixtures as source and
-    destination directories respectively, so tests should use these fixtures.
+    Uses caching to speed up successive runs with identical inputs.
+    Reuses a stable generated project and renames it for speed.
     """
 
-    def _run(copier_input_data: dict, *, generate_dotenv=True):
+    def _run(copier_input_data: dict, *, generate_dotenv=True, use_cache=True):
         if test_project_dir.exists():
             shutil.rmtree(test_project_dir, ignore_errors=True)
 
+        actual_project_name = copier_input_data["project_name"]
+        cache_dir = DJEREO_TESTS_SANDBOX_DIR / "copier_cache"
+        cache_dir.mkdir(exist_ok=True)
+
+        cache_key = _compute_copier_hash(
+            djereo_root_dir, copier_input_data, generate_dotenv, IS_CI
+        )
+        cached_result = cache_dir / cache_key
+
+        if use_cache and cached_result.exists():
+            shutil.copytree(cached_result, test_project_dir)
+            _rename_project(test_project_dir, STABLE_PROJECT_NAME, actual_project_name)
+            return
+
+        # Cache miss: run copier with real data
         copier.run_copy(
             str(djereo_root_dir),
             str(test_project_dir),
@@ -110,14 +188,31 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
             test_dotenv_path = test_project_dir / ".env.test"
             with test_dotenv_path.open("r+") as file:
                 test_env_content = file.read()
-                re.sub(
+                new_env_content = re.sub(
                     r"DATABASE_URL=.*",
-                    'DATABASE_URL="postgres://test_djereo:password@localhost:5432/test_djereo"',
+                    f'DATABASE_URL="postgres://{actual_project_name}:password@localhost:5432/{actual_project_name}"',
                     test_env_content,
                 )
                 file.seek(0)
-                file.write(test_env_content)
+                file.write(new_env_content)
                 file.truncate()
+
+        if use_cache:
+            # Since copier ran with the actual project name to ensure questionnaire
+            # validation works, we need to rename it to the stable name for caching.
+            _rename_project(test_project_dir, actual_project_name, STABLE_PROJECT_NAME)
+
+            # Save the stable version to cache
+            temp_cache = cached_result.with_suffix(f".{uuid.uuid4().hex[:8]}.tmp")
+            shutil.copytree(test_project_dir, temp_cache)
+            try:
+                temp_cache.rename(cached_result)
+            except OSError:
+                shutil.rmtree(temp_cache, ignore_errors=True)
+
+            # Rename back stable -> actual for the current test so it sees the name it
+            # expects from pyproject.toml, .env.test, etc.
+            _rename_project(test_project_dir, STABLE_PROJECT_NAME, actual_project_name)
 
     return _run
 
@@ -134,7 +229,7 @@ def pytest_sessionfinish(session):
 
 @pytest.fixture
 def install_test_project(
-    copier_copy: Callable[[dict], None],
+    copier_copy: Callable,
     copier_input_data: dict,
     test_project_dir: Path,
     test_project_name: str,
@@ -165,7 +260,7 @@ def tear_down_test_database(test_project_dir: Path, test_project_name: str):
 
 @pytest.fixture
 def generate_test_project_with_db(
-    copier_copy: Callable[[dict], None],
+    copier_copy: Callable,
     copier_input_data: dict,
     set_up_test_database,
     test_project_dir: Path,
