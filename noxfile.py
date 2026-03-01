@@ -1,11 +1,8 @@
-# ruff: noqa: S603 S607
-
 # Usage:
 # > nox [-- --pdb | -m "mark"]
 
 import os
 import shutil
-import subprocess
 from pathlib import Path
 
 import nox
@@ -22,22 +19,16 @@ nox.options.default_venv_backend = "uv"
 nox.options.sessions = [f"tests-{LATEST_PY}"]
 
 
-def clean_up():
-    user = subprocess.check_output(["whoami"], text=True).strip()
-    subprocess.run(
-        [
-            "psql",
-            "--user",
-            user,
-            "--host",
-            "localhost",
-            "--dbname",
-            "postgres",
-            "--file",
-            "_clean_up_databases.sql",
-        ],
-        cwd=TESTS_DIR,
-        check=True,
+def clean_up(session: nox.Session):
+    cmd = (
+        "from tests._utils import clean_up_all_test_databases;"
+        "clean_up_all_test_databases()"
+    )
+    session.run(
+        "python",
+        "-c",
+        cmd,
+        env={"PYTHONPATH": "."},
     )
 
     if DJEREO_TESTS_SANDBOX_DIR.exists():
@@ -82,4 +73,4 @@ def tests(session: nox.Session):
         session.run("pytest", "tests/", *pytest_args, *posargs)
     finally:
         if os.getenv("CI") != "true":
-            clean_up()
+            clean_up(session)

@@ -32,6 +32,9 @@ _dev_setup:
 {% raw %}  {{call_recipe}} collectstatic{% endraw %}
 
 
+set_up_db $APP_USER_PASSWORD="password":
+  @APP_USER_PASSWORD={{APP_USER_PASSWORD}} uv run _db/set_up_db.py
+
 manage +args='help': _dev_setup
   @uv run manage.py "$@"
 

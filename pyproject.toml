@@ -22,6 +22,7 @@ test = [
     "pytest-randomly>=4.0.1,<5.0.0",
     "pytest-xdist>=3.8.0,<4.0.0",
     "pyyaml>=6.0.3,<7.0.0",
+    "psycopg[binary]>=3.3.0,<4.0.0",
     "sh>=2.2.2,<3.0.0",
 ]
 
@@ -84,6 +85,7 @@ select = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**.py" = ["S"]
+"noxfile.py" = ["S"]
+"tests/**.py" = ["PLC0415", "PLR0913", "S"]
 "**/tests/**.py" = ["S"]
 "**/tests_e2e/**.py" = ["S"]
