@@ -49,7 +49,7 @@ class TestRunner(DiscoverRunner):
         super().__init__(*args, exclude_tags=exclude_tags, **kwargs)
 
     def run_tests(self, *args, **kwargs):
-        global ACTIVE_RESPONSES
+        global ACTIVE_RESPONSES  # noqa: PLW0603
 
         with responses.RequestsMock() as rsps, override_settings(**TEST_SETTINGS):
             ACTIVE_RESPONSES = rsps

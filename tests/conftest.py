@@ -6,8 +6,8 @@ from collections.abc import Callable
 from io import TextIOWrapper
 from pathlib import Path
 
+import copier
 import pytest
-from copier.cli import CopierApp
 from sh import python as sh_python
 
 from tests._utils import set_up_postgres, tear_down_postgres
@@ -40,8 +40,8 @@ def test_project_dir(
     request: pytest.FixtureRequest,
     test_project_name: str,
 ) -> Path:
-    """
-    Path of a temporary directory for per-test isolation. Namespaced per pytest session.
+    """Path of a temporary directory for test isolation. Namespaced per pytest session.
+
     Used to avoid conflict when many tests (run in parallel) are attempting to create
     'djereo' projects using 'copier'.
     """
@@ -71,37 +71,23 @@ def copier_input_data(test_project_name: str) -> dict:
 
 @pytest.fixture
 def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict], None]:
-    """
-    Fixture to run `copier copy`, cleaning up destination directory beforehand.
-    Uses the `djereo_root_dir` & `test_project_dir` fixtures as source and
-    destination directories respectively, so tests should use these fixtures
-    """
+    """Fixture to run `copier copy`, cleaning up destination directory beforehand.
 
-    def _quote_if_has_space(string: str) -> str:
-        if isinstance(string, str) and " " in string:
-            return f"'{string}'"
-        return string
+    Uses the `djereo_root_dir` & `test_project_dir` fixtures as source and
+    destination directories respectively, so tests should use these fixtures.
+    """
 
     def _run(copier_input_data: dict, *, generate_dotenv=True):
         if test_project_dir.exists():
             shutil.rmtree(test_project_dir, ignore_errors=True)
 
-        copier_args = ["--vcs-ref=HEAD", "--defaults", "--trust"]
-        copier_args.extend(
-            [f"--data={k}={_quote_if_has_space(v)}" for k, v in copier_input_data.items()]
-        )
-
-        # Use `CopierApp.run` because `run_copy` does not accept `--trust` as a flag,
-        # which is needed in order for post-creation tasks to run.
-        CopierApp.run(
-            [
-                "copier",
-                "copy",
-                *copier_args,
-                str(djereo_root_dir),
-                str(test_project_dir),
-            ],
-            exit=False,
+        copier.run_copy(
+            str(djereo_root_dir),
+            str(test_project_dir),
+            data=copier_input_data,
+            vcs_ref="HEAD",
+            defaults=True,
+            unsafe=True,
         )
 
         if generate_dotenv:
@@ -170,7 +156,7 @@ def set_up_test_database(test_project_dir: Path) -> Callable[[], None]:
 
 @pytest.fixture
 def tear_down_test_database(test_project_dir: Path):
-    yield
+    return
 
 
 @pytest.fixture

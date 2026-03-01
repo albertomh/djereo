@@ -18,15 +18,6 @@ hooks = [
 ]
 
 [[repos]]
-repo = "https://github.com/asottile/pyupgrade"
-rev = "v3.21.2"
-hooks = [
-    { id = "pyupgrade", args = [
-        "--py{{min_python_version.replace('.', '')}}-plus",
-    ] },
-]
-
-[[repos]]
 repo = "https://github.com/pre-commit/mirrors-mypy"
 rev = "v1.19.1"
 hooks = [
@@ -39,7 +30,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/astral-sh/ruff-pre-commit"
-rev = "v0.15.1"
+rev = "v0.15.4"
 hooks = [
     # `--config` to stop ruff from using {{project_name}}/pyproject.toml
     # https://github.com/astral-sh/ruff/issues/9585
@@ -49,7 +40,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/DavidAnson/markdownlint-cli2"
-rev = "v0.20.0"
+rev = "v0.21.0"
 hooks = [
     { id = "markdownlint-cli2", args = [
         "--config",
@@ -60,21 +51,21 @@ hooks = [
 [[repos]]
 hooks = [{ id = "biome-check", exclude = { glob = ["**/mvp.css"] } }]
 repo = "https://github.com/biomejs/pre-commit"
-rev = "v2.4.2"
+rev = "v2.4.4"
 
 [[repos]]
 repo = "https://github.com/adamchainz/djade-pre-commit"
-rev = "1.7.0"
+rev = "1.9.0"
 hooks = [{ id = "djade", args = ["--target-version", "{{django_version}}"] }]
 
 [[repos]]
 repo = "https://github.com/adamchainz/django-upgrade"
-rev = "1.29.1"
+rev = "1.30.0"
 hooks = [{ id = "django-upgrade", args = [] }]
 
 [[repos]]
 repo = "https://github.com/crate-ci/typos"
-rev = "v1.43.4"
+rev = "v1.44.0"
 hooks = [{ id = "typos", args = ["--force-exclude"] }]
 
 [[repos]]

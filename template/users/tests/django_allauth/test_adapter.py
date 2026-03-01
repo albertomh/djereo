@@ -40,6 +40,5 @@ class CustomAccountAdapterTests(TestCase):
 
     def test_error_message_replaced(self):
         self.assertEqual(
-            self.adapter.error_messages["email_taken"],
-            AMBIGUOUS_EMAIL_CLASH_MESSAGE,
+            self.adapter.error_messages["email_taken"], AMBIGUOUS_EMAIL_CLASH_MESSAGE
         )

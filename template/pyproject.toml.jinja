@@ -33,6 +33,13 @@ dependencies = [
     "whitenoise[brotli]>=6.11.0,<7.0.0",
 ]
 
+[build-system]
+requires = ["uv_build>=0.10.5,<0.11.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+
 [dependency-groups]
 test = [
     "axe-playwright-python>=0.1.7,<1.0.0",
@@ -61,10 +68,6 @@ dev = [
 Repository = "https://github.com"
 {% endif %}
 
-[tool.setuptools.packages.find]
-# allow `pip install -e .` to find the project package
-include = ["{{project_name}}"]
-
 [tool.mypy]
 python_version = {{min_python_version}}
 
@@ -76,14 +79,13 @@ ignore_missing_imports = true
 exclude = [".pdbrc"]
 indent-width = 4
 line-length = 90
-target-version = "py{{min_python_version.replace('.', '')}}"
 
 [tool.ruff.lint]
 ignore = []
 select = [
     # flake8-bugbear
     "B",
-    # pydocstyle
+    # pycodestyle errors
     "E",
     # isort
     "I",
@@ -95,12 +97,18 @@ select = [
     "G",
     # flake8-logging
     "LOG",
+    # pylint-pl
+    "PL",
     # flake8-bandit
     "S",
     # flake8-tidy-imports
     "TID",
+    # tryceratops-try
+    "TRY",
     # flake8-print
     "T20",
+    # pyupgrade-up
+    "UP",
     # pycodestyle warnings
     "W",
 ]

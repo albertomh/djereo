@@ -55,12 +55,12 @@ class SafeHttpFormatterTest(SimpleTestCase):
     def test_format_without_status_code(self):
         record = make_logging_record("hello world")
         formatted = self.formatter.format(record)
-        assert formatted == "INFO - hello world"
+        self.assertEqual(formatted, "INFO - hello world")
 
     def test_format_with_status_code(self):
         record = make_logging_record("hello world", status_code=200)
         formatted = self.formatter.format(record)
-        assert formatted == "INFO 200 hello world"
+        self.assertEqual(formatted, "INFO 200 hello world")
 
 
 class LoggingConfigFactoryTest(SimpleTestCase):
@@ -131,8 +131,8 @@ class LogsFormatTest(SimpleTestCase):
                 expected_keys,
                 "Log contains unexpected keys or missing keys",
             )
-            for k in expected_values.keys():
-                self.assertEqual(log_dict[k], expected_values[k], f"{k} should match")
+            for k, v in expected_values.items():
+                self.assertEqual(log_dict[k], v, f"{k} should match")
 
     def test_logs_format_debug_true(self):
         config = LoggingConfigFactory(debug=True).build()

@@ -49,14 +49,13 @@ extend-exclude = ["*project_name*"]
 force-exclude = true
 indent-width = 4
 line-length = 90
-target-version = "py314"
 
 [tool.ruff.lint]
 ignore = []
 select = [
     # flake8-bugbear
     "B",
-    # pydocstyle
+    # pycodestyle errors
     "E",
     # isort
     "I",
@@ -68,12 +67,18 @@ select = [
     "G",
     # flake8-logging
     "LOG",
+    # pylint-pl
+    "PL",
     # flake8-bandit
     "S",
     # flake8-tidy-imports
     "TID",
+    # tryceratops-try
+    "TRY",
     # flake8-print
     "T20",
+    # pyupgrade-up
+    "UP",
     # pycodestyle warnings
     "W",
 ]

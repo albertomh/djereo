@@ -14,5 +14,5 @@ class SecurityHeadersMiddlewareTests(SimpleTestCase):
 
         response = middleware(request)
 
-        assert response["Cross-Origin-Embedder-Policy"] == "require-corp"
-        assert response["Cross-Origin-Resource-Policy"] == "same-origin"
+        self.assertEqual(response["Cross-Origin-Embedder-Policy"], "require-corp")
+        self.assertEqual(response["Cross-Origin-Resource-Policy"], "same-origin")
