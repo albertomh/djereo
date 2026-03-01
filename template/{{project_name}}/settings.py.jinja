@@ -31,15 +31,27 @@ from {{project_name}}.logging import LoggingConfigFactory
 
 # 0. Setup -------------------------------------------------------------------------------
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 IS_TESTING = "test" in sys.argv or env.bool("USE_ENV_TEST", default=False)
 
 if IS_TESTING:
-    env.read_env(".env.test", recurse=False)
+    env.read_env(BASE_DIR / ".env.test", recurse=False)
 else:
-    env.read_env()
+    if (
+        not (BASE_DIR / ".env").exists()
+        and (BASE_DIR / ".env.in").exists()
+        and not env.bool("IGNORE_MISSING_ENV", default=False)
+    ):
+        import warnings
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+        warnings.warn(
+            "No .env file found. Run `cp .env.in .env` to get started.",
+            UserWarning,
+            stacklevel=2,
+        )
+        sys.tracebacklimit = 0
+    env.read_env(BASE_DIR / ".env")
 
 # 1. Django Core Settings ----------------------------------------------------------------
 
