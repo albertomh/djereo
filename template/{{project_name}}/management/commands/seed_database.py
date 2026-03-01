@@ -44,6 +44,8 @@ class Command(BaseCommand):
 
 def create_user(data):  # pragma: no cover
     user = get_user_model().objects.create_user(**data)
+    # Accessing the .profile property ensures a UserProfile is created in the database
+    _ = user.profile
     EmailAddress.objects.create(
         user=user,
         email=user.email,
