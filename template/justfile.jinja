@@ -40,7 +40,8 @@ manage +args='help': _dev_setup
 
 runserver addrport=default_addrport $PYTHONDEVMODE="1": _dev_setup
   # Disable PYTHONDEVMODE by passing an empty string ie. `just runserver 127.0.0.1:8000 ""`
-  MP_DATABASE=mailpit.db mailpit &
+  # Only start Mailpit if the SMTP port (1025) is not already listening
+  @uv run python -c "import socket; s=socket.socket(); s.settimeout(0.1); s.connect(('127.0.0.1', 1025))" 2>/dev/null || (MP_DATABASE=mailpit.db mailpit &)
 {% raw %}  @uv run manage.py runserver {{addrport}}{% endraw +%}
 
 shell: _dev_setup
@@ -58,8 +59,13 @@ profile_tests: _test_setup
 e2e $USE_ENV_TEST="1": _test_setup
   #!/usr/bin/env bash
   set -euo pipefail
-  mailpit &
-  MAILPIT_PID=$!
+  # Only start Mailpit if the SMTP port (1025) is not already listening
+  STARTED_MAILPIT=false
+  if ! uv run python -c "import socket; s=socket.socket(); s.settimeout(0.1); s.connect(('127.0.0.1', 1025))" 2>/dev/null; then
+    mailpit &
+    MAILPIT_PID=$!
+    STARTED_MAILPIT=true
+  fi
   uv run manage.py flush --no-input
   uv run manage.py migrate
   uv run manage.py seed_database
@@ -67,5 +73,7 @@ e2e $USE_ENV_TEST="1": _test_setup
   SERVER_PID=$!
   uv run pytest tests_e2e/ || STATUS=$?
   kill $SERVER_PID
-  kill $MAILPIT_PID
+  if [ "$STARTED_MAILPIT" = true ]; then
+    kill $MAILPIT_PID
+  fi
   exit ${STATUS:-0}
