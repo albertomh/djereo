@@ -7,6 +7,7 @@ from django.core.management.base import CommandError
 from django.test import TestCase
 
 import {{project_name}}.management.commands.seed_database  # noqa: F401 - needed for coverage
+from users.models import UserProfile
 
 
 class SeedDatabaseTests(TestCase):
@@ -38,6 +39,9 @@ class SeedDatabaseTests(TestCase):
         self.assertTrue("Seeding database..." in out)
         self.assertTrue("Done." in out)
         self.assertEqual(err, "")
+
+        self.assertTrue(get_user_model().objects.exists())
+        self.assertTrue(UserProfile.objects.exists())
 
         expected_models = {
             ("account", "EmailAddress"),
