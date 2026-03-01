@@ -11,10 +11,13 @@ class AuthUserFactoryTest(TestCase):
         self.assertIsInstance(user, AuthUser)
         self.assertTrue(AuthUser.objects.filter(id=user.id).exists())
 
-    def test_authuser_factory_does_not_trigger_post_save_signal(self):
+    def test_authuser_factory_does_not_create_profile_by_default(self):
         user = AuthUserFactory()
 
         self.assertFalse(UserProfile.objects.filter(user=user).exists())
+        profile = user.profile  # accessing the profile should create it
+        self.assertTrue(UserProfile.objects.filter(user=user).exists())
+        self.assertEqual(profile, user.userprofile)
 
 
 class UserProfileFactoryTest(TestCase):
