@@ -114,10 +114,12 @@ select = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**.py" = ["S"]
+"_db/**.py" = ["INP001", "T201"]
+"tests/**.py" = ["PLC0415", "PLR0913", "S"]
 "tests_e2e/**.py" = ["S"]
 "**/tests/**.py" = ["S"]
 "manage.py" = ["E501"]
+"noxfile.py" = ["INP001", "S"]
 "{{project_name}}/settings.py" = ["E501"]
 "{{project_name}}/asgi.py" = ["E501"]
 "{{project_name}}/wsgi.py" = ["E501"]

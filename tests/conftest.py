@@ -1,3 +1,5 @@
+# ruff: noqa: PLR0913
+
 import os
 import re
 import shutil
@@ -147,15 +149,17 @@ def install_test_project(
 
 
 @pytest.fixture
-def set_up_test_database(test_project_dir: Path) -> Callable[[], None]:
+def set_up_test_database(
+    test_project_dir: Path, test_project_name: str
+) -> Callable[[], None]:
     def _run() -> None:
-        set_up_postgres(test_project_dir)
+        set_up_postgres(test_project_dir, test_project_name)
 
     return _run
 
 
 @pytest.fixture
-def tear_down_test_database(test_project_dir: Path):
+def tear_down_test_database(test_project_dir: Path, test_project_name: str):
     return
 
 
@@ -165,6 +169,7 @@ def generate_test_project_with_db(
     copier_input_data: dict,
     set_up_test_database,
     test_project_dir: Path,
+    test_project_name: str,
     tear_down_test_database,
 ):
     copier_copy(copier_input_data)
@@ -172,4 +177,4 @@ def generate_test_project_with_db(
 
     yield
 
-    tear_down_postgres(test_project_dir)
+    tear_down_postgres(test_project_dir, test_project_name)
