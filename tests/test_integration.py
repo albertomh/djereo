@@ -73,6 +73,42 @@ def test_sys_check_warn_no_dev_mode_when_debug(
 
 @pytest.mark.xdist_group(name="integration")
 @pytest.mark.integration
+@pytest.mark.slow
+def test_missing_env_file_warning_and_traceback_suppression(
+    test_project_dir: Path,
+    generate_test_project_with_db,
+):
+    """Ensure a warning is raised and traceback suppressed if .env is missing."""
+    env_file = test_project_dir / ".env"
+    if env_file.exists():
+        env_file.unlink()
+
+    out, err = StringIO(), StringIO()
+    expected_warning = "No .env file found. Run `cp .env.in .env` to get started."
+    expected_error = (
+        'environs.exceptions.EnvError: Environment variable "SECRET_KEY" not set'
+    )
+
+    with suppress(Exception):
+        just(
+            "manage",
+            "collectstatic",
+            "--noinput",
+            _out=out,
+            _err=err,
+            _cwd=test_project_dir,
+        )
+
+    clean_stderr = remove_ansi_escape_codes(err.getvalue())
+
+    assert expected_warning in clean_stderr
+    assert expected_error in clean_stderr
+    # since `tracebacklimit =0`, "Traceback (most ...):" should NOT be in stderr
+    assert "Traceback (most recent call last):" not in clean_stderr
+
+
+@pytest.mark.xdist_group(name="integration")
+@pytest.mark.integration
 @pytest.mark.smoke
 def test_runserver(
     test_project_dir: Path,
