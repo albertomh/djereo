@@ -1,7 +1,5 @@
 from django.contrib.auth.models import AbstractUser, UserManager
-from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from django.db import models, transaction
 
 from {{project_name}}.models import UpdatedAtModel, UuidModel
 
@@ -14,7 +12,10 @@ class AuthUserManager(UserManager["AuthUser"]):
         extra_fields.setdefault("is_active", True)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        user.save(using=self._db)
+
+        with transaction.atomic():
+            user.save(using=self._db)
+
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
@@ -40,6 +41,22 @@ class AuthUser(UpdatedAtModel, UuidModel, AbstractUser):
     def __str__(self):
         return self.email
 
+    @property
+    {% if min_python_version == '3.13' %}
+    def profile(self) -> "UserProfile":
+    {% else %}
+    def profile(self) -> UserProfile:
+    {% endif %}
+        """
+        Ensures a UserProfile exists and returns it.
+        Avoids RelatedObjectDoesNotExist errors caches the object.
+        """
+        profile = getattr(self, "userprofile", None)
+        if profile is None:
+            profile, _ = UserProfile.objects.get_or_create(user=self)
+            self.userprofile = profile
+        return profile
+
 
 class UserProfile(UuidModel):
     {% if min_python_version == '3.13' %}
@@ -53,10 +70,3 @@ class UserProfile(UuidModel):
 
     def __str__(self):
         return f"Profile for {self.user}"
-
-
-@receiver(post_save, sender=AuthUser)
-def create_or_update_user_profile(
-    sender, instance, created, **kwargs
-):  # pragma: no cover
-    UserProfile.objects.update_or_create(user=instance)

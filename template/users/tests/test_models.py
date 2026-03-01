@@ -28,6 +28,17 @@ class AuthUserTestCase(TestCase):
         self.assertTrue(superuser.is_staff)
         self.assertTrue(superuser.is_superuser)
 
+    def test_profile_property_creates_profile_if_missing(self):
+        UserProfile.objects.filter(user=self.user).delete()
+        if hasattr(self.user, "userprofile"):
+            del self.user.userprofile
+        self.assertFalse(UserProfile.objects.filter(user=self.user).exists())
+
+        profile = self.user.profile
+        self.assertIsInstance(profile, UserProfile)
+        self.assertTrue(UserProfile.objects.filter(user=self.user).exists())
+        self.assertEqual(profile.user, self.user)
+
 
 class UserProfileTestCase(TestCase):
     @classmethod
@@ -38,7 +49,10 @@ class UserProfileTestCase(TestCase):
             password="rocinante",
         )
 
-    def test_user_profile_created_when_auth_user_created(self):
-        profile = UserProfile.objects.get(user=self.user)
+    def test_user_profile_created_on_demand_via_profile_property(self):
+        self.assertFalse(UserProfile.objects.filter(user=self.user).exists())
+
+        profile = self.user.profile
         self.assertEqual(profile.user, self.user)
         self.assertEqual(str(profile), f"Profile for {self.user}")
+        self.assertTrue(UserProfile.objects.filter(user=self.user).exists())
