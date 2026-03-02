@@ -58,7 +58,7 @@ RUN python manage.py collectstatic --noinput \
 # ----------------------------------------------------------------------------------------
 # runtime stage
 
-FROM python:3.14-slim-bookworm
+FROM python:{{min_python_version}}-slim-bookworm
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
