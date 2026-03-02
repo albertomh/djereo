@@ -1,5 +1,3 @@
-# ruff: noqa: PLR0913
-
 import os
 import tomllib
 from collections.abc import Callable

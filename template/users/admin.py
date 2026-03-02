@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
@@ -45,13 +47,13 @@ class AuthUserAdmin(UserAdmin):
         ("Important dates", {"fields": ("last_login", "date_joined")}),
     )
 
-    inlines = [UserProfileInline]
+    inlines: ClassVar[list] = [UserProfileInline]
 
     def get_inline_instances(self, request, obj=None):
         """Avoid a blank UserProfileInline in the Django admin AuthUser creation form."""
         return (
-            obj and super(UserAdmin, self).get_inline_instances(request, obj) or []
-        )  # pragma: no cover
+            obj and super(UserAdmin, self).get_inline_instances(request, obj)
+        ) or []  # pragma: no cover
 
 
 admin.site.unregister(AuthUser)

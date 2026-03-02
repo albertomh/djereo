@@ -18,7 +18,7 @@ def wait_for_server_start(
     *,
     timeout=30.0,
     interval=0.1,
-    urls_to_get: list[tuple[str, int]] = None,
+    urls_to_get: list[tuple[str, int]] | None = None,
 ) -> bool:
     if urls_to_get is None:
         urls_to_get = []
