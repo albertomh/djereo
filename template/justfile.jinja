@@ -15,15 +15,12 @@ collectstatic:
   # approach since this would also load `.env` for the `test` recipe. Meaning the
   # environment `test` runs in would be polluted instead of using values from `.env.test`.
   set -euo pipefail
-  DEBUG_VALUE="false"
-  if [ -f .env ]; then
-    # Extract DEBUG from .env (strip whitespace, lowercase). Default to "false" if missing.
-    DEBUG_VALUE=$(awk -F= '/^DEBUG=/{gsub(/["'\'' ]/, "", $2); print tolower($2)}' .env || echo "false")
+  # Skip collectstatic if DEBUG is True (development mode).
+  if uv run python -c "from environs import Env; env = Env(); env.read_env(recurse=False); exit(0 if env.bool('DEBUG', default=False) else 1)"; then
+    exit 0
   fi
-  if [ "$DEBUG_VALUE" = "false" ]; then
-    rm -rf static/;
-    uv run manage.py collectstatic --noinput;
-  fi
+  rm -rf static/
+  uv run manage.py collectstatic --noinput
 
 _dev_setup:
   @test -d .venv/ || uv venv
@@ -59,6 +56,15 @@ profile_tests: _test_setup
 e2e $USE_ENV_TEST="1": _test_setup
   #!/usr/bin/env bash
   set -euo pipefail
+
+  cleanup() {
+    [ -n "${SERVER_PID:-}" ] && kill "$SERVER_PID" 2>/dev/null || true
+    if [ "${STARTED_MAILPIT:-}" = true ]; then
+      [ -n "${MAILPIT_PID:-}" ] && kill "$MAILPIT_PID" 2>/dev/null || true
+    fi
+  }
+  trap cleanup EXIT
+
   # Only start Mailpit if the SMTP port (1025) is not already listening
   STARTED_MAILPIT=false
   if ! uv run python -c "import socket; s=socket.socket(); s.settimeout(0.1); s.connect(('127.0.0.1', 1025))" 2>/dev/null; then
@@ -71,9 +77,4 @@ e2e $USE_ENV_TEST="1": _test_setup
   uv run manage.py seed_database
   uv run manage.py runserver "" &
   SERVER_PID=$!
-  uv run pytest tests_e2e/ || STATUS=$?
-  kill $SERVER_PID
-  if [ "$STARTED_MAILPIT" = true ]; then
-    kill $MAILPIT_PID
-  fi
-  exit ${STATUS:-0}
+  uv run pytest tests_e2e/
