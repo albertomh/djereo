@@ -70,6 +70,8 @@ select = [
     "LOG",
     # pylint-pl
     "PL",
+    # ruff-specific-rules-ruf
+    "RUF",
     # flake8-bandit
     "S",
     # flake8-tidy-imports

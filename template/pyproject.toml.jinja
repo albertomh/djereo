@@ -99,6 +99,8 @@ select = [
     "LOG",
     # pylint-pl
     "PL",
+    # ruff-specific-rules-ruf
+    "RUF",
     # flake8-bandit
     "S",
     # flake8-tidy-imports
@@ -118,6 +120,7 @@ select = [
 "tests/**.py" = ["PLC0415", "PLR0913", "S"]
 "tests_e2e/**.py" = ["S"]
 "**/tests/**.py" = ["S"]
+"**/migrations/**.py" = ["RUF"]
 "manage.py" = ["E501"]
 "noxfile.py" = ["INP001", "S"]
 "{{project_name}}/settings.py" = ["E501"]

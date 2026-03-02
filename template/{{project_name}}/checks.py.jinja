@@ -41,7 +41,7 @@ def check_model_names(*, app_configs, **kwargs):
     errors = []
 
     for app_config in app_configs:
-        # skip apps that aren’t part of the project
+        # skip apps that aren't part of the project
         if app_config.name.split(".", maxsplit=1)[0] != "{{project_name}}":
             continue
 
