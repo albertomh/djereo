@@ -43,6 +43,15 @@ class AuthUser(UpdatedAtModel, UuidModel, AbstractUser):
     def __str__(self):
         return self.email
 
+    def save(self, *args, **kwargs):
+        is_new = self._state.adding
+        super().save(*args, **kwargs)
+        if is_new:
+            # explicitly create the profile to avoid "write-on-read" in GET requests later
+            UserProfile.objects.using(
+                kwargs.get("using") or self._state.db
+            ).get_or_create(user=self)
+
     @property
     {% if min_python_version == '3.13' %}
     def profile(self) -> "UserProfile":
@@ -50,8 +59,8 @@ class AuthUser(UpdatedAtModel, UuidModel, AbstractUser):
     def profile(self) -> UserProfile:
     {% endif %}
         """
-        Ensures a UserProfile exists and returns it.
-        Avoids RelatedObjectDoesNotExist errors caches the object.
+        Ensures a UserProfile exists - avoids RelatedObjectDoesNotExist errors and caches
+        the object. In case the profile was not created during AuthUser.save().
         """
         profile = getattr(self, "userprofile", None)
         if profile is None:

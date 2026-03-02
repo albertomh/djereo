@@ -28,10 +28,16 @@ class AuthUserTestCase(TestCase):
         self.assertTrue(superuser.is_staff)
         self.assertTrue(superuser.is_superuser)
 
+    def test_create_user_creates_profile(self):
+        user = get_user_model().objects.create_user(
+            email="newuser@example.com", password="testpassword"
+        )
+        self.assertTrue(UserProfile.objects.filter(user=user).exists())
+
     def test_profile_property_creates_profile_if_missing(self):
+        """Tests the safety net behavior of the profile property."""
         UserProfile.objects.filter(user=self.user).delete()
-        if hasattr(self.user, "userprofile"):
-            del self.user.userprofile
+        self.user.refresh_from_db()
         self.assertFalse(UserProfile.objects.filter(user=self.user).exists())
 
         profile = self.user.profile
@@ -49,10 +55,9 @@ class UserProfileTestCase(TestCase):
             password="rocinante",
         )
 
-    def test_user_profile_created_on_demand_via_profile_property(self):
-        self.assertFalse(UserProfile.objects.filter(user=self.user).exists())
+    def test_user_profile_created_by_default(self):
+        self.assertTrue(UserProfile.objects.filter(user=self.user).exists())
 
         profile = self.user.profile
         self.assertEqual(profile.user, self.user)
         self.assertEqual(str(profile), f"Profile for {self.user}")
-        self.assertTrue(UserProfile.objects.filter(user=self.user).exists())

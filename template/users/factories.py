@@ -18,5 +18,6 @@ class AuthUserFactory(DjangoModelFactory):
 class UserProfileFactory(DjangoModelFactory):
     class Meta:
         model = UserProfile
+        django_get_or_create = ("user",)
 
     user = SubFactory(AuthUserFactory)
