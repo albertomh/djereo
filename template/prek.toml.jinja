@@ -61,7 +61,7 @@ hooks = [{ id = "djade", args = ["--target-version", "{{django_version}}"] }]
 [[repos]]
 repo = "https://github.com/adamchainz/django-upgrade"
 rev = "1.30.0"
-hooks = [{ id = "django-upgrade", args = [] }]
+hooks = [{ id = "django-upgrade", args = ["--target-version", "{{django_version}}"] }]
 
 [[repos]]
 repo = "https://github.com/crate-ci/typos"
