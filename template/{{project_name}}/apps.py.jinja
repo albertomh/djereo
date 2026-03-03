@@ -4,6 +4,7 @@ from django.core import checks
 
 class {{project_name|title}}Config(AppConfig):
     name = "{{project_name}}"
+    default = True
 
     def ready(self) -> None:
         from {{project_name}}.checks import (  # noqa: PLC0415
