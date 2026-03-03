@@ -34,10 +34,41 @@ class UpdatedAtModel(models.Model):
         abstract = True
 
 
+class DeletedAtQuerySet(models.QuerySet):
+    def deleted(self):
+        return self.filter(deleted_at__isnull=False)
+
+    def live(self):
+        return self.filter(deleted_at__isnull=True)
+
+
+class DeletedAtManager(models.Manager):
+    def get_queryset(self):
+        return DeletedAtQuerySet(self.model, using=self._db).live()
+
+    def deleted(self):
+        return DeletedAtQuerySet(self.model, using=self._db).deleted()
+
+    def all_with_deleted(self):
+        return DeletedAtQuerySet(self.model, using=self._db)
+
+
 class DeletedAtModel(models.Model):
+    """Abstract model for soft-deletion.
+
+    Usage:
+        >>> obj.soft_delete()  # sets deleted_at and hides from default manager
+        >>> obj.restore()      # clears deleted_at and makes visible again
+        >>> MyModel.objects.all()               # only live records
+        >>> MyModel.objects.deleted()           # only deleted records
+        >>> MyModel.objects.all_with_deleted()  # both live and deleted records
+    """
+
     deleted_at: models.DateTimeField = models.DateTimeField(
         blank=True, null=True, default=None, editable=False
     )
+
+    objects = DeletedAtManager()
 
     def soft_delete(self):
         self.deleted_at = timezone.now()

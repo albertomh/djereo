@@ -44,8 +44,29 @@ class ModelTestCase(TestCase):
         self.assertIsNotNone(obj.deleted_at)
         self.assertAlmostEqual(obj.deleted_at, now(), delta=timedelta(seconds=1))
 
+        self.assertFalse(TestModelDeletedAt.objects.filter(id=obj.id).exists())
+        self.assertEqual(TestModelDeletedAt.objects.count(), 0)
+
+    def test_deleted_at_model_manager_methods(self):
+        obj_live = TestModelDeletedAt.objects.create()
+        obj_deleted = TestModelDeletedAt.objects.create()
+        obj_deleted.soft_delete()
+
+        self.assertIn(obj_live, TestModelDeletedAt.objects.all())
+        self.assertNotIn(obj_deleted, TestModelDeletedAt.objects.all())
+
+        self.assertIn(obj_deleted, TestModelDeletedAt.objects.deleted())
+        self.assertNotIn(obj_live, TestModelDeletedAt.objects.deleted())
+
+        all_objs = TestModelDeletedAt.objects.all_with_deleted()
+        self.assertIn(obj_live, all_objs)
+        self.assertIn(obj_deleted, all_objs)
+
     def test_deleted_at_model_restore(self):
         obj = TestModelDeletedAt.objects.create()
         obj.soft_delete()
+        self.assertFalse(TestModelDeletedAt.objects.filter(id=obj.id).exists())
+
         obj.restore()
         self.assertIsNone(obj.deleted_at)
+        self.assertTrue(TestModelDeletedAt.objects.filter(id=obj.id).exists())
