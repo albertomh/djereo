@@ -10,6 +10,7 @@ project_name:
         project_name must start with a letter, be lowercase and may contain underscores
         {% endif %}
 
+# https://endoflife.date/python
 min_python_version:
     help: "What is the minimum compatible version of Python?"
     type: str
@@ -18,6 +19,7 @@ min_python_version:
         - "3.14"
     default: "3.14"
 
+# https://endoflife.date/django
 django_version:
     help: "What version of Django do you wish to use?"
     type: str
@@ -26,6 +28,7 @@ django_version:
         - "6.0"
     default: "6.0"
 
+# https://endoflife.date/postgresql
 postgres_version:
     help: "What version of Postgres do you wish to use?"
     type: str
