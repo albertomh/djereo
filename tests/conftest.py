@@ -66,6 +66,10 @@ def copier_input_data(test_project_name: str) -> dict:
     if match:
         input_data["min_python_version"] = match.group(1)
 
+    django_version = os.getenv("DJANGO_VERSION")
+    if django_version:
+        input_data["django_version"] = django_version
+
     return input_data
 
 

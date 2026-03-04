@@ -21,7 +21,7 @@ jobs:
   generate-nox-py-versions:
     runs-on: ubuntu-24.04
     outputs:
-      py_version: ${{ steps.set-matrix.outputs.py_version }}
+      nox_sessions: ${{ steps.set-matrix.outputs.nox_sessions }}
     steps:
     - uses: actions/checkout@v6
     - name: Cache nox Python versions list
@@ -37,21 +37,21 @@ jobs:
       env:
         CACHE_PY_VERSIONS_HIT: ${{ steps.cache-nox-py-versions.outputs.cache-hit }}
       run: |
-        # Extract Python versions from nox session names (both selected and skipped)
-        # into a JSON array. Session lines start with '*' or '-'.
+        # Extract sessions from nox list into a JSON array.
+        # Session lines start with '*' or '-'.
         if [[ $CACHE_PY_VERSIONS_HIT == "true" ]]; then
-          py_version_json="$(cat .nox-py-versions.json)"
+          nox_sessions_json="$(cat .nox-py-versions.json)"
         else
-          py_version_json="$(
+          nox_sessions_json="$(
             nox --list \
               | grep -E '^[*-] ' \
               | cut -d' ' -f2 \
               | sed 's/^tests-//' \
               | jq -R -s -c 'split("\n")[:-1]'
           )"
-          echo "$py_version_json" > .nox-py-versions.json
+          echo "$nox_sessions_json" > .nox-py-versions.json
         fi
-        echo "py_version=$py_version_json" >> "$GITHUB_OUTPUT"
+        echo "nox_sessions=$nox_sessions_json" >> "$GITHUB_OUTPUT"
 
   test:
     needs:
@@ -60,7 +60,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        py_version: ${{ fromJson(needs.generate-nox-py-versions.outputs.py_version) }}
+        nox_session: ${{ fromJson(needs.generate-nox-py-versions.outputs.nox_sessions) }}
     runs-on: ubuntu-24.04
     services:
       postgres:
@@ -84,7 +84,14 @@ jobs:
           enable-cache: true
       # Not redundant! Must be installed since used by integration tests in the next step.
       - uses: extractions/setup-just@v3
+      - name: Extract Python version
+        id: py-version
+        shell: bash
+        run: |
+          # Extract 3.13 from 3.13(django='5.2')
+          PY_VER=$(echo "${{ matrix.nox_session }}" | cut -d'(' -f1)
+          echo "version=$PY_VER" >> "$GITHUB_OUTPUT"
       - uses: wntrblm/nox@2026.02.09
         with:
-          python-versions: "${{ matrix.py_version }}"
-      - run: nox --session "tests-${{ matrix.py_version }}"
+          python-versions: "${{ steps.py-version.outputs.version }}"
+      - run: nox --session "tests-${{ matrix.nox_session }}"
