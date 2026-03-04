@@ -84,6 +84,7 @@ else:
 FIRST_PARTY_APPS = [
     "{{project_name}}.apps.{{project_name|title}}Config",
     "users.apps.UsersConfig",
+    "{{project_name}}.admin.CustomAdminConfig",
 ]
 if IS_TESTING:
     FIRST_PARTY_APPS += ["{{project_name}}.tests.test_app.apps.TestAppConfig"]
@@ -106,7 +107,6 @@ THIRD_PARTY_APPS = [
     "whitenoise.runserver_nostatic",
 ]
 CONTRIB_APPS = [
-    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
