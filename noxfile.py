@@ -34,7 +34,7 @@ def _get_copier_choices(key: str) -> list[str]:
 py_versions = _get_copier_choices("min_python_version")
 dj_versions = _get_copier_choices("django_version")
 
-OLDEST_PY, *MIDDLE_PY, LATEST_PY = py_versions
+LATEST_PY = py_versions[-1]
 LATEST_DJ = dj_versions[-1]
 
 nox.options.default_venv_backend = "uv"
