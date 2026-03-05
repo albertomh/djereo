@@ -41,15 +41,13 @@ def wait_for_server_start(
 @pytest.mark.integration
 @pytest.mark.slow
 def test_sys_check_warn_no_dev_mode_when_debug(
-    test_project_name: str,
     test_project_dir: Path,
     generate_test_project_with_db,
 ):
     """Ensure a system check warning is raised if Dev Mode is disabled & DEBUG is True."""
     out, err = StringIO(), StringIO()
     expected_warning = (
-        f"({test_project_name}.W001) Python Development Mode is not enabled yet DEBUG is"
-        " true."
+        "(core.W001) Python Development Mode is not enabled yet DEBUG is true."
     )
 
     with suppress(TimeoutException):

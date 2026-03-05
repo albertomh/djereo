@@ -52,7 +52,7 @@ def test_generated_project_message_after_copy(
     copier_input_data: dict,
     capsys: pytest.CaptureFixture[str],
 ):
-    copier_copy(copier_input_data)
+    copier_copy(copier_input_data, copier_quiet=False)
     captured = capsys.readouterr()
 
     assert (

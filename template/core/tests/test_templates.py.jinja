@@ -41,14 +41,14 @@ class CustomErrorViewTemplates(SimpleTestCase):
         res = self.client.get("/403/")
         path_to_template = res.templates[0].origin.name.split("/")[-3:]
 
-        expected_path = ["{{project_name}}", "templates", "403.html"]
+        expected_path = ["core", "templates", "403.html"]
         self.assertEqual(path_to_template, expected_path)
 
     def test_404_template(self):
         res = self.client.get("/404/")
         path_to_template = res.templates[0].origin.name.split("/")[-3:]
 
-        expected_path = ["{{project_name}}", "templates", "404.html"]
+        expected_path = ["core", "templates", "404.html"]
         self.assertEqual(path_to_template, expected_path)
 
     # Cannot test 500 since raising an Exception in a view triggers the debugger (ipdb).

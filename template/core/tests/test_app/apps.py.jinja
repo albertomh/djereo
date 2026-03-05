@@ -7,4 +7,4 @@ class TestAppConfig(AppConfig):
     {% if django_ver_major < 6 %}
     default_auto_field = "django.db.models.BigAutoField"
     {% endif %}
-    name = "{{project_name}}.tests.test_app"
+    name = "core.tests.test_app"

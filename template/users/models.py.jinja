@@ -3,7 +3,7 @@ from typing import ClassVar
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models, transaction
 
-from {{project_name}}.models import UpdatedAtModel, UuidModel
+from core.models import UpdatedAtModel, UuidModel
 
 
 class AuthUserManager(UserManager["AuthUser"]):
