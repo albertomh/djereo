@@ -16,6 +16,22 @@ IS_CI = os.getenv("CI") == "true"
 DJEREO_TEST_PROJECT_NAME = "djereo_test_project"
 
 
+@pytest.fixture(scope="session")
+def worker_id(request) -> str:
+    if hasattr(request.config, "workerinput"):
+        return request.config.workerinput["workerid"]
+    return "master"
+
+
+@pytest.fixture(scope="session")
+def test_project_name(worker_id: str) -> str:
+    if worker_id == "master":
+        return DJEREO_TEST_PROJECT_NAME
+    # use underscore instead of hyphen as it will be used as a python package name
+    safe_worker_id = worker_id.replace("-", "_")
+    return f"djereo_test_{safe_worker_id}"
+
+
 def pytest_sessionstart(session):
     if not DJEREO_TESTS_SANDBOX_DIR.exists():
         DJEREO_TESTS_SANDBOX_DIR.mkdir(exist_ok=True)
@@ -27,13 +43,13 @@ def pytest_sessionfinish(session):
 
 
 @pytest.fixture(scope="session", autouse=True)
-def set_up_postgres_for_tests():
-    tear_down_postgres(DJEREO_TEST_PROJECT_NAME)
-    set_up_postgres(DJEREO_TEST_PROJECT_NAME)
+def set_up_postgres_for_tests(test_project_name: str):
+    tear_down_postgres(test_project_name)
+    set_up_postgres(test_project_name)
 
     yield
 
-    tear_down_postgres(DJEREO_TEST_PROJECT_NAME)
+    tear_down_postgres(test_project_name)
 
 
 @pytest.fixture(scope="session")
@@ -46,11 +62,11 @@ def djereo_root_dir() -> Path:
 
 
 @pytest.fixture(scope="session")
-def copier_input_data() -> dict:
+def copier_input_data(test_project_name: str) -> dict:
     """Answers to core djereo template questions (see `copier.yaml`)."""
     input_data = {
         "_is_test": True,
-        "project_name": DJEREO_TEST_PROJECT_NAME,
+        "project_name": test_project_name,
         "author_name": "Miguel de Cervantes",
         "author_email": "mike@alcala.net",
     }
@@ -174,7 +190,10 @@ def django_debug() -> bool:
 
 @pytest.fixture
 def set_up_generated_project(
-    request: pytest.FixtureRequest, django_debug: bool, djereo_project_dir_for_test: Path
+    request: pytest.FixtureRequest,
+    django_debug: bool,
+    djereo_project_dir_for_test: Path,
+    test_project_name: str,
 ) -> Path:
     env_test = djereo_project_dir_for_test / ".env.test"
     content = env_test.read_text()
@@ -184,36 +203,52 @@ def set_up_generated_project(
 
     venv = djereo_project_dir_for_test / ".venv"
     site_packages = next((venv / "lib").glob("python*/site-packages"))
-    sys.path.insert(0, str(site_packages))
-    sys.path.insert(0, str(djereo_project_dir_for_test))
 
-    os.environ["USE_ENV_TEST"] = "True"
-    os.environ.setdefault(
-        "DJANGO_SETTINGS_MODULE", f"{DJEREO_TEST_PROJECT_NAME}.settings"
-    )
+    # save original state
+    original_path = list(sys.path)
+    original_environ = dict(os.environ)
 
-    import django
+    try:
+        sys.path.insert(0, str(site_packages))
+        sys.path.insert(0, str(djereo_project_dir_for_test))
 
-    django.setup()
+        os.environ["USE_ENV_TEST"] = "True"
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", f"{test_project_name}.settings")
 
-    # run migrations only if they are not up to date and skip_migrate is not requested
-    if not request.node.get_closest_marker("skip_migrate"):
-        import subprocess
+        import django
 
-        result = subprocess.run(
-            ["uv", "run", "manage.py", "migrate", "--check"],
-            cwd=djereo_project_dir_for_test,
-            capture_output=True,
-            check=False,
-        )
-        if result.returncode != 0:
-            subprocess.run(
-                ["uv", "run", "manage.py", "migrate"],
+        django.setup()
+
+        # run migrations only if they are not up to date and skip_migrate is not requested
+        if not request.node.get_closest_marker("skip_migrate"):
+            import subprocess
+
+            result = subprocess.run(
+                ["uv", "run", "manage.py", "migrate", "--check"],
                 cwd=djereo_project_dir_for_test,
-                check=True,
+                capture_output=True,
+                check=False,
             )
+            if result.returncode != 0:
+                subprocess.run(
+                    ["uv", "run", "manage.py", "migrate"],
+                    cwd=djereo_project_dir_for_test,
+                    check=True,
+                )
 
-    return djereo_project_dir_for_test
+        yield djereo_project_dir_for_test
+    finally:
+        # restore original state
+        sys.path[:] = original_path
+        os.environ.clear()
+        os.environ.update(original_environ)
+
+        try:
+            from django.apps import apps
+
+            apps.clear_cache()
+        except Exception:
+            pass
 
 
 @pytest.fixture

@@ -66,63 +66,73 @@ def get_postgres_connection_string(dbname: str = "postgres") -> str:
     return conn_str
 
 
-def set_up_postgres(db_name: str) -> None:
+def set_up_postgres(project_name: str) -> None:
     conn_str = get_postgres_connection_string()
     password = "password"
+    user_name = project_name
+    prod_db = project_name
+    test_db = f"test_{project_name}"
 
     with psycopg.connect(conn_str, autocommit=True) as conn:
         with conn.cursor() as cur:
-            # terminate any old connections
-            cur.execute(
-                """
-                SELECT pg_terminate_backend(pid)
-                FROM pg_stat_activity
-                WHERE datname = %s AND pid <> pg_backend_pid();
-                """,
-                (db_name,),
-            )
+            # terminate any old connections to both DBs
+            for db in [prod_db, test_db]:
+                cur.execute(
+                    """
+                    SELECT pg_terminate_backend(pid)
+                    FROM pg_stat_activity
+                    WHERE datname = %s AND pid <> pg_backend_pid();
+                    """,
+                    (db,),
+                )
 
             # create user if it doesn't exist
-            cur.execute("SELECT 1 FROM pg_roles WHERE rolname = %s", (db_name,))
+            cur.execute("SELECT 1 FROM pg_roles WHERE rolname = %s", (user_name,))
             if not cur.fetchone():
                 cur.execute(
                     sql.SQL("CREATE USER {} WITH PASSWORD {}").format(
-                        sql.Identifier(db_name), sql.Literal(password)
+                        sql.Identifier(user_name), sql.Literal(password)
                     )
                 )
                 cur.execute(
-                    sql.SQL("ALTER USER {} CREATEDB").format(sql.Identifier(db_name))
+                    sql.SQL("ALTER USER {} CREATEDB").format(sql.Identifier(user_name))
                 )
 
-            # create DB if it doesn't exist
-            cur.execute("SELECT 1 FROM pg_database WHERE datname = %s", (db_name,))
-            if not cur.fetchone():
-                cur.execute(
-                    sql.SQL("CREATE DATABASE {} OWNER {}").format(
-                        sql.Identifier(db_name), sql.Identifier(db_name)
+            # create both DBs if they don't exist
+            for db in [prod_db, test_db]:
+                cur.execute("SELECT 1 FROM pg_database WHERE datname = %s", (db,))
+                if not cur.fetchone():
+                    cur.execute(
+                        sql.SQL("CREATE DATABASE {} OWNER {}").format(
+                            sql.Identifier(db), sql.Identifier(user_name)
+                        )
                     )
-                )
 
 
 def tear_down_postgres(project_name: str):
     conn_str = get_postgres_connection_string()
+    user_name = project_name
+    prod_db = project_name
+    test_db = f"test_{project_name}"
 
     with psycopg.connect(conn_str, autocommit=True) as conn:
         with conn.cursor() as cur:
-            db_name = f"test_{project_name}"
-            cur.execute(
-                """
-                SELECT pg_terminate_backend(pid)
-                FROM pg_stat_activity
-                WHERE datname = %s AND pid <> pg_backend_pid();
-                """,
-                (db_name,),
-            )
-            cur.execute(
-                sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(db_name))
-            )
+            for db in [prod_db, test_db]:
+                cur.execute(
+                    """
+                    SELECT pg_terminate_backend(pid)
+                    FROM pg_stat_activity
+                    WHERE datname = %s AND pid <> pg_backend_pid();
+                    """,
+                    (db,),
+                )
+                cur.execute(
+                    sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(db))
+                )
 
-            cur.execute(sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(db_name)))
+            cur.execute(
+                sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(user_name))
+            )
 
 
 def get_free_port_from_os() -> int:
