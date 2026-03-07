@@ -18,22 +18,9 @@ hooks = [
 ]
 
 [[repos]]
-repo = "https://github.com/pre-commit/mirrors-mypy"
-rev = "v1.19.1"
-hooks = [
-    { id = "mypy", additional_dependencies = [
-        "django-stubs[compatible-mypy]",
-    ], exclude = { glob = [
-        ".pdbrc",
-    ] } },
-]
-
-[[repos]]
 repo = "https://github.com/astral-sh/ruff-pre-commit"
 rev = "v0.15.4"
 hooks = [
-    # `--config` to stop ruff from using {{project_name}}/pyproject.toml
-    # https://github.com/astral-sh/ruff/issues/9585
     { id = "ruff-check", args = ["--fix"] },
     { id = "ruff-format" },
 ]
@@ -77,4 +64,15 @@ hooks = [
     ], additional_dependencies = [
         "@commitlint/config-conventional",
     ] },
+]
+
+[[repos]]
+repo = "https://github.com/pre-commit/mirrors-mypy"
+rev = "v1.19.1"
+hooks = [
+    { id = "mypy", additional_dependencies = [
+        "django-stubs[compatible-mypy]",
+    ], exclude = { glob = [
+        ".pdbrc",
+    ] } },
 ]

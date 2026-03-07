@@ -2,10 +2,10 @@ from unittest import mock
 
 from django.test import RequestFactory, SimpleTestCase
 
-from {{project_name}}.context_processors import metadata
+from core.context_processors import metadata
 
 
-@mock.patch("{{project_name}}.context_processors.__version__", "1.2.3-test")
+@mock.patch("core.context_processors.__version__", "1.2.3-test")
 class MetadataContextProcessorTest(SimpleTestCase):
     def setUp(self):
         self.request_factory = RequestFactory()

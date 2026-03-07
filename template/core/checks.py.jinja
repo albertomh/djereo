@@ -27,7 +27,7 @@ def check_dev_mode(**kwargs):
                     "Set the environment variable PYTHONDEVMODE=1, or run "
                     + "with 'python -X dev'."
                 ),
-                id="{{project_name}}.W001",
+                id="core.W001",
             )
         )
 
@@ -42,7 +42,7 @@ def check_model_names(*, app_configs, **kwargs):
 
     for app_config in app_configs:
         # skip apps that aren't part of the project
-        if app_config.name.split(".", maxsplit=1)[0] != "{{project_name}}":
+        if app_config.name.split(".", maxsplit=1)[0] not in ["core", "users"]:
             continue
 
         for model in app_config.get_models():
@@ -58,7 +58,7 @@ def check_model_names(*, app_configs, **kwargs):
                         f"{__name__}.SAFE_MODEL_NAMES."
                     ),
                     obj=model,
-                    id="{{project_name}}.E001",
+                    id="core.E001",
                 )
                 errors.append(error)
 

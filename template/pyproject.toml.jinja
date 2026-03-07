@@ -66,8 +66,8 @@ dev = [
     "ipython>=9.8.0,<10.0.0",
     "rich>=14.2.0,<15.0.0",
 ]
-
 {% if is_github_project %}
+
 [project.urls]
 Repository = "https://github.com"
 {% endif %}
@@ -118,6 +118,9 @@ select = [
     # pycodestyle warnings
     "W",
 ]
+
+[tool.ruff.lint.isort]
+known-first-party = ["{{project_name}}", "users", "core"]
 
 [tool.ruff.lint.per-file-ignores]
 "_db/**.py" = ["INP001", "T201"]

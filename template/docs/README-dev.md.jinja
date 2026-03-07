@@ -62,7 +62,7 @@ oldest and latest Python versions.
 nox [-- <expression>]
 
 # eg. to only run tests inside the `test_migrations` module
-nox -- testdjereo.tests.test_migrations
+nox -- core.tests.test_migrations
 
 # eg. to use `pdb` to debug tests
 nox -- --pdb
@@ -168,7 +168,7 @@ def view(request):
     return HttpResponse(f"{{project_name}} v{__version__}")
 ```
 
-The custom `context_processors.metadata` processor also exposes the version for use in
+The custom `core.context_processors.metadata` processor also exposes the version for use in
 templates.
 
 ## Security
@@ -190,8 +190,8 @@ that `DEBUG` is False and that localhost is not amongst the `CSRF_TRUSTED_ORIGIN
   `PERMISSIONS_POLICY` setting for details.
 - Cross-Origin-Opener-Policy: by default Django sets this to the secure `same-origin` value.
 - Cross-Origin-Embedder-Policy & Cross-Origin-Resource-Policy: these are set to their most
-  secure values by means of a custom middleware, `SecurityHeadersMiddleware`. There is an
-  open ticket to add these to Django ([#31923](https://code.djangoproject.com/ticket/31923)).
+  secure values by means of a custom middleware, `core.middleware.SecurityHeadersMiddleware`.
+  There is an open ticket to add these to Django ([#31923](https://code.djangoproject.com/ticket/31923)).
 
 ## Developer tools
 

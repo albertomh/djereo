@@ -19,13 +19,13 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 
-from {{project_name}} import views as {{project_name}}_views
+from core import views as core_views
 
 urlpatterns = [
     path("-/", include("django_alive.urls")),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
-    path("", {{project_name}}_views.index, name="index"),
+    path("", core_views.index, name="index"),
 ]
 
 if settings.ENABLE_DEBUG_TOOLS:  # pragma: no cover
@@ -37,7 +37,7 @@ if settings.ENABLE_DEBUG_TOOLS:  # pragma: no cover
     ]
 
 if settings.IS_TESTING:  # pragma: no cover
-    from {{project_name}}.tests.test_app import views as test_app_views
+    from core.tests.test_app import views as test_app_views
 
     urlpatterns += [
         path(

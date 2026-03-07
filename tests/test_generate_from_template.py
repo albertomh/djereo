@@ -21,7 +21,12 @@ def test_djereo_jinja_templates_converted(
     test_project_dir: Path,
 ):
     """Validate that generating a project converts Jinja templates to files."""
-    copier_copy(copier_input_data)
+    copier_copy(
+        {
+            **copier_input_data,
+            "is_github_project": True,
+        }
+    )
 
     template_files: list[Path] = [
         f.relative_to(djereo_root_dir / "template")

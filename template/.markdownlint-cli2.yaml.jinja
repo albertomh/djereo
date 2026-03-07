@@ -1,9 +1,6 @@
 config:
   default: true
 
-  ignores:
-    # on account of this being generated automatically by 'Release Please'
-    - "CHANGELOG.md"
   # per-rule settings in alphabetical order
   # https://github.com/DavidAnson/markdownlint/tree/main/doc
   code-block-style:
@@ -19,7 +16,6 @@ config:
     siblings_only: true
 
 fix: true
-
 {% if is_github_project %}
 ignores:
   # on account of this being generated automatically by 'Release Please'

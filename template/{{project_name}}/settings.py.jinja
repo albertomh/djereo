@@ -27,7 +27,7 @@ from django.utils.csp import CSP
 {% endif %}
 from environs import env
 
-from {{project_name}}.logging import LoggingConfigFactory
+from core.logging import LoggingConfigFactory
 
 # 0. Setup -------------------------------------------------------------------------------
 
@@ -82,11 +82,11 @@ else:
 # INSTALLED_APPS has precedence.
 # https://docs.djangoproject.com/en/stable/ref/settings/#installed-apps
 FIRST_PARTY_APPS = [
-    "{{project_name}}.apps.{{project_name|title}}Config",
+    "core.apps.CoreConfig",
     "users.apps.UsersConfig",
 ]
 if IS_TESTING:
-    FIRST_PARTY_APPS += ["{{project_name}}.tests.test_app.apps.TestAppConfig"]
+    FIRST_PARTY_APPS += ["core.tests.test_app.apps.TestAppConfig"]
 THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
@@ -117,7 +117,7 @@ CONTRIB_APPS = [
 INSTALLED_APPS = FIRST_PARTY_APPS + THIRD_PARTY_APPS + CONTRIB_APPS
 
 MIDDLEWARE = [
-    "{{project_name}}.middleware.SecurityHeadersMiddleware",
+    "core.middleware.SecurityHeadersMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django_permissions_policy.PermissionsPolicyMiddleware",
     {% if django_ver_major >= 6 %}
@@ -183,7 +183,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "{{project_name}}.context_processors.metadata",
+                "core.context_processors.metadata",
             ],
         },
     },

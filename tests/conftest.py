@@ -59,6 +59,8 @@ def copier_input_data(test_project_name: str) -> dict:
         "project_name": test_project_name,
         "author_name": "Miguel de Cervantes",
         "author_email": "mike@alcala.net",
+        # small speed-up in each test's 'generate' step from not creating `.github/`
+        "is_github_project": False,
     }
 
     nox_session = os.getenv("NOX_SESSION", "")
@@ -74,14 +76,16 @@ def copier_input_data(test_project_name: str) -> dict:
 
 
 @pytest.fixture
-def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict], None]:
+def copier_copy(
+    djereo_root_dir: Path, test_project_dir: Path, copier_quiet=True
+) -> Callable[[dict], None]:
     """Fixture to run `copier copy`, cleaning up destination directory beforehand.
 
     Uses the `djereo_root_dir` & `test_project_dir` fixtures as source and
     destination directories respectively, so tests should use these fixtures.
     """
 
-    def _run(copier_input_data: dict, *, generate_dotenv=True):
+    def _run(copier_input_data: dict, *, generate_dotenv=True, copier_quiet=copier_quiet):
         if test_project_dir.exists():
             shutil.rmtree(test_project_dir, ignore_errors=True)
 
@@ -91,6 +95,7 @@ def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Callable[[dict
             data=copier_input_data,
             vcs_ref="HEAD",
             defaults=True,
+            quiet=copier_quiet,
             unsafe=True,
         )
 

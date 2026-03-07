@@ -10,7 +10,7 @@ from django.db import models
 from django.test import SimpleTestCase, override_settings
 from django.test.utils import isolate_apps
 
-from {{project_name}}.checks import check_dev_mode, check_model_names
+from core.checks import check_dev_mode, check_model_names
 
 
 def mock_dev_mode(value):
@@ -39,17 +39,17 @@ class TestDevModeCheck(SimpleTestCase):
             result = check_dev_mode()
 
         self.assertEqual(len(result), 1)
-        self.assertEqual(result[0].id, "{{project_name}}.W001")
+        self.assertEqual(result[0].id, "core.W001")
 
 
-@isolate_apps("{{project_name}}", attr_name="apps")
+@isolate_apps("core", attr_name="apps")
 class CheckModelNamesTests(SimpleTestCase):
     def test_success(self):
         class Single(models.Model):
             pass
 
             class Meta:
-                app_label = "{{project_name}}"
+                app_label = "core"
 
         result = check_model_names(
             app_configs=self.apps.get_app_configs(),
@@ -62,20 +62,20 @@ class CheckModelNamesTests(SimpleTestCase):
             pass
 
             class Meta:
-                app_label = "{{project_name}}"
+                app_label = "core"
 
         result = check_model_names(
             app_configs=self.apps.get_app_configs(),
         )
 
         self.assertEqual(len(result), 1)
-        self.assertEqual(result[0].id, "{{project_name}}.E001")
+        self.assertEqual(result[0].id, "core.E001")
         self.assertEqual(
             result[0].hint,
             (
                 "Rename to the singular form, like “Plural”, or mark the name "
                 "as allowed by adding 'Plurals' to "
-                "{{project_name}}.checks.SAFE_MODEL_NAMES."
+                "core.checks.SAFE_MODEL_NAMES."
             ),
         )
         self.assertEqual(result[0].obj, Plurals)
@@ -85,10 +85,10 @@ class CheckModelNamesTests(SimpleTestCase):
             pass
 
             class Meta:
-                app_label = "{{project_name}}"
+                app_label = "core"
 
         mock_safe_names = mock.patch(
-            "{{project_name}}.checks.SAFE_MODEL_NAMES",
+            "core.checks.SAFE_MODEL_NAMES",
             new={"Plurals"},
         )
 
