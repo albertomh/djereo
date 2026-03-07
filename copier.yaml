@@ -83,7 +83,7 @@ _message_after_copy: |
 
 _tasks:
     - "git init"
-    - "uv lock"
+    - "uv lock {% if _is_test %}--quiet{% endif %}"
     - "cp .env.in .env"
 
 _envops:

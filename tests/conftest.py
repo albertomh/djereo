@@ -8,7 +8,7 @@ from pathlib import Path
 
 import copier
 import pytest
-from sh import python as sh_python
+from sh import uv as sh_uv
 
 from tests._utils import set_up_postgres, tear_down_postgres
 
@@ -56,6 +56,7 @@ def test_project_dir(
 def copier_input_data(test_project_name: str) -> dict:
     """Answers to core djereo template questions."""
     input_data = {
+        "_is_test": True,
         "project_name": test_project_name,
         "author_name": "Miguel de Cervantes",
         "author_email": "mike@alcala.net",
@@ -148,11 +149,11 @@ def install_test_project(
 ):
     """Generate a test project, install and remove it before/after a test."""
     copier_copy(copier_input_data)
-    sh_python("-m", "pip", "install", str(test_project_dir))
+    sh_uv.pip.install("--quiet", str(test_project_dir))
 
     yield
 
-    sh_python("-m", "pip", "uninstall", "-y", test_project_name)
+    sh_uv.pip.uninstall("--quiet", test_project_name)
 
 
 @pytest.fixture

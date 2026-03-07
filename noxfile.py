@@ -67,6 +67,7 @@ def tests(session: nox.Session, django: str):
         "sync",
         "--group=test",
         f"--python={session.virtualenv.location}",
+        "--quiet",
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
     )
 
