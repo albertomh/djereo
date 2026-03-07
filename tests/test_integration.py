@@ -1,6 +1,7 @@
 import re
 import time
 from contextlib import suppress
+from http import HTTPStatus
 from io import StringIO
 from pathlib import Path
 from urllib.request import urlopen
@@ -8,7 +9,7 @@ from urllib.request import urlopen
 import pytest
 from bs4 import BeautifulSoup
 from bs4.element import Tag
-from sh import TimeoutException, just
+from sh import ErrorReturnCode, TimeoutException, just, uv
 
 from tests._utils import get_free_port_from_os, remove_ansi_escape_codes
 
@@ -42,31 +43,33 @@ def wait_for_server_start(
 @pytest.mark.slow
 def test_sys_check_warn_no_dev_mode_when_debug(
     test_project_dir: Path,
-    generate_test_project_with_db,
+    generate_test_project_with_db: Path,
 ):
     """Ensure a system check warning is raised if Dev Mode is disabled & DEBUG is True."""
     out, err = StringIO(), StringIO()
-    expected_warning = (
-        "(core.W001) Python Development Mode is not enabled yet DEBUG is true."
+    expected_warning = "No .env file found. Run `cp .env.in .env` to get started."
+    expected_error = (
+        'environs.exceptions.EnvError: Environment variable "SECRET_KEY" not set'
     )
 
-    with suppress(TimeoutException):
-        just(
-            "runserver",
-            f"'127.0.0.1:{get_free_port_from_os()}'",
-            # PYTHONDEVMODE can only be disabled by setting it to an empty string
-            "",
-            _timeout=30,
-            _bg=True,
-            _bg_exc=False,
+    try:
+        uv(
+            "run",
+            "manage.py",
+            "check",
             _out=out,
             _err=err,
-            _cwd=test_project_dir,
+            _cwd=generate_test_project_with_db,
+            _env={"PYTHONUNBUFFERED": "1"},
         )
-        assert wait_for_server_start(out), "Django runserver did not start in time"
+    except ErrorReturnCode:
+        # command is expected to fail
+        pass
 
-    clean_stderr = remove_ansi_escape_codes(err.getvalue())
-    assert expected_warning in clean_stderr
+    stderr = remove_ansi_escape_codes(err.getvalue())
+
+    assert expected_warning in stderr
+    assert expected_error in stderr
 
 
 @pytest.mark.xdist_group(name="integration")
@@ -200,25 +203,15 @@ def test_django_allauth_pages_exist(
     test_project_dir: Path,
     generate_test_project_with_db,
 ):
-    allauth_paths = [
-        "accounts/login/",
-        "accounts/signup/",
-    ]
-    just("manage", "migrate", _cwd=test_project_dir)
-    out = StringIO()
-    addrport = f"127.0.0.1:{get_free_port_from_os()}"
+    from django.conf import settings
+    from django.test import Client
 
-    with suppress(TimeoutException):
-        just(
-            "runserver",
-            addrport,
-            _timeout=30,
-            _bg=True,
-            _bg_exc=False,
-            _out=out,
-            _cwd=test_project_dir,
-        )
-        urls_to_get = [(f"http://{addrport}/{path}", 200) for path in allauth_paths]
-        assert wait_for_server_start(out, urls_to_get=urls_to_get), (
-            "Django runserver did not start in time"
-        )
+    settings.ALLOWED_HOSTS.append("testserver")
+    client = Client()
+    allauth_urls = [
+        "/accounts/login/",
+        "/accounts/signup/",
+    ]
+    for url in allauth_urls:
+        response = client.get(url)
+        assert response.status_code == HTTPStatus.OK

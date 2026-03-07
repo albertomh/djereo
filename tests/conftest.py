@@ -2,7 +2,7 @@ import os
 import re
 import shutil
 import uuid
-from collections.abc import Callable
+from collections.abc import Callable, Generator
 from io import TextIOWrapper
 from pathlib import Path
 
@@ -54,7 +54,7 @@ def test_project_dir(
 
 @pytest.fixture
 def copier_input_data(test_project_name: str) -> dict:
-    """Answers to core djereo template questions."""
+    """Answers to core djereo template questions (see `copier.yaml`)."""
     input_data = {
         "project_name": test_project_name,
         "author_name": "Miguel de Cervantes",
@@ -178,10 +178,10 @@ def generate_test_project_with_db(
     test_project_dir: Path,
     test_project_name: str,
     tear_down_test_database,
-):
+) -> Generator[Path]:
     copier_copy(copier_input_data)
     set_up_test_database()
 
-    yield
+    yield test_project_dir
 
     tear_down_postgres(test_project_dir, test_project_name)

@@ -38,6 +38,7 @@ LATEST_PY = py_versions[-1]
 LATEST_DJ = dj_versions[-1]
 
 nox.options.default_venv_backend = "uv"
+nox.options.reuse_existing_virtualenvs = True
 # default to latest versions for local runs
 nox.options.sessions = [f"tests-{LATEST_PY}(django='{LATEST_DJ}')"]
 # in CI all combinations run (via `nox --list` in `.github/workflows/_checks.yaml`)
@@ -66,6 +67,8 @@ def tests(session: nox.Session, django: str):
         "uv",
         "sync",
         "--group=test",
+        "--frozen",
+        "--quiet",
         f"--python={session.virtualenv.location}",
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
     )

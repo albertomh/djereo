@@ -33,7 +33,8 @@ from core.logging import LoggingConfigFactory
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-IS_TESTING = "test" in sys.argv or env.bool("USE_ENV_TEST", default=False)
+USE_ENV_TEST = env.bool("USE_ENV_TEST", default=False)
+IS_TESTING = "test" in sys.argv
 
 if IS_TESTING:
     env.read_env(BASE_DIR / ".env.test", recurse=False)
