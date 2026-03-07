@@ -24,6 +24,7 @@ def _install_deps(session: nox.Session) -> None:
         "sync",
         "--group=test",
         f"--python={session.virtualenv.location}",
+        "--quiet",
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
     )
 

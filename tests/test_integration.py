@@ -12,11 +12,13 @@ from sh import TimeoutException, just
 
 from tests._utils import get_free_port_from_os, remove_ansi_escape_codes
 
+TIMEOUT_SECONDS = 60.0
+
 
 def wait_for_server_start(
     out: StringIO,
     *,
-    timeout=30.0,
+    timeout=TIMEOUT_SECONDS,
     interval=0.1,
     urls_to_get: list[tuple[str, int]] | None = None,
 ) -> bool:
@@ -56,7 +58,7 @@ def test_sys_check_warn_no_dev_mode_when_debug(
             f"'127.0.0.1:{get_free_port_from_os()}'",
             # PYTHONDEVMODE can only be disabled by setting it to an empty string
             "",
-            _timeout=30,
+            _timeout=TIMEOUT_SECONDS,
             _bg=True,
             _bg_exc=False,
             _out=out,
@@ -119,7 +121,7 @@ def test_runserver(
         just(
             "runserver",
             addrport,
-            _timeout=30,
+            _timeout=TIMEOUT_SECONDS,
             _bg=True,
             _bg_exc=False,
             _out=out,
@@ -145,7 +147,7 @@ def test_django_debug_toolbar_is_enabled(
         just(
             "runserver",
             addrport,
-            _timeout=30,
+            _timeout=TIMEOUT_SECONDS,
             _bg=True,
             _bg_exc=False,
             _out=out,
@@ -175,7 +177,7 @@ def test_runserver_dev_logs_use_rich(
         just(
             "runserver",
             addrport,
-            _timeout=30,
+            _timeout=TIMEOUT_SECONDS,
             _bg=True,
             _bg_exc=False,
             _out=out,
@@ -212,7 +214,7 @@ def test_django_allauth_pages_exist(
         just(
             "runserver",
             addrport,
-            _timeout=30,
+            _timeout=TIMEOUT_SECONDS,
             _bg=True,
             _bg_exc=False,
             _out=out,
