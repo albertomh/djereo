@@ -33,7 +33,8 @@ from core.logging import LoggingConfigFactory
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-IS_TESTING = "test" in sys.argv or env.bool("USE_ENV_TEST", default=False)
+USE_ENV_TEST = env.bool("USE_ENV_TEST", default=False)
+IS_TESTING = "test" in sys.argv
 
 if IS_TESTING:
     env.read_env(BASE_DIR / ".env.test", recurse=False)
@@ -246,9 +247,13 @@ EMAIL_PORT = 1025
 # Database
 # https://docs.djangoproject.com/en/stable/ref/settings/#databases
 
+_database_url = env.dj_db_url("DATABASE_URL")
 DATABASES: dict[str, dict[str, Any]] = {
-    "default": {"OPTIONS": {"pool": True}, **env.dj_db_url("DATABASE_URL")}
+    "default": _database_url,
 }
+
+if _database_url.get("ENGINE") == "django.db.backends.postgresql":
+    DATABASES["default"]["OPTIONS"] = {"pool": True}
 
 AUTH_USER_MODEL = "users.AuthUser"
 

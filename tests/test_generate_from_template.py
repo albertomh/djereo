@@ -159,14 +159,13 @@ def test_generated_yaml_is_valid(
 @pytest.mark.integration
 @pytest.mark.smoke
 def test_generated_project_tests_run_successfully(
-    test_project_dir: Path,
-    generate_test_project_with_db,
+    generated_project_postgres: Path,
 ):
     result: RunningCommand = nox(
-        "--", "--parallel=1", _cwd=test_project_dir, _return_cmd=True
+        "--", "--parallel=1", _cwd=generated_project_postgres, _return_cmd=True
     )
 
-    assert result.exit_code == 0, f"Pytest failed:\n{result.stdout}\n{result.stderr}"
+    assert result.exit_code == 0, f"Nox failed:\n{result.stdout}\n{result.stderr}"
 
 
 @pytest.mark.integration

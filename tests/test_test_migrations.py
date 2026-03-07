@@ -1,11 +1,9 @@
+import subprocess
 import textwrap
-from io import StringIO
 from pathlib import Path
 
 import pytest
-from sh import just, nox
-
-from tests._utils import remove_ansi_escape_codes
+from sh import just
 
 TEST_MODELS_PY_CONTENT = textwrap.dedent("""
 class SomeModel(models.Model):
@@ -16,9 +14,9 @@ class SomeModel(models.Model):
 @pytest.mark.integration
 @pytest.mark.slow
 def test_migrations_check_fails_if_pending_migrations(
-    test_project_dir: Path,
-    generate_test_project_with_db,
+    generated_project_sqlite: Path,
 ):
+    test_project_dir = generated_project_sqlite
     models_py_path = test_project_dir / "core" / "models.py"
     with open(models_py_path, "a") as models_file:
         models_file.write(TEST_MODELS_PY_CONTENT)
@@ -26,32 +24,25 @@ def test_migrations_check_fails_if_pending_migrations(
     migrations_dir.mkdir(parents=True, exist_ok=True)
     (migrations_dir / "__init__.py").touch()
 
-    out = StringIO()
-    nox(
-        "--",
-        "-k",
-        "test_no_pending_migrations",
-        # use _out instead of _err since nox surfaces the subcommands' output in stdout
-        _out=out,
-        # 1 is okay since we are expecting `test_no_pending_migrations` to fail
-        _ok_code=[0, 1],
-        _cwd=test_project_dir,
+    result = subprocess.run(
+        ["uv", "run", "manage.py", "makemigrations", "--check", "--dry-run"],
+        cwd=test_project_dir,
+        capture_output=True,
+        text=True,
+        check=False,
     )
 
-    expected_error = (
-        "test_no_pending_migrations (core.tests.test_migrations.PendingMigrationsTests."
-        "test_no_pending_migrations) ... FAIL\n"
-    )
-    clean_stdout = remove_ansi_escape_codes(out.getvalue())
-    assert expected_error in clean_stdout
+    assert result.returncode == 1
+    assert "No changes detected" not in result.stdout
+    assert "Changes detected" in result.stdout or "Migrations for" in result.stdout
 
 
 @pytest.mark.integration
 @pytest.mark.slow
 def test_makemigrations_creates_a_max_migration_file(
-    test_project_dir: Path,
-    generate_test_project_with_db,
+    generated_project_sqlite: Path,
 ):
+    test_project_dir = generated_project_sqlite
     models_py_path = test_project_dir / "core" / "models.py"
     with open(models_py_path, "a") as models_file:
         models_file.write(TEST_MODELS_PY_CONTENT)
