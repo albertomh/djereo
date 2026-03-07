@@ -8,6 +8,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [4.0.0](https://github.com/albertomh/djereo/compare/v3.18.0...v4.0.0) (2026-03-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* add a 'core' app for improved separation of concerns ([#349](https://github.com/albertomh/djereo/issues/349))
+
+### Features
+
+* Add a 'core' app for improved separation of concerns ([#349](https://github.com/albertomh/djereo/issues/349)) ([0ae3852](https://github.com/albertomh/djereo/commit/0ae38523a41bdae17d1dae3f0f126310d8b3698c))
+* Add cleanup trap to justfile ([#345](https://github.com/albertomh/djereo/issues/345)) ([4b26fc1](https://github.com/albertomh/djereo/commit/4b26fc14053fefa78fc5cc2ef851ca53dfea2e1e))
+* Add DeletedAtManager ([#346](https://github.com/albertomh/djereo/issues/346)) ([83fa0dd](https://github.com/albertomh/djereo/commit/83fa0dd72b60ce2b42c9afc8f4ca21186cd7c4da))
+* Add Ruff-specific lint rules ([#342](https://github.com/albertomh/djereo/issues/342)) ([6e51fd0](https://github.com/albertomh/djereo/commit/6e51fd0eac5863da52302863e39aecc911a3851e))
+* Raise warning on startup if dotenv is missing ([#335](https://github.com/albertomh/djereo/issues/335)) ([e569f4d](https://github.com/albertomh/djereo/commit/e569f4dae38ef2369bb2ed003875bde49a13c863))
+* **users:** Refine user profile creation logic ([#343](https://github.com/albertomh/djereo/issues/343)) ([5091753](https://github.com/albertomh/djereo/commit/5091753f44b382fc619c74a0f1658897f01a5e24))
+
+
+### Bug Fixes
+
+* Only start mailpit if port is not in use ([#341](https://github.com/albertomh/djereo/issues/341)) ([fb8f714](https://github.com/albertomh/djereo/commit/fb8f714ef7ed3eb66451e04889862387996a7067))
+* **seed:** Ensure UserProfile records are created during database seeding ([#340](https://github.com/albertomh/djereo/issues/340)) ([4b1234d](https://github.com/albertomh/djereo/commit/4b1234d15e2a6e67271fd993a09ffb97282222b8))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.28.0 ([#333](https://github.com/albertomh/djereo/issues/333)) ([e1a02b0](https://github.com/albertomh/djereo/commit/e1a02b0d29e95509c7ea22f4a15b7afce24e3bb4))
+
+
+### Documentation
+
+* Comment Cross-Origin headers in middleware ([#344](https://github.com/albertomh/djereo/issues/344)) ([27b7b25](https://github.com/albertomh/djereo/commit/27b7b25faecaacc7749e07d97b6d87b975ea94e9))
+
 ## [3.18.0](https://github.com/albertomh/djereo/compare/v3.17.0...v3.18.0) (2026-02-19)
 
 
