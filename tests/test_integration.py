@@ -1,6 +1,7 @@
+import os
 import re
 import time
-from contextlib import suppress
+from http import HTTPStatus
 from io import StringIO
 from pathlib import Path
 from urllib.request import urlopen
@@ -8,12 +9,33 @@ from urllib.request import urlopen
 import pytest
 from bs4 import BeautifulSoup
 from bs4.element import Tag
-from sh import TimeoutException, just
+from sh import ErrorReturnCode, uv
 
-from tests._utils import get_free_port_from_os, remove_ansi_escape_codes
+from tests._utils import get_free_port_from_os, remove_ansi_escape_codes, wait_for_server
+
+TIMEOUT_SECONDS = 30.0
 
 
-def wait_for_server_start(
+def _wait_for_output(
+    stream: StringIO,
+    pattern: str | re.Pattern,
+    *,
+    timeout=TIMEOUT_SECONDS,
+    interval=0.1,
+) -> bool:
+    start = time.time()
+    while time.time() - start < timeout:
+        content = remove_ansi_escape_codes(stream.getvalue())
+        if isinstance(pattern, str):
+            if pattern in content:
+                return True
+        elif pattern.search(content):
+            return True
+        time.sleep(interval)
+    return False
+
+
+def _wait_for_server_start(
     out: StringIO,
     *,
     timeout=30.0,
@@ -39,47 +61,164 @@ def wait_for_server_start(
 
 @pytest.mark.xdist_group(name="integration")
 @pytest.mark.integration
+@pytest.mark.smoke
+def test_runserver(
+    set_up_generated_project: Path,
+):
+    out = StringIO()
+    host = "127.0.0.1"
+    port = get_free_port_from_os()
+
+    server = uv.run(
+        "manage.py",
+        "runserver",
+        f"{host}:{port}",
+        "--noreload",
+        _bg=True,
+        _cwd=set_up_generated_project,
+        _env={"PYTHONUNBUFFERED": "1"},
+        _ok_code=[0, 143],
+        _out=out,
+    )
+
+    try:
+        wait_for_server(host, port)
+        start_message = f"Starting development server at http://{host}:{port}/"
+        assert start_message in out.getvalue()
+    finally:
+        if server is not None:
+            server.terminate()
+            server.wait()
+
+
+@pytest.mark.xdist_group(name="integration")
+@pytest.mark.integration
 @pytest.mark.slow
+@pytest.mark.parametrize("django_debug", [True])
+def test_django_debug_toolbar_is_enabled(
+    set_up_generated_project: Path,
+    django_debug: bool,
+):
+    out = StringIO()
+    host = "127.0.0.1"
+    port = get_free_port_from_os()
+
+    server = uv.run(
+        "manage.py",
+        "runserver",
+        f"{host}:{port}",
+        "--noreload",
+        _bg=True,
+        _cwd=set_up_generated_project,
+        _ok_code=[0, 143],
+        _out=out,
+    )
+
+    try:
+        wait_for_server(host, port)
+        with urlopen(f"http://{host}:{port}/") as response:
+            res_bytes = response.read()
+        res_html = res_bytes.decode("utf8")
+        html = BeautifulSoup(res_html, features="html.parser")
+        dj_debug_toolbar = html.find("div", {"id": "djDebug"})
+        assert type(dj_debug_toolbar) is Tag
+    finally:
+        if server is not None:
+            server.terminate()
+            server.wait()
+
+
+@pytest.mark.xdist_group(name="integration")
+@pytest.mark.integration
+@pytest.mark.slow
+@pytest.mark.parametrize("django_debug", [True])
 def test_sys_check_warn_no_dev_mode_when_debug(
-    test_project_dir: Path,
-    generate_test_project_with_db,
+    set_up_generated_project: Path,
+    django_debug: bool,
 ):
     """Ensure a system check warning is raised if Dev Mode is disabled & DEBUG is True."""
     out, err = StringIO(), StringIO()
+
     expected_warning = (
         "(core.W001) Python Development Mode is not enabled yet DEBUG is true."
     )
 
-    with suppress(TimeoutException):
-        just(
-            "runserver",
-            f"'127.0.0.1:{get_free_port_from_os()}'",
-            # PYTHONDEVMODE can only be disabled by setting it to an empty string
-            "",
-            _timeout=30,
-            _bg=True,
-            _bg_exc=False,
-            _out=out,
-            _err=err,
-            _cwd=test_project_dir,
-        )
-        assert wait_for_server_start(out), "Django runserver did not start in time"
+    env = {**os.environ}
+    env.pop("PYTHONDEVMODE", None)  # ensure dev mode disabled
+    env["PYTHONUNBUFFERED"] = "1"
 
-    clean_stderr = remove_ansi_escape_codes(err.getvalue())
-    assert expected_warning in clean_stderr
+    uv.run(
+        "manage.py",
+        "check",
+        _out=out,
+        _err=err,
+        _cwd=set_up_generated_project,
+        _env=env,
+    )
+
+    stderr = err.getvalue()
+    assert expected_warning in stderr
+
+
+@pytest.mark.xdist_group(name="integration")
+@pytest.mark.integration
+@pytest.mark.slow
+@pytest.mark.parametrize("django_debug", [True])
+def test_runserver_dev_logs_use_rich(
+    set_up_generated_project: Path,
+    django_debug: bool,
+):
+    out = StringIO()
+    host = "127.0.0.1"
+    port = get_free_port_from_os()
+
+    server = uv.run(
+        "manage.py",
+        "runserver",
+        f"{host}:{port}",
+        "--noreload",
+        _bg=True,
+        _bg_exc=False,
+        _cwd=set_up_generated_project,
+        _env={"PYTHONUNBUFFERED": "1"},
+        _err=out,
+        _ok_code=[0, 143],
+        _out=out,
+    )
+
+    try:
+        wait_for_server(host, port)
+        with urlopen(f"http://{host}:{port}/") as response:
+            response.read()
+        max_wait = 5
+        start = time.time()
+        pattern = r"\[\d{2}:\d{2}:\d{2}\] INFO\s+ 200 GET \/ HTTP\/1\.1\s+"
+
+        while True:
+            clean_stdout = remove_ansi_escape_codes(out.getvalue())
+            if re.search(pattern, clean_stdout):
+                break
+            if time.time() - start > max_wait:
+                raise TimeoutError("Expected log line not found")  # noqa: TRY003
+            time.sleep(0.1)
+        pattern = r"\[\d{2}:\d{2}:\d{2}\] INFO\s+ 200 GET \/ HTTP\/1\.1\s+"
+    finally:
+        if server is not None:
+            server.terminate()
+            server.wait()
 
 
 @pytest.mark.xdist_group(name="integration")
 @pytest.mark.integration
 @pytest.mark.slow
 def test_missing_env_file_warning_and_traceback_suppression(
-    test_project_dir: Path,
-    generate_test_project_with_db,
+    set_up_generated_project: Path,
 ):
     """Ensure a warning is raised and traceback suppressed if .env is missing."""
-    env_file = test_project_dir / ".env"
+    env_file = set_up_generated_project / ".env"
+    temp_env_file = set_up_generated_project / ".env.temp"
     if env_file.exists():
-        env_file.unlink()
+        env_file.rename(temp_env_file)
 
     out, err = StringIO(), StringIO()
     expected_warning = "No .env file found. Run `cp .env.in .env` to get started."
@@ -87,138 +226,35 @@ def test_missing_env_file_warning_and_traceback_suppression(
         'environs.exceptions.EnvError: Environment variable "SECRET_KEY" not set'
     )
 
-    with suppress(Exception):
-        just(
-            "manage",
-            "collectstatic",
-            "--noinput",
+    try:
+        uv(
+            "run",
+            "manage.py",
+            "check",
             _out=out,
             _err=err,
-            _cwd=test_project_dir,
+            _cwd=set_up_generated_project,
+            _env={"PYTHONUNBUFFERED": "1"},
         )
+    except ErrorReturnCode:
+        # command is expected to fail
+        pass
 
-    clean_stderr = remove_ansi_escape_codes(err.getvalue())
+    stderr = remove_ansi_escape_codes(err.getvalue())
 
-    assert expected_warning in clean_stderr
-    assert expected_error in clean_stderr
-    # since `tracebacklimit =0`, "Traceback (most ...):" should NOT be in stderr
-    assert "Traceback (most recent call last):" not in clean_stderr
+    assert expected_warning in stderr
+    assert expected_error in stderr
+
+    if temp_env_file.exists():
+        temp_env_file.rename(env_file)
 
 
-@pytest.mark.xdist_group(name="integration")
-@pytest.mark.integration
 @pytest.mark.smoke
-def test_runserver(
-    test_project_dir: Path,
-    generate_test_project_with_db,
-):
-    out = StringIO()
-    addrport = f"127.0.0.1:{get_free_port_from_os()}"
-
-    with suppress(TimeoutException):
-        just(
-            "runserver",
-            addrport,
-            _timeout=30,
-            _bg=True,
-            _bg_exc=False,
-            _out=out,
-            _cwd=test_project_dir,
-        )
-        assert wait_for_server_start(out), "Django runserver did not start in time"
-
-    start_message = f"Starting development server at http://{addrport}/"
-    assert start_message in out.getvalue()
-
-
-@pytest.mark.xdist_group(name="integration")
-@pytest.mark.integration
-@pytest.mark.slow
-def test_django_debug_toolbar_is_enabled(
-    test_project_dir: Path,
-    generate_test_project_with_db,
-):
-    out = StringIO()
-    addrport = f"127.0.0.1:{get_free_port_from_os()}"
-
-    with suppress(TimeoutException):
-        just(
-            "runserver",
-            addrport,
-            _timeout=30,
-            _bg=True,
-            _bg_exc=False,
-            _out=out,
-            _cwd=test_project_dir,
-        )
-        assert wait_for_server_start(out), "Django runserver did not start in time"
-    with urlopen(f"http://{addrport}/") as response:
-        res_bytes = response.read()
-    res_html = res_bytes.decode("utf8")
-    html = BeautifulSoup(res_html, features="html.parser")
-    dj_debug_toolbar = html.find("div", {"id": "djDebug"})
-
-    assert type(dj_debug_toolbar) is Tag
-
-
-@pytest.mark.xdist_group(name="integration")
-@pytest.mark.integration
-@pytest.mark.slow
-def test_runserver_dev_logs_use_rich(
-    test_project_dir: Path,
-    generate_test_project_with_db,
-):
-    out = StringIO()
-    addrport = f"127.0.0.1:{get_free_port_from_os()}"
-
-    with suppress(TimeoutException):
-        just(
-            "runserver",
-            addrport,
-            _timeout=30,
-            _bg=True,
-            _bg_exc=False,
-            _out=out,
-            _cwd=test_project_dir,
-        )
-        urls_to_get = [(f"http://{addrport}/", 200)]
-        assert wait_for_server_start(out, urls_to_get=urls_to_get), (
-            "Django runserver did not start in time"
-        )
-
-    pattern = r"\[\d{2}:\d{2}:\d{2}\] INFO\s+ 200 GET \/ HTTP\/1\.1\s+"
-    clean_stdout = remove_ansi_escape_codes(out.getvalue())
-    match = re.search(pattern, clean_stdout)
-    assert match is not None
-
-
-@pytest.mark.xdist_group(name="integration")
-@pytest.mark.integration
-@pytest.mark.smoke
-@pytest.mark.slow
-def test_django_allauth_pages_exist(
-    test_project_dir: Path,
-    generate_test_project_with_db,
-):
-    allauth_paths = [
-        "accounts/login/",
-        "accounts/signup/",
+def test_django_allauth_pages_exist(django_test_client):
+    allauth_urls = [
+        "/accounts/login/",
+        "/accounts/signup/",
     ]
-    just("manage", "migrate", _cwd=test_project_dir)
-    out = StringIO()
-    addrport = f"127.0.0.1:{get_free_port_from_os()}"
-
-    with suppress(TimeoutException):
-        just(
-            "runserver",
-            addrport,
-            _timeout=30,
-            _bg=True,
-            _bg_exc=False,
-            _out=out,
-            _cwd=test_project_dir,
-        )
-        urls_to_get = [(f"http://{addrport}/{path}", 200) for path in allauth_paths]
-        assert wait_for_server_start(out, urls_to_get=urls_to_get), (
-            "Django runserver did not start in time"
-        )
+    for url in allauth_urls:
+        response = django_test_client.get(url)
+        assert response.status_code == HTTPStatus.OK

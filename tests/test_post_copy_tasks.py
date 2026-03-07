@@ -11,7 +11,7 @@ from tests._utils import is_git_repo
 @pytest.mark.integration
 @pytest.mark.smoke
 def test_is_git_repo(
-    copier_copy: Callable[[dict], None],
+    copier_copy: Callable,
     copier_input_data: dict,
     test_project_dir: Path,
 ):
@@ -32,7 +32,7 @@ def test_is_git_repo(
 @pytest.mark.smoke
 def test_file_exists(
     file_path: str,
-    copier_copy: Callable[[dict], None],
+    copier_copy: Callable,
     copier_input_data: dict,
     test_project_dir: Path,
     expected_message: str,
@@ -48,7 +48,7 @@ def test_file_exists(
 @pytest.mark.integration
 @pytest.mark.smoke
 def test_generated_project_message_after_copy(
-    copier_copy: Callable[[dict], None],
+    copier_copy: Callable,
     copier_input_data: dict,
     capsys: pytest.CaptureFixture[str],
 ):

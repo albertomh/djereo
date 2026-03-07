@@ -1,7 +1,7 @@
 import os
 import re
 import socket
-from collections.abc import Callable
+import time
 from pathlib import Path
 
 import psycopg
@@ -66,122 +66,83 @@ def get_postgres_connection_string(dbname: str = "postgres") -> str:
     return conn_str
 
 
-def set_up_postgres(test_project_dir: Path, project_name: str) -> Callable[[], None]:
+def set_up_postgres(db_name: str) -> None:
     conn_str = get_postgres_connection_string()
     password = "password"
 
     with psycopg.connect(conn_str, autocommit=True) as conn:
         with conn.cursor() as cur:
-            # Create users and databases for the project
-            for name in [project_name, f"test_{project_name}"]:
-                # Drop existing to ensure a clean slate (including nested test dbs)
-                for db_to_drop in [f"test_{name}", name]:
-                    cur.execute(
-                        """
-                        SELECT pg_terminate_backend(pid)
-                        FROM pg_stat_activity
-                        WHERE datname = %s AND pid <> pg_backend_pid();
-                        """,
-                        (db_to_drop,),
-                    )
-                    cur.execute(
-                        sql.SQL("DROP DATABASE IF EXISTS {}").format(
-                            sql.Identifier(db_to_drop)
-                        )
-                    )
+            # terminate any old connections
+            cur.execute(
+                """
+                SELECT pg_terminate_backend(pid)
+                FROM pg_stat_activity
+                WHERE datname = %s AND pid <> pg_backend_pid();
+                """,
+                (db_name,),
+            )
 
-                cur.execute(
-                    sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(name))
-                )
-
+            # create user if it doesn't exist
+            cur.execute("SELECT 1 FROM pg_roles WHERE rolname = %s", (db_name,))
+            if not cur.fetchone():
                 cur.execute(
                     sql.SQL("CREATE USER {} WITH PASSWORD {}").format(
-                        sql.Identifier(name), sql.Literal(password)
+                        sql.Identifier(db_name), sql.Literal(password)
                     )
                 )
                 cur.execute(
-                    sql.SQL("ALTER USER {} CREATEDB").format(sql.Identifier(name))
+                    sql.SQL("ALTER USER {} CREATEDB").format(sql.Identifier(db_name))
                 )
+
+            # create DB if it doesn't exist
+            cur.execute("SELECT 1 FROM pg_database WHERE datname = %s", (db_name,))
+            if not cur.fetchone():
                 cur.execute(
                     sql.SQL("CREATE DATABASE {} OWNER {}").format(
-                        sql.Identifier(name), sql.Identifier(name)
+                        sql.Identifier(db_name), sql.Identifier(db_name)
                     )
                 )
 
 
-def tear_down_postgres(test_project_dir: Path, project_name: str):
+def tear_down_postgres(project_name: str):
     conn_str = get_postgres_connection_string()
 
     with psycopg.connect(conn_str, autocommit=True) as conn:
         with conn.cursor() as cur:
-            for name in [project_name, f"test_{project_name}"]:
-                # Drop databases (including nested test dbs created by Django)
-                for db_to_drop in [f"test_{name}", name]:
-                    cur.execute(
-                        """
-                        SELECT pg_terminate_backend(pid)
-                        FROM pg_stat_activity
-                        WHERE datname = %s AND pid <> pg_backend_pid();
-                        """,
-                        (db_to_drop,),
-                    )
-                    cur.execute(
-                        sql.SQL("DROP DATABASE IF EXISTS {}").format(
-                            sql.Identifier(db_to_drop)
-                        )
-                    )
-
-                cur.execute(
-                    sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(name))
-                )
-
-
-def clean_up_all_test_databases():
-    """Clean up all databases and roles related to 'djereo_test_'."""
-    conn_str = get_postgres_connection_string()
-    # Use a broader pattern to catch test_djereo_test_ and test_test_djereo_test_
-    pattern = "%djereo_test_%"
-
-    with psycopg.connect(conn_str, autocommit=True) as conn:
-        with conn.cursor() as cur:
-            # Drop databases
+            db_name = f"test_{project_name}"
             cur.execute(
-                "SELECT datname FROM pg_database WHERE datname LIKE %s", (pattern,)
+                """
+                SELECT pg_terminate_backend(pid)
+                FROM pg_stat_activity
+                WHERE datname = %s AND pid <> pg_backend_pid();
+                """,
+                (db_name,),
             )
-            databases = [row[0] for row in cur.fetchall()]
+            cur.execute(
+                sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(db_name))
+            )
 
-            # Drop roles
-            cur.execute("SELECT rolname FROM pg_roles WHERE rolname LIKE %s", (pattern,))
-            roles = [row[0] for row in cur.fetchall()]
-
-            if not databases and not roles:
-                return
-
-            if databases:
-                # Terminate sessions
-                cur.execute(
-                    """
-                    SELECT pg_terminate_backend(pid)
-                    FROM pg_stat_activity
-                    WHERE datname LIKE %s
-                      AND pid <> pg_backend_pid();
-                    """,
-                    (pattern,),
-                )
-
-                for db in databases:
-                    cur.execute(
-                        sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(db))
-                    )
-
-            if roles:
-                for role in roles:
-                    cur.execute(
-                        sql.SQL("DROP ROLE IF EXISTS {}").format(sql.Identifier(role))
-                    )
+            cur.execute(sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(db_name)))
 
 
 def get_free_port_from_os() -> int:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(("", 0))
         return s.getsockname()[1]
+
+
+def wait_for_server(host: str, port: int, timeout: float = 10.0) -> None:
+    """Block until a TCP server starts accepting connections."""
+    start = time.monotonic()
+
+    while True:
+        try:
+            with socket.create_connection((host, port), timeout=1):
+                return
+        except OSError:
+            pass
+
+        if time.monotonic() - start > timeout:
+            raise TimeoutError(f"Server {host}:{port} did not start within {timeout}s")  # noqa: TRY003
+
+        time.sleep(0.05)

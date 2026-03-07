@@ -1,132 +1,19 @@
 import os
 import re
 import shutil
-import uuid
-from collections.abc import Callable
-from io import TextIOWrapper
+import subprocess
+import sys
 from pathlib import Path
 
 import copier
 import pytest
-from sh import python as sh_python
 
 from tests._utils import set_up_postgres, tear_down_postgres
 
 TESTS_DIR = Path(__file__).resolve().parent
 DJEREO_TESTS_SANDBOX_DIR = Path("/", "tmp", "djereo_test")
 IS_CI = os.getenv("CI") == "true"
-
-
-@pytest.fixture
-def djereo_root_dir() -> Path:
-    """Provides the path to the djereo project root."""
-    project_root = Path(__file__).resolve().parent.parent
-    if not project_root.exists():
-        pytest.fail(f"djereo project root does not exist at {project_root}")
-    return project_root
-
-
-@pytest.fixture
-def test_project_name() -> str:
-    return f"djereo_test_{uuid.uuid4().hex[:8]}"
-
-
-def test_session_temp_dir(session: pytest.Session) -> Path:
-    return DJEREO_TESTS_SANDBOX_DIR / f"session_{id(session)}"
-
-
-@pytest.fixture
-def test_project_dir(
-    request: pytest.FixtureRequest,
-    test_project_name: str,
-) -> Path:
-    """Path of a temporary directory for test isolation. Namespaced per pytest session.
-
-    Used to avoid conflict when many tests (run in parallel) are attempting to create
-    'djereo' projects using 'copier'.
-    """
-    # per-session namespacing to ensure xdist workers delete the right subdir
-    # during clean-up in the sessionfinish hook
-    session_tmp_dir = test_session_temp_dir(request.session)
-    session_tmp_dir.mkdir(parents=True, exist_ok=True)
-    return session_tmp_dir / test_project_name
-
-
-@pytest.fixture
-def copier_input_data(test_project_name: str) -> dict:
-    """Answers to core djereo template questions."""
-    input_data = {
-        "project_name": test_project_name,
-        "author_name": "Miguel de Cervantes",
-        "author_email": "mike@alcala.net",
-        # small speed-up in each test's 'generate' step from not creating `.github/`
-        "is_github_project": False,
-    }
-
-    nox_session = os.getenv("NOX_SESSION", "")
-    match = re.search(r"(\d+\.\d+)", nox_session)
-    if match:
-        input_data["min_python_version"] = match.group(1)
-
-    django_version = os.getenv("DJANGO_VERSION")
-    if django_version:
-        input_data["django_version"] = django_version
-
-    return input_data
-
-
-@pytest.fixture
-def copier_copy(
-    djereo_root_dir: Path, test_project_dir: Path, copier_quiet=True
-) -> Callable[[dict], None]:
-    """Fixture to run `copier copy`, cleaning up destination directory beforehand.
-
-    Uses the `djereo_root_dir` & `test_project_dir` fixtures as source and
-    destination directories respectively, so tests should use these fixtures.
-    """
-
-    def _run(copier_input_data: dict, *, generate_dotenv=True, copier_quiet=copier_quiet):
-        if test_project_dir.exists():
-            shutil.rmtree(test_project_dir, ignore_errors=True)
-
-        copier.run_copy(
-            str(djereo_root_dir),
-            str(test_project_dir),
-            data=copier_input_data,
-            vcs_ref="HEAD",
-            defaults=True,
-            quiet=copier_quiet,
-            unsafe=True,
-        )
-
-        if generate_dotenv:
-
-            def _rewrite_password_in_dotenv(file: TextIOWrapper):
-                env_content = file.read()
-                env_content = env_content.replace("{password}", "password")
-                file.seek(0)
-                file.write(env_content)
-                file.truncate()
-
-            dotenv_path = test_project_dir / ".env"
-            shutil.copyfile(test_project_dir / ".env.in", dotenv_path)
-            with dotenv_path.open("r+") as file:
-                _rewrite_password_in_dotenv(file)
-
-        if IS_CI:
-            test_dotenv_path = test_project_dir / ".env.test"
-            with test_dotenv_path.open("r+") as file:
-                test_env_content = file.read()
-                re.sub(
-                    r"DATABASE_URL=.*",
-                    'DATABASE_URL="postgres://test_djereo:password@localhost:5432/test_djereo"',
-                    test_env_content,
-                )
-                file.seek(0)
-                file.write(test_env_content)
-                file.truncate()
-
-    return _run
+DJEREO_TEST_PROJECT_NAME = "djereo_test_project"
 
 
 def pytest_sessionstart(session):
@@ -139,49 +26,204 @@ def pytest_sessionfinish(session):
     pass
 
 
-@pytest.fixture
-def install_test_project(
-    copier_copy: Callable[[dict], None],
-    copier_input_data: dict,
-    test_project_dir: Path,
-    test_project_name: str,
-):
-    """Generate a test project, install and remove it before/after a test."""
-    copier_copy(copier_input_data)
-    sh_python("-m", "pip", "install", str(test_project_dir))
+@pytest.fixture(scope="session", autouse=True)
+def set_up_postgres_for_tests():
+    tear_down_postgres(DJEREO_TEST_PROJECT_NAME)
+    set_up_postgres(DJEREO_TEST_PROJECT_NAME)
 
     yield
 
-    sh_python("-m", "pip", "uninstall", "-y", test_project_name)
+    tear_down_postgres(DJEREO_TEST_PROJECT_NAME)
+
+
+@pytest.fixture(scope="session")
+def djereo_root_dir() -> Path:
+    """Provides the path to the djereo project directory for consumption by copier."""
+    project_root = Path(__file__).resolve().parent.parent
+    if not project_root.exists():
+        pytest.fail(f"djereo project root does not exist at {project_root}")
+    return project_root
+
+
+@pytest.fixture(scope="session")
+def copier_input_data() -> dict:
+    """Answers to core djereo template questions (see `copier.yaml`)."""
+    input_data = {
+        "_is_test": True,
+        "project_name": DJEREO_TEST_PROJECT_NAME,
+        "author_name": "Miguel de Cervantes",
+        "author_email": "mike@alcala.net",
+    }
+
+    nox_session = os.getenv("NOX_SESSION", "")
+    nox_match = re.search(r"(\d+\.\d+)", nox_session)
+    if nox_match:
+        input_data["min_python_version"] = nox_match.group(1)
+
+    django_version = os.getenv("DJANGO_VERSION")
+    if django_version:
+        input_data["django_version"] = django_version
+    return input_data
 
 
 @pytest.fixture
-def set_up_test_database(
-    test_project_dir: Path, test_project_name: str
-) -> Callable[[], None]:
-    def _run() -> None:
-        set_up_postgres(test_project_dir, test_project_name)
-
-    return _run
+def test_project_dir(tmp_path: Path) -> Path:
+    """Provides a temporary directory for a test project."""
+    return tmp_path
 
 
 @pytest.fixture
-def tear_down_test_database(test_project_dir: Path, test_project_name: str):
-    return
+def copier_copy(djereo_root_dir: Path, test_project_dir: Path) -> Path:
+    """Fixture to run copier with given data, aligned with current project standards."""
+
+    def _copy(data: dict, generate_dotenv: bool = True, copier_quiet: bool = True):
+        import copier
+
+        copier.run_copy(
+            str(djereo_root_dir),
+            str(test_project_dir),
+            data=data,
+            vcs_ref="HEAD",
+            defaults=True,
+            quiet=copier_quiet,
+            unsafe=True,
+        )
+        if generate_dotenv:
+            dotenv_path = test_project_dir / ".env"
+            if not dotenv_path.exists():
+                dotenv_path.touch()
+
+    return _copy
 
 
-@pytest.fixture
-def generate_test_project_with_db(
-    copier_copy: Callable[[dict], None],
+@pytest.fixture(scope="session")
+def generated_project(
+    djereo_root_dir: Path,
     copier_input_data: dict,
-    set_up_test_database,
-    test_project_dir: Path,
-    test_project_name: str,
-    tear_down_test_database,
-):
-    copier_copy(copier_input_data)
-    set_up_test_database()
+    tmp_path_factory: pytest.TempPathFactory,
+) -> Path:
+    """Generate a project using djereo to use as a template across integration tests.
+    Generate only once per pytest session."""
+    project_dir = tmp_path_factory.mktemp("djereo_project")
 
-    yield
+    copier.run_copy(
+        str(djereo_root_dir),
+        str(project_dir),
+        data=copier_input_data,
+        vcs_ref="HEAD",
+        defaults=True,
+        quiet=True,
+        unsafe=True,
+    )
 
-    tear_down_postgres(test_project_dir, test_project_name)
+    test_env_path = project_dir / ".env.test"
+    with test_env_path.open("r+") as file:
+        env_content = file.read()
+        env_content = (
+            env_content + "EMAIL_BACKEND=django.core.mail.backends.locmem.EmailBackend\n"
+        )
+        file.seek(0)
+        file.write(env_content)
+        file.truncate()
+
+    subprocess.run(["uv", "sync", "--quiet"], cwd=project_dir, check=True)
+
+    subprocess.run(
+        ["uv", "run", "manage.py", "collectstatic", "--noinput"],
+        cwd=project_dir,
+        check=True,
+    )
+
+    return project_dir
+
+
+@pytest.fixture(scope="function")
+def _pytest_function_name(request: pytest.FixtureRequest) -> str:
+    return request.function.__name__
+
+
+@pytest.fixture(scope="function")
+def djereo_project_dir_for_test(
+    _pytest_function_name: str, generated_project: Path
+) -> Path:
+    destination = DJEREO_TESTS_SANDBOX_DIR / _pytest_function_name
+    if destination.exists():
+        shutil.rmtree(destination, ignore_errors=True)
+    shutil.copytree(
+        generated_project,
+        destination,
+        ignore=shutil.ignore_patterns(".venv"),
+    )
+    (destination / ".venv").symlink_to(generated_project / ".venv")
+    return destination
+
+
+@pytest.fixture
+def django_debug() -> bool:
+    """Return whether Django should run with DEBUG enabled for the current test.
+
+    Usage:
+    ```py
+    @pytest.mark.parametrize("django_debug", [True])
+    def test_when_debug_enabled(set_up_generated_project, django_debug):
+        ...
+    ```
+    """
+    return False
+
+
+@pytest.fixture
+def set_up_generated_project(
+    request: pytest.FixtureRequest, django_debug: bool, djereo_project_dir_for_test: Path
+) -> Path:
+    env_test = djereo_project_dir_for_test / ".env.test"
+    content = env_test.read_text()
+    debug_line = f"DEBUG={'true' if django_debug else 'false'}"
+    content = re.sub(r"^DEBUG=.*", debug_line, content, flags=re.MULTILINE)
+    env_test.write_text(content)
+
+    venv = djereo_project_dir_for_test / ".venv"
+    site_packages = next((venv / "lib").glob("python*/site-packages"))
+    sys.path.insert(0, str(site_packages))
+    sys.path.insert(0, str(djereo_project_dir_for_test))
+
+    os.environ["USE_ENV_TEST"] = "True"
+    os.environ.setdefault(
+        "DJANGO_SETTINGS_MODULE", f"{DJEREO_TEST_PROJECT_NAME}.settings"
+    )
+
+    import django
+
+    django.setup()
+
+    # run migrations only if they are not up to date and skip_migrate is not requested
+    if not request.node.get_closest_marker("skip_migrate"):
+        import subprocess
+
+        result = subprocess.run(
+            ["uv", "run", "manage.py", "migrate", "--check"],
+            cwd=djereo_project_dir_for_test,
+            capture_output=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            subprocess.run(
+                ["uv", "run", "manage.py", "migrate"],
+                cwd=djereo_project_dir_for_test,
+                check=True,
+            )
+
+    return djereo_project_dir_for_test
+
+
+@pytest.fixture
+def django_test_client(set_up_generated_project, django_debug):
+    from django.conf import settings
+    from django.test import Client
+
+    if not django_debug:
+        settings.DEBUG = False
+
+    settings.ALLOWED_HOSTS.append("testserver")
+
+    return Client()

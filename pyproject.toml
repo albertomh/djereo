@@ -39,6 +39,7 @@ include = ["djereo"]
 addopts = ["--pdbcls=IPython.terminal.debugger:Pdb"]
 markers = [
     "integration",
+    "skip_migrate",
     "slow",
     "smoke",
     "unit",

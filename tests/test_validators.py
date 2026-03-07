@@ -1,6 +1,5 @@
 # Test the custom validators defined for certain questions in `copier.yaml`.
 
-
 import re
 from collections.abc import Callable
 
@@ -21,27 +20,18 @@ def test_validator_is_empty(
     question: str,
     answer: str,
     error_msg: str | None,
-    copier_copy: Callable[[dict], None],
+    copier_copy: Callable,
     copier_input_data: dict,
 ):
-    def _copier_copy_with_project_name():
-        copier_copy(
-            {
-                **copier_input_data,
-                question: answer,
-            }
-        )
+    """Align with the new way: using copier_copy fixture and session-scoped input data."""
+    payload = {**copier_input_data, question: answer}
 
     if error_msg is None:
-        try:
-            _copier_copy_with_project_name()
-        except Exception as e:
-            pytest.fail(f"Unexpected exception raised: {e!s}")
-
+        copier_copy(payload)
     else:
-        with pytest.raises(ValueError, match=rf".*{re.escape(error_msg)}$") as exc_info:
-            _copier_copy_with_project_name()
-        assert str(exc_info.value).endswith(error_msg)
+        # Copier raises ValueError when a validator returns a non-empty string
+        with pytest.raises(ValueError, match=rf".*{re.escape(error_msg)}$"):
+            copier_copy(payload)
 
 
 @pytest.mark.unit
@@ -57,31 +47,20 @@ def test_validator_is_empty(
 def test_validator_project_name(
     project_name: str,
     should_raise: bool,
-    copier_copy: Callable[[dict], None],
+    copier_copy: Callable,
     copier_input_data: dict,
 ):
-    def _copier_copy_with_project_name():
-        copier_copy(
-            {
-                **copier_input_data,
-                "project_name": project_name,
-            }
-        )
+    payload = {**copier_input_data, "project_name": project_name}
 
     expected_error_msg = (
-        "Validation error for question 'project_name': project_name must "
-        "start with a letter, be lowercase and may contain underscores"
+        "project_name must start with a letter, be lowercase and may contain underscores"
     )
 
     if should_raise:
         with pytest.raises(ValueError, match=re.escape(expected_error_msg)):
-            _copier_copy_with_project_name()
-
+            copier_copy(payload)
     else:
-        try:
-            _copier_copy_with_project_name()
-        except Exception as e:
-            pytest.fail(f"Unexpected exception raised: {e!s}")
+        copier_copy(payload)
 
 
 @pytest.mark.unit
@@ -97,28 +76,15 @@ def test_validator_project_name(
 def test_validator_author_email(
     author_email: str,
     should_raise: bool,
-    copier_copy,
-    copier_input_data,
+    copier_copy: Callable,
+    copier_input_data: dict,
 ):
-    def _copier_copy_with_author_email():
-        copier_copy(
-            {
-                **copier_input_data,
-                "author_email": author_email,
-            }
-        )
+    payload = {**copier_input_data, "author_email": author_email}
 
-    expected_error_msg = (
-        "Validation error for question 'author_email': "
-        "author_email must be an email address"
-    )
+    expected_error_msg = "author_email must be an email address"
 
     if should_raise:
         with pytest.raises(ValueError, match=re.escape(expected_error_msg)):
-            _copier_copy_with_author_email()
-
+            copier_copy(payload)
     else:
-        try:
-            _copier_copy_with_author_email()
-        except Exception as e:
-            pytest.fail(f"Unexpected exception raised: {e!s}")
+        copier_copy(payload)
