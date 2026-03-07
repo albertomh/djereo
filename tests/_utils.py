@@ -66,7 +66,7 @@ def get_postgres_connection_string(dbname: str = "postgres") -> str:
     return conn_str
 
 
-def set_up_postgres(test_project_dir: Path, project_name: str) -> Callable[[], None]:
+def set_up_postgres(project_name: str) -> Callable[[], None]:
     conn_str = get_postgres_connection_string()
     password = "password"
 

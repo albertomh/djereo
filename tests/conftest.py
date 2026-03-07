@@ -1,6 +1,7 @@
 import os
 import re
 import shutil
+import sys
 import uuid
 from collections.abc import Callable, Generator
 from io import TextIOWrapper
@@ -32,7 +33,8 @@ def test_project_name() -> str:
 
 
 def test_session_temp_dir(session: pytest.Session) -> Path:
-    return DJEREO_TESTS_SANDBOX_DIR / f"session_{id(session)}"
+    xdist_worker_id = getattr(session.config, "workerinput", {}).get("workerid", "master")
+    return DJEREO_TESTS_SANDBOX_DIR / f"session_{xdist_worker_id}"
 
 
 @pytest.fixture
@@ -148,11 +150,18 @@ def install_test_project(
 ):
     """Generate a test project, install and remove it before/after a test."""
     copier_copy(copier_input_data)
-    sh_python("-m", "pip", "install", str(test_project_dir))
 
-    yield
+    original_path = list(sys.path)
+    original_environ = dict(os.environ)
 
-    sh_python("-m", "pip", "uninstall", "-y", test_project_name)
+    try:
+        sh_python("-m", "pip", "install", "--no-deps", str(test_project_dir))
+        yield
+    finally:
+        sh_python("-m", "pip", "uninstall", "-y", test_project_name)
+        sys.path[:] = original_path
+        os.environ.clear()
+        os.environ.update(original_environ)
 
 
 @pytest.fixture
@@ -160,14 +169,9 @@ def set_up_test_database(
     test_project_dir: Path, test_project_name: str
 ) -> Callable[[], None]:
     def _run() -> None:
-        set_up_postgres(test_project_dir, test_project_name)
+        set_up_postgres(test_project_name)
 
     return _run
-
-
-@pytest.fixture
-def tear_down_test_database(test_project_dir: Path, test_project_name: str):
-    return
 
 
 @pytest.fixture
@@ -177,11 +181,18 @@ def generate_test_project_with_db(
     set_up_test_database,
     test_project_dir: Path,
     test_project_name: str,
-    tear_down_test_database,
 ) -> Generator[Path]:
     copier_copy(copier_input_data)
     set_up_test_database()
 
-    yield test_project_dir
+    original_path = list(sys.path)
+    original_environ = dict(os.environ)
 
-    tear_down_postgres(test_project_dir, test_project_name)
+    try:
+        yield test_project_dir
+    finally:
+        sys.path[:] = original_path
+        os.environ.clear()
+        os.environ.update(original_environ)
+
+        tear_down_postgres(test_project_dir, test_project_name)
