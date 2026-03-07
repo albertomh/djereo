@@ -128,8 +128,9 @@ def test_runserver(
             _out=out,
             _cwd=test_project_dir,
         )
-        assert wait_for_server_start(out), "Django runserver did not start in time"
-
+        if not wait_for_server_start(out):
+            print(f"Server output:\n{out.getvalue()}")
+            pytest.fail("Django runserver did not start in time")
     start_message = f"Starting development server at http://{addrport}/"
     assert start_message in out.getvalue()
 
@@ -154,7 +155,9 @@ def test_django_debug_toolbar_is_enabled(
             _out=out,
             _cwd=test_project_dir,
         )
-        assert wait_for_server_start(out), "Django runserver did not start in time"
+        if not wait_for_server_start(out):
+            print(f"Server output:\n{out.getvalue()}")
+            pytest.fail("Django runserver did not start in time")
     with urlopen(f"http://{addrport}/") as response:
         res_bytes = response.read()
     res_html = res_bytes.decode("utf8")

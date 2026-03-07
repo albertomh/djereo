@@ -1,0 +1,105 @@
+import getpass
+import os
+import sys
+
+import psycopg
+from psycopg import sql
+
+
+def get_postgres_user() -> str:
+    if os.getenv("CI") == "true":
+        return "postgres"
+    return getpass.getuser()
+
+
+def get_conn_str() -> str:
+    user = get_postgres_user()
+    conn_str = f"host=localhost user={user} dbname=postgres"
+    if os.getenv("CI") == "true":
+        conn_str += " password=password"
+    return conn_str
+
+
+def set_up(project_name: str, password: str) -> None:
+    with psycopg.connect(get_conn_str(), autocommit=True) as conn:
+        with conn.cursor() as cur:
+            for name in [project_name, f"test_{project_name}"]:
+                print(f"Setting up database and user for: {name}")
+
+                cur.execute(
+                    """
+                    SELECT pg_terminate_backend(pid)
+                    FROM pg_stat_activity
+                    WHERE datname = %s AND pid <> pg_backend_pid();
+                    """,
+                    (name,),
+                )
+
+                cur.execute(
+                    sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(name))
+                )
+                cur.execute(
+                    sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(name))
+                )
+
+                cur.execute(
+                    sql.SQL("CREATE USER {} WITH PASSWORD {}").format(
+                        sql.Identifier(name), sql.Literal(password)
+                    )
+                )
+                cur.execute(
+                    sql.SQL("ALTER USER {} CREATEDB").format(sql.Identifier(name))
+                )
+                cur.execute(
+                    sql.SQL("CREATE DATABASE {} OWNER {}").format(
+                        sql.Identifier(name), sql.Identifier(name)
+                    )
+                )
+
+
+def tear_down(project_name: str) -> None:
+    with psycopg.connect(get_conn_str(), autocommit=True) as conn:
+        with conn.cursor() as cur:
+            for name in [project_name, f"test_{project_name}"]:
+                print(f"Tearing down database and user for: {name}")
+
+                cur.execute(
+                    """
+                    SELECT pg_terminate_backend(pid)
+                    FROM pg_stat_activity
+                    WHERE datname = %s AND pid <> pg_backend_pid();
+                    """,
+                    (name,),
+                )
+
+                cur.execute(
+                    sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(name))
+                )
+                cur.execute(
+                    sql.SQL("DROP USER IF EXISTS {}").format(sql.Identifier(name))
+                )
+
+
+def main() -> None:
+    if len(sys.argv) < 2:
+        raise SystemExit("Usage: db.py [set_up|tear_down]")
+
+    project_name = "{{project_name}}"
+    password = (
+        "password"
+        if os.getenv("CI") == "true"
+        else os.getenv("APP_USER_PASSWORD", "password")
+    )
+
+    cmd = sys.argv[1]
+
+    if cmd == "set_up":
+        set_up(project_name, password)
+    elif cmd == "tear_down":
+        tear_down(project_name)
+    else:
+        raise SystemExit(f"Unknown command: {cmd}")
+
+
+if __name__ == "__main__":
+    main()

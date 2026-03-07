@@ -165,25 +165,14 @@ def install_test_project(
 
 
 @pytest.fixture
-def set_up_test_database(
-    test_project_dir: Path, test_project_name: str
-) -> Callable[[], None]:
-    def _run() -> None:
-        set_up_postgres(test_project_name)
-
-    return _run
-
-
-@pytest.fixture
 def generate_test_project_with_db(
     copier_copy: Callable[[dict], None],
     copier_input_data: dict,
-    set_up_test_database,
     test_project_dir: Path,
     test_project_name: str,
 ) -> Generator[Path]:
     copier_copy(copier_input_data)
-    set_up_test_database()
+    set_up_postgres(test_project_dir)
 
     original_path = list(sys.path)
     original_environ = dict(os.environ)
@@ -195,4 +184,4 @@ def generate_test_project_with_db(
         os.environ.clear()
         os.environ.update(original_environ)
 
-        tear_down_postgres(test_project_dir, test_project_name)
+        tear_down_postgres(test_project_dir)

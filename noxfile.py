@@ -44,18 +44,7 @@ nox.options.sessions = [f"tests-{LATEST_PY}(django='{LATEST_DJ}')"]
 # in CI all combinations run (via `nox --list` in `.github/workflows/_checks.yaml`)
 
 
-def clean_up(session: nox.Session):
-    cmd = (
-        "from tests._utils import clean_up_all_test_databases;"
-        "clean_up_all_test_databases()"
-    )
-    session.run(
-        "python",
-        "-c",
-        cmd,
-        env={"PYTHONPATH": "."},
-    )
-
+def clean_up():
     if DJEREO_TESTS_SANDBOX_DIR.exists():
         shutil.rmtree(DJEREO_TESTS_SANDBOX_DIR, ignore_errors=True)
 
