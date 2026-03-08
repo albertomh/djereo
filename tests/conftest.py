@@ -206,6 +206,7 @@ def install_test_project(
 
 @pytest.fixture
 def project_cmd():
+
     def run(project_dir: Path, *args, **kwargs):
         return uv("run", *args, _cwd=project_dir, **kwargs)
 
