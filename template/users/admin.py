@@ -14,6 +14,7 @@ class UserProfileInline(admin.StackedInline):
     verbose_name_plural = "User Profile"
 
 
+@admin.register(AuthUser)
 class AuthUserAdmin(UserAdmin):
     add_form = AuthUserCreationForm
     form = AuthUserChangeForm
@@ -56,6 +57,4 @@ class AuthUserAdmin(UserAdmin):
         ) or []  # pragma: no cover
 
 
-admin.site.unregister(AuthUser)
-admin.site.register(AuthUser, AuthUserAdmin)
 admin.site.register(UserProfile)

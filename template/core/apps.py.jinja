@@ -1,9 +1,11 @@
 from django.apps import AppConfig
+from django.contrib.admin import apps as admin_apps
 from django.core import checks
 
 
 class CoreConfig(AppConfig):
     name = "core"
+    default = True
 
     def ready(self) -> None:
         from core.checks import (  # noqa: PLC0415
@@ -13,3 +15,8 @@ class CoreConfig(AppConfig):
 
         checks.register(check_dev_mode)
         checks.register(check_model_names)
+
+
+class CoreAdminConfig(admin_apps.AdminConfig):
+    default = False
+    default_site = "core.admin.CustomAdminSite"

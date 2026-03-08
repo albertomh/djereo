@@ -1,6 +1,7 @@
 # Usage:
 # > nox [-- --pdb | -m "mark"]
 
+import os
 import re
 import shutil
 from pathlib import Path
@@ -10,6 +11,7 @@ import nox
 PROJECT_ROOT_DIR = Path(__file__).resolve().parent
 TESTS_DIR = PROJECT_ROOT_DIR / "tests"
 DJEREO_TESTS_SANDBOX_DIR = Path("/", "tmp", "djereo_test")
+IS_CI = os.getenv("CI") == "true"
 
 
 def _get_copier_choices(key: str) -> list[str]:
@@ -58,7 +60,6 @@ def tests(session: nox.Session, django: str):
         "--frozen",
         "--quiet",
         f"--python={session.virtualenv.location}",
-        "--quiet",
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
     )
 
@@ -76,12 +77,12 @@ def tests(session: nox.Session, django: str):
     ]
 
     if not use_pdb:
+        max_workers = min(4, os.cpu_count() or 1)
         pytest_args.extend(
             [
                 "--numprocesses=auto",
-                # group tests with `@pytest.mark.xdist_group(name="my_group")` to ensure
-                # they all tests in a group are run by the same worker
-                "--dist=loadgroup",
+                f"--numprocesses={max_workers}",
+                "--dist=worksteal",
             ]
         )
 
@@ -90,6 +91,5 @@ def tests(session: nox.Session, django: str):
         session.env["DJANGO_VERSION"] = django
         session.run("pytest", "tests/", *pytest_args, *posargs)
     finally:
-        ...
-    #    if os.getenv("CI") != "true":
-    #        clean_up()
+        if not IS_CI:
+            clean_up()
