@@ -6,7 +6,7 @@ project_name:
            (all-lowercase, may contain underscores)
     type: str
     validator: >-
-        {% if not (project_name | regex_search('^[a-z][a-z0-9\_]+$')) %}
+        {% if not (project_name | regex_search('^[a-z][a-z0-9_]+$')) %}
         project_name must start with a letter, be lowercase and may contain underscores
         {% endif %}
 

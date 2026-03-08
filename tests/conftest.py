@@ -8,22 +8,45 @@ from pathlib import Path
 
 import copier
 import pytest
-from sh import uv as sh_uv
+from sh import uv
 
 from tests._utils import set_up_postgres, tear_down_postgres
 
 TESTS_DIR = Path(__file__).resolve().parent
-DJEREO_TESTS_SANDBOX_DIR = Path("/", "tmp", "djereo_test")
+PROJECT_ROOT = TESTS_DIR.parent
+
+SANDBOX = Path("/tmp/djereo_test")
 IS_CI = os.getenv("CI") == "true"
+
+
+# -------------------------------------------------------------------
+# sandbox management
+# -------------------------------------------------------------------
+
+# reuse cache across xdist workers
+os.environ.setdefault("UV_CACHE_DIR", "/tmp/uv_cache")
+
+
+def _worker_id(session: pytest.Session) -> str:
+    return getattr(session.config, "workerinput", {}).get("workerid", "master")
+
+
+def _session_tmp_dir(session: pytest.Session) -> Path:
+    return SANDBOX / f"session_{_worker_id(session)}"
+
+
+def pytest_sessionstart(session: pytest.Session):
+    SANDBOX.mkdir(exist_ok=True)
+
+
+# -------------------------------------------------------------------
+# basic fixtures
+# -------------------------------------------------------------------
 
 
 @pytest.fixture
 def djereo_root_dir() -> Path:
-    """Provides the path to the djereo project root."""
-    project_root = Path(__file__).resolve().parent.parent
-    if not project_root.exists():
-        pytest.fail(f"djereo project root does not exist at {project_root}")
-    return project_root
+    return Path(__file__).resolve().parent.parent
 
 
 @pytest.fixture
@@ -31,67 +54,55 @@ def test_project_name() -> str:
     return f"djereo_test_{uuid.uuid4().hex[:8]}"
 
 
-def test_session_temp_dir(session: pytest.Session) -> Path:
-    return DJEREO_TESTS_SANDBOX_DIR / f"session_{id(session)}"
-
-
 @pytest.fixture
-def test_project_dir(
-    request: pytest.FixtureRequest,
-    test_project_name: str,
-) -> Path:
-    """Path of a temporary directory for test isolation. Namespaced per pytest session.
-
-    Used to avoid conflict when many tests (run in parallel) are attempting to create
-    'djereo' projects using 'copier'.
-    """
-    # per-session namespacing to ensure xdist workers delete the right subdir
-    # during clean-up in the sessionfinish hook
-    session_tmp_dir = test_session_temp_dir(request.session)
-    session_tmp_dir.mkdir(parents=True, exist_ok=True)
-    return session_tmp_dir / test_project_name
+def test_project_dir(request: pytest.FixtureRequest, test_project_name: str) -> Path:
+    tmp = _session_tmp_dir(request.session)
+    tmp.mkdir(parents=True, exist_ok=True)
+    return tmp / test_project_name
 
 
 @pytest.fixture
 def copier_input_data(test_project_name: str) -> dict:
-    """Answers to core djereo template questions."""
-    input_data = {
+    data = {
         "_is_test": True,
         "project_name": test_project_name,
         "author_name": "Miguel de Cervantes",
         "author_email": "mike@alcala.net",
-        # small speed-up in each test's 'generate' step from not creating `.github/`
         "is_github_project": False,
     }
 
     nox_session = os.getenv("NOX_SESSION", "")
     match = re.search(r"(\d+\.\d+)", nox_session)
     if match:
-        input_data["min_python_version"] = match.group(1)
+        data["min_python_version"] = match.group(1)
 
     django_version = os.getenv("DJANGO_VERSION")
     if django_version:
-        input_data["django_version"] = django_version
+        data["django_version"] = django_version
 
-    return input_data
+    return data
+
+
+# -------------------------------------------------------------------
+# project generation
+# -------------------------------------------------------------------
 
 
 @pytest.fixture
-def copier_copy(
-    djereo_root_dir: Path, test_project_dir: Path, copier_quiet=True
-) -> Callable[[dict], None]:
-    """Fixture to run `copier copy`, cleaning up destination directory beforehand.
+def copier_copy(test_project_dir: Path, copier_quiet=True) -> Callable[[dict], None]:
 
-    Uses the `djereo_root_dir` & `test_project_dir` fixtures as source and
-    destination directories respectively, so tests should use these fixtures.
-    """
-
-    def _run(copier_input_data: dict, *, generate_dotenv=True, copier_quiet=copier_quiet):
+    def _run(
+        copier_input_data: dict,
+        *,
+        copier_quiet=copier_quiet,
+        generate_dotenv=True,
+        dotenv_overrides: dict[str, str] | None = None,
+    ):
         if test_project_dir.exists():
             shutil.rmtree(test_project_dir, ignore_errors=True)
 
         copier.run_copy(
-            str(djereo_root_dir),
+            str(PROJECT_ROOT),
             str(test_project_dir),
             data=copier_input_data,
             vcs_ref="HEAD",
@@ -102,9 +113,17 @@ def copier_copy(
 
         if generate_dotenv:
 
-            def _rewrite_password_in_dotenv(file: TextIOWrapper):
+            def _rewrite_dotenv(file: TextIOWrapper):
                 env_content = file.read()
                 env_content = env_content.replace("{password}", "password")
+                if dotenv_overrides:
+                    for key, value in dotenv_overrides.items():
+                        env_content = re.sub(
+                            f"^{key}=.*",
+                            f"{key}={value}",
+                            env_content,
+                            flags=re.MULTILINE,
+                        )
                 file.seek(0)
                 file.write(env_content)
                 file.truncate()
@@ -112,77 +131,82 @@ def copier_copy(
             dotenv_path = test_project_dir / ".env"
             shutil.copyfile(test_project_dir / ".env.in", dotenv_path)
             with dotenv_path.open("r+") as file:
-                _rewrite_password_in_dotenv(file)
-
-        if IS_CI:
-            test_dotenv_path = test_project_dir / ".env.test"
-            with test_dotenv_path.open("r+") as file:
-                test_env_content = file.read()
-                re.sub(
-                    r"DATABASE_URL=.*",
-                    'DATABASE_URL="postgres://test_djereo:password@localhost:5432/test_djereo"',
-                    test_env_content,
-                )
-                file.seek(0)
-                file.write(test_env_content)
-                file.truncate()
+                _rewrite_dotenv(file)
 
     return _run
 
 
-def pytest_sessionstart(session):
-    if not DJEREO_TESTS_SANDBOX_DIR.exists():
-        DJEREO_TESTS_SANDBOX_DIR.mkdir(exist_ok=True)
+# -------------------------------------------------------------------
+# generated project fixtures
+# -------------------------------------------------------------------
 
 
-def pytest_sessionfinish(session):
-    # cleanup implemented in `noxfile.py` to ensure all xdist workers have finished
-    pass
+@pytest.fixture
+def generated_project(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    test_project_dir: Path,
+) -> Path:
+    copier_copy(copier_input_data)
+
+    uv("sync", "--frozen", "--quiet", _cwd=test_project_dir)
+
+    return test_project_dir
+
+
+@pytest.fixture
+def generated_project_sqlite(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    test_project_dir: Path,
+) -> Path:
+    copier_copy(
+        copier_input_data,
+        dotenv_overrides={"DATABASE_URL": "sqlite:///:memory:"},
+    )
+
+    uv("sync", "--frozen", "--quiet", _cwd=test_project_dir)
+
+    return test_project_dir
+
+
+@pytest.fixture
+def generated_project_postgres(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    test_project_dir: Path,
+):
+    copier_copy(copier_input_data)
+
+    uv("sync", "--frozen", "--quiet", _cwd=test_project_dir)
+
+    set_up_postgres(test_project_dir)
+
+    yield test_project_dir
+
+    tear_down_postgres(test_project_dir)
 
 
 @pytest.fixture
 def install_test_project(
-    copier_copy: Callable[[dict], None],
-    copier_input_data: dict,
-    test_project_dir: Path,
+    generated_project: Path,
     test_project_name: str,
 ):
-    """Generate a test project, install and remove it before/after a test."""
-    copier_copy(copier_input_data)
-    sh_uv.pip.install("--quiet", str(test_project_dir))
+    uv("pip", "install", "--quiet", str(generated_project))
 
     yield
 
-    sh_uv.pip.uninstall("--quiet", test_project_name)
+    uv("pip", "uninstall", "--quiet", test_project_name)
+
+
+# -------------------------------------------------------------------
+# project command runner
+# -------------------------------------------------------------------
 
 
 @pytest.fixture
-def set_up_test_database(
-    test_project_dir: Path, test_project_name: str
-) -> Callable[[], None]:
-    def _run() -> None:
-        set_up_postgres(test_project_dir, test_project_name)
+def project_cmd():
+    def run(project_dir: Path, *args, **kwargs):
+        return uv("run", *args, _cwd=project_dir, **kwargs)
 
-    return _run
-
-
-@pytest.fixture
-def tear_down_test_database(test_project_dir: Path, test_project_name: str):
-    return
-
-
-@pytest.fixture
-def generate_test_project_with_db(
-    copier_copy: Callable[[dict], None],
-    copier_input_data: dict,
-    set_up_test_database,
-    test_project_dir: Path,
-    test_project_name: str,
-    tear_down_test_database,
-):
-    copier_copy(copier_input_data)
-    set_up_test_database()
-
-    yield
-
-    tear_down_postgres(test_project_dir, test_project_name)
+    return run

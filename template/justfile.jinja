@@ -30,7 +30,10 @@ _dev_setup:
 
 
 set_up_db $APP_USER_PASSWORD="password":
-  @APP_USER_PASSWORD={{APP_USER_PASSWORD}} uv run _db/set_up_db.py
+  @APP_USER_PASSWORD={{APP_USER_PASSWORD}} uv run _db/manage_db.py set_up
+
+tear_down_db $APP_USER_PASSWORD="password":
+  @APP_USER_PASSWORD={{APP_USER_PASSWORD}} uv run _db/manage_db.py tear_down
 
 manage +args='help': _dev_setup
   @uv run manage.py "$@"

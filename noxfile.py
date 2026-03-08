@@ -1,7 +1,6 @@
 # Usage:
 # > nox [-- --pdb | -m "mark"]
 
-import os
 import re
 import shutil
 from pathlib import Path
@@ -38,23 +37,13 @@ LATEST_PY = py_versions[-1]
 LATEST_DJ = dj_versions[-1]
 
 nox.options.default_venv_backend = "uv"
+nox.options.reuse_existing_virtualenvs = True
 # default to latest versions for local runs
 nox.options.sessions = [f"tests-{LATEST_PY}(django='{LATEST_DJ}')"]
 # in CI all combinations run (via `nox --list` in `.github/workflows/_checks.yaml`)
 
 
-def clean_up(session: nox.Session):
-    cmd = (
-        "from tests._utils import clean_up_all_test_databases;"
-        "clean_up_all_test_databases()"
-    )
-    session.run(
-        "python",
-        "-c",
-        cmd,
-        env={"PYTHONPATH": "."},
-    )
-
+def clean_up():
     if DJEREO_TESTS_SANDBOX_DIR.exists():
         shutil.rmtree(DJEREO_TESTS_SANDBOX_DIR, ignore_errors=True)
 
@@ -66,6 +55,8 @@ def tests(session: nox.Session, django: str):
         "uv",
         "sync",
         "--group=test",
+        "--frozen",
+        "--quiet",
         f"--python={session.virtualenv.location}",
         "--quiet",
         env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
@@ -88,8 +79,8 @@ def tests(session: nox.Session, django: str):
         pytest_args.extend(
             [
                 "--numprocesses=auto",
-                # Run grouped tests (`@pytest.mark.xdist_group(name="my_group")`) with the
-                # same worker. Ensure serial execution of integration (`runserver`) tests.
+                # group tests with `@pytest.mark.xdist_group(name="my_group")` to ensure
+                # they all tests in a group are run by the same worker
                 "--dist=loadgroup",
             ]
         )
@@ -99,5 +90,6 @@ def tests(session: nox.Session, django: str):
         session.env["DJANGO_VERSION"] = django
         session.run("pytest", "tests/", *pytest_args, *posargs)
     finally:
-        if os.getenv("CI") != "true":
-            clean_up(session)
+        ...
+    #    if os.getenv("CI") != "true":
+    #        clean_up()
