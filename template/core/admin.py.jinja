@@ -1,9 +1,7 @@
-from django.contrib import admin
+from typing import ClassVar
+
 from django.contrib.admin import AdminSite
-from django.contrib.auth import get_user_model
-from django.contrib.auth.admin import GroupAdmin, UserAdmin
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import Group
 
 
 class CustomAdminAuthenticationForm(AuthenticationForm):
@@ -15,9 +13,65 @@ class CustomAdminAuthenticationForm(AuthenticationForm):
 class CustomAdminSite(AdminSite):
     login_form = CustomAdminAuthenticationForm  # type: ignore
 
+    APP_ORDER: ClassVar[list[str]] = [
+        "auth",
+        "users",
+        "account",
+        "socialaccount",
+{% if use_django_waffle %}        "waffle",{% endif +%}
+    ]
 
-admin.site = CustomAdminSite()
+    MODEL_ORDER: ClassVar[dict[str, list[str]]] = {
+        # "some_app": ["ModelTwo", "ModelOne"],
+    }
 
-# re-register default models
-admin.site.register(get_user_model(), UserAdmin)
-admin.site.register(Group, GroupAdmin)
+    RENAMED_APPS: ClassVar[dict[str, str]] = {
+        "auth": "Auth",
+    }
+
+    EXCLUDED_MODELS: ClassVar[set[tuple[str, str]]] = set()
+
+    def get_app_list(self, request, app_label=None):
+        app_list = super().get_app_list(request, app_label)
+
+        apps = {a["app_label"]: a for a in app_list}
+
+        # filter excluded models
+        for app in apps.values():
+            app["models"] = [
+                m
+                for m in app["models"]
+                if (app["app_label"], m["object_name"]) not in self.EXCLUDED_MODELS
+            ]
+
+        # rename apps
+        for label, name in self.RENAMED_APPS.items():
+            if label in apps:
+                apps[label]["name"] = name
+
+        # model ordering
+        for label, order in self.MODEL_ORDER.items():
+            if label not in apps:
+                continue
+
+            models = apps[label]["models"]
+            models.sort(
+                key=lambda m: (
+                    order.index(m["object_name"]) if m["object_name"] in order else 999
+                )
+            )
+
+        # remove empty apps
+        apps = {label: app for label, app in apps.items() if app["models"]}
+
+        # app ordering
+        ordered = sorted(
+            apps.values(),
+            key=lambda a: (
+                self.APP_ORDER.index(a["app_label"])
+                if a["app_label"] in self.APP_ORDER
+                else 999
+            ),
+        )
+
+        return ordered
