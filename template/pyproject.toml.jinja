@@ -31,10 +31,10 @@ dependencies = [
     "django-waffle>=5.0.0,<6.0.0",
     {% endif %}
     "environs[django]>=14.5.0,<15.0.0",
-    "gunicorn>=23.0.0,<24.0.0",
+    "gunicorn>=25.0.0,<26.0.0",
     "psycopg[binary]>=3.3.0,<4.0.0",
     "psycopg-pool>=3.3.0,<4.0.0",
-    "whitenoise[brotli]>=6.11.0,<7.0.0",
+    "whitenoise[brotli]>=6.12.0,<7.0.0",
 ]
 
 [build-system]
@@ -72,6 +72,9 @@ dev = [
 [project.urls]
 Repository = "https://github.com"
 {% endif %}
+
+[tool.uv]
+exclude-newer = "7 days"
 
 [tool.mypy]
 python_version = {{min_python_version}}

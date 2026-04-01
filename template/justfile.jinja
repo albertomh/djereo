@@ -56,9 +56,14 @@ profile_tests: _test_setup
   @sudo py-spy record --subprocesses --format speedscope -o profile.speedscope.json -- \
     uv run python manage.py test
 
-e2e $USE_ENV_TEST="1": _test_setup
+playwright_install: _test_setup
+  @uv run playwright install chromium
+
+e2e $USE_ENV_TEST="1" $HEADED="0": _test_setup
   #!/usr/bin/env bash
   set -euo pipefail
+
+  export DEBUG=false
 
   cleanup() {
     [ -n "${SERVER_PID:-}" ] && kill "$SERVER_PID" 2>/dev/null || true
@@ -78,6 +83,7 @@ e2e $USE_ENV_TEST="1": _test_setup
   uv run manage.py flush --no-input
   uv run manage.py migrate
   uv run manage.py seed_database
-  uv run manage.py runserver "" &
+  {{call_recipe}} collectstatic
+  uv run gunicorn --bind 127.0.0.1:8000 scholarscapes.wsgi:application &
   SERVER_PID=$!
   uv run pytest tests_e2e/

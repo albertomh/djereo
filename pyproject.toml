@@ -30,6 +30,9 @@ Changelog = "https://github.com/albertomh/djereo/blob/main/CHANGELOG.md"
 Documentation = "https://albertomh.github.io/djereo/"
 Repository = "https://github.com/albertomh/djereo"
 
+[tool.uv]
+exclude-newer = "7 days"
+
 [tool.setuptools.packages.find]
 # allow `pip install -e .` to find the project package
 include = ["djereo"]

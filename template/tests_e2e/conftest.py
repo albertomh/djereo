@@ -42,6 +42,7 @@ def pytest_sessionstart(session):
             pytest.exit(f"Server at {BASE_URL} is unavailable", returncode=1)
         time.sleep(interval)
 
+    playwright = browser = context = None
     try:
         playwright, browser = _launch_browser(True)
         context = browser.new_context()
@@ -61,12 +62,20 @@ def pytest_sessionstart(session):
             playwright.stop()
 
 
-@pytest.fixture(scope="session")
+pytest.fixture(scope="session")
+
+
 def browser():
     """Start Playwright Chromium once per test session."""
     is_ci = env.bool("CI", default=False)
     is_gha = env.bool("GITHUB_ACTIONS", default=False)
-    headless = is_ci or is_gha
+    is_headed = env.bool("HEADED", default=False)
+    headless = not (is_headed or is_ci or is_gha)
+    if is_ci or is_gha:
+        headless = True
+    else:
+        headless = not is_headed
+
     playwright, browser = _launch_browser(headless)
     yield browser
     browser.close()

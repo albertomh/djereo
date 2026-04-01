@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="{% raw %}{% static 'core/mvp.css' %}{% endraw %}">
 
-    <style nonce="{% raw %}{{ request.csp_nonce }}{% endraw %}">
+    <style nonce="{% raw %}{{ csp_nonce }}{% endraw %}">
         header {
             padding-bottom: 0;
         }
@@ -41,7 +41,7 @@
     {% else %}
         {% htmx_script %}
     {% endif %}
-    <meta name="htmx-config" content='{"inlineStyleNonce": "{{ request.csp_nonce }}"}'>
+    <meta name="htmx-config" content='{"inlineStyleNonce": "{{ csp_nonce }}"}'>
     {% endraw -%}
     {% endif %}
     <script></script>
@@ -124,7 +124,7 @@
         </p>
     </footer>
 
-    <script nonce="{% raw %}{{ request.csp_nonce }}{% endraw %}">
+    <script nonce="{% raw %}{{ csp_nonce }}{% endraw %}">
         document.querySelectorAll("nav a").forEach(a => {
             if (a.href === window.location.href) {
                 a.classList.add("inactive-link");
