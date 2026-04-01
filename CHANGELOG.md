@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [4.0.1](https://github.com/albertomh/djereo/compare/v4.0.0...v4.0.1) (2026-04-01)
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.29.0 ([#352](https://github.com/albertomh/djereo/issues/352)) ([b0a01c4](https://github.com/albertomh/djereo/commit/b0a01c4c0c25051ab27e8c00057f17ab2a8215d7))
+
 ## [4.0.0](https://github.com/albertomh/djereo/compare/v3.18.0...v4.0.0) (2026-03-08)
 
 
