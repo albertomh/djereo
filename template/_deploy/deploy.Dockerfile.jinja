@@ -30,22 +30,14 @@ ENV UV_LINK_MODE=copy \
 
 WORKDIR /app
 
-# Install build dependencies
-# Only needed while `whitenoise` continues to use `brotli<1.2.0`
-# <https://github.com/evansd/whitenoise/blob/main/uv.lock#L119>
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    g++ \
-    make \
-    && rm -rf /var/lib/apt/lists/*
-
 # Synchronise dependencies (creates .venv)
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync \
         --frozen \
-        --no-dev
+        --no-dev \
+        --no-install-project
 
 COPY . .
 COPY _deploy/.env.deploy .env
