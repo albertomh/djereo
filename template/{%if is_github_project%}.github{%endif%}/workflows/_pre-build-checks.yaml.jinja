@@ -85,7 +85,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: astral-sh/setup-uv@v7
         with:
-          version: "0.9.11"
+          version: "0.11.9"
           enable-cache: true
       - uses: wntrblm/nox@2026.04.10
       - run: nox --session {% raw %}"${{ matrix.session }}"{% endraw +%}
