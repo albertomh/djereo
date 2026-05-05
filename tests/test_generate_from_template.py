@@ -1,4 +1,3 @@
-import os
 import tomllib
 from collections.abc import Callable
 from pathlib import Path
@@ -10,6 +9,7 @@ from packaging.version import Version
 from sh import RunningCommand, git, nox, uv
 
 from tests._utils import count_dirs_and_files
+from tests.conftest import _clean_env
 
 
 @pytest.mark.integration
@@ -177,11 +177,13 @@ def test_generated_project_pre_commit_hooks_run_successfully(
 ):
     copier_copy(copier_input_data)
 
+    env = _clean_env()
+    uv("sync", "--frozen", "--quiet", _cwd=test_project_dir, _env=env)
+
     # prek will only run against files tracked by git
     git("init", _cwd=test_project_dir)
     git("add", ".", _cwd=test_project_dir)
 
-    env = os.environ.copy()
     # ignore 'typos' as too noisy / picking up false positives in test context
     env["SKIP"] = "no-commit-to-branch,typos"
     prek_res = uv(

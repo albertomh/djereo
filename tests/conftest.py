@@ -18,6 +18,17 @@ PROJECT_ROOT = TESTS_DIR.parent
 SANDBOX = Path("/tmp/djereo_test")
 IS_CI = os.getenv("CI") == "true"
 
+# Strip env vars that would force uv to operate against the parent nox env
+# (set by `nox` -> uv) instead of the generated project's own .venv.
+_LEAKED_VENV_VARS = ("UV_PROJECT_ENVIRONMENT", "VIRTUAL_ENV")
+
+
+def _clean_env() -> dict:
+    env = os.environ.copy()
+    for var in _LEAKED_VENV_VARS:
+        env.pop(var, None)
+    return env
+
 
 # -------------------------------------------------------------------
 # sandbox management
@@ -149,7 +160,7 @@ def generated_project(
 ) -> Path:
     copier_copy(copier_input_data)
 
-    uv("sync", "--frozen", "--quiet", _cwd=test_project_dir)
+    uv("sync", "--frozen", "--quiet", _cwd=test_project_dir, _env=_clean_env())
 
     return test_project_dir
 
@@ -165,7 +176,7 @@ def generated_project_sqlite(
         dotenv_overrides={"DATABASE_URL": "sqlite:///:memory:"},
     )
 
-    uv("sync", "--frozen", "--quiet", _cwd=test_project_dir)
+    uv("sync", "--frozen", "--quiet", _cwd=test_project_dir, _env=_clean_env())
 
     return test_project_dir
 
@@ -178,7 +189,7 @@ def generated_project_postgres(
 ):
     copier_copy(copier_input_data)
 
-    uv("sync", "--frozen", "--quiet", _cwd=test_project_dir)
+    uv("sync", "--frozen", "--quiet", _cwd=test_project_dir, _env=_clean_env())
 
     set_up_postgres(test_project_dir)
 
