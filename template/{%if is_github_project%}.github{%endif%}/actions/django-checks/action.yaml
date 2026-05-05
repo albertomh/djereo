@@ -26,7 +26,7 @@ runs:
       with:
         version: "0.11.9"
         enable-cache: true
-    - uses: extractions/setup-just@v3
+    - uses: extractions/setup-just@v4
     - run: |
         # write out all lines in .env _except_ the insecure default SECRET_KEY and
         # generate a new, secure secret key and append it to .env

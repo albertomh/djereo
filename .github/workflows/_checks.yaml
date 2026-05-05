@@ -83,7 +83,7 @@ jobs:
           version: "0.11.9"
           enable-cache: true
       # Not redundant! Must be installed since used by integration tests in the next step.
-      - uses: extractions/setup-just@v3
+      - uses: extractions/setup-just@v4
       - name: Extract Python version
         id: py-version
         shell: bash
