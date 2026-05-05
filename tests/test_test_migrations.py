@@ -5,6 +5,8 @@ from pathlib import Path
 import pytest
 from sh import just
 
+from tests.conftest import _clean_env
+
 TEST_MODELS_PY_CONTENT = textwrap.dedent("""
 class SomeModel(models.Model):
     name = models.CharField(max_length=100)
@@ -28,6 +30,7 @@ def test_migrations_check_fails_if_pending_migrations(
         ["uv", "run", "manage.py", "makemigrations", "--check", "--dry-run"],
         cwd=test_project_dir,
         capture_output=True,
+        env=_clean_env(),
         text=True,
         check=False,
     )
@@ -47,7 +50,7 @@ def test_makemigrations_creates_a_max_migration_file(
     with open(models_py_path, "a") as models_file:
         models_file.write(TEST_MODELS_PY_CONTENT)
 
-    just("manage", "makemigrations", "core", _cwd=test_project_dir)
+    just("manage", "makemigrations", "core", _cwd=test_project_dir, _env=_clean_env())
 
     migrations_dir = test_project_dir / "core" / "migrations"
     migrations_fnames = [f.name for f in migrations_dir.iterdir()]

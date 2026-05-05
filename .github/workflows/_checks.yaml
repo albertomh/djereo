@@ -30,7 +30,7 @@ jobs:
       with:
         path: .nox-py-versions.json
         key: nox-py-versions-${{ runner.os }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}
-    - uses: wntrblm/nox@2026.02.09
+    - uses: wntrblm/nox@2026.04.10
       if: steps.cache-nox-py-versions.outputs.cache-hit != 'true'
     - id: set-matrix
       shell: bash
@@ -80,7 +80,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: astral-sh/setup-uv@v7
         with:
-          version: "0.9.11"
+          version: "0.11.9"
           enable-cache: true
       # Not redundant! Must be installed since used by integration tests in the next step.
       - uses: extractions/setup-just@v3
@@ -91,7 +91,7 @@ jobs:
           # Extract 3.13 from 3.13(django='5.2')
           PY_VER=$(echo "${{ matrix.nox_session }}" | cut -d'(' -f1)
           echo "version=$PY_VER" >> "$GITHUB_OUTPUT"
-      - uses: wntrblm/nox@2026.02.09
+      - uses: wntrblm/nox@2026.04.10
         with:
           python-versions: "${{ steps.py-version.outputs.version }}"
       - run: nox --session "tests-${{ matrix.nox_session }}"
