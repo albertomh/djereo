@@ -6,12 +6,17 @@
 # docker network create {{project_name}}_net
 # docker image pull --platform linux/amd64 <registry>/<image>:<tag>
 #
-# docker run --detach --name {{project_name}} \
-#     --env-file /etc/{{project_name}}/.env \
-#     --env PORT=8000 \
-#     --network {{project_name}}_net \
-#     --publish 8000:8000 \
-#     --volume {{project_name}}_static:/app/static \
+# docker run --detach \
+#     --init \
+#     --name <container_name> \
+#     --env-file "<path_to_dotenv>" \
+#     --env "PORT=8000" \
+#     --network <network_name> \
+#     --publish "8000:8000" \
+#     --volume <db_volume>:/app/data \
+#     --volume <static_volume>:/app/static \
+#     --env "DATABASE_URL=sqlite:////app/data/db.sqlite3" \
+#     --restart always \
 #     <registry>/<image>:<tag>
 # ```
 #
@@ -76,6 +81,9 @@ RUN mkdir -p /app/static \
     && chown -R nonroot:nonroot /app/static
 
 USER nonroot
+
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:%s/-/alive/' % __import__('os').environ['PORT'])" || exit 1
 
 ENTRYPOINT []
 
