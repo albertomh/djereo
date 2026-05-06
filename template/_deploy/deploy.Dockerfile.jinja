@@ -1,11 +1,12 @@
 # Usage:
 #
 # ```
+# # run docker commands from the project root, ie. the parent directory of `_deploy/`
+#
 # docker network create {{project_name}}_net
 # docker image pull --platform linux/amd64 <registry>/<image>:<tag>
 #
 # docker run --detach --name {{project_name}} \
-#     --user root \
 #     --env-file /etc/{{project_name}}/.env \
 #     --env PORT=8000 \
 #     --network {{project_name}}_net \
@@ -58,7 +59,21 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-COPY --from=builder /app /app
+RUN useradd \
+  --system \
+  --no-create-home \
+  --shell /usr/sbin/nologin \
+  nonroot
+
+COPY --from=builder --chown=nonroot:nonroot /app /app
+
+RUN mkdir -p /app/data \
+    && chown -R nonroot:nonroot /app/data
+
+RUN mkdir -p /app/static \
+    && chown -R nonroot:nonroot /app/static
+
+USER nonroot
 
 ENTRYPOINT []
 
