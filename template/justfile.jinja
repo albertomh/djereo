@@ -84,6 +84,6 @@ e2e $USE_ENV_TEST="1" $HEADED="0": _test_setup
   uv run manage.py migrate
   uv run manage.py seed_database
   {{call_recipe}} collectstatic
-  uv run gunicorn --bind 127.0.0.1:8000 scholarscapes.wsgi:application &
+  uv run gunicorn --bind 127.0.0.1:8000 {{project_name}}.wsgi:application &
   SERVER_PID=$!
   uv run pytest tests_e2e/
