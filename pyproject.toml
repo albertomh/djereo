@@ -1,6 +1,6 @@
 [project]
 name = "djereo"
-version = "4.0.1"
+version = "4.1.0"
 description = ""
 authors = [
     {name = "Alberto Morón Hernández", email = "alberto.moronh@gmail.com"}
