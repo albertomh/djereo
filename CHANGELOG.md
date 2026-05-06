@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [4.1.0](https://github.com/albertomh/djereo/compare/v4.0.1...v4.1.0) (2026-05-06)
+
+
+### Features
+
+* Add a healthcheck to deploy.Dockerfile ([#367](https://github.com/albertomh/djereo/issues/367)) ([39de3c0](https://github.com/albertomh/djereo/commit/39de3c01160128e0225c4009e7de72897fd81ff0))
+* Use a nonroot user in deploy.Dockerfile ([#365](https://github.com/albertomh/djereo/issues/365)) ([2194d69](https://github.com/albertomh/djereo/commit/2194d696048c5d4cf31592a73e647bfa1aed5694))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.30.0 ([#362](https://github.com/albertomh/djereo/issues/362)) ([22e91ac](https://github.com/albertomh/djereo/commit/22e91ac3cf90d32b07a0c64556489d0a7c89806b))
+
 ## [4.0.1](https://github.com/albertomh/djereo/compare/v4.0.0...v4.0.1) (2026-04-01)
 
 
