@@ -6,6 +6,7 @@ In addition to the [Prerequisites](../README.md#prerequisites) listed in the mai
 you will need the following to develop `{{project_name}}`:
 
 - [prek](https://prek.j178.dev/)
+- [shellcheck](https://www.shellcheck.net/) (needed by the `actionlint` pre-commit hook)
 
 ## The djereo project template
 
@@ -107,6 +108,9 @@ A suite of end-to-end tests written using the Playwright framework lives under `
 Invoke the `e2e` just recipe to run these locally:
 
 ```sh
+# if running for the first time, install playwright browsers
+just playwright_install
+
 just e2e
 ```
 
