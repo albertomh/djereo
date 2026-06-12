@@ -120,7 +120,11 @@
     <footer>
         <hr>
         <p>
-            <small>{{ project_name }} v{% raw %}{{{% endraw %} {{ project_name }}.meta.version {% raw %}}}{% endraw %} by {{ author_name }}</small>
+            {% raw %}{% if {% endraw %}{{project_name}}{% raw %}.meta.commit_sha %}{% endraw %}
+                <small>{{project_name}}@{% raw %}{{{% endraw %} {{ project_name }}.meta.commit_sha {% raw %}}}{% endraw %} by {{ author_name }}</small>
+            {% raw %}{% else %}{% endraw %}
+                <small>{{ project_name }} v{% raw %}{{{% endraw %} {{ project_name }}.meta.version {% raw %}}}{% endraw %} by {{ author_name }}</small>
+            {% raw %}{% endif %}{% endraw %}
         </p>
     </footer>
 
