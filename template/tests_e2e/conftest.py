@@ -1,6 +1,6 @@
 # >>> uv run pytest tests_e2e/
-# Locally, set the CI environment variable to run in headless browser:
-# >>> CI=true uv run pytest tests_e2e/
+# Locally, set the HEADED environment variable to see the browser:
+# >>> HEADED=true uv run pytest tests_e2e/
 
 import sys
 import time
@@ -62,9 +62,7 @@ def pytest_sessionstart(session):
             playwright.stop()
 
 
-pytest.fixture(scope="session")
-
-
+@pytest.fixture(scope="session")
 def browser():
     """Start Playwright Chromium once per test session."""
     is_ci = env.bool("CI", default=False)

@@ -36,7 +36,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 USE_ENV_TEST = env.bool("USE_ENV_TEST", default=False)
 IS_TESTING = "test" in sys.argv
 
-if IS_TESTING:
+if IS_TESTING or USE_ENV_TEST:
     env.read_env(BASE_DIR / ".env.test", recurse=False)
 else:
     if (
