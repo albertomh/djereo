@@ -1,5 +1,25 @@
+import subprocess
+
 from {{ project_name }} import __version__
 
 
 def metadata(request):  # pragma: no cover
-    return {"{{ project_name }}": {"meta": {"version": __version__}}}
+    context = {"{{ project_name }}": {"meta": {"version": __version__}}}
+
+    try:
+        commit_sha = (
+            subprocess.check_output(
+                ["/usr/bin/git", "describe", "--always"], stderr=subprocess.DEVNULL
+            )
+            .decode()
+            .strip()
+        )
+    {% if min_python_version == '3.13' %}
+    except (FileNotFoundError, subprocess.CalledProcessError):
+    {% else %}
+    except FileNotFoundError, subprocess.CalledProcessError:
+    {% endif %}
+        commit_sha = None
+    context["{{ project_name }}"]["meta"]["commit_sha"] = commit_sha
+
+    return context

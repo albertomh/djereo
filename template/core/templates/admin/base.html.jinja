@@ -3,6 +3,10 @@
 {% raw %}{% block footer %}{% endraw %}
 <hr>
 <div id="content">
-    <p class="small quiet">{{project_name}} v{% raw %}{{{% endraw %} {{ project_name }}.meta.version {% raw %}}}{% endraw %}</p>
+    {% raw %}{% if {% endraw %}{{project_name}}{% raw %}.meta.commit_sha %}{% endraw %}
+        <p class="small quiet">{{project_name}}@{% raw %}{{{% endraw %} {{ project_name }}.meta.commit_sha {% raw %}}}{% endraw %}</p>
+    {% raw %}{% else %}{% endraw %}
+        <p class="small quiet">{{project_name}} v{% raw %}{{{% endraw %} {{ project_name }}.meta.version {% raw %}}}{% endraw %}</p>
+    {% raw %}{% endif %}{% endraw %}
 </div>
 {% raw %}{% endblock footer %}{% endraw +%}
