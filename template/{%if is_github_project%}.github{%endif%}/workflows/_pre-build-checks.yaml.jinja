@@ -23,7 +23,7 @@ jobs:
   pre_commit:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/prek
 
   generate-nox-sessions:
@@ -31,10 +31,10 @@ jobs:
     outputs:
       session: {% raw %}${{ steps.set-matrix.outputs.session }}{% endraw +%}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Cache nox session list
         id: cache-sessions
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nox-sessions.json
           key: {% raw %}nox-sessions-${{ runner.os }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}{% endraw +%}
@@ -82,7 +82,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v8.2.0
         with:
           version: "0.11.9"
@@ -94,7 +94,7 @@ jobs:
     needs: pre_commit
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/django-checks
         with:
           deploy: {% raw %}${{ inputs.django_checks_deploy }}{% endraw +%}

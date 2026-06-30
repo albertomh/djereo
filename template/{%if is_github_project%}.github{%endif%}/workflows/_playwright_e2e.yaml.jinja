@@ -43,7 +43,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Log in to GHCR
         uses: docker/login-action@v4
@@ -101,7 +101,7 @@ jobs:
 
       - name: Cache Playwright browsers
         id: cache-playwright
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: {% raw %}playwright-${{ runner.os }}-${{ hashFiles('uv.lock') }}-chromium{% endraw +%}

@@ -15,7 +15,7 @@ jobs:
   pre_commit:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/prek
 
   generate-nox-py-versions:
@@ -23,10 +23,10 @@ jobs:
     outputs:
       nox_sessions: ${{ steps.set-matrix.outputs.nox_sessions }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Cache nox Python versions list
       id: cache-nox-py-versions
-      uses: actions/cache@v5
+      uses: actions/cache@v6
       with:
         path: .nox-py-versions.json
         key: nox-py-versions-${{ runner.os }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}
@@ -77,7 +77,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v8.2.0
         with:
           version: "0.11.9"

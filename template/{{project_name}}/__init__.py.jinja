@@ -1,5 +1,8 @@
-from importlib.metadata import version
+from importlib.metadata import PackageNotFoundError, version
 
 __author__ = """{{author_name}}"""
 __email__ = "{{author_email}}"
-__version__ = version("{{project_name}}")
+try:
+    __version__ = version("{{project_name}}")
+except PackageNotFoundError:
+    __version__ = "0.0.0+dev"
