@@ -70,10 +70,10 @@ ENABLE_DEBUG_TOOLS = DEBUG and not IS_TESTING
 if ENABLE_DEBUG_TOOLS:
     INTERNAL_IPS = ["127.0.0.1", "::1"]
 
-if DEBUG:
-    ALLOWED_HOSTS: list[str] = []
-else:
-    ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
+ALLOWED_HOSTS = env.list(
+    "ALLOWED_HOSTS",
+    default=[".localhost", "127.0.0.1", "[::1]"],
+)
 
 
 # Application definition
