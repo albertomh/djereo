@@ -163,9 +163,7 @@ exclude_lines = [
 ]
 
 [tool.coverage.run]
-source = [
-    "./{{project_name}}/",
-]
+source = ["."]
 omit = [
     "manage.py",
     "*/tests/*",
@@ -173,3 +171,5 @@ omit = [
     "{{project_name}}/wsgi.py",
     "{{project_name}}/settings.py",
 ]
+parallel = true
+concurrency = ["multiprocessing"]
