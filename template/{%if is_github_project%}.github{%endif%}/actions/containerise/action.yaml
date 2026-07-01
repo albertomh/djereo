@@ -101,8 +101,8 @@ runs:
         push: true
         provenance: ${{ inputs.provenance }}
         tags: ${{ inputs.tags }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+        cache-from: type=gha,scope=container
+        cache-to: type=gha,scope=container,mode=min
     - name: Set output
       id: set-output
       shell: bash
