@@ -14,7 +14,8 @@ on:
 
 jobs:
   checks:
-    # this job is redundant if pipeline was triggered by merge of a 'Release Please' PR
+    # Guard against running this job if the Pull Request was closed without merging.
+    # Also, this job is redundant if pipeline was triggered by merge of a 'Release Please' PR.
     if: ${{ github.event.pull_request.merged && github.head_ref != 'release-please--branches--main' }}
     uses: ./.github/workflows/_pre-build-checks.yaml
 

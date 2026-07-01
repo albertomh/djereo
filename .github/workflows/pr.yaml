@@ -1,13 +1,10 @@
 # djereo Pull Request pipeline
-# Runs when a commit on a feature branch is pushed up to GitHub.
+# Runs when a commit on a feature branch is pushed up to GitHub or a Pull Request is opened.
 name: PR
 
 on:
-  push:
-    branches-ignore:
-      - main
   pull_request:
-    branches-ignore:
+    branches:
       - main
 
 jobs:
