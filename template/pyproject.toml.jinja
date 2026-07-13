@@ -160,6 +160,8 @@ exclude_lines = [
     "def __repr__",
     "def __str__",
     "if settings.debug",
+    "if settings.ENABLE_DEBUG_TOOLS",
+    "if TYPE_CHECKING",
 ]
 
 [tool.coverage.run]
@@ -170,6 +172,7 @@ omit = [
     "{{project_name}}/asgi.py",
     "{{project_name}}/wsgi.py",
     "{{project_name}}/settings.py",
+    "{{project_name}}/test.py",
 ]
 parallel = true
 concurrency = ["multiprocessing"]
