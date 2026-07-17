@@ -1,9 +1,15 @@
+# <https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference>
+
 version: 2
 updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
+      exclude:
+        - "django"
 
   - package-ecosystem: "github-actions"
     directory: "/"

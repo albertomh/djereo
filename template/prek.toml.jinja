@@ -22,7 +22,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/astral-sh/ruff-pre-commit"
-rev = "v0.15.4"
+rev = "v0.16.0"
 hooks = [
     { id = "ruff-check", args = ["--fix"] },
     { id = "ruff-format" },
@@ -30,7 +30,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/DavidAnson/markdownlint-cli2"
-rev = "v0.21.0"
+rev = "v0.23.2"
 hooks = [
     { id = "markdownlint-cli2", args = [
         "--config",
@@ -42,7 +42,7 @@ hooks = [
 hooks = [{ id = "biome-check", exclude = { glob = ["**/mvp.css"] } }]
 repo = "https://github.com/biomejs/pre-commit"
 # when updating this version, remember to also update `$schema` in `biome.jsonc`
-rev = "v2.4.4"
+rev = "v2.5.6"
 
 [[repos]]
 repo = "https://github.com/adamchainz/djade-pre-commit"
@@ -51,17 +51,17 @@ hooks = [{ id = "djade", args = ["--target-version", "{{django_version}}"] }]
 
 [[repos]]
 repo = "https://github.com/adamchainz/django-upgrade"
-rev = "1.30.0"
+rev = "1.31.1"
 hooks = [{ id = "django-upgrade", args = ["--target-version", "{{django_version}}"] }]
 
 [[repos]]
 repo = "https://github.com/crate-ci/typos"
-rev = "v1.44.0"
+rev = "v1.48.0"
 hooks = [{ id = "typos", args = ["--force-exclude"] }]
 
 [[repos]]
 repo = "https://github.com/alessandrojcm/commitlint-pre-commit-hook"
-rev = "v9.24.0"
+rev = "v9.26.0"
 hooks = [
     { id = "commitlint", stages = [
         "commit-msg",
@@ -72,7 +72,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/pre-commit/mirrors-mypy"
-rev = "v1.19.1"
+rev = "v2.3.0"
 hooks = [
     { id = "mypy", additional_dependencies = [
         "django-stubs[compatible-mypy]",

@@ -65,7 +65,7 @@ dev = [
     "django-browser-reload>=1.21.0",
     "django-debug-toolbar>=7.0.0,<8.0.0",
     "ipdb>=0.13.13,<1.0.0",
-    "ipython>=9.8.0,<10.0.0",
+    "ipython>=9.15.0,<10.0.0",
     "rich>=15.0.0,<16.0.0",
 ]
 {% if is_github_project %}
@@ -76,6 +76,9 @@ Repository = "https://github.com"
 
 [tool.uv]
 exclude-newer = "7 days"
+
+[tool.uv.exclude-newer-package]
+django = false
 
 [tool.mypy]
 python_version = {{min_python_version}}
@@ -129,7 +132,15 @@ known-first-party = ["{{project_name}}", "users", "core"]
 
 [tool.ruff.lint.per-file-ignores]
 "_db/**.py" = ["INP001", "T201"]
-"tests/**.py" = ["PLC0415", "PLR0913", "S"]
+"tests/**.py" = [
+    "S",
+    # import-outside-top-level
+    "PLC0415",
+    # too-many-arguments
+    "PLR0913",
+    # too-many-positional-arguments | needed for fixtures
+    "PLR0917",
+]
 "tests_e2e/**.py" = ["S"]
 "**/tests/**.py" = ["S"]
 "**/migrations/**.py" = ["RUF"]

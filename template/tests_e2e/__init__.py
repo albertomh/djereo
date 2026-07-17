@@ -12,8 +12,8 @@ class MailPitMessage(TypedDict):
     Read: bool
     From: MailPitEmailAddress
     To: list[MailPitEmailAddress]
-    Cc: None | list[MailPitEmailAddress]
-    Bcc: None | list[MailPitEmailAddress]
+    Cc: list[MailPitEmailAddress] | None
+    Bcc: list[MailPitEmailAddress] | None
     ReplyTo: list[MailPitEmailAddress]
     Subject: str
     Created: str
