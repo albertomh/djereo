@@ -12,7 +12,7 @@ description: 'Run unit tests'
 runs:
   using: 'composite'
   steps:
-    - uses: astral-sh/setup-uv@v8.2.0
+    - uses: astral-sh/setup-uv@v8.3.2
       with:
         version: "0.11.9"
         enable-cache: true

@@ -30,7 +30,7 @@ jobs:
       with:
         path: .nox-py-versions.json
         key: nox-py-versions-${{ runner.os }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}
-    - uses: wntrblm/nox@2026.04.10
+    - uses: wntrblm/nox@2026.07.11
       if: steps.cache-nox-py-versions.outputs.cache-hit != 'true'
     - id: set-matrix
       shell: bash
@@ -78,7 +78,7 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v8.2.0
+      - uses: astral-sh/setup-uv@v8.3.2
         with:
           version: "0.11.9"
           enable-cache: true
@@ -91,7 +91,7 @@ jobs:
           # Extract 3.13 from 3.13(django='5.2')
           PY_VER=$(echo "${{ matrix.nox_session }}" | cut -d'(' -f1)
           echo "version=$PY_VER" >> "$GITHUB_OUTPUT"
-      - uses: wntrblm/nox@2026.04.10
+      - uses: wntrblm/nox@2026.07.11
         with:
           python-versions: "${{ steps.py-version.outputs.version }}"
       - run: nox --session "tests-${{ matrix.nox_session }}"
