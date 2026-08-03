@@ -8,6 +8,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [4.2.0](https://github.com/albertomh/djereo/compare/v4.1.0...v4.2.0) (2026-08-03)
+
+
+### Features
+
+* Set a safe, sensible dev-first default ALLOWED_HOSTS ([#377](https://github.com/albertomh/djereo/issues/377)) ([969ed94](https://github.com/albertomh/djereo/commit/969ed94eb621095e181ac3bfd0847f13a28eee8f))
+* **ui:** Display deployed git revision in application footer ([#372](https://github.com/albertomh/djereo/issues/372)) ([0325e37](https://github.com/albertomh/djereo/commit/0325e3793913b87b33eb861c4d690ba9a9c656fd))
+
+
+### Bug Fixes
+
+* **ci:** Fix PR workflow trigger condition ([#378](https://github.com/albertomh/djereo/issues/378)) ([0d79cb7](https://github.com/albertomh/djereo/commit/0d79cb70786fbb57863c2bb6882b37869becd90a))
+* **ci:** Stabilise Playwright and container-based E2E testing ([#371](https://github.com/albertomh/djereo/issues/371)) ([7429880](https://github.com/albertomh/djereo/commit/742988071a9d7c8608728edba370ef6220badf26))
+
+
+### Dependencies
+
+* Bump min version of django-debug-toolbar to 7.0.0 in gen. project ([#380](https://github.com/albertomh/djereo/issues/380)) ([85492c4](https://github.com/albertomh/djereo/commit/85492c470f516589be26272be1a8cd058f94b207))
+* Upgrade to pycliche [@c52aa8a](https://github.com/c52aa8a) ([#369](https://github.com/albertomh/djereo/issues/369)) ([f328c23](https://github.com/albertomh/djereo/commit/f328c23e5e92c806910fdfdea7d82e1c6b5af915))
+* Upgrade to pycliche v2.31.0 ([#376](https://github.com/albertomh/djereo/issues/376)) ([af9a288](https://github.com/albertomh/djereo/commit/af9a288fe2cf0e9c3dacb807c013c22025e78b9d))
+* Upgrade to pycliche v2.31.1 ([#386](https://github.com/albertomh/djereo/issues/386)) ([0620940](https://github.com/albertomh/djereo/commit/0620940342f563813433c9861e96cd5aca5ba255))
+
 ## [4.1.0](https://github.com/albertomh/djereo/compare/v4.0.1...v4.1.0) (2026-05-06)
 
 
