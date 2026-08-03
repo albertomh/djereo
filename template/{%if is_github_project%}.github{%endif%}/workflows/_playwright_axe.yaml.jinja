@@ -52,9 +52,9 @@ jobs:
           username: {% raw %}${{ github.actor }}{% endraw %}
           password: {% raw %}${{ github.token }}{% endraw %}
 
-      - uses: astral-sh/setup-uv@v8.2.0
+      - uses: astral-sh/setup-uv@v9.0.0
         with:
-          version: "0.11.9"
+          version: "0.11.32"
           enable-cache: true
 
       - name: Create Docker network

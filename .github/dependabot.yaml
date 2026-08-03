@@ -1,9 +1,13 @@
+# <https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference>
+
 version: 2
 updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
     ignore:
       # prek follows zero-based versioning, so ignore patch versions to reduce noise
       - dependency-name: "prek"

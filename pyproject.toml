@@ -9,12 +9,12 @@ readme = "README.md"
 license-files = ["LICENSE"]
 requires-python = ">=3.13"
 dependencies = [
-    "ipython>=9.7.0,<10.0.0",
+    "ipython>=9.15.0,<10.0.0",
 ]
 
 [dependency-groups]
 test = [
-    "copier>=9.14.3,<10.0.0",
+    "copier>=9.17.0,<10.0.0",
     "pip>=26.0.1,<27.0.0",
     "prek>=0.4.4,<0.5.0",
     "pytest>=9.0.0,<10.0.0",
@@ -94,5 +94,9 @@ known-first-party = ["users", "core"]
 [tool.ruff.lint.per-file-ignores]
 "noxfile.py" = ["S"]
 "tests/**.py" = ["PLC0415", "PLR0913", "S"]
-"**/tests/**.py" = ["S"]
+"**/tests/**.py" = [
+    "S",
+    # too-many-positional-arguments | needed for fixtures
+    "PLR0917",
+]
 "**/tests_e2e/**.py" = ["S"]
