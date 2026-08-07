@@ -26,7 +26,8 @@ django_version:
     choices:
         - "5.2"
         - "6.0"
-    default: "6.0"
+        - "6.1"
+    default: "6.1"
 
 # https://endoflife.date/postgresql
 postgres_version:
