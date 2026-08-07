@@ -1,3 +1,5 @@
+import os
+
 import nox
 
 # https://endoflife.date/python
@@ -83,7 +85,9 @@ def tests_with_coverage(session: nox.Session) -> None:
     session.run("coverage", "erase")
 
     env = {
+        **os.environ,
         "COVERAGE_PROCESS_START": ".coveragerc",
+        "PYTHONWARNINGS": "error",
     }
     session.run(
         "coverage",
