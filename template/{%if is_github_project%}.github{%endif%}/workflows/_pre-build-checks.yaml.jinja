@@ -6,7 +6,7 @@
 #   checks:
 #     uses: ./.github/workflows/_pre-build-checks.yaml
 #     with:
-#       django_checks_deploy: 'false' | 'true'
+#       django_checks_deploy: false | true
 # ```
 name: Pre-build checks
 
@@ -15,8 +15,8 @@ on:
     inputs:
       django_checks_deploy:
           description: 'Run checks in deploy mode'
-          type: string
-          default: 'false'
+          type: boolean
+          default: false
           required: false
 
 jobs:

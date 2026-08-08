@@ -19,7 +19,7 @@ jobs:
   checks:
     uses: ./.github/workflows/_pre-build-checks.yaml
     with:
-      django_checks_deploy: 'true'
+      django_checks_deploy: true
 
   containerise:
     needs: checks
