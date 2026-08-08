@@ -29,8 +29,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: |
-          echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> $GITHUB_ENV
-          echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> "$GITHUB_ENV"
+          echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
       - id: containerise
         uses: ./.github/actions/containerise
         with:
