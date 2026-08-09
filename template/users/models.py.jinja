@@ -1,3 +1,10 @@
+{% set python_ver_parts = min_python_version.split('.') %}
+{% set python_ver_minor = python_ver_parts[1] | int %}
+{% if python_ver_minor < 14 -%}
+from __future__ import annotations
+
+{% endif -%}
+
 from typing import ClassVar
 
 from django.contrib.auth.models import AbstractUser, UserManager
@@ -28,8 +35,8 @@ class AuthUserManager(UserManager["AuthUser"]):
 
 
 class AuthUser(UpdatedAtModel, UuidModel, AbstractUser):
-    username = models.CharField(max_length=150, blank=True)
-    email = models.EmailField(blank=False, unique=True)
+    username: models.CharField[str, str] = models.CharField(max_length=150, blank=True)
+    email: models.EmailField[str, str] = models.EmailField(unique=True)
 
     USERNAME_FIELD = "email"
     # field names that will be prompted for when `createsuperuser` mgmt. command is called
@@ -53,11 +60,7 @@ class AuthUser(UpdatedAtModel, UuidModel, AbstractUser):
             ).get_or_create(user=self)
 
     @property
-    {% if min_python_version == '3.13' %}
-    def profile(self) -> "UserProfile":
-    {% else %}
     def profile(self) -> UserProfile:
-    {% endif %}
         """
         Ensures a UserProfile exists - avoids RelatedObjectDoesNotExist errors and caches
         the object. In case the profile was not created during AuthUser.save().
@@ -70,11 +73,7 @@ class AuthUser(UpdatedAtModel, UuidModel, AbstractUser):
 
 
 class UserProfile(UuidModel):
-    {% if min_python_version == '3.13' %}
-    user: models.OneToOneField["UserProfile", AuthUser] = models.OneToOneField(
-    {% else %}
     user: models.OneToOneField[UserProfile, AuthUser] = models.OneToOneField(
-    {% endif %}
         "users.AuthUser",
         on_delete=models.CASCADE,
     )

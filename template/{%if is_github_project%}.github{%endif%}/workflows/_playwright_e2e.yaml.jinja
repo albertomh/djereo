@@ -49,8 +49,8 @@ jobs:
         uses: docker/login-action@v4
         with:
           registry: ghcr.io
-          username: {% raw %}${{ github.actor }}{% endraw %}
-          password: {% raw %}${{ github.token }}{% endraw %}
+          username: {% raw %}${{ github.actor }}{% endraw +%}
+          password: {% raw %}${{ github.token }}{% endraw +%}
 
       - uses: astral-sh/setup-uv@v9.0.0
         with:

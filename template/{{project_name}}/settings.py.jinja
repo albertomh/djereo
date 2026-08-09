@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/stable/ref/settings/
 
 {% set django_ver_parts = django_version.split('.') %}
 {% set django_ver_major = django_ver_parts[0] | int -%}
+{% set django_ver_minor = django_ver_parts[1] | int -%}
 
 {% if use_django_waffle %}
 import logging
@@ -236,12 +237,25 @@ PERMISSIONS_POLICY: dict[str, list] = {
 
 SITE_ID = 1
 
+{% if (django_ver_major == 6 and django_ver_minor >= 1) or django_ver_major >= 7 %}
+MAILERS = {
+    "default": {
+        "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+        "OPTIONS": {
+            # env var needed so it can be set to `host.docker.internal` in GitHub Actions
+            "host": env.str("EMAIL_HOST", "localhost"),
+            "port": 1025,
+        },
+    },
+}
+{% else %}
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 {% if is_github_project %}
 # env var needed so it can be set to `host.docker.internal` in GitHub Actions
 EMAIL_HOST = env.str("EMAIL_HOST", "localhost")
 {% endif %}
 EMAIL_PORT = 1025
+{% endif %}
 
 
 # Database

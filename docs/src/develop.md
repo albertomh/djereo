@@ -147,10 +147,10 @@ configured via `noxfile.py`.
 
 ```sh
 # Run all `pytest` tests (in parallel by default)
-nox
+uvx nox
 
 # Run tests with the debugger enabled (serial execution due to `pdb`)
-nox -- --pdb
+uvx nox -- --pdb
 ```
 
 By default this will only run the `nox` session for the latest supported Python release.
@@ -158,21 +158,21 @@ By default this will only run the `nox` session for the latest supported Python 
 To run all `nox` sessions (ie. for all supported Python releases):
 
 ```sh
-nox -k tests
+uvx nox -k tests
 ```
 
 Run only a given module:
 
 ```sh
-nox [--session tests-3.14] -- -k test_validators
+uvx nox [--session tests-3.14] -- -k test_validators
 ```
 
 Tests have marks, allowing you to run only a tagged subset:
 
 ```sh
-nox -- -m unit
+uvx nox -- -m unit
 # or
-nox -- -m "not smoke"
+uvx nox -- -m "not smoke"
 ```
 
 See the `tool.pytest` table in [pyproject.toml](https://github.com/albertomh/djereo/blob/main/pyproject.toml){target=\"_blank"}
