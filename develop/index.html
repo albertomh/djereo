@@ -241,22 +241,22 @@ pre-commit autoupdate
 <p>Nox is used to automate testing across different Python versions. Test sessions are
 configured via <code>noxfile.py</code>.</p>
 <pre><code class="language-sh"># Run all `pytest` tests (in parallel by default)
-nox
+uvx nox
 
 # Run tests with the debugger enabled (serial execution due to `pdb`)
-nox -- --pdb
+uvx nox -- --pdb
 </code></pre>
 <p>By default this will only run the <code>nox</code> session for the latest supported Python release.</p>
 <p>To run all <code>nox</code> sessions (ie. for all supported Python releases):</p>
-<pre><code class="language-sh">nox -k tests
+<pre><code class="language-sh">uvx nox -k tests
 </code></pre>
 <p>Run only a given module:</p>
-<pre><code class="language-sh">nox [--session tests-3.14] -- -k test_validators
+<pre><code class="language-sh">uvx nox [--session tests-3.14] -- -k test_validators
 </code></pre>
 <p>Tests have marks, allowing you to run only a tagged subset:</p>
-<pre><code class="language-sh">nox -- -m unit
+<pre><code class="language-sh">uvx nox -- -m unit
 # or
-nox -- -m &quot;not smoke&quot;
+uvx nox -- -m &quot;not smoke&quot;
 </code></pre>
 <p>See the <code>tool.pytest</code> table in <a href="https://github.com/albertomh/djereo/blob/main/pyproject.toml" target="\&quot;_blank&quot;">pyproject.toml</a>
 for a list of all marks.</p>
