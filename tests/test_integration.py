@@ -68,7 +68,7 @@ def test_missing_env_file_warning_and_traceback_suppression(
     out, err = StringIO(), StringIO()
     expected_warning = "No .env file found. Run `cp .env.in .env` to get started."
     expected_error = (
-        'environs.exceptions.EnvError: Environment variable "SECRET_KEY" not set'
+        'environs.exceptions.EnvNotSetError: Environment variable "SECRET_KEY" not set'
     )
 
     env_file = generated_project / ".env"
