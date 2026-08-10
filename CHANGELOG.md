@@ -8,6 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [4.3.0](https://github.com/albertomh/djereo/compare/v4.2.0...v4.3.0) (2026-08-10)
+
+
+### Features
+
+* Add Django 6.1 as an option for generated projects ([#388](https://github.com/albertomh/djereo/issues/388)) ([07f485f](https://github.com/albertomh/djereo/commit/07f485f6bdcb0a528f8d750437e82f3fdbf982e1))
+
+
+### Bug Fixes
+
+* Pin django dependency to minor version in generated pyproject.toml ([#390](https://github.com/albertomh/djereo/issues/390)) ([c22d6c8](https://github.com/albertomh/djereo/commit/c22d6c8e7637e008e3b96965da6b182f41b704ee))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.32.0 ([#387](https://github.com/albertomh/djereo/issues/387)) ([4c728ad](https://github.com/albertomh/djereo/commit/4c728ad8bd6abd3ab7eb2552d3c6820495fb1860))
+
 ## [4.2.0](https://github.com/albertomh/djereo/compare/v4.1.0...v4.2.0) (2026-08-03)
 
 
