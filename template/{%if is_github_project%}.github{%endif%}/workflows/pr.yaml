@@ -9,4 +9,4 @@ on:
 
 jobs:
   checks:
-    uses: ./.github/workflows/_pre-build-checks.yaml
+    uses: ./.github/workflows/_checks.yaml

@@ -17,13 +17,13 @@ jobs:
     # Guard against running this job if the Pull Request was closed without merging.
     # Also, this job is redundant if pipeline was triggered by merge of a 'Release Please' PR.
     if: ${{ github.event.pull_request.merged && github.head_ref != 'release-please--branches--main' }}
-    uses: ./.github/workflows/_pre-build-checks.yaml
+    uses: ./.github/workflows/_checks.yaml
 
   containerise:
     # containerisation of tagged releases is handled separately by the `on-tag` workflow
     if: github.head_ref != 'release-please--branches--main'
     needs: checks
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       image_address: ${{ steps.containerise.outputs.image_address }}
     steps:

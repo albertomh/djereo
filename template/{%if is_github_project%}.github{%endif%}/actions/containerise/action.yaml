@@ -4,7 +4,7 @@
 # Usage:
 #   ```
 #   containerise:
-#     runs-on: ubuntu-24.04
+#     runs-on: ubuntu-26.04
 #     outputs:
 #       image_address: ${{ steps.containerise.outputs.image_address }}
 #     steps:
