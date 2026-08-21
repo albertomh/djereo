@@ -20,7 +20,7 @@ on:
 
 jobs:
   axe:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       USE_ENV_TEST: "1"
       SECRET_KEY: django-insecure_not-a-secret
@@ -52,7 +52,7 @@ jobs:
           username: {% raw %}${{ github.actor }}{% endraw +%}
           password: {% raw %}${{ github.token }}{% endraw +%}
 
-      - uses: astral-sh/setup-uv@v9.0.0
+      - uses: astral-sh/setup-uv@v10.0.1
         with:
           version: "0.11.32"
           enable-cache: true

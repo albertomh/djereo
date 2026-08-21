@@ -17,13 +17,13 @@ on:
 
 jobs:
   checks:
-    uses: ./.github/workflows/_pre-build-checks.yaml
+    uses: ./.github/workflows/_checks.yaml
     with:
       django_checks_deploy: true
 
   containerise:
     needs: checks
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - run: {% raw %}echo "REPO_NAME=${GITHUB_REPOSITORY@L}" >> "$GITHUB_ENV"{% endraw +%}

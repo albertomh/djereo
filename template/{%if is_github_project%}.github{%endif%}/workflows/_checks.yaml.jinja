@@ -4,7 +4,7 @@
 # ```
 # jobs:
 #   checks:
-#     uses: ./.github/workflows/_pre-build-checks.yaml
+#     uses: ./.github/workflows/_checks.yaml
 #     with:
 #       django_checks_deploy: false | true
 # ```
@@ -21,13 +21,13 @@ on:
 
 jobs:
   pre_commit:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/prek
 
   generate-nox-sessions:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       session: {% raw %}${{ steps.set-matrix.outputs.session }}{% endraw +%}
     steps:
@@ -38,7 +38,7 @@ jobs:
         with:
           path: .nox-sessions.json
           key: {% raw %}nox-sessions-${{ runner.os }}-${{ hashFiles('noxfile.py', 'pyproject.toml') }}{% endraw +%}
-      - uses: wntrblm/nox@2026.07.11
+      - uses: wntrblm/nox@2026.08.10
         if: steps.cache-sessions.outputs.cache-hit != 'true'
       - id: set-matrix
         shell: bash
@@ -66,7 +66,7 @@ jobs:
       fail-fast: false
       matrix:
         session: {% raw %}${{ fromJson(needs.generate-nox-sessions.outputs.session) }}{% endraw +%}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     services:
       postgres:
         image: postgres:18
@@ -83,16 +83,16 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v9.0.0
+      - uses: astral-sh/setup-uv@v10.0.1
         with:
           version: "0.11.32"
           enable-cache: true
-      - uses: wntrblm/nox@2026.07.11
+      - uses: wntrblm/nox@2026.08.10
       - run: nox --session {% raw %}"${{ matrix.session }}"{% endraw +%}
 
   django:
     needs: pre_commit
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/django-checks
