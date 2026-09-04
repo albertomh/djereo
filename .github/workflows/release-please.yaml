@@ -63,7 +63,7 @@ jobs:
       - uses: astral-sh/setup-uv@v10.0.1
         if: ${{ steps.release.outputs.prs_created == 'true' }}
         with:
-          version: "0.12.5"
+          version: "0.12.9"
           enable-cache: true
       - run: uv lock; cd docs/ && uv lock
         if: ${{ steps.release.outputs.prs_created == 'true' }}
