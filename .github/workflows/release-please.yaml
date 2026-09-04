@@ -11,7 +11,7 @@
 # 1. Create a Personal Access Token (PAT) with the following permissions:
 #    ```text
 #    contents: read & write
-#    metadata: read & write
+#    metadata: read
 #    pull-requests: read & write
 #    ```
 # 2. Use the PAT to populate a GitHub Actions secret called `DJEREO_RELEASE_PLEASE_TOKEN`
@@ -32,6 +32,21 @@ jobs:
   release-please:
     runs-on: ubuntu-26.04
     steps:
+      - name: Validate Release Please token
+        env:
+          GH_TOKEN: ${{ secrets.DJEREO_RELEASE_PLEASE_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if [[ -z "${GH_TOKEN}" ]]; then
+            echo "::error::DJEREO_RELEASE_PLEASE_TOKEN is not set."
+            exit 1
+          fi
+
+          if ! gh api "repos/${GH_REPO}" --silent; then
+            echo "::error::DJEREO_RELEASE_PLEASE_TOKEN cannot read ${GH_REPO}. For a fine-grained PAT, grant it access to this repository with Contents: read/write, Pull requests: read/write, and Metadata: read."
+            exit 1
+          fi
+        shell: bash
       - id: release
         uses: googleapis/release-please-action@v5
         with:
@@ -44,11 +59,11 @@ jobs:
       - uses: actions/checkout@v7
         if: ${{ steps.release.outputs.prs_created == 'true' }}
         with:
-          ref: release-please--branches--main
+          ref: ${{ fromJson(steps.release.outputs.pr).headBranchName }}
       - uses: astral-sh/setup-uv@v10.0.1
         if: ${{ steps.release.outputs.prs_created == 'true' }}
         with:
-          version: "0.11.32"
+          version: "0.12.5"
           enable-cache: true
       - run: uv lock; cd docs/ && uv lock
         if: ${{ steps.release.outputs.prs_created == 'true' }}
