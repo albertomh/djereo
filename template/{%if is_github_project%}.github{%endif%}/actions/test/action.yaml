@@ -14,7 +14,7 @@ runs:
   steps:
     - uses: astral-sh/setup-uv@v10.0.1
       with:
-        version: "0.11.32"
+        version: "0.12.5"
         enable-cache: true
     - uses: extractions/setup-just@v4
     - run: just test
