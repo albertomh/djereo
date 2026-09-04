@@ -102,7 +102,7 @@ runs:
         provenance: ${{ inputs.provenance }}
         tags: ${{ inputs.tags }}
         cache-from: type=gha,scope=container
-        cache-to: type=gha,scope=container,mode=min
+        cache-to: type=gha,scope=container,mode=min,ignore-error=true
     - name: Set output
       id: set-output
       shell: bash
