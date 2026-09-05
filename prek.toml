@@ -24,7 +24,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/astral-sh/ruff-pre-commit"
-rev = "v0.16.0"
+rev = "v0.16.6"
 hooks = [
     # `--config` to stop ruff from using {{project_name}}/pyproject.toml
     # https://github.com/astral-sh/ruff/issues/9585
@@ -44,7 +44,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/crate-ci/typos"
-rev = "v1.48.0"
+rev = "v1.50.1"
 hooks = [{ id = "typos", args = ["--force-exclude"] }]
 
 [[repos]]
@@ -60,7 +60,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/kjanat/actionlint"
-rev = "v1.10.0"
+rev = "v1.14.0"
 hooks = [
     { id = "actionlint" },
 ]

@@ -298,7 +298,8 @@ job that would be necessary to bridge 'containerise' and 'service-health'.
 
 #### Dependabot
 
-Configured to update Python dependencies & GitHub actions on a weekly schedule.
+Configured to update Python dependencies on a weekly schedule. GitHub Action SHA pins
+and `prek` hook revisions are updated by scheduled workflows.
 
 See [.github/workflows/](https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/workflows)
 and [.github/dependabot.yaml](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/dependabot.yaml)

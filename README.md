@@ -60,7 +60,8 @@ Optionally, for projects intended to be hosted on GitHub, also include:
 - GitHub Actions to:
   - Automate cutting releases via `Release Please`.
   - Run `prek` pre-commit hooks and `pytest` as part of a Continuous Integration pipeline.
-- A `dependabot` configuration to keep Python packages & GitHub Actions up to date.
+- A `dependabot` configuration to keep Python packages up to date, plus scheduled
+  workflows for GitHub Action SHA pins and `prek` hook revisions.
 
 > [![docs](https://img.shields.io/badge/📖_Docs-FFFFFF)](https://albertomh.github.io/djereo/)
 > Read about all of `djereo`'s features: [https://albertomh.github.io/djereo/featurelist/](https://albertomh.github.io/djereo/featurelist/)

@@ -26,7 +26,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/astral-sh/ruff-pre-commit"
-rev = "v0.16.0"
+rev = "v0.16.6"
 hooks = [
     { id = "ruff-check", args = ["--fix"] },
     { id = "ruff-format" },
@@ -46,7 +46,7 @@ hooks = [
 hooks = [{ id = "biome-check", exclude = { glob = ["**/mvp.css"] } }]
 repo = "https://github.com/biomejs/pre-commit"
 # when updating this version, remember to also update `$schema` in `biome.jsonc`
-rev = "v2.5.6"
+rev = "v2.5.12"
 
 [[repos]]
 repo = "https://github.com/adamchainz/djade-pre-commit"
@@ -60,12 +60,12 @@ hooks = [{ id = "djade", args = ["--target-version", "{{django_version}}"] }]
 
 [[repos]]
 repo = "https://github.com/adamchainz/django-upgrade"
-rev = "1.31.1"
+rev = "1.32.0"
 hooks = [{ id = "django-upgrade", args = ["--target-version", "{{django_version}}"] }]
 
 [[repos]]
 repo = "https://github.com/crate-ci/typos"
-rev = "v1.48.0"
+rev = "v1.50.1"
 hooks = [{ id = "typos", args = ["--force-exclude"] }]
 
 [[repos]]
@@ -81,7 +81,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/pre-commit/mirrors-mypy"
-rev = "v2.3.0"
+rev = "v2.3.1"
 hooks = [
     { id = "mypy", additional_dependencies = [
         "django-stubs[compatible-mypy]",
@@ -92,7 +92,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/kjanat/actionlint"
-rev = "v1.10.0"
+rev = "v1.14.0"
 hooks = [
     { id = "actionlint" },
 ]

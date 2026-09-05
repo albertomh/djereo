@@ -1,0 +1,45 @@
+name: update-project-tooling
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 7 * * 1"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-project-tooling:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Update prek hook revisions
+        run: python3 .github/scripts/update-project-tooling.py
+
+      - name: Open pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH_NAME: automation/update-project-tooling
+          PR_BODY: Updates prek hook revisions.
+        run: |
+          if git diff --quiet; then
+            echo "Project tooling is already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "${BRANCH_NAME}"
+          git add prek.toml
+          git commit -m "chore: update project tooling"
+          git push --force-with-lease origin "${BRANCH_NAME}"
+
+          gh pr create \
+            --base "${GITHUB_REF_NAME}" \
+            --head "${BRANCH_NAME}" \
+            --title "chore: update project tooling" \
+            --body "${PR_BODY}" \
+          || gh pr edit "${BRANCH_NAME}" \
+            --title "chore: update project tooling" \
+            --body "${PR_BODY}"

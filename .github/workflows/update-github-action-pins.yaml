@@ -1,0 +1,46 @@
+name: update-github-action-pins
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 7 * * 1" # 07:00 every Monday
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-github-action-pins:
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Update GitHub Actions SHA pins
+        run: python3 .github/scripts/update-github-action-pins.py
+
+      - name: Open pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH_NAME: automation/update-github-action-pins
+          PR_BODY: Updates GitHub Actions commit SHA pins and their human-readable version comments.
+        run: |
+          if git diff --quiet; then
+            echo "GitHub Actions SHA pins are already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "${BRANCH_NAME}"
+          git add .github template
+          git commit -m "ci: update github actions sha pins"
+          git push --force-with-lease origin "${BRANCH_NAME}"
+
+          gh pr create \
+            --base "${GITHUB_REF_NAME}" \
+            --head "${BRANCH_NAME}" \
+            --title "ci: update github actions sha pins" \
+            --body "${PR_BODY}" \
+          || gh pr edit "${BRANCH_NAME}" \
+            --title "ci: update github actions sha pins" \
+            --body "${PR_BODY}"

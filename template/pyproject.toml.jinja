@@ -18,21 +18,21 @@ dependencies = [
     {% if django_ver_major < 6 %}
     "django-csp>=4.0,<5.0",
     {% endif %}
-    "django-allauth>=65.13.1,<66.0.0",
+    "django-allauth>=65.19.1,<66.0.0",
     {% if use_htmx %}
-    "django-htmx>=1.27.0,<2.0.0",
+    "django-htmx>=1.29.0,<2.0.0",
     {% endif %}
     "django-linear-migrations>=2.19.0,<3.0.0",
-    "django-permissions-policy>=4.28.0,<5.0.0",
-    "django-structlog>=10.0.0,<11.0.0",
+    "django-permissions-policy>=4.33.0,<5.0.0",
+    "django-structlog>=10.1.0,<11.0.0",
     "django-version-checks>=1.16.0,<2.0.0",
     {% if use_django_waffle %}
     "django-waffle>=5.0.0,<6.0.0",
     {% endif %}
-    "environs[django]>=15.0.0,<16.0.0",
-    "gunicorn>=26.0.0,<27.0.0",
-    "psycopg[binary]>=3.3.0,<4.0.0",
-    "psycopg-pool>=3.3.0,<4.0.0",
+    "environs[django]>=15.1.0,<16.0.0",
+    "gunicorn>=26.2.0,<27.0.0",
+    "psycopg[binary]>=3.3.4,<4.0.0",
+    "psycopg-pool>=3.3.1,<4.0.0",
     "whitenoise[brotli]>=6.12.0,<7.0.0",
 ]
 
@@ -48,23 +48,23 @@ module-name = "{{project_name}}"
 test = [
     "axe-playwright-python>=0.1.8,<1.0.0",
     {% if use_htmx %}
-    "beautifulsoup4>=4.14.2,<5.0.0",
+    "beautifulsoup4>=4.15.0,<5.0.0",
     {% endif %}
-    "coverage>=7.12.0,<8.0.0",
+    "coverage>=7.16.0,<8.0.0",
     "factory-boy>=3.3.3,<4.0.0",
     "parameterized>=0.9.0,<1.0.0",
-    "playwright>=1.61.0,<2.0.0",
+    "playwright>=1.62.0,<2.0.0",
     "pytest-playwright>=0.9.0,<1.0.0",
-    "pytest>=9.0.0,<10.0.0",
-    "requests>=2.32.5,<3.0.0",
-    "responses>=0.25.8,<1.0.0",
+    "pytest>=9.1.1,<10.0.0",
+    "requests>=2.34.2,<3.0.0",
+    "responses>=0.26.3,<0.27.0",
     "tblib>=3.2.2,<4.0.0",
 ]
 dev = [
     "django-browser-reload>=1.21.0",
-    "django-debug-toolbar>=7.0.0,<8.0.0",
+    "django-debug-toolbar>=7.1.1,<8.0.0",
     "ipdb>=0.13.13,<1.0.0",
-    "ipython>=9.15.0,<10.0.0",
+    "ipython>=9.17.0,<10.0.0",
     "rich>=15.0.0,<16.0.0",
 ]
 {% if is_github_project %}

@@ -49,7 +49,8 @@ Optionally, for projects intended to be hosted on GitHub, also include:
 - GitHub Actions to:
     - Automate cutting releases via `Release Please`.
     - Run `pre-commit` hooks and `pytest` as part of a Continuous Integration pipeline.
-- A `dependabot` configuration to keep Python packages & GitHub Actions up to date.
+- A `dependabot` configuration to keep Python packages up to date, plus scheduled
+  workflows for GitHub Action SHA pins and `pre-commit` hook revisions.
 <!-- markdownlint-enable MD007 ul-indent -->
 
 If `djereo` sounds like a good foundation for your next project, explore the [full list of features](./featurelist.md)
