@@ -359,7 +359,8 @@ box the <code>on-tag</code> workflow runs the following jobs:</p>
 above). This is not shown in the above workflow since <code>djereo</code> does not implement a 'deploy'
 job that would be necessary to bridge 'containerise' and 'service-health'.</p>
 <h4 id="dependabot">Dependabot</h4>
-<p>Configured to update Python dependencies &amp; GitHub actions on a weekly schedule.</p>
+<p>Configured to update Python dependencies on a weekly schedule. GitHub Action SHA pins
+and <code>prek</code> hook revisions are updated by scheduled workflows.</p>
 <p>See <a href="https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/workflows" target="\&quot;_blank&quot;">.github/workflows/</a>
 and <a href="https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/dependabot.yaml" target="\&quot;_blank&quot;">.github/dependabot.yaml</a>
 for the definitions of these workflows.</p>
@@ -522,7 +523,7 @@ centralises models, template overrides and configuration for auth-related featur
 <p>Model factories for <code>AuthUser</code> and <code>UserProfile</code> are provided as a convenience. This includes
 subfactories to keep tests lean. This means that in a test one may generate a fleshed-out
 user with:</p>
-<pre><code class="language-python">from users.factories import UserProfileFactory  
+<pre><code class="language-python">from users.factories import UserProfileFactory
 from users.models import AuthUser
 
 profile = UserProfileFactory()
@@ -608,6 +609,7 @@ package to enable you to mock responses from external services in tests.</p>
 <p>Mock responses by modifying <code>ACTIVE_RESPONSES</code> in the test class or function:</p>
 <pre><code class="language-python">from testdjereo.test import ACTIVE_RESPONSES
 
+
 class ViewTests(SimpleTestCase):
     def test_view(self):
         ACTIVE_RESPONSES.add(
@@ -629,10 +631,10 @@ variable denoting a CI context is found (eg. when running locally), the runner w
 any tests tagged 'slow' such as in the below example:</p>
 <pre><code class="language-python">from django.test import TestCase, tag
 
+
 class AppTests(TestCase):
     @tag(&quot;slow&quot;)
-    def test_all_the_things(self):
-        ...
+    def test_all_the_things(self): ...
 </code></pre>
 <h3 id="profile-tests">Profile tests</h3>
 <p>Invoke <code>just profile_tests</code> to output a <a href="https://www.speedscope.app/" target="\&quot;_blank&quot;">speedscope</a>-compatible
