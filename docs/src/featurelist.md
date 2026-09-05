@@ -178,7 +178,8 @@ job that would be necessary to bridge 'containerise' and 'service-health'.
 
 #### Dependabot
 
-Configured to update Python dependencies & GitHub actions on a weekly schedule.
+Configured to update Python dependencies on a weekly schedule. GitHub Action SHA pins
+and `prek` hook revisions are updated by scheduled workflows.
 
 See [.github/workflows/](https://github.com/albertomh/djereo/tree/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/workflows){target=\"_blank"}
 and [.github/dependabot.yaml](https://github.com/albertomh/djereo/blob/main/template/%7B%25if%20is_github_project%25%7D.github%7B%25endif%25%7D/dependabot.yaml){target=\"_blank"}
@@ -394,7 +395,7 @@ subfactories to keep tests lean. This means that in a test one may generate a fl
 user with:
 
 ```python
-from users.factories import UserProfileFactory  
+from users.factories import UserProfileFactory
 from users.models import AuthUser
 
 profile = UserProfileFactory()
@@ -507,6 +508,7 @@ Mock responses by modifying `ACTIVE_RESPONSES` in the test class or function:
 ```python
 from testdjereo.test import ACTIVE_RESPONSES
 
+
 class ViewTests(SimpleTestCase):
     def test_view(self):
         ACTIVE_RESPONSES.add(
@@ -532,10 +534,10 @@ any tests tagged 'slow' such as in the below example:
 ```python
 from django.test import TestCase, tag
 
+
 class AppTests(TestCase):
     @tag("slow")
-    def test_all_the_things(self):
-        ...
+    def test_all_the_things(self): ...
 ```
 
 ### Profile tests

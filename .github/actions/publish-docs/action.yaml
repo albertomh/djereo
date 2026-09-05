@@ -24,16 +24,16 @@ runs:
         git config user.name github-actions[bot]
         git config user.email 41898282+github-actions[bot]@users.noreply.github.com
       shell: bash
-    - uses: actions/setup-python@v6
+    - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
       with:
         python-version: 3.14
-    - uses: astral-sh/setup-uv@v10.0.1
+    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
       with:
-        version: "0.11.32"
+        version: "0.12.9"
         enable-cache: true
     - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
       shell: bash
-    - uses: actions/cache@v6
+    - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
       with:
           key: mkdocs-material-${{ env.cache_id }}
           path: .cache
@@ -45,7 +45,7 @@ runs:
       working-directory: docs/
       shell: bash
     - name: Publish docs
-      uses: peaceiris/actions-gh-pages@v4
+      uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4
       with:
         github_token: ${{ inputs.github_token }}
         publish_dir: ./docs/site
