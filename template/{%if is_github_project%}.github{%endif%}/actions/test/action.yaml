@@ -12,10 +12,10 @@ description: 'Run unit tests'
 runs:
   using: 'composite'
   steps:
-    - uses: astral-sh/setup-uv@v10.0.1
+    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
       with:
         version: "0.12.9"
         enable-cache: true
-    - uses: extractions/setup-just@v4
+    - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
     - run: just test
       shell: bash
