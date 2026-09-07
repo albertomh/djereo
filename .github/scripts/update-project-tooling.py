@@ -9,9 +9,11 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 from dataclasses import dataclass
 from functools import total_ordering
 from pathlib import Path
+from urllib.error import URLError
 from urllib.request import urlopen
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -34,6 +36,8 @@ PYPI_CACHE: dict[tuple[str, str | None], str] = {}
 TAG_CACHE: dict[str, set[str]] = {}
 EXCLUDE_NEWER_RE = re.compile(r'^exclude-newer = "(?P<days>\d+) days"$', re.MULTILINE)
 UTC = dt.timezone(dt.timedelta(0))
+PYPI_REQUEST_TIMEOUT_SECONDS = 30
+PYPI_REQUEST_ATTEMPTS = 3
 
 
 @total_ordering
@@ -97,8 +101,18 @@ def latest_pypi_version(name: str, cutoff: dt.datetime | None) -> str:
     if cache_key in PYPI_CACHE:
         return PYPI_CACHE[cache_key]
 
-    with urlopen(f"https://pypi.org/pypi/{package_name}/json", timeout=30) as response:
-        payload = json.load(response)
+    url = f"https://pypi.org/pypi/{package_name}/json"
+    for attempt in range(1, PYPI_REQUEST_ATTEMPTS + 1):
+        try:
+            with urlopen(url, timeout=PYPI_REQUEST_TIMEOUT_SECONDS) as response:
+                payload = json.load(response)
+            break
+        except (TimeoutError, URLError) as error:
+            if attempt == PYPI_REQUEST_ATTEMPTS:
+                raise RuntimeError(  # noqa: TRY003
+                    f"Failed to fetch PyPI metadata for {package_name}"
+                ) from error
+            time.sleep(attempt * 5)
 
     candidates: list[tuple[Version, str]] = []
     for version, release_files in payload["releases"].items():
