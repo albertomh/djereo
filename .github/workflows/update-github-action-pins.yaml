@@ -3,7 +3,9 @@ name: update-github-action-pins
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 7 * * 1" # 07:00 every Monday
+    # Avoid minute 0 because GitHub Actions scheduled workflows can be delayed
+    # or dropped during top-of-hour load spikes.
+    - cron: "17 7 * * 1"
 
 permissions:
   contents: write
