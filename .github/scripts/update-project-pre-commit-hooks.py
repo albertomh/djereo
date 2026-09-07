@@ -17,7 +17,8 @@ PREK_REPO_RE = re.compile(
 )
 PREK_REV_RE = re.compile(r'^(?P<prefix>rev = ")(?P<rev>[^"]+)(?P<suffix>")$')
 SEMVER_TAG_RE = re.compile(
-    r"^v?(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)$"
+    r"^v?(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)"
+    r"(?:\.(?P<patch>0|[1-9]\d*))?$"
 )
 TAG_CACHE: dict[str, set[str]] = {}
 
@@ -34,7 +35,7 @@ class Version:
         match = SEMVER_TAG_RE.fullmatch(value)
         if match is None:
             return None
-        return cls(*(int(part) for part in match.groups()))
+        return cls(*(int(part or 0) for part in match.groups()))
 
     def __lt__(self, other: Version) -> bool:
         return (self.major, self.minor, self.patch) < (
@@ -47,6 +48,7 @@ class Version:
 def project_files() -> list[Path]:
     candidates = [
         REPO_ROOT / "prek.toml",
+        REPO_ROOT / "template" / "prek.toml.jinja",
     ]
     return [path for path in candidates if path.exists()]
 

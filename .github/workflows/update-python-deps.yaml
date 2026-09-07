@@ -1,4 +1,4 @@
-name: update-project-tooling
+name: update-python-deps
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  update-project-tooling:
+  update-python-deps:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -19,8 +19,8 @@ jobs:
           version: "0.12.9"
           enable-cache: true
 
-      - name: Update dependency and prek pins
-        run: python3 .github/scripts/update-project-tooling.py
+      - name: Update Python dependency pins
+        run: python3 .github/scripts/update-project-python-deps.py
 
       - name: Refresh lockfile
         run: uv lock
@@ -28,26 +28,31 @@ jobs:
       - name: Open pull request
         env:
           GH_TOKEN: ${{ github.token }}
-          BRANCH_NAME: automation/update-project-tooling
-          PR_BODY: Updates pyproject dependency constraints and prek hook revisions.
+          BRANCH_NAME: automation/update-python-deps
+          PR_BODY: Updates Python dependency constraints.
         run: |
           if git diff --quiet; then
-            echo "Project tooling is already up to date."
+            echo "Python dependencies are already up to date."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          REMOTE_SHA="$(git ls-remote --heads origin "${BRANCH_NAME}" | cut -f1)"
           git checkout -B "${BRANCH_NAME}"
-          git add pyproject.toml uv.lock prek.toml template
-          git commit -m "chore: update project tooling"
-          git push --force-with-lease origin "${BRANCH_NAME}"
+          git add pyproject.toml uv.lock template/pyproject.toml.jinja
+          git commit -m "chore(deps): update Python deps"
+          if [ -n "${REMOTE_SHA}" ]; then
+            git push --force-with-lease="refs/heads/${BRANCH_NAME}:${REMOTE_SHA}" origin "${BRANCH_NAME}"
+          else
+            git push --force-with-lease="refs/heads/${BRANCH_NAME}:" origin "${BRANCH_NAME}"
+          fi
 
           gh pr create \
             --base "${GITHUB_REF_NAME}" \
             --head "${BRANCH_NAME}" \
-            --title "chore: update project tooling" \
+            --title "chore(deps): update Python deps" \
             --body "${PR_BODY}" \
           || gh pr edit "${BRANCH_NAME}" \
-            --title "chore: update project tooling" \
+            --title "chore(deps): update Python deps" \
             --body "${PR_BODY}"
