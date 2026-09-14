@@ -26,7 +26,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/astral-sh/ruff-pre-commit"
-rev = "v0.16.6"
+rev = "v0.16.7"
 hooks = [
     { id = "ruff-check", args = ["--fix"] },
     { id = "ruff-format" },
@@ -46,7 +46,7 @@ hooks = [
 hooks = [{ id = "biome-check", exclude = { glob = ["**/mvp.css"] } }]
 repo = "https://github.com/biomejs/pre-commit"
 # when updating this version, remember to also update `$schema` in `biome.jsonc`
-rev = "v2.5.12"
+rev = "v2.5.13"
 
 [[repos]]
 repo = "https://github.com/adamchainz/djade-pre-commit"
@@ -92,7 +92,7 @@ hooks = [
 
 [[repos]]
 repo = "https://github.com/kjanat/actionlint"
-rev = "v1.14.0"
+rev = "v1.17.0"
 hooks = [
     { id = "actionlint" },
 ]
