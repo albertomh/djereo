@@ -1,5 +1,18 @@
 name: update-github-action-pins
 
+# IMPORTANT!
+# The following click-ops step must be taken to allow this workflow to update
+# files under `.github/workflows/`.
+# 1. Create a Personal Access Token (PAT) with the following permissions:
+#    ```text
+#    contents: read & write
+#    metadata: read
+#    pull-requests: read & write
+#    workflows: read & write
+#    ```
+# 2. Use the PAT to populate a GitHub Actions secret called `DJEREO_GITHUB_ACTION_PINS_TOKEN`
+#    (under `github.com/<user>/<repo>/settings/secrets/actions`).
+
 on:
   workflow_dispatch:
   schedule:
@@ -15,14 +28,32 @@ jobs:
   update-github-action-pins:
     runs-on: ubuntu-26.04
     steps:
+      - name: Validate GitHub Actions pins token
+        env:
+          GH_TOKEN: ${{ secrets.DJEREO_GITHUB_ACTION_PINS_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if [[ -z "${GH_TOKEN}" ]]; then
+            echo "::error::DJEREO_GITHUB_ACTION_PINS_TOKEN is not set."
+            exit 1
+          fi
+
+          if ! gh api "repos/${GH_REPO}" --silent; then
+            echo "::error::DJEREO_GITHUB_ACTION_PINS_TOKEN cannot read ${GH_REPO}. For a fine-grained PAT, grant it access to this repository with Contents: read/write, Pull requests: read/write, Workflows: read/write, and Metadata: read."
+            exit 1
+          fi
+        shell: bash
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          token: ${{ secrets.DJEREO_GITHUB_ACTION_PINS_TOKEN }}
 
       - name: Update GitHub Actions SHA pins
         run: python3 .github/scripts/update-github-action-pins.py
 
       - name: Open pull request
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.DJEREO_GITHUB_ACTION_PINS_TOKEN }}
           BRANCH_NAME: automation/update-github-action-pins
           PR_BODY: Updates GitHub Actions commit SHA pins and their human-readable version comments.
         run: |
