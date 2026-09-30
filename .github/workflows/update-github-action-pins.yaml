@@ -64,9 +64,11 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "+refs/heads/${BRANCH_NAME}:refs/remotes/origin/${BRANCH_NAME}" || true
           git checkout -B "${BRANCH_NAME}"
           git add .github template
           git commit -m "ci: update github actions sha pins"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push --force-with-lease origin "${BRANCH_NAME}"
 
           gh pr create \
