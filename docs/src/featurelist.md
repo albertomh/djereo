@@ -81,8 +81,8 @@ See [https://semver.org/](https://semver.org/){target=\"_blank"} for more inform
 
 ## 🪝 Git pre-commit hooks
 
-Every new project comes with a set of sensible [pre-commit](https://pre-commit.com/){target=\"_blank"}
-git hooks. These are defined in [.pre-commit-config.yaml](https://github.com/albertomh/djereo/blob/main/template/.pre-commit-config.yaml.jinja){target=\"_blank"}
+Every new project comes with a set of sensible [prek](https://github.com/j178/prek){target=\"_blank"}
+git hooks. These are defined in [prek.toml.jinja](https://github.com/albertomh/djereo/blob/main/template/prek.toml.jinja){target=\"_blank"}
 and include:
 
 - Common core hooks such as `check-merge-conflict` or `end-of-file-fixer`.
@@ -108,7 +108,7 @@ their project. The resulting custom actions and workflows are described below.
 
 Four reusable custom actions are available:
 
-- `pre-commit`: runs all pre-commit hooks except `no-commit-to-branch` as this would
+- `prek`: runs all pre-commit hooks except `no-commit-to-branch` as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
    succeeding.
 - `django-checks`: runs Django's system checks (`manage.py check`). Optionally with the `--deploy`

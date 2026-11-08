@@ -11,7 +11,7 @@ This page covers how to Develop, Test, Document and Release changes to `djereo` 
 In addition to the prerequisites listed in the [Quickstart](./quickstart.md) you will need
 the following to develop `djereo`:
 
-- [pre-commit](https://pre-commit.com/){target=\"_blank"}
+- [prek](https://github.com/j178/prek){target=\"_blank"}
 
 ### Upgrading the pycliche version
 
@@ -94,13 +94,13 @@ uv add some-package
 
 There are two places where dependencies are currently declared in the template:
 
-1. [.pre-commit-config.yaml.jinja](https://github.com/albertomh/djereo/blob/main/template/.pre-commit-config.yaml.jinja){target=\"_blank"}
+1. [prek.toml.jinja](https://github.com/albertomh/djereo/blob/main/template/prek.toml.jinja){target=\"_blank"}
 1. [pyproject.toml.jinja](https://github.com/albertomh/djereo/blob/main/template/pyproject.toml.jinja){target=\"_blank"}
 
 Update git hooks in the former via:
 
 ```sh
-cd template/ && pre-commit autoupdate
+cd template/ && prek autoupdate
 ```
 
 Update Python packages in the latter manually. Automated option pending on account of
@@ -125,10 +125,7 @@ tables in [pyproject.toml](https://github.com/albertomh/djereo/blob/main/pyproje
 
 ```sh
 # before you start developing, install pre-commit hooks
-pre-commit install
-
-# update pre-commit hooks
-pre-commit autoupdate
+prek install
 ```
 
 Docstrings should follow the conventions set out in the [Google styleguide](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings){target=\"_blank"}.
