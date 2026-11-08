@@ -43,7 +43,7 @@ hooks = [
 ]
 
 [[repos]]
-hooks = [{ id = "biome-check", exclude = { glob = ["**/mvp.css"] } }]
+hooks = [{ id = "biome-check", exclude = { glob = ["**/mvp.css", "**/*.md", "**/*.yaml", "**/*.yml"] } }]
 repo = "https://github.com/biomejs/pre-commit"
 # when updating this version, remember to also update `$schema` in `biome.jsonc`
 rev = "v2.6.3"
