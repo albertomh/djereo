@@ -281,8 +281,8 @@ include a footer showing the deployed tag:</p>
 <!-- markdownlint-enable MD046 code-block-style -->
 
 <h2 id="git-pre-commit-hooks">🪝 Git pre-commit hooks</h2>
-<p>Every new project comes with a set of sensible <a href="https://pre-commit.com/" target="\&quot;_blank&quot;">pre-commit</a>
-git hooks. These are defined in <a href="https://github.com/albertomh/djereo/blob/main/template/.pre-commit-config.yaml.jinja" target="\&quot;_blank&quot;">.pre-commit-config.yaml</a>
+<p>Every new project comes with a set of sensible <a href="https://github.com/j178/prek" target="\&quot;_blank&quot;">prek</a>
+git hooks. These are defined in <a href="https://github.com/albertomh/djereo/blob/main/template/prek.toml.jinja" target="\&quot;_blank&quot;">prek.toml.jinja</a>
 and include:</p>
 <ul>
 <li>Common core hooks such as <code>check-merge-conflict</code> or <code>end-of-file-fixer</code>.</li>
@@ -306,7 +306,7 @@ their project. The resulting custom actions and workflows are described below.</
 <h3 id="custom-github-actions">Custom GitHub actions</h3>
 <p>Four reusable custom actions are available:</p>
 <ul>
-<li><code>pre-commit</code>: runs all pre-commit hooks except <code>no-commit-to-branch</code> as this would
+<li><code>prek</code>: runs all pre-commit hooks except <code>no-commit-to-branch</code> as this would
    make merge pipelines fail. In workflows (see below) all jobs depend on this action
    succeeding.</li>
 <li>

@@ -136,7 +136,7 @@
 <p>In addition to the prerequisites listed in the <a href="../quickstart/">Quickstart</a> you will need
 the following to develop <code>djereo</code>:</p>
 <ul>
-<li><a href="https://pre-commit.com/" target="\&quot;_blank&quot;">pre-commit</a></li>
+<li><a href="https://github.com/j178/prek" target="\&quot;_blank&quot;">prek</a></li>
 </ul>
 <h3 id="upgrading-the-pycliche-version">Upgrading the pycliche version</h3>
 <p><code>djereo</code> is built on top of the <a href="https://github.com/albertomh/pycliche" target="\&quot;_blank&quot;">pycliche</a>
@@ -205,11 +205,11 @@ uv add some-package
 <h4 id="updating-dependencies-in-the-template">Updating dependencies in the template</h4>
 <p>There are two places where dependencies are currently declared in the template:</p>
 <ol>
-<li><a href="https://github.com/albertomh/djereo/blob/main/template/.pre-commit-config.yaml.jinja" target="\&quot;_blank&quot;">.pre-commit-config.yaml.jinja</a></li>
+<li><a href="https://github.com/albertomh/djereo/blob/main/template/prek.toml.jinja" target="\&quot;_blank&quot;">prek.toml.jinja</a></li>
 <li><a href="https://github.com/albertomh/djereo/blob/main/template/pyproject.toml.jinja" target="\&quot;_blank&quot;">pyproject.toml.jinja</a></li>
 </ol>
 <p>Update git hooks in the former via:</p>
-<pre><code class="language-sh">cd template/ &amp;&amp; pre-commit autoupdate
+<pre><code class="language-sh">cd template/ &amp;&amp; prek autoupdate
 </code></pre>
 <p>Update Python packages in the latter manually. Automated option pending on account of
 commands like <code>uv lock --upgrade-package</code> not taking kindly to Jinja templates.</p>
@@ -225,10 +225,7 @@ uvx copier copy --vcs-ref=HEAD djereo $TEST_PROJECT_NAME
 <p>Code style is enforced by pre-commit hooks. Linter rules are configured in the <code>ruff</code>
 tables in <a href="https://github.com/albertomh/djereo/blob/main/pyproject.toml" target="\&quot;_blank&quot;">pyproject.toml</a>.</p>
 <pre><code class="language-sh"># before you start developing, install pre-commit hooks
-pre-commit install
-
-# update pre-commit hooks
-pre-commit autoupdate
+prek install
 </code></pre>
 <p>Docstrings should follow the conventions set out in the <a href="https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings" target="\&quot;_blank&quot;">Google styleguide</a>.</p>
 <h3 id="upgrade-checklist">Upgrade checklist</h3>
