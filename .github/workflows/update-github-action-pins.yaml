@@ -44,21 +44,29 @@ jobs:
           fi
         shell: bash
 
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@v7.0.1
         with:
           token: ${{ secrets.DJEREO_GITHUB_ACTION_PINS_TOKEN }}
+          persist-credentials: false
 
-      - name: Update GitHub Actions SHA pins
+      - name: Update GitHub Actions references
         run: python3 .github/scripts/update-github-action-pins.py
+
+      - name: Refresh GitHub Actions lockfile
+        env:
+          GH_TOKEN: ${{ secrets.DJEREO_GITHUB_ACTION_PINS_TOKEN }}
+        run: |
+          gh extension install github/gh-actions-lock --pin v0.4.1
+          gh actions-lock
 
       - name: Open pull request
         env:
           GH_TOKEN: ${{ secrets.DJEREO_GITHUB_ACTION_PINS_TOKEN }}
           BRANCH_NAME: automation/update-github-action-pins
-          PR_BODY: Updates GitHub Actions commit SHA pins and their human-readable version comments.
+          PR_BODY: Updates GitHub Actions references and their lockfile.
         run: |
           if git diff --quiet; then
-            echo "GitHub Actions SHA pins are already up to date."
+            echo "GitHub Actions references and lockfile are already up to date."
             exit 0
           fi
 
@@ -67,15 +75,15 @@ jobs:
           git fetch origin "+refs/heads/${BRANCH_NAME}:refs/remotes/origin/${BRANCH_NAME}" || true
           git checkout -B "${BRANCH_NAME}"
           git add .github template
-          git commit -m "ci: update github actions sha pins"
+          git commit -m "ci: update GitHub Actions references"
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push --force-with-lease origin "${BRANCH_NAME}"
 
           gh pr create \
             --base "${GITHUB_REF_NAME}" \
             --head "${BRANCH_NAME}" \
-            --title "ci: update github actions sha pins" \
+            --title "ci: update GitHub Actions references" \
             --body "${PR_BODY}" \
           || gh pr edit "${BRANCH_NAME}" \
-            --title "ci: update github actions sha pins" \
+            --title "ci: update GitHub Actions references" \
             --body "${PR_BODY}"

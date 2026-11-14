@@ -180,6 +180,26 @@ for a list of all marks.
 The `test` job in GitHub Actions uses the matrix strategy. This runs each Nox session
 (i.e. Python version test run) as a separate pipeline job.
 
+### GitHub Actions lockfile
+
+`.github/workflows/actions.lock` locks every direct and transitive GitHub Action
+dependency. It is machine-generated: do not edit it by hand. After adding or changing
+any `uses:` reference, regenerate it from the repository root and review the workflow
+and lockfile changes together:
+
+```sh
+gh extension install github/gh-actions-lock --pin v0.4.1
+gh actions-lock
+```
+
+The `lockfile` CI job runs `gh actions-lock --verify` on every check. Local composite
+actions use the `$/.github/...` syntax so their dependencies can be locked. The
+extension pin in that CI job (`v0.4.1`) is intentionally explicit and must be updated
+manually when appropriate.
+
+The weekly `update-github-action-pins` workflow advances action tags and regenerates
+the lockfile in the same pull request.
+
 ---
 
 ## Document

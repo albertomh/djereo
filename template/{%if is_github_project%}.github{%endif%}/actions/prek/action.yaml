@@ -3,7 +3,7 @@
 # Usage:
 #   ```
 #   steps:
-#     - uses: ./.github/actions/prek
+#     - uses: $/.github/actions/prek
 #   ```
 
 name: 'prek'
@@ -17,4 +17,5 @@ runs:
         # Skip hook since it causes issues when merging PRs, and already enforced by GitHub config.
         echo "SKIP=no-commit-to-branch" >> "$GITHUB_ENV"
       shell: bash
-    - uses: j178/prek-action@5337cb91e0fa35a7ff31b9ca345126d8bbbcdf16 # v2
+    # Composite-action definitions are not covered by workflow lockfiles.
+    - uses: j178/prek-action@v2.0.6 # zizmor: ignore[unpinned-uses]

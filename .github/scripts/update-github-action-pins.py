@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Update GitHub Actions SHA pins and human-readable version comments."""
+"""Update GitHub Actions references to their latest release tags."""
 
 from __future__ import annotations
 
@@ -10,7 +10,6 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-SHA_RE = re.compile(r"^[a-f0-9]{40}$")
 MAJOR_TAG_RE = re.compile(r"^v(?P<major>\d+)$")
 SEMVER_TAG_RE = re.compile(
     r"^v(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)$"
@@ -21,7 +20,6 @@ USES_RE = re.compile(
     r"(?P<suffix>[^\n#]*)(?P<comment>\s*#\s*(?P<tag>\S+).*)?$"
 )
 TAG_CACHE: dict[str, set[str]] = {}
-SHA_CACHE: dict[tuple[str, str], str] = {}
 
 
 def sort_key(match: re.Match[str]) -> tuple[int, ...]:
@@ -98,21 +96,6 @@ def latest_tag(repo: str, current_tag: str) -> str:
     return max(candidates)[1]
 
 
-def resolve_tag(repo: str, tag: str) -> str:
-    if (repo, tag) in SHA_CACHE:
-        return SHA_CACHE[(repo, tag)]
-
-    output = git_ls_remote(repo, f"refs/tags/{tag}", f"refs/tags/{tag}^{{}}")
-    refs = {
-        ref.removeprefix("refs/tags/").removesuffix("^{}"): sha
-        for sha, ref in (line.split(maxsplit=1) for line in output.splitlines())
-    }
-    if tag not in refs:
-        raise RuntimeError(f"Could not resolve {repo}@{tag}")  # noqa: TRY003
-    SHA_CACHE[(repo, tag)] = refs[tag]
-    return refs[tag]
-
-
 def update_file(path: Path) -> bool:
     changed = False
     lines = path.read_text().splitlines(keepends=True)
@@ -124,20 +107,10 @@ def update_file(path: Path) -> bool:
             updated_lines.append(line)
             continue
 
-        current_ref = match.group("ref")
-        tag = match.group("tag") or current_ref
-
-        if SHA_RE.fullmatch(tag):
-            updated_lines.append(line)
-            continue
-
         repo = match.group("repo")
-        tag = latest_tag(repo, tag)
-        sha = resolve_tag(repo, tag)
+        tag = latest_tag(repo, match.group("ref"))
         suffix = match.group("suffix").rstrip()
-        replacement = (
-            f"{match.group('prefix')}{match.group('repo')}@{sha}{suffix} # {tag}"
-        )
+        replacement = f"{match.group('prefix')}{match.group('repo')}@{tag}{suffix}"
         newline = "\n" if line.endswith("\n") else ""
         updated_line = USES_RE.sub(replacement, line.rstrip("\n")) + newline
         changed = changed or updated_line != line

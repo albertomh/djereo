@@ -13,8 +13,10 @@ jobs:
   update-python-deps:
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v10.3.3
         with:
           version: "0.12.9"
           enable-cache: true
@@ -38,6 +40,7 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           REMOTE_SHA="$(git ls-remote --heads origin "${BRANCH_NAME}" | cut -f1)"
           git checkout -B "${BRANCH_NAME}"
           git add pyproject.toml uv.lock template/pyproject.toml.jinja

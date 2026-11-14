@@ -13,7 +13,9 @@ jobs:
   update-pre-commit-hooks:
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Update pre-commit hook revisions
         run: python3 .github/scripts/update-project-pre-commit-hooks.py
@@ -31,6 +33,7 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           REMOTE_SHA="$(git ls-remote --heads origin "${BRANCH_NAME}" | cut -f1)"
           git checkout -B "${BRANCH_NAME}"
           git add prek.toml template/prek.toml.jinja

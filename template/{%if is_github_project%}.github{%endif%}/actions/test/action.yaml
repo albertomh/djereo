@@ -17,5 +17,7 @@ runs:
         version: "0.12.9"
         enable-cache: true
     - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
+      with:
+        just-version: 1.59.0
     - run: just test
       shell: bash

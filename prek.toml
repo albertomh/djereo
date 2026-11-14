@@ -64,3 +64,8 @@ rev = "v1.17.0"
 hooks = [
     { id = "actionlint" },
 ]
+
+[[repos]]
+repo = "https://github.com/zizmorcore/zizmor-pre-commit"
+rev = "v1.32.0"
+hooks = [{ id = "zizmor" }]
