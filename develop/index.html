@@ -87,6 +87,8 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#tests-in-github-actions">Tests in GitHub Actions</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#github-actions-lockfile">GitHub Actions lockfile</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#document">Document</a>
@@ -260,6 +262,20 @@ for a list of all marks.</p>
 <h3 id="tests-in-github-actions">Tests in GitHub Actions</h3>
 <p>The <code>test</code> job in GitHub Actions uses the matrix strategy. This runs each Nox session
 (i.e. Python version test run) as a separate pipeline job.</p>
+<h3 id="github-actions-lockfile">GitHub Actions lockfile</h3>
+<p><code>.github/workflows/actions.lock</code> locks every direct and transitive GitHub Action
+dependency. It is machine-generated: do not edit it by hand. After adding or changing
+any <code>uses:</code> reference, regenerate it from the repository root and review the workflow
+and lockfile changes together:</p>
+<pre><code class="language-sh">gh extension install github/gh-actions-lock --pin v0.4.1
+gh actions-lock
+</code></pre>
+<p>The <code>lockfile</code> CI job runs <code>gh actions-lock --verify</code> on every check. Local composite
+actions use the <code>$/.github/...</code> syntax so their dependencies can be locked. The
+extension pin in that CI job (<code>v0.4.1</code>) is intentionally explicit and must be updated
+manually when appropriate.</p>
+<p>The weekly <code>update-github-action-pins</code> workflow advances action tags and regenerates
+the lockfile in the same pull request.</p>
 <hr />
 <h2 id="document">Document</h2>
 <p><code>djereo</code>'s documentation is published as a static site generated using <code>mkdocs</code>.</p>
