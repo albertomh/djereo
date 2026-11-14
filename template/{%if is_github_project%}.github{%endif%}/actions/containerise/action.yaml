@@ -106,6 +106,8 @@ runs:
     - name: Set output
       id: set-output
       shell: bash
+      env:
+        TAGS: ${{ inputs.tags }}
       run: |
-          FIRST_TAG=$(echo "${{ inputs.tags }}" | cut -d',' -f1)
+          FIRST_TAG="${TAGS%%,*}"
           echo "image_address=$FIRST_TAG" >> "$GITHUB_OUTPUT"

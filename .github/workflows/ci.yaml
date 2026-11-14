@@ -9,16 +9,21 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   checks:
-    uses: ./.github/workflows/_checks.yaml
+    uses: $/.github/workflows/_checks.yaml
 
   build-docs:
     runs-on: ubuntu-26.04
     permissions:
       contents: write  # for `mkdocs gh-deploy`
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: ./.github/actions/publish-docs
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: $/.github/actions/publish-docs
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

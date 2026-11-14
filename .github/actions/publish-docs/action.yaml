@@ -24,18 +24,21 @@ runs:
         git config user.name github-actions[bot]
         git config user.email 41898282+github-actions[bot]@users.noreply.github.com
       shell: bash
-    - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+    # Composite-action definitions are not covered by workflow lockfiles.
+    - uses: actions/setup-python@v7.0.0 # zizmor: ignore[unpinned-uses]
       with:
         python-version: 3.14
-    - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+    - uses: astral-sh/setup-uv@v10.3.3 # zizmor: ignore[unpinned-uses]
       with:
         version: "0.12.9"
         enable-cache: true
-    - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
+    - name: Set cache key
+      id: cache-key
+      run: echo "cache_id=$(date --utc '+%V')" >> "$GITHUB_OUTPUT"
       shell: bash
-    - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+    - uses: actions/cache@v6.1.0 # zizmor: ignore[unpinned-uses]
       with:
-          key: mkdocs-material-${{ env.cache_id }}
+          key: mkdocs-material-${{ steps.cache-key.outputs.cache_id }}
           path: .cache
           restore-keys: mkdocs-material-
     - name: Build docs
@@ -45,7 +48,7 @@ runs:
       working-directory: docs/
       shell: bash
     - name: Publish docs
-      uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4
+      uses: peaceiris/actions-gh-pages@v4.1.0 # zizmor: ignore[unpinned-uses]
       with:
         github_token: ${{ inputs.github_token }}
         publish_dir: ./docs/site
