@@ -8,12 +8,12 @@ workflows:
         - 'actions/checkout@v7.0.1'
         - 'astral-sh/setup-uv@v10.3.3'
         - 'extractions/setup-just@v4.0.0'
-        - 'j178/prek-action@v2.0.6'
+        - 'j178/prek-action@v3.1.1'
         - 'wntrblm/nox@2026.10.20'
     '.github/workflows/ci.yaml':
         - 'actions/cache@v6.1.0'
         - 'actions/checkout@v7.0.1'
-        - 'actions/setup-python@v7.0.0'
+        - 'actions/setup-python@v7.1.0'
         - 'astral-sh/setup-uv@v10.3.3'
         - 'peaceiris/actions-gh-pages@v4.1.0'
     '.github/workflows/pr.yaml': []
@@ -45,9 +45,9 @@ dependencies:
         commit: 'sha1-5fda3b95a4ea91299a34e894583c3862153e4b97'
         owner_id: 44036562
         repo_id: 192625525
-    'actions/setup-python@v7.0.0':
-        ref: 'v7.0.0'
-        commit: 'sha1-5fda3b95a4ea91299a34e894583c3862153e4b97'
+    'actions/setup-python@v7.1.0':
+        ref: 'v7.1.0'
+        commit: 'sha1-6d4fd22b20465ccc0f7354476588e8df7c9ca0e0'
         owner_id: 44036562
         repo_id: 192625525
     'astral-sh/setup-uv@v10.3.3':
@@ -72,9 +72,9 @@ dependencies:
         commit: 'sha1-45996ed1f6d02564a971a2fa1b5860e934307cf7'
         owner_id: 16785467
         repo_id: 262236530
-    'j178/prek-action@v2.0.6':
-        ref: 'v2.0.6'
-        commit: 'sha1-5337cb91e0fa35a7ff31b9ca345126d8bbbcdf16'
+    'j178/prek-action@v3.1.1':
+        ref: 'v3.1.1'
+        commit: 'sha1-7b101f8338a08d2bd6fdb3625e4e7692428763a3'
         owner_id: 10510431
         repo_id: 1052387486
     'peaceiris/actions-gh-pages@v4.1.0':
