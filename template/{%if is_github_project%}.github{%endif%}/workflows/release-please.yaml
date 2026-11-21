@@ -48,7 +48,7 @@ jobs:
           fi
         shell: bash
       - id: release
-        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5
+        uses: googleapis/release-please-action@v5.0.0
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           config-file: .release-please-config.json
@@ -56,13 +56,13 @@ jobs:
       # Update the version in uv.lock only if release-please created or updated a Pull Request.
       # Otherwise the 'checkout' step fails because the 'release-...' branch does not exist.
       # Avoids attempting a uv.lock update immediately after a release-please PR is merged.
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@v7.0.1
         if: ${{ steps.release.outputs.pr != '' }}
         with:
           ref: ${{ fromJson(steps.release.outputs.pr).headBranchName }}
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           persist-credentials: true
-      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+      - uses: astral-sh/setup-uv@v10.3.3
         if: ${{ steps.release.outputs.pr != '' }}
         with:
           version: "0.12.9"
@@ -70,7 +70,7 @@ jobs:
       - run: uv lock
         if: ${{ steps.release.outputs.pr != '' }}
         shell: bash
-      - uses: stefanzweifel/git-auto-commit-action@d0b01107b5db882071f96de5dd4b54961ea93f4c # v7
+      - uses: stefanzweifel/git-auto-commit-action@v7.0.1
         if: ${{ steps.release.outputs.pr != '' }}
         with:
           file_pattern: 'uv.lock'
