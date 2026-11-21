@@ -26,6 +26,22 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/prek
 
+  translations:
+    needs:
+      - pre_commit
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install gettext
+        run: sudo apt-get update && sudo apt-get install -y gettext
+      - name: Check gettext catalogs
+        run: |
+          for catalog in src/dj_craft_tally/locale/*/LC_MESSAGES/django.po; do
+            msgfmt --check --check-format "$catalog"
+          done
+
   generate-nox-sessions:
     runs-on: ubuntu-26.04
     outputs:
