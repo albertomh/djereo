@@ -53,23 +53,24 @@ jobs:
           token: ${{ secrets.DJEREO_RELEASE_PLEASE_TOKEN }}
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
-      # Update the version in uv.lock only if release-please created or updated a Pull Request.
-      # Otherwise the 'checkout' step fails because the 'release-...' branch does not exist.
-      # Avoids attempting a uv.lock update immediately after a release-please PR is merged.
+      # Update uv.lock whenever Release Please has a release PR. This also covers
+      # refreshes to an existing release PR; prs_created is false in that case.
+      # After a release PR is merged, `pr` is empty and the release branch is gone.
       - uses: actions/checkout@v7.0.1
-        if: ${{ steps.release.outputs.prs_created == 'true' }}
+        if: ${{ steps.release.outputs.pr != '' }}
         with:
           ref: ${{ fromJson(steps.release.outputs.pr).headBranchName }}
-          persist-credentials: false
+          token: ${{ secrets.DJEREO_RELEASE_PLEASE_TOKEN }}
+          persist-credentials: true
       - uses: astral-sh/setup-uv@v10.3.3
-        if: ${{ steps.release.outputs.prs_created == 'true' }}
+        if: ${{ steps.release.outputs.pr != '' }}
         with:
           version: "0.12.9"
       - run: uv lock; cd docs/ && uv lock
-        if: ${{ steps.release.outputs.prs_created == 'true' }}
+        if: ${{ steps.release.outputs.pr != '' }}
         shell: bash
       - uses: stefanzweifel/git-auto-commit-action@v7.2.1
-        if: ${{ steps.release.outputs.prs_created == 'true' }}
+        if: ${{ steps.release.outputs.pr != '' }}
         with:
           file_pattern: '*uv.lock'
           commit_message: 'chore: update uv.lock with new version from release-please'
