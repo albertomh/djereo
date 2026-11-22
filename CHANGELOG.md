@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [4.4.0](https://github.com/albertomh/djereo/compare/v4.3.2...v4.4.0) (2026-11-21)
+
+
+### Features
+
+* Check gettext catalogs in generated projects ([#411](https://github.com/albertomh/djereo/issues/411)) ([fbfae20](https://github.com/albertomh/djereo/commit/fbfae20cab018778fddfb34cba3a4e3257aa8611))
+
+
+### Bug Fixes
+
+* Update uv lock on release PR refresh ([#416](https://github.com/albertomh/djereo/issues/416)) ([f8d0da2](https://github.com/albertomh/djereo/commit/f8d0da2f3b148872a7132cbac8d0452d4e94ae6d))
+
 ## [4.3.2](https://github.com/albertomh/djereo/compare/v4.3.1...v4.3.2) (2026-09-14)
 
 
