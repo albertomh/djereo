@@ -31,7 +31,8 @@ To use `{{project_name}}` the following must be available locally:
 
 ## Quickstart: run locally
 
-A `justfile` defines common development tasks. Run `just` to show all available recipes.
+A `justfile` defines common development tasks. The commands below cover the usual local
+development workflow.
 
 ```sh
 # 1/5 create a postgres user and database for your project - change 'password' below
@@ -141,6 +142,9 @@ Django's test runner (using the standard library's `unittest`) is used for the s
 unit tests. Nox is used to automate testing across different Python versions.
 
 ```sh
+# run all tests and report on code coverage
+just test
+
 # run all tests and report on code coverage
 nox [-- <expression>]
 
