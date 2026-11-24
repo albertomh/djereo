@@ -30,6 +30,7 @@ jobs:
       - uses: ./.github/actions/containerise
         with:
           dockerfile: _deploy/deploy.Dockerfile
+{% raw %}          commit_sha: ${{ github.sha }}{% endraw +%}
 {% raw %}          username: ${{ github.actor }}{% endraw +%}
 {% raw %}          password: ${{ github.token }}{% endraw +%}
           tags:
