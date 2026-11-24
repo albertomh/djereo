@@ -52,6 +52,12 @@ _test_setup:
   @test -x .venv/bin/coverage || uv sync --group test
   @uv pip install -e .
 
+test: _test_setup
+  @uv run coverage erase
+  @uv run coverage run --source . manage.py test
+  @uv run coverage combine
+  @uv run coverage report
+
 profile_tests: _test_setup
   @sudo py-spy record --subprocesses --format speedscope -o profile.speedscope.json -- \
     uv run python manage.py test
