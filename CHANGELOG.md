@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [4.5.0](https://github.com/albertomh/djereo/compare/v4.4.0...v4.5.0) (2026-11-24)
+
+
+### Features
+
+* Add just test recipe ([#420](https://github.com/albertomh/djereo/issues/420)) ([56e6b81](https://github.com/albertomh/djereo/commit/56e6b810be9e24511721ee85f3144529965bb191))
+* Expose deployment commit SHA ([#422](https://github.com/albertomh/djereo/issues/422)) ([79779d4](https://github.com/albertomh/djereo/commit/79779d4459a03b00e6f32004a2290ce569056019))
+
+
+### Dependencies
+
+* Upgrade to pycliche v2.34.0 ([#419](https://github.com/albertomh/djereo/issues/419)) ([dfdd809](https://github.com/albertomh/djereo/commit/dfdd809e277707944ea932c5912c1dfca6384809))
+
 ## [4.4.0](https://github.com/albertomh/djereo/compare/v4.3.2...v4.4.0) (2026-11-21)
 
 
