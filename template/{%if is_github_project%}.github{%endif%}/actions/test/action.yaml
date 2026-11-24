@@ -12,7 +12,7 @@ description: 'Run unit tests'
 runs:
   using: 'composite'
   steps:
-    - uses: astral-sh/setup-uv@v10.3.3 # zizmor: ignore[unpinned-uses]
+    - uses: astral-sh/setup-uv@v10.4.0 # zizmor: ignore[unpinned-uses]
       with:
         version: "0.12.9"
         enable-cache: true

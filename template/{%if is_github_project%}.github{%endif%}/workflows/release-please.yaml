@@ -62,7 +62,7 @@ jobs:
           ref: ${{ fromJson(steps.release.outputs.pr).headBranchName }}
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           persist-credentials: true
-      - uses: astral-sh/setup-uv@v10.3.3
+      - uses: astral-sh/setup-uv@v10.4.0
         if: ${{ steps.release.outputs.pr != '' }}
         with:
           version: "0.12.9"
@@ -70,7 +70,7 @@ jobs:
       - run: uv lock
         if: ${{ steps.release.outputs.pr != '' }}
         shell: bash
-      - uses: stefanzweifel/git-auto-commit-action@v7.0.1
+      - uses: stefanzweifel/git-auto-commit-action@v7.2.1
         if: ${{ steps.release.outputs.pr != '' }}
         with:
           file_pattern: 'uv.lock'
