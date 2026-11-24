@@ -35,6 +35,7 @@ jobs:
         uses: ./.github/actions/containerise
         with:
           dockerfile: _deploy/deploy.Dockerfile
+          commit_sha: ${{ github.sha }}
           username: ${{ github.actor }}
           password: ${{ github.token }}
           tags:

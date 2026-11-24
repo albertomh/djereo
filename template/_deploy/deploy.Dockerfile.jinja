@@ -60,7 +60,9 @@ RUN python manage.py collectstatic --noinput \
 
 FROM python:{{min_python_version}}-slim-trixie
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
+ARG COMMIT_SHA=""
+ENV COMMIT_SHA=${COMMIT_SHA} \
+    PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PATH="/app/.venv/bin:$PATH"
 

@@ -1,6 +1,6 @@
 from unittest import mock
 
-from django.test import RequestFactory, SimpleTestCase
+from django.test import RequestFactory, SimpleTestCase, override_settings
 
 from core.context_processors import metadata
 
@@ -8,12 +8,21 @@ from core.context_processors import metadata
 @mock.patch("core.context_processors.__version__", "1.2.3-test")
 class MetadataContextProcessorTest(SimpleTestCase):
     def setUp(self):
-        self.request_factory = RequestFactory()
+        self.request = RequestFactory().get("/")
+        self.project_key = "{{project_name}}"
 
-    def test_metadata_returns_version(self):
-        request = self.request_factory.get("/")
-        context = metadata(request)
+    @override_settings(COMMIT_SHA="abc123")
+    def test_metadata_returns_version_and_commit(self):
+        self.assertEqual(
+            metadata(self.request),
+            {
+                self.project_key: {
+                    "meta": {"version": "1.2.3-test", "commit_sha": "abc123"}
+                }
+            },
+        )
 
-        self.assertIn("{{project_name}}", context)
-        self.assertIn("meta", context["{{project_name}}"])
-        self.assertEqual(context["{{project_name}}"]["meta"]["version"], "1.2.3-test")
+    @override_settings(COMMIT_SHA="")
+    def test_metadata_without_commit(self):
+        result = metadata(self.request)[self.project_key]["meta"]["commit_sha"]
+        self.assertEqual(result, "")

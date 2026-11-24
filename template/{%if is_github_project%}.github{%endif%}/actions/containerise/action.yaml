@@ -72,6 +72,10 @@ inputs:
     description: 'Comma-separated list of architectures to target'
     required: false
     default: linux/amd64,linux/arm64  # for Intel-based VPS, Apple Silicon
+  commit_sha:
+    description: Commit SHA to embed in the image
+    required: false
+    default: ""
   provenance:
     description: 'Whether to generate provenance attestation for the build'
     required: false
@@ -96,6 +100,7 @@ runs:
     - uses: docker/build-push-action@v7.4.0 # zizmor: ignore[unpinned-uses]
       with:
         context: .
+        build-args: COMMIT_SHA=${{ inputs.commit_sha }}
         file: ${{ inputs.dockerfile }}
         platforms: ${{ inputs.platforms }}
         push: true
