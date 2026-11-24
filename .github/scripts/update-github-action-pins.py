@@ -111,6 +111,9 @@ def update_file(path: Path) -> bool:
         tag = latest_tag(repo, match.group("ref"))
         suffix = match.group("suffix").rstrip()
         replacement = f"{match.group('prefix')}{match.group('repo')}@{tag}{suffix}"
+        comment = match.group("comment") or ""
+        if "zizmor: ignore[unpinned-uses]" in comment:
+            replacement += " # zizmor: ignore[unpinned-uses]"
         newline = "\n" if line.endswith("\n") else ""
         updated_line = USES_RE.sub(replacement, line.rstrip("\n")) + newline
         changed = changed or updated_line != line

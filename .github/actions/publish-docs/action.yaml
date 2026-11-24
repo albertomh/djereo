@@ -25,10 +25,10 @@ runs:
         git config user.email 41898282+github-actions[bot]@users.noreply.github.com
       shell: bash
     # Composite-action definitions are not covered by workflow lockfiles.
-    - uses: actions/setup-python@v7.1.0
+    - uses: actions/setup-python@v7.1.0 # zizmor: ignore[unpinned-uses]
       with:
         python-version: 3.14
-    - uses: astral-sh/setup-uv@v10.4.0
+    - uses: astral-sh/setup-uv@v10.4.0 # zizmor: ignore[unpinned-uses]
       with:
         version: "0.12.9"
         enable-cache: true
@@ -36,7 +36,7 @@ runs:
       id: cache-key
       run: echo "cache_id=$(date --utc '+%V')" >> "$GITHUB_OUTPUT"
       shell: bash
-    - uses: actions/cache@v6.1.0
+    - uses: actions/cache@v6.1.0 # zizmor: ignore[unpinned-uses]
       with:
           key: mkdocs-material-${{ steps.cache-key.outputs.cache_id }}
           path: .cache
@@ -48,7 +48,7 @@ runs:
       working-directory: docs/
       shell: bash
     - name: Publish docs
-      uses: peaceiris/actions-gh-pages@v4.1.0
+      uses: peaceiris/actions-gh-pages@v4.1.0 # zizmor: ignore[unpinned-uses]
       with:
         github_token: ${{ inputs.github_token }}
         publish_dir: ./docs/site
