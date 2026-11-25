@@ -15,7 +15,7 @@ from playwright.sync_api import Error as PlaywrightError
 env = Env()
 env.read_env()
 
-BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = env.str("BASE_URL", "http://127.0.0.1:8000")
 MAILPIT_API_BASE_URL = "http://127.0.0.1:8025"
 HTTP_SERVER_ERROR = 500
 
@@ -48,6 +48,8 @@ def pytest_sessionstart(session):
         context = browser.new_context()
         page = context.new_page()
         page.goto(BASE_URL, timeout=3000)
+        if page.locator("#djDebugRoot").count():
+            pytest.exit("Django Debug Toolbar must be disabled during E2E", returncode=1)
 
     except PlaywrightError as e:
         print(e, file=sys.stderr)  # noqa: T201 print

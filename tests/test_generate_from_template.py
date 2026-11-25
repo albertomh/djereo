@@ -169,6 +169,30 @@ def test_generated_project_tests_run_successfully(
 
 
 @pytest.mark.integration
+def test_generated_e2e_uses_configurable_port_and_nested_axe_targets(
+    copier_copy: Callable[[dict], None],
+    copier_input_data: dict,
+    test_project_dir: Path,
+):
+    copier_copy(copier_input_data)
+
+    justfile = (test_project_dir / "justfile").read_text()
+    conftest = (test_project_dir / "tests_e2e/conftest.py").read_text()
+    accessibility = (test_project_dir / "tests_e2e/test_accessibility.py").read_text()
+    auth = (test_project_dir / "tests_e2e/test_auth.py").read_text()
+
+    assert '$E2E_PORT=""' in justfile
+    assert 's.bind(("127.0.0.1", 0))' in justfile
+    assert "E2E port ${E2E_PORT} is unavailable" in justfile
+    assert "gunicorn --workers 1 --bind" in justfile
+    assert 'BASE_URL="http://127.0.0.1:${E2E_PORT}"' in justfile
+    assert 'env.str("BASE_URL", "http://127.0.0.1:8000")' in conftest
+    assert "Django Debug Toolbar must be disabled during E2E" in conftest
+    assert '" >> ".join' in accessibility
+    assert 'page.locator("header nav > ul").get_by_text(email, exact=False)' in auth
+
+
+@pytest.mark.integration
 @pytest.mark.smoke
 def test_generated_project_pre_commit_hooks_run_successfully(
     copier_copy: Callable[[dict], None],

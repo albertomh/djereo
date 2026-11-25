@@ -170,9 +170,13 @@ Invoke the `e2e` just recipe to run these locally:
 just playwright_install
 
 just e2e
+
+# run headed (the recipe selects an available port automatically)
+just e2e 1 1
 ```
 
-This runs Django's `runserver` command in the background before launching the e2e suite.
+This starts the E2E server in the background before launching the suite. The optional
+third argument can set its port explicitly; by default the recipe selects an available port.
 
 {% if is_github_project %}
 ## Release

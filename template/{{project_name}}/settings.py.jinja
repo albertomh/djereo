@@ -66,9 +66,8 @@ SECRET_KEY_FALLBACKS = env.list("SECRET_KEY_FALLBACKS", default=[])
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-# Only enable dev debug tools when in debug mode and tests are not running.
-# Django changes DEBUG to False for tests, so can't rely on DEBUG alone.
-ENABLE_DEBUG_TOOLS = DEBUG and not IS_TESTING
+# Only enable dev debug tools during interactive development.
+ENABLE_DEBUG_TOOLS = DEBUG and not IS_TESTING and not USE_ENV_TEST
 
 if ENABLE_DEBUG_TOOLS:
     INTERNAL_IPS = ["127.0.0.1", "::1"]
