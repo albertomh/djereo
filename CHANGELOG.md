@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This file is automatically updated by Release Please.
 
+## [4.5.1](https://github.com/albertomh/djereo/compare/v4.5.0...v4.5.1) (2026-11-26)
+
+
+### Bug Fixes
+
+* Harden generated e2e setup ([#423](https://github.com/albertomh/djereo/issues/423)) ([a9d79c1](https://github.com/albertomh/djereo/commit/a9d79c1b1b63f76384ad09d88b4c8cf089313b9b))
+
 ## [4.5.0](https://github.com/albertomh/djereo/compare/v4.4.0...v4.5.0) (2026-11-24)
 
 
