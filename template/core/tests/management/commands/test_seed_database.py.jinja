@@ -4,7 +4,7 @@ from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.core.management.base import CommandError
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 import core.management.commands.seed_database  # noqa: F401 - needed for coverage
 from users.models import UserProfile
@@ -22,6 +22,13 @@ class SeedDatabaseTests(TestCase):
             **kwargs,
         )
         return out.getvalue(), err.getvalue()
+
+    @override_settings(IS_NON_PRODUCTION=False)
+    def test_refuses_deployed_settings_even_with_an_empty_database(self):
+        with self.assertRaisesMessage(CommandError, "development or test settings"):
+            self.call_command()
+
+        self.assertFalse(get_user_model().objects.exists())
 
     def test_error_data_exists(self):
         get_user_model().objects.create_user(email="user@example.com")

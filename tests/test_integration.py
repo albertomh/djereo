@@ -62,9 +62,11 @@ def test_sys_check_warn_no_dev_mode_when_debug(
 
 @pytest.mark.integration
 @pytest.mark.slow
+@pytest.mark.parametrize("allow_missing_env_file", [False, True])
 def test_missing_env_file_warning_and_traceback_suppression(
     generated_project,
     project_cmd,
+    allow_missing_env_file,
 ):
     out, err = StringIO(), StringIO()
     expected_warning = "No .env file found. Run `cp .env.in .env` to get started."
@@ -72,26 +74,29 @@ def test_missing_env_file_warning_and_traceback_suppression(
         'environs.exceptions.EnvNotSetError: Environment variable "SECRET_KEY" not set'
     )
 
-    env_file = generated_project / ".env"
-    if env_file.exists():
-        env_file.unlink()
-    try:
+    (generated_project / ".env").unlink()
+    env = _clean_env()
+    env.pop("SECRET_KEY", None)
+    env.pop("IS_E2E_TEST", None)
+    env["ALLOW_MISSING_ENV_FILE"] = str(allow_missing_env_file).lower()
+
+    with pytest.raises(ErrorReturnCode):
         project_cmd(
             generated_project,
             "manage.py",
             "check",
             _out=out,
             _err=err,
+            _env=env,
         )
-    except ErrorReturnCode:
-        pass
 
     clean_stderr = remove_ansi_escape_codes(err.getvalue())
 
-    assert expected_warning in clean_stderr
     assert expected_error in clean_stderr
-    # since `tracebacklimit =0`, "Traceback (most ...):" should NOT be in stderr
-    assert "Traceback (most recent call last):" not in clean_stderr
+    assert (expected_warning in clean_stderr) == (not allow_missing_env_file)
+    assert (
+        "Traceback (most recent call last):" in clean_stderr
+    ) == allow_missing_env_file
 
 
 @pytest.mark.integration
@@ -160,7 +165,7 @@ def test_django_debug_toolbar_is_disabled_for_e2e(
     """Ensure E2E settings disable dev tools even if DEBUG is true."""
     out = StringIO()
     env = _clean_env()
-    env.update({"DEBUG": "true", "USE_ENV_TEST": "1"})
+    env.update({"DEBUG": "true", "IS_E2E_TEST": "1"})
 
     project_cmd(
         generated_project_sqlite,
@@ -173,6 +178,26 @@ def test_django_debug_toolbar_is_disabled_for_e2e(
     )
 
     assert out.getvalue().strip() == "False"
+
+
+@pytest.mark.integration
+def test_e2e_mode_allows_seeding_with_debug_disabled(
+    generated_project_sqlite,
+    project_cmd,
+):
+    env = _clean_env()
+    env.update(
+        {
+            "DEBUG": "false",
+            "IS_E2E_TEST": "true",
+            "DATABASE_URL": f"sqlite:///{generated_project_sqlite / 'e2e.sqlite3'}",
+        }
+    )
+
+    project_cmd(generated_project_sqlite, "manage.py", "migrate", "--noinput", _env=env)
+    output = project_cmd(generated_project_sqlite, "manage.py", "seed_database", _env=env)
+
+    assert "Done." in output
 
 
 @pytest.mark.integration

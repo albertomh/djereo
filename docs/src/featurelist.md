@@ -361,7 +361,9 @@ point for you to populate with models needed for local development as your appli
 In a new project `seed_database` creates three users: admin, staff and a non-privileged
 regular user.
 
-Invoke it with `just manage seed_database`.
+Invoke it with `just manage seed_database` on a database with no users. The command runs
+with development or test settings. Browser test runners set `IS_E2E_TEST=true` to load
+`.env.test` and allow seeding with `DEBUG=false`.
 
 ## 🗄️ Cache
 

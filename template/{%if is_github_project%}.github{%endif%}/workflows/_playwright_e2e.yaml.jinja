@@ -22,7 +22,7 @@ jobs:
   playwright:
     runs-on: ubuntu-26.04
     env:
-      USE_ENV_TEST: "1"
+      IS_E2E_TEST: "1"
       SECRET_KEY: django-insecure_not-a-secret
       ALLOWED_HOSTS: localhost,127.0.0.1,::1
       CSRF_TRUSTED_ORIGINS: http://127.0.0.1
@@ -74,7 +74,7 @@ jobs:
         run: |
           docker run --rm \
             --add-host=host.docker.internal:host-gateway \
-            --env USE_ENV_TEST \
+            --env IS_E2E_TEST \
             --env SECRET_KEY \
             --env ALLOWED_HOSTS \
             --env CSRF_TRUSTED_ORIGINS \
@@ -88,7 +88,7 @@ jobs:
             --name webapp \
             --network test-network \
             --add-host=host.docker.internal:host-gateway \
-            --env USE_ENV_TEST \
+            --env IS_E2E_TEST \
             --env SECRET_KEY \
             --env ALLOWED_HOSTS \
             --env CSRF_TRUSTED_ORIGINS \
