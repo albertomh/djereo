@@ -1,4 +1,5 @@
 from allauth.account.models import EmailAddress
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
@@ -11,6 +12,10 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
+        if not settings.IS_NON_PRODUCTION:
+            message = "Demo data can only be seeded in development or test settings."
+            raise CommandError(message)
+
         if AuthUser.objects.exists():
             raise CommandError(
                 "This command cannot be run when any users exist to guard "

@@ -65,7 +65,7 @@ profile_tests: _test_setup
 playwright_install: _test_setup
   @uv run playwright install chromium
 
-e2e $USE_ENV_TEST="1" $HEADED="0" $E2E_PORT="": _test_setup
+e2e $IS_E2E_TEST="1" $HEADED="0" $E2E_PORT="": _test_setup
   #!/usr/bin/env bash
   set -euo pipefail
 
