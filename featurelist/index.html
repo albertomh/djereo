@@ -500,7 +500,9 @@ postgres connection is considerable, so connection pooling is enabled to allevia
 point for you to populate with models needed for local development as your application grows.</p>
 <p>In a new project <code>seed_database</code> creates three users: admin, staff and a non-privileged
 regular user.</p>
-<p>Invoke it with <code>just manage seed_database</code>.</p>
+<p>Invoke it with <code>just manage seed_database</code> on a database with no users. The command runs
+with development or test settings. Browser test runners set <code>IS_E2E_TEST=true</code> to load
+<code>.env.test</code> and allow seeding with <code>DEBUG=false</code>.</p>
 <h2 id="cache">🗄️ Cache</h2>
 <p>New projects' cache configuration aims for simplicity and speed when developing &amp; running
 tests. You should probably switch to a dedicated cache server in production.</p>
