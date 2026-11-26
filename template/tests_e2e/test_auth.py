@@ -8,6 +8,10 @@ from tests_e2e import MailPitMessage
 from tests_e2e.conftest import BASE_URL, MAILPIT_API_BASE_URL
 
 
+def _account_in_main_navigation(page, email):
+    return page.locator("header nav > ul").get_by_text(email, exact=False)
+
+
 class AuthTest:
     @classmethod
     def setup_class(cls):
@@ -33,7 +37,9 @@ class TestSignUp(AuthTest):
         page.click("button[type=submit]")
 
         expect(page).to_have_url(f"{BASE_URL}/")
-        expect(page.get_by_text(email), "should be logged in").to_be_visible()
+        expect(
+            _account_in_main_navigation(page, email), "should be logged in"
+        ).to_be_visible()
         mp_res = requests.get(f"{MAILPIT_API_BASE_URL}/api/v1/messages").json()
         msg: MailPitMessage = mp_res["messages"][0]
         assert msg["To"][0]["Address"] == email
@@ -72,8 +78,7 @@ class TestLogInPage(AuthTest):
 
         expect(page).to_have_url(f"{BASE_URL}/")
 
-        nav_text = page.locator("//header/nav/ul").inner_text()
-        assert nav_text.startswith(self.user_email)
+        expect(_account_in_main_navigation(page, self.user_email)).to_be_visible()
 
     def test_log_in_requires_email_address(self, page):
         page.goto(self.login_url)
@@ -99,7 +104,7 @@ class TestLogOut(AuthTest):
         page.fill("#id_login", self.user_email)
         page.fill("#id_password", self.user_password)
         page.click("button[type=submit]")
-        page.click(f"text={self.user_email}")
+        _account_in_main_navigation(page, self.user_email).click()
         page.click("text=Sign out")
 
         expect(page).to_have_url(f"{BASE_URL}/accounts/logout/")

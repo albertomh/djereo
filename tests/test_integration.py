@@ -8,6 +8,7 @@ import pytest
 from sh import ErrorReturnCode
 
 from tests._utils import get_free_port_from_os, remove_ansi_escape_codes
+from tests.conftest import _clean_env
 
 TIMEOUT_SECONDS = 60.0
 
@@ -149,6 +150,29 @@ def test_django_debug_toolbar_is_enabled(
         html = resp.read().decode()
 
         assert "djDebug" in html or "debug_toolbar" in html
+
+
+@pytest.mark.integration
+def test_django_debug_toolbar_is_disabled_for_e2e(
+    generated_project_sqlite,
+    project_cmd,
+):
+    """Ensure E2E settings disable dev tools even if DEBUG is true."""
+    out = StringIO()
+    env = _clean_env()
+    env.update({"DEBUG": "true", "USE_ENV_TEST": "1"})
+
+    project_cmd(
+        generated_project_sqlite,
+        "python",
+        "-c",
+        f"from {generated_project_sqlite.name} import settings; "
+        "print(settings.ENABLE_DEBUG_TOOLS)",
+        _out=out,
+        _env=env,
+    )
+
+    assert out.getvalue().strip() == "False"
 
 
 @pytest.mark.integration

@@ -65,11 +65,18 @@ profile_tests: _test_setup
 playwright_install: _test_setup
   @uv run playwright install chromium
 
-e2e $USE_ENV_TEST="1" $HEADED="0": _test_setup
+e2e $USE_ENV_TEST="1" $HEADED="0" $E2E_PORT="": _test_setup
   #!/usr/bin/env bash
   set -euo pipefail
 
   export DEBUG=false
+  if [ -z "$E2E_PORT" ]; then
+    E2E_PORT="$(uv run python -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1]); s.close()')"
+  elif ! uv run python -c 'import socket, sys; s=socket.socket(); s.bind(("127.0.0.1", int(sys.argv[1]))); s.close()' "$E2E_PORT" 2>/dev/null; then
+    echo "E2E port ${E2E_PORT} is unavailable; choose another port or omit it to use an available one." >&2
+    exit 1
+  fi
+  export BASE_URL="http://127.0.0.1:${E2E_PORT}"
 
   cleanup() {
     [ -n "${SERVER_PID:-}" ] && kill "$SERVER_PID" 2>/dev/null || true
@@ -90,6 +97,6 @@ e2e $USE_ENV_TEST="1" $HEADED="0": _test_setup
   uv run manage.py migrate
   uv run manage.py seed_database
 {% raw %}  {{call_recipe}} collectstatic{% endraw %}
-  uv run gunicorn --bind 127.0.0.1:8000 {{project_name}}.wsgi:application &
+  uv run gunicorn --workers 1 --bind "127.0.0.1:${E2E_PORT}" {{project_name}}.wsgi:application &
   SERVER_PID=$!
   uv run pytest tests_e2e/
