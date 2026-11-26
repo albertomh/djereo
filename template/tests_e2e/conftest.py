@@ -2,15 +2,13 @@
 # Locally, set the HEADED environment variable to see the browser:
 # >>> HEADED=true uv run pytest tests_e2e/
 
-import sys
 import time
 
 import pytest
 import requests  # type: ignore
 from axe_playwright_python.sync_playwright import Axe
 from environs import Env
-from playwright.sync_api import Browser, Playwright, sync_playwright
-from playwright.sync_api import Error as PlaywrightError
+from playwright.sync_api import Browser, Page, expect, sync_playwright
 
 env = Env()
 env.read_env()
@@ -20,79 +18,58 @@ MAILPIT_API_BASE_URL = "http://127.0.0.1:8025"
 HTTP_SERVER_ERROR = 500
 
 
-def _launch_browser(headless: bool = True) -> tuple[Playwright, Browser]:
-    playwright = sync_playwright().start()
-    browser = playwright.chromium.launch(headless=headless)
-    return playwright, browser
-
-
 def pytest_sessionstart(session):
     """Check webapp is available before attempting to collect and run the test suite."""
     timeout = 10
     interval = 0.5
-    start = time.time()
+    start = time.monotonic()
     while True:
         try:
             resp = requests.get(BASE_URL, timeout=1)
             if resp.status_code < HTTP_SERVER_ERROR:
+                if "djDebugRoot" in resp.text:
+                    pytest.exit(
+                        "Django Debug Toolbar must be disabled during E2E", returncode=1
+                    )
                 break
-        except Exception:
+        except requests.RequestException:
             pass
-        if time.time() - start > timeout:
+        if time.monotonic() - start > timeout:
             pytest.exit(f"Server at {BASE_URL} is unavailable", returncode=1)
         time.sleep(interval)
 
-    playwright = browser = context = None
-    try:
-        playwright, browser = _launch_browser(True)
-        context = browser.new_context()
-        page = context.new_page()
-        page.goto(BASE_URL, timeout=3000)
-        if page.locator("#djDebugRoot").count():
-            pytest.exit("Django Debug Toolbar must be disabled during E2E", returncode=1)
-
-    except PlaywrightError as e:
-        print(e, file=sys.stderr)  # noqa: T201 print
-        pytest.exit("Startup check failed", returncode=1)
-
-    finally:
-        if context is not None:
-            context.close()
-        if browser is not None:
-            browser.close()
-        if playwright is not None:
-            playwright.stop()
-
 
 @pytest.fixture(scope="session")
-def browser():
+def browser() -> Browser:
     """Start Playwright Chromium once per test session."""
-    is_ci = env.bool("CI", default=False)
-    is_gha = env.bool("GITHUB_ACTIONS", default=False)
-    is_headed = env.bool("HEADED", default=False)
-    headless = not (is_headed or is_ci or is_gha)
-    if is_ci or is_gha:
-        headless = True
-    else:
-        headless = not is_headed
-
-    playwright, browser = _launch_browser(headless)
+    headless = not env.bool("HEADED", False)
+    playwright = sync_playwright().start()
+    browser = playwright.chromium.launch(headless=headless)
     yield browser
     browser.close()
     playwright.stop()
 
 
 @pytest.fixture
-def page(browser):
+def page(browser: Browser) -> Page:
     """Provide a fresh page for each test."""
     context = browser.new_context()
     page = context.new_page()
     yield page
-    if context is not None:
-        context.close()
+    context.close()
+
+
+def log_in(
+    page: Page, email: str = "user@example.com", password: str = "password"
+) -> None:
+    page.goto(f"{BASE_URL}/accounts/login/")
+    page.locator("#id_login").fill(email)
+    page.locator("#id_password").fill(password)
+    page.locator('button[type="submit"]').click()
+    expect(page).to_have_url(f"{BASE_URL}/")
 
 
 @pytest.fixture
-def axe():
+def axe() -> Axe:
     """Provide an Axe instance for accessibility testing."""
     return Axe()

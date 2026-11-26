@@ -1,38 +1,34 @@
-import random
-import string
+from uuid import uuid4
 
 import requests
-from playwright.sync_api import expect
+from playwright.sync_api import Page, expect
 
 from tests_e2e import MailPitMessage
-from tests_e2e.conftest import BASE_URL, MAILPIT_API_BASE_URL
+from tests_e2e.conftest import BASE_URL, MAILPIT_API_BASE_URL, log_in
 
 
 def _account_in_main_navigation(page, email):
     return page.locator("header nav > ul").get_by_text(email, exact=False)
 
 
-class AuthTest:
-    @classmethod
-    def setup_class(cls):
-        cls.user_email = "user@example.com"
-        cls.user_password = "password"
-        cls.login_url = f"{BASE_URL}/accounts/login/"
-        cls.signup_url = f"{BASE_URL}/accounts/signup/"
+USER_EMAIL = "user@example.com"
+USER_PASSWORD = "password"
+LOGIN_URL = f"{BASE_URL}/accounts/login/"
+SIGNUP_URL = f"{BASE_URL}/accounts/signup/"
 
 
-class TestSignUp(AuthTest):
-    def test_sign_up_navigation(self, page):
+class TestSignUp:
+    def test_sign_up_navigation(self, page: Page):
         page.goto(BASE_URL)
         page.get_by_text("Sign up").click()
-        expect(page).to_have_url(self.signup_url)
+        expect(page).to_have_url(SIGNUP_URL)
 
-    def test_sign_up(self, page):
-        page.goto(self.signup_url)
+    def test_sign_up(self, page: Page):
+        page.goto(SIGNUP_URL)
 
-        email = f"{''.join(random.choices(string.ascii_lowercase, k=6))}@example.com"
+        email = f"{uuid4().hex}@example.com"
         page.fill("#id_email", email)
-        password = "".join(random.choices(string.ascii_lowercase + string.digits, k=8))
+        password = uuid4().hex
         page.fill("#id_password1", password)
         page.click("button[type=submit]")
 
@@ -49,11 +45,11 @@ class TestSignUp(AuthTest):
         )
         assert snippet in msg["Snippet"]
 
-    def test_attempt_sign_up_with_existing_email(self, page):
-        page.goto(self.signup_url)
+    def test_attempt_sign_up_with_existing_email(self, page: Page):
+        page.goto(SIGNUP_URL)
 
-        page.fill("#id_email", self.user_email)
-        page.fill("#id_password1", self.user_password)
+        page.fill("#id_email", USER_EMAIL)
+        page.fill("#id_password1", USER_PASSWORD)
         page.click("button[type=submit]")
 
         expect(
@@ -64,47 +60,39 @@ class TestSignUp(AuthTest):
         msg: MailPitMessage = mp_res["messages"][0]
         snippet = (
             f"You are receiving this email because you or someone else tried to "
-            f"signup for an account using email address: {self.user_email}"
+            f"signup for an account using email address: {USER_EMAIL}"
         )
         assert snippet in msg["Snippet"]
 
 
-class TestLogInPage(AuthTest):
-    def test_log_in_as_a_regular_user(self, page):
-        page.goto(self.login_url)
-        page.fill("#id_login", self.user_email)
-        page.fill("#id_password", self.user_password)
-        page.click("button[type=submit]")
-
+class TestLogInPage:
+    def test_log_in_as_a_regular_user(self, page: Page):
+        log_in(page, USER_EMAIL, USER_PASSWORD)
         expect(page).to_have_url(f"{BASE_URL}/")
+        expect(_account_in_main_navigation(page, USER_EMAIL)).to_be_visible()
 
-        expect(_account_in_main_navigation(page, self.user_email)).to_be_visible()
-
-    def test_log_in_requires_email_address(self, page):
-        page.goto(self.login_url)
+    def test_log_in_requires_email_address(self, page: Page):
+        page.goto(LOGIN_URL)
         page.fill("#id_login", "not_an_email")
-        page.fill("#id_password", self.user_password)
+        page.fill("#id_password", USER_PASSWORD)
 
         page.click("button[type=submit]")
 
         validation_msg = page.eval_on_selector("#id_login", "el => el.validationMessage")
         assert "@" in validation_msg
 
-    def test_forgot_password_link_on_log_in_page(self, page):
-        page.goto(self.login_url)
+    def test_forgot_password_link_on_log_in_page(self, page: Page):
+        page.goto(LOGIN_URL)
 
         page.get_by_text("Forgot your password?").click()
 
         expect(page).to_have_url(f"{BASE_URL}/accounts/password/reset/")
 
 
-class TestLogOut(AuthTest):
-    def test_log_out(self, page):
-        page.goto(self.login_url)
-        page.fill("#id_login", self.user_email)
-        page.fill("#id_password", self.user_password)
-        page.click("button[type=submit]")
-        _account_in_main_navigation(page, self.user_email).click()
+class TestLogOut:
+    def test_log_out(self, page: Page):
+        log_in(page, USER_EMAIL, USER_PASSWORD)
+        _account_in_main_navigation(page, USER_EMAIL).click()
         page.click("text=Sign out")
 
         expect(page).to_have_url(f"{BASE_URL}/accounts/logout/")
